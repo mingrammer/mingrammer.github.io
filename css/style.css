@@ -196,7 +196,7 @@ nav.main-nav a.cta {
 }
 @media (max-width: 700px) {
   nav.main-nav {
-      padding: 20px 10px 0 0;
+      padding: 20px 20px 0 0;
       background: #fff;
       background: rgba(255, 255, 255, .90);
       margin: 0 auto;
@@ -213,7 +213,7 @@ nav.main-nav a.cta {
       border-radius: 3px;
   }
 }
-@media (max-width: 324px) {
+@media (max-width: 420px) {
     nav.main-nav a.cta {
       display: none;
     }
@@ -767,6 +767,8 @@ h2.month {
     }
     #post-list, #archive-list {
         margin-top: 0;
+        margin-right: -1.5em;
+        margin-left: -1.5em;
     }
     #post-meta {
         margin-top: 60px;
