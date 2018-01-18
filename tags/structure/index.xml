@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Structure on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/structure/</link>
+    <description>Recent content in Structure on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 10 Oct 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/structure/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] Go에서 애플리케이션 설계하기</title>
+      <link>https://mingrammer.com/translation-structuring-applications-in-go/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-structuring-applications-in-go/</guid>
+      <description>Structuring Applications in Go을 번역한 글입니다. 개요 Go를 배울 때 가장 어려웠던 부분은 애플리케이션을 어떻게 설계하는가였다. Go 이전에, 나는 Rails 애플리케이션을 만들었었는데</description>
+    </item>
+    
+  </channel>
+</rss>

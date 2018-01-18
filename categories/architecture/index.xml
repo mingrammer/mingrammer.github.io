@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Architecture on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/architecture/</link>
+    <description>Recent content in Architecture on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 10 Sep 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/architecture/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 10가지 소프트웨어 아키텍처 패턴 요약</title>
+      <link>https://mingrammer.com/translation-10-common-software-architectural-patterns-in-a-nutshell/</link>
+      <pubDate>Sun, 10 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-10-common-software-architectural-patterns-in-a-nutshell/</guid>
+      <description>10 Common Software Architectural Patterns in a nutshell을 번역한 글입니다. 대형 엔터프라이즈 규모의 시스템들은 어떻게 설계되었는지에 대해 궁금해 한 적이 있나요? 우리는 주요 소프트</description>
+    </item>
+    
+  </channel>
+</rss>

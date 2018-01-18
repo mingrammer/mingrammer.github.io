@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Programming on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/programming/</link>
+    <description>Recent content in Programming on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 07 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 진실은 코드에 있다</title>
+      <link>https://mingrammer.com/translation-the-truth-is-in-the-code/</link>
+      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-truth-is-in-the-code/</guid>
+      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. requirementsascode의 shippingapp 모델 예시 {: style=&amp;ldquo;text-align: center;&amp;ldquo;} 머잖아, 모든 소프트웨어 개발자는 다음과 같</description>
+    </item>
+    
+    <item>
+      <title>[번역] 좋은 코딩을 위한 13 가지 간단한 규칙</title>
+      <link>https://mingrammer.com/translation-13-simple-rules-for-good-coding/</link>
+      <pubDate>Sun, 02 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-13-simple-rules-for-good-coding/</guid>
+      <description>13 Simple Rules for Good Coding (from my 15 years of experience)를 번역한 글입니다. 나는 15년 이상의 경력을 가진 프로그래머이며 많은 여러 언어, 패러다임, 프레임워크를 사</description>
+    </item>
+    
+  </channel>
+</rss>

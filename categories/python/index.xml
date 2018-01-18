@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/python/</link>
+    <description>Recent content in Python on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 10 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현</title>
+      <link>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</guid>
+      <description>Python internals: Arbitrary-precision integer implementation을 번역한 글입니다. 여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴</description>
+    </item>
+    
+    <item>
+      <title>PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)</title>
+      <link>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</guid>
+      <description>보통 파이썬 프로젝트를 시작하면 주로 virtualenv를 사용해 파이썬 환경(파이썬 버전, 패키지들을 모두 포함)을 독립적으로 분리시킨 가상 환경에서 작업</description>
+    </item>
+    
+    <item>
+      <title>파이썬의 Comprehension 소개</title>
+      <link>https://mingrammer.com/introduce-comprehension-of-python/</link>
+      <pubDate>Wed, 14 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/introduce-comprehension-of-python/</guid>
+      <description>Comprehension이란 iterable한 오브젝트를 생성하기 위한 방법중 하나로 파이썬에서 사용할 수 있는 유용한 기능중 하나이다. 파이썬에는 다음</description>
+    </item>
+    
+    <item>
+      <title>파이썬의 Comma(,) 사용팁</title>
+      <link>https://mingrammer.com/tips-of-using-comma-in-python/</link>
+      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tips-of-using-comma-in-python/</guid>
+      <description>파이썬에서 Comma(,)를 활용할 수 있는 몇가지 팁을 정리해보고자 한다. 아마 많은 사람들이 이미 다 알고있을 내용이기 때문에, 이 또한 파이썬 초보자들을 대상</description>
+    </item>
+    
+    <item>
+      <title>파이썬의 Asterisk(*) 이해하기</title>
+      <link>https://mingrammer.com/understanding-the-asterisk-of-python/</link>
+      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/understanding-the-asterisk-of-python/</guid>
+      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 Asterisk(*)는 단순히 곱셈 이상의 여</description>
+    </item>
+    
+    <item>
+      <title>파이썬에서 설정값 관리하기</title>
+      <link>https://mingrammer.com/ways-to-manage-the-configuration-in-python/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/ways-to-manage-the-configuration-in-python/</guid>
+      <description>서버를 개발하다보면 항상 마주치는 문제가 있는데 바로 설정값 (Configuration)을 어떻게 관리하느냐이다. 비단, 서버 애플리케이션 뿐만 아니라 설</description>
+    </item>
+    
+    <item>
+      <title>[번역] 이터레이터와 제너레이터</title>
+      <link>https://mingrammer.com/translation-iterators-vs-generators/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-iterators-vs-generators/</guid>
+      <description>Iterables vs. Iterators. vs Generators를 번역한 글입니다. 모든 이미지는 원문에서 발췌하였습니다. 나는 파이썬에서 다음과 같은 개념들간의 정확한 차이점에 대해 가끔씩</description>
+    </item>
+    
+    <item>
+      <title>파이썬 언더스코어(_)에 대하여</title>
+      <link>https://mingrammer.com/underscore-in-python/</link>
+      <pubDate>Sat, 05 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/underscore-in-python/</guid>
+      <description>파이썬에서 언더스코어(underscore, _)는 특별하다. 타 언어에서 언더스코어(_)는 단지 스네이크 표기법의 변수나 함수명을 위해서만 사용되어지</description>
+    </item>
+    
+    <item>
+      <title>[번역] 비동기 파이썬</title>
+      <link>https://mingrammer.com/translation-asynchronous-python/</link>
+      <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-asynchronous-python/</guid>
+      <description>Asynchronous Python을 번역한 글입니다. 파이썬에서의 비동기 프로그래밍은 최근 점점 더 많은 인기를 끌고있다. 비동기 프로그래밍을 위한 파이썬 라이브러리는 많다. 그</description>
+    </item>
+    
+  </channel>
+</rss>

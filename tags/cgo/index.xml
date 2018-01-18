@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cgo on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/cgo/</link>
+    <description>Recent content in Cgo on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 11 Dec 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/cgo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기</title>
+      <link>https://mingrammer.com/cgo-cross-compile-for-mac-for-linux/</link>
+      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/cgo-cross-compile-for-mac-for-linux/</guid>
+      <description>최근에 Go 프로젝트를 macOS에서 CentOS로 크로스 컴파일 해야하는 일이 생겼다. Go는 일반적으로 컴파일에 관여하는 환경 변수 설정만으로 매우 쉽게 크로</description>
+    </item>
+    
+  </channel>
+</rss>

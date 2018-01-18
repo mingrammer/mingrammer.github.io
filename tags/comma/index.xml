@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Comma on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/comma/</link>
+    <description>Recent content in Comma on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 26 Apr 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/comma/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>파이썬의 Comma(,) 사용팁</title>
+      <link>https://mingrammer.com/tips-of-using-comma-in-python/</link>
+      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tips-of-using-comma-in-python/</guid>
+      <description>파이썬에서 Comma(,)를 활용할 수 있는 몇가지 팁을 정리해보고자 한다. 아마 많은 사람들이 이미 다 알고있을 내용이기 때문에, 이 또한 파이썬 초보자들을 대상</description>
+    </item>
+    
+  </channel>
+</rss>

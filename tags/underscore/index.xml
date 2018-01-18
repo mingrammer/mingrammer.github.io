@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Underscore on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/underscore/</link>
+    <description>Recent content in Underscore on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 05 Nov 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/underscore/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>파이썬 언더스코어(_)에 대하여</title>
+      <link>https://mingrammer.com/underscore-in-python/</link>
+      <pubDate>Sat, 05 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/underscore-in-python/</guid>
+      <description>파이썬에서 언더스코어(underscore, _)는 특별하다. 타 언어에서 언더스코어(_)는 단지 스네이크 표기법의 변수나 함수명을 위해서만 사용되어지</description>
+    </item>
+    
+  </channel>
+</rss>

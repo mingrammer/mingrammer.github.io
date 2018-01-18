@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Strings on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/strings/</link>
+    <description>Recent content in Strings on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 02 Nov 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/strings/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] Go 둘러보기 - bytes &#43; strings 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</link>
+      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: bytes + strings packages를 번역한 글입니다. 우린 지난번 포스트에서 바이트 스트림을 다뤄봤는데 가끔은 제한적인 범위에서, 인메모리 바이트 슬</description>
+    </item>
+    
+  </channel>
+</rss>

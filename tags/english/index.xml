@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>English on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/english/</link>
+    <description>Recent content in English on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 16 Jan 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/english/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>첫 영문 기술 포스팅</title>
+      <link>https://mingrammer.com/first-publishing-english-post/</link>
+      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/first-publishing-english-post/</guid>
+      <description>작년 11월에 Python 언더스코어에 관한 글을 작성한 적이 있다. 기억하기로는 당시 반응이 꽤 좋았고, 올해부터 해보고 싶던 영어공부겸 영문 블로그 운영도 해보고 싶어 첫 영</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clean Code on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/clean-code/</link>
+    <description>Recent content in Clean Code on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 07 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/clean-code/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 진실은 코드에 있다</title>
+      <link>https://mingrammer.com/translation-the-truth-is-in-the-code/</link>
+      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-truth-is-in-the-code/</guid>
+      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. requirementsascode의 shippingapp 모델 예시 {: style=&amp;ldquo;text-align: center;&amp;ldquo;} 머잖아, 모든 소프트웨어 개발자는 다음과 같</description>
+    </item>
+    
+  </channel>
+</rss>

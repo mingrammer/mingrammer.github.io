@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Management on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/management/</link>
+    <description>Recent content in Management on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 05 Mar 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/management/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>파이썬에서 설정값 관리하기</title>
+      <link>https://mingrammer.com/ways-to-manage-the-configuration-in-python/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/ways-to-manage-the-configuration-in-python/</guid>
+      <description>서버를 개발하다보면 항상 마주치는 문제가 있는데 바로 설정값 (Configuration)을 어떻게 관리하느냐이다. 비단, 서버 애플리케이션 뿐만 아니라 설</description>
+    </item>
+    
+  </channel>
+</rss>

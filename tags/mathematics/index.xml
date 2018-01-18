@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mathematics on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/mathematics/</link>
+    <description>Recent content in Mathematics on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 24 Apr 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/mathematics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 머신러닝 속 수학</title>
+      <link>https://mingrammer.com/translation-the-mathematics-of-machine-learning/</link>
+      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-mathematics-of-machine-learning/</guid>
+      <description>The Mathematics of Machine Learning을 번역한 글입니다. 지난 몇 달 간, 나는 데이터 과학의 세계로 모험하고 머신러닝 기술을 사용하여 통계적 규칙성을 조사하고 완벽한 데이터</description>
+    </item>
+    
+  </channel>
+</rss>

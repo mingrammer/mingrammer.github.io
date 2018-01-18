@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] Go와 OOP &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] Go와 OOP
+                    </h1>
+                    <h2 class="headline">
+                    Feb 28, 2017 00:00
+                    · 3428 words
+                    · 7 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/oop">oop</a>
+                          
+                              <a href="https://mingrammer.comtags/go">go</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#0-용어">0. 용어</a>
+<ul>
+<li><a href="#객체-vs-값">객체 vs. 값</a></li>
+<li><a href="#타입과-메서드-집합">타입과 메서드 집합</a></li>
+</ul></li>
+<li><a href="#1-캡슐화-encapsulation">1. 캡슐화 (Encapsulation)</a></li>
+<li><a href="#2-다형성-polymorphism">2. 다형성 (Polymorphism)</a></li>
+<li><a href="#3-컴포지션-composition">3. 컴포지션 (Composition)</a></li>
+<li><a href="#4-추상화-abstraction">4. 추상화 (Abstraction)</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://twitter.com/@theamydance">theamydance</a>의 <a href="https://medium.com/behancetech/oop-and-go-sorta-c6682359a41b#.b3flpbm9i">Go and OOP&hellip; Sorta</a>를 번역한 글입니다.</p>
+</blockquote>
+
+<p><em>나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 <a href="http://www.womenwhogo.org/">Women Who Go</a> 밋업에서 처음으로 기술 토크를 했다. 이 글은 그 토크를 글로 옮긴 글이다. 이 글의 독자는 &ldquo;클래스 (class)&rdquo;, &ldquo;구현 (implements)&rdquo;, &ldquo;추상화 (abstract)&ldquo;의 키워드를 가진 클래스 기반 언어를 사용했던 사람들을 대상으로 한다. 나는 특별히 Go를 시작하기 전에 PHP로 프로그래밍을 했었다.</em></p>
+
+<p><br></p>
+
+<h1 id="0-용어">0. 용어</h1>
+
+<p><a href="https://nathany.com/good/">&ldquo;Go는 클래스와 객체보다는 타입과 값을 갖는다&rdquo;</a>
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>먼저 객체 없이도 객체 지향 프로그래밍 원리를 사용할 수 있다는 것을 이해하는 것이 중요하다. &ldquo;객체&rdquo;라는 용어는 Go에서는 사용할 수 없는 많은 의미들을 함축하고 있다.</p>
+
+<p>Go는 전통적인 OOP 언어들이 객체를 가지고 있는 반면, <strong>값</strong>을 가진다. 이 둘의 차이점을 살펴보자.</p>
+
+<h2 id="객체-vs-값">객체 vs. 값</h2>
+
+<p><strong>객체</strong>는 클래스의 인터스턴스이다. 객체는 명명된 참조를 통해 접근된다.</p>
+
+<pre><code class="language-php">&lt;?php
+
+class SomeObject {
+    public $classVar;
+  
+    public function __construct( $classVar ) {
+      	$this-&gt;classVar = $classVar;
+    }
+}
+
+
+$object    = new SomeObject( &quot;Hello, World.&quot; );
+$reference = $object;
+
+$reference-&gt;classVar = &quot;Look! I can access object!&quot;;
+
+echo $object-&gt;classVar;    // &quot;Look! I can access object!&quot;
+echo $reference-&gt;classVar; // &quot;Look! I can access object!&quot;
+</code></pre>
+
+<p>이 PHP 코드는 *$object*와 *$reference*가 모두 같은 *SomeObject*의 인스턴스를 가리키고 있음을 보여준다.</p>
+
+<p>다양한 명명된 참조로부터 접근할 수 있는 것 외에도, 객체는 Go에서는 불가능한 상속과 서브클래스와 같은 중요한 개념 또한 포함한다. 따라서, Go를 배울 때에는, 객체에 대한 생각을 버리고, 올바른 용어를 사용하는데 집중을 하는게 가장 좋다.</p>
+
+<p><strong>값</strong>은 정확히 바로 그 값이다. 예를 들어, 구조체는 값이다. 구조체의 각 인스턴스는 전달될 때 복사된다.</p>
+
+<pre><code class="language-go">package main
+
+import (&quot;fmt&quot;)
+
+type SomeStruct struct {
+    Field string
+}
+
+func main() {
+    value := SomeStruct{Field: &quot;Structs are values&quot;}
+    copy  := value
+    copy.Field = &quot;This is a Copy &amp; doesn't change the variable value&quot;
+    fmt.Println(value.Field) // &quot;Structs are values&quot;
+    fmt.Println(copy.Field)  // &quot;This is a Copy &amp; doesn't change the variable value&quot;
+}
+</code></pre>
+
+<p>위 예제에서, *copy.Field*에 값을 할당할 때, *value.Field*는 값을 변경하지 않는다는걸 볼 수 있다. 같은 인스턴스를 참조하고 싶을 땐, C와 유사하게, <strong>명시적으로 그렇게 할 수 있는 포인터</strong>를 사용한다.</p>
+
+<h2 id="타입과-메서드-집합">타입과 메서드 집합</h2>
+
+<p>이제 Go에 객체가 없는 이유를 알았으므로, <strong>타입</strong>의 인스턴스, 특히 구조체 타입을 어떻게 조작하는지 살펴보자.</p>
+
+<p><strong>타입</strong>은 <strong>메서드 집합</strong>과 관련이 있다. 메서드 집합의 각 메서드는 주어진 <strong>리시버 (receiver)</strong> 위에서 동작한다.</p>
+
+<pre><code class="language-go">type SomeStruct struct {
+    Field string
+}
+
+// foo는 SomeStruct의 메서드 집합에 속함
+// (s *SomeStruct)는 SomeStruct 포인터에 대한 리시버이다
+func (s *SomeStruct) foo(field string) {    
+    s.Field = field
+}
+
+func main() {
+    someStruct := new(SomeStruct)
+    
+    someStruct.foo(&quot;a&quot;)
+    fmt.Println(someStruct.Field)  // &quot;a&quot;
+    someStruct.foo(&quot;b&quot;)
+    fmt.Println(someStruct.Field)  // &quot;b&quot;
+}
+</code></pre>
+
+<p>여기서 우리는 <em>foo</em> 메서드가 *someStruct*의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
+
+<p>재차 말해서 Go에는 객체가 없지만, 메서드 리시버와 클래스 메서드 사이에는 유사점이 있다.</p>
+
+<p>&hellip;
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>이제 용어를 알아봤으므로, 마침내 우리는 Go 코드를 해석하는데 사용할 수 있는 OOP 패턴들을 살펴볼 수 있다.</p>
+
+<p><br></p>
+
+<h1 id="1-캡슐화-encapsulation">1. 캡슐화 (Encapsulation)</h1>
+
+<p><a href="http://crackingjavainterviews.blogspot.kr/2013/04/what-are-four-principles-of-oop.html">&ldquo;캡슐화는 퍼블릭 메서드에 접근 제한을 둠으로써 데이터 구현체를 숨기는 메커니즘이다.&rdquo;</a>
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>전통적으로, 클래스 기반 OOP에서는 캡슐화가 private과 public 변수/메서드를 통해 이루어졌다. Go에서는 <em>패키지 (package)</em> 수준에서 캡슐화가 이루어진다.</p>
+
+<p>&ldquo;Public&rdquo; 요소는 패키지 밖으로 노출될 수 있으며 첫 문자를 대문자로 표시한다. <strong>노출 (exported)</strong> vs. <strong>비노출 (unexported)</strong> 요소가 더 정확한 용어이기 때문에 public을 따옴표 안에 적었다. 비노출 요소는 첫 문자로 소문자를 사용해 표시하며, 해당 패키지 내에서만 접근이 가능하다.</p>
+
+<p><em>Public/protected/private은 클래스와 관련된 키워드이며, exporting/importing은 패키지와 관련이 있다.</em>
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<pre><code class="language-go">package encapsulation
+
+import &quot;fmt&quot;
+
+// Encapsulation 구조체는 이 패키지 밖으로 노출될 수 있음
+type Encapsulation struct{}
+
+// Expose 메서드는 패키지 밖을 노출될 수 있음
+func (e *Encapsulation) Expose() {
+    fmt.Println(&quot;AHHHH! I'm exposed!&quot;)
+}
+
+// hide 메서드는 패키지 내부에서만 사용할 수 있음
+func (e *Encapsulation) hide() {
+    fmt.Println(&quot;Shhhh... this is super secret&quot;)
+}
+
+// Unhide는 노출되지 않은 hide 메서드를 사용함
+func (e *Encapsulation) Unhide() {
+    e.hide()
+    fmt.Println(&quot;...jk&quot;)
+}
+</code></pre>
+
+<p><em>encapsulation</em> 패키지에서, <em>Encapsulation (구조체)</em>, Expose (메서드) *Unhide (메서드)*는 모두 노출되어 있으며 타 패키지에서 사용될 수 있다.</p>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/amy/tech-talk/encapsulation&quot;
+
+func main() {
+    e := encapsulation.Encapsulation{}
+    
+    e.Expose()     // &quot;AHHHH! I'm exposed!&quot;
+    
+    // e.hide()    // 주석을 없애면, 다음의 에러가 발생함
+                   // ./main.go:10: e.hide undefined (cannot refer
+                   // to unexported field or method encapsulation.
+                   // (*Encapsulation).&quot;&quot;.hide)         
+    
+    e.Unhide()     // &quot;Shhhh... this is super secret&quot;
+                   // &quot;...jk&quot;
+}
+</code></pre>
+
+<p>여기서 우리는 <em>encapsulation</em> 패키지와 노출 가능한 요소들을 <em>main</em> 패키지에서 가져와 사용했다. <em>hide</em> 메서드를 사용하려고하면 컴파일러는 에러를 발생시킨다.</p>
+
+<p><br></p>
+
+<h1 id="2-다형성-polymorphism">2. 다형성 (Polymorphism)</h1>
+
+<p><a href="http://stackoverflow.com/questions/1031273/what-is-polymorphism-what-is-it-for-and-how-is-it-used">&ldquo;다형성은 클래스들이 공통 인터페이스를 공유하면서 다른 기능을 갖는 객체 지향 프로그래밍의 패턴을 묘사한다.&rdquo;</a>
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>Go에서는 인터페이스가 암시적으로 충족된다. 인터페이스 또한 타입이다. 이 두 문장은 많은 의미를 담고 있으므로, 이제 이를 자세히 알아보자.</p>
+
+<p><strong>인터페이스가 암시적으로 충족된다</strong> <strong>→</strong> 인터페이스의 모든 메서드가 어떤 타입의 메서드 집합에 모두 포함되어 있을 경우 해당 타입은 인터페이스를 만족한다. Go에는 <em>implements</em> 키워드가 없다.</p>
+
+<p><strong>인터페이스는 타입이다</strong> <strong>→</strong> 어떤 타입이 한 인터페이스를 만족하면, 그 타입은 또한 타입이 만족하는 인터페이스에 의해 제한되는 모든 타입을 만족한다.</p>
+
+<pre><code class="language-go">package polymorphism 
+
+import &quot;fmt&quot;
+
+type SloganSayer interface {
+    Slogan()
+}
+
+// SaySlogan은 SloganSayer 타입을 파라미터로 받음
+func SaySlogan(sloganSayer SloganSayer) {
+    sloganSayer.Slogan()
+}
+
+// Hillary는 Slogan 함수를 구현함으로써 암묵적으로 SloganSayer 인터페이스를 만족
+// 따라서, Hillary도 SloganSayer 타입이다
+type Hillary struct{}
+
+func (h *Hillary) Slogan() {
+    fmt.Println(&quot;Stronger together.&quot;)
+}
+
+// Trump에 대해서도 동일하게 적용됨
+type Trump struct{}
+
+func (t *Trump) Slogan() {
+    fmt.Println(&quot;Make America great again.&quot;)
+}
+</code></pre>
+
+<p>여기서 주의 깊게 볼건 SaySlogan 함수는 파라미터를 SloganSayer 타입으로 제한할 수 있다는 것이다. 따라서, 해당 인터페이스를 만족하는 모든 타입이 파라미터로 사용될 수 있다.</p>
+
+<pre><code class="language-go">package main 
+
+import &quot;github.com/amy/tech-talk/polymorphism&quot;
+
+func main() {
+    hillary := new(polymorphism.Hillary)
+    hillary.Slogan()                  // &quot;Stronger together.&quot;
+    polymorphism.SaySlogan(hillary)   // &quot;Stronger together.&quot;
+    trump := new(polymorphism.Trump)
+    polymorphism.SaySlogan(trump)     // &quot;Make America great again.&quot;
+}
+</code></pre>
+
+<p>우리는 대통령 후보가 슬로건을 말하는것에 대해 걱정할 필요가 없다. 타입이 SloganSayer 인터페이스를 구현하는 한, 이를 SaySlogan으로 전달할 수 있다.</p>
+
+<p><br></p>
+
+<h1 id="3-컴포지션-composition">3. 컴포지션 (Composition)</h1>
+
+<p>Go에서 상속은 불가능하다. 대신, 우리는 <strong>임베딩 (embedding)</strong>을 사용해 조합 가능하고 재사용이 가능한 구조체를 만들 수 있다.</p>
+
+<p>Go는 인터페이스나 구조체 안에 타입을 임베드 할 수 있게 해준다. 임베딩을 통해, 우리는 내부 타입에서 선언된 메서드를 외부 타입으로 전달할 수 있다.</p>
+
+<blockquote>
+<p><em><a href="https://golang.org/doc/effective_go.html#embedding">타입을 임베드하면, 해당 타입의 메서드는 외부 타입의 메서드가 되지만, 메서드가 실행될때의 메서드 리시버는 외부 타입이 아니라 내부 타입이다.</a></em></p>
+</blockquote>
+
+<pre><code class="language-go">package composition 
+
+import &quot;fmt&quot;
+
+type Human struct {
+    FirstName   string
+    LastName    string
+    CanSwim     bool
+}
+
+// Amy는 Human 타입으로 임베딩 되어있으며 따라서 Human의 메서드 집합에 속하는 메서드를 실행할 수 있음
+type Amy struct {
+    Human
+}
+
+// Alan 또한 Human 타입으로 임베딩 되어있음
+type Alan struct {
+    Human
+}
+
+func (h *Human) Name() {
+    
+    fmt.Printf(&quot;Hello! My name is %v %v&quot;, h.FirstName, h.LastName)
+}
+
+func (h *Human) Swim() {
+    
+    if h.CanSwim == true {
+        fmt.Println(&quot;I can swim!&quot;)
+    } else {
+        fmt.Println(&quot;I can not swim.&quot;)
+    }
+}
+</code></pre>
+
+<p>여러분은 &ldquo;<strong><a href="http://stackoverflow.com/questions/49002/prefer-composition-over-inheritance/891908#891908">상속보단 컴포지션</a></strong>&ldquo;이라는 말을 종종 들어봤을 것이다.</p>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/amy/tech-talk/composition&quot;
+
+func main() {
+    
+    // amy는 Human 타입으로 구성됨
+    amy := composition.Amy{
+        Human: composition.Human{
+            FirstName: &quot;Amy&quot;,
+            LastName:  &quot;Chen&quot;,
+            CanSwim:   true,
+        },
+    }
+
+    // alan은 Human 타입으로 구성됨
+    alan:= composition.Alan{
+        Human: composition.Human{
+            FirstName: &quot;Alan&quot;,
+            LastName:  &quot;Chen&quot;,
+            CanSwim:   false,
+        },
+    }
+    
+    // Human의 메서드 집합은 Amy 타입으로 전달됨
+    amy.Name()     // &quot;Hello! My name is Amy Chen&quot;
+    amy.CanSwim()  // &quot;I can swim!&quot;
+    alan.Name()    // &quot;Hello! My name is Alan Chen&quot;
+    alan.CanSwim() // &quot;I can't swim&quot;
+}
+</code></pre>
+
+<p><br></p>
+
+<h1 id="4-추상화-abstraction">4. 추상화 (Abstraction)</h1>
+
+<p>&ldquo;<em><a href="http://www.introprogramming.info/english-intro-csharp-book/read-online/chapter-20-object-oriented-programming-principles/#_Toc362296567">추상화란 내부적으로 어떻게 동작하는지 모른채 사용법만 알고 작업한다는 것을 의미한다. </a></em>&ldquo;
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>구조체 내에 구조체를 임베딩 하는것과 유사하게, 구조체 내에 인터페이스를 임베딩할 수도 있다. 한 인터페이스를 만족하는 모든 타입들은 또한 해당 인터페이스 타입을 갖는다는걸 기억하라.</p>
+
+<pre><code class="language-go">package abstraction
+
+import &quot;fmt&quot;
+
+type SloganSayer interface {
+    Slogan()
+}
+
+// Campaign은 자기 자신의 인스턴스에서 SloganSayer를 받을 수 있음
+// Campaign은 또한 SloganSayer 인터페이스를 구현하고 있으므로 SloganSayer이기도 함
+// 이는 체이닝시 유용하다
+type Campaign struct{
+    SloganSayer
+}
+
+// SaySlogan은 파라미터로 Campaign 또한 받을 수 있음
+func SaySlogan(s SloganSayer) {
+    s.Slogan()
+}
+
+// Hillary는 SloganSayer 인터페이스를 구현함
+// Hillary는 SloganSayer임
+type Hillary struct{}
+
+func (h *Hillary) Slogan() {
+    fmt.Println(&quot;Stronger together.&quot;)
+}
+
+// Trump는 SloganSayer 인터페이스를 구현함
+// Trump는 SloganSayer임
+type Trump struct{}
+
+func (t *Trump) Slogan() {
+    fmt.Println(&quot;Make American great again.&quot;)
+}
+</code></pre>
+
+<p>인터페이스 임베딩의 유용함은 이게 사용되는것을 볼 때 더욱 분명해진다.</p>
+
+<pre><code class="language-go">package main
+
+import &quot;github.com/amy/tech-talk/abstraction&quot;
+
+func main() {
+    hillary := new(abstraction.Hillary)
+    trump := new(abstraction.Trump)
+  
+    h := abstraction.Campaign{hillary}
+    t := abstraction.Campaign{trump}
+  
+    // Slogan의 Hillary와 Trump 구현체는 추상화 되어있다
+    // 대신, Campaign은 단지 이게 SloganSayer이고 따라서 Slogan을 호출할 수 있음을 알고있음
+    h.Slogan()  // &quot;Stronger together.&quot;
+    t.Slogan()  // &quot;Make America great again.&quot;
+  
+    // SloganSayer를 SaySlogan의 파라미터로 주입할 수 있음
+    abstraction.SaySlogan(hillary)  // &quot;Stronger together.&quot;
+    abstraction.SaySlogan(trump)    // &quot;Make America great again.&quot;
+  
+    // h와 t는 또한 Campaign 타입이라는걸 기억하라
+    abstraction.SaySlogan(h)  // &quot;Stronger together.&quot;
+    abstraction.SaySlogan(t)  // &quot;Make America great again.&quot;
+}
+</code></pre>
+
+<p>&hellip;
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>이게 끝이다! 이제 여러분은 기존에 익숙했던 OOP 원리들을 어떻게 빌릴 수 있는지 알았으니, 모듈화를 시작해보라. 다음은 OOP 원칙이 Go에서 어떻게 바뀌는지를 요약한 것이다.</p>
+
+<p><img src="../images/2017-02-28-go-and-oop.png" alt="oop-in-go" /></p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-go-and-oop%2f - %5b%eb%b2%88%ec%97%ad%5d%20Go%ec%99%80%20OOP by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

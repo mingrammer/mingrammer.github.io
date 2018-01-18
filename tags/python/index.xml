@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/python/</link>
+    <description>Recent content in Python on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 02 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Python vs Go 비교 레퍼런스</title>
+      <link>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</guid>
+      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 목차 버전 실행 문법 변수와 표현식 타입 및 연산자 문자열 고정 배열 동적 배열 딕셔너리(맵) 함수</description>
+    </item>
+    
+    <item>
+      <title>[번역] 비동기 파이썬</title>
+      <link>https://mingrammer.com/translation-asynchronous-python/</link>
+      <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-asynchronous-python/</guid>
+      <description>Asynchronous Python을 번역한 글입니다. 파이썬에서의 비동기 프로그래밍은 최근 점점 더 많은 인기를 끌고있다. 비동기 프로그래밍을 위한 파이썬 라이브러리는 많다. 그</description>
+    </item>
+    
+  </channel>
+</rss>

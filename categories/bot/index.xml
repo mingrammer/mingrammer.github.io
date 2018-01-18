@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bot on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/bot/</link>
+    <description>Recent content in Bot on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 13 Sep 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/bot/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>일일커밋 알림봇 개발기</title>
+      <link>https://mingrammer.com/dev-commit-alarm-bot/</link>
+      <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/dev-commit-alarm-bot/</guid>
+      <description>얼마 전부터 일일코딩/일일커밋에 도전하고 있다. 일일커밋이란, 말 그대로 하루에 적어도 하나의 커밋은 하자!라는 뜻으로 매일 매일 발전해 나가겠다는 의미를 가지</description>
+    </item>
+    
+  </channel>
+</rss>

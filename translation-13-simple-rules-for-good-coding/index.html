@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] 좋은 코딩을 위한 13 가지 간단한 규칙 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] 좋은 코딩을 위한 13 가지 간단한 규칙
+                    </h1>
+                    <h2 class="headline">
+                    Apr 2, 2017 00:00
+                    · 2462 words
+                    · 5 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/tip">tip</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                
+                <section id="post-body">
+                    <blockquote>
+<p><a href="https://hackernoon.com/few-simple-rules-for-good-coding-my-15-years-experience-96cb29d4acd9">13 Simple Rules for Good Coding (from my 15 years of experience)</a>를 번역한 글입니다.</p>
+</blockquote>
+
+<p>나는 15년 이상의 경력을 가진 프로그래머이며 많은 여러 언어, 패러다임, 프레임워크를 사용해봤고 많은 삽질을 해봤다. 그리고 나는 좋은 코딩을 작성하기 위한 나만의 규칙들을 여러분에게 공유하고자 한다.</p>
+
+<p><br></p>
+
+<ol>
+<li><strong>최적화 VS 가독성. 최적화보단 가독성</strong></li>
+</ol>
+
+<p>코드는 항상 읽기 쉽고 개발자들이 이해할 수 있게끔 작성하라. 읽기 어려운 코드를 읽는데 소모되는 시간과 비용은 최적화로부터 얻을 수 있는 것보다 더욱 크다. 최적화가 필요하다면, DI (의존성 주입)을 사용해 독립적인 모듈로 만들고, 100%의 테스트 커버리지를 유지하여 최소 1년간은 건들지 않아도 되도록 만들어라.</p>
+
+<ol>
+<li><strong>아키텍처 우선</strong></li>
+</ol>
+
+<p>나는 &ldquo;우리는 빨리 개발을 해야하기 때문에 아키텍처를 설계할 시간이 없다&rdquo;라고 말하는 사람을 많이 봐왔다. 그리고 그 중 99%가 이러한 생각 때문에 큰 문제를 겪었다.</p>
+
+<p>아키텍처를 생각하지 않고 코드를 작성하는 것은 목표 달성을위한 계획없이 자신의 욕망을 꿈꾸는 것처럼 쓸모가 없다. 코드를 작성하기 전에 먼저 수행 할 작업, 사용 방법, 모듈화 방법, 서비스가 서로 어떻게 동작하는지, 구조가 무엇인지, 테스트 및 디버깅 방법, 업데이트 방법들을 먼저 생각하고 이해해야한다.</p>
+
+<ol>
+<li><strong>테스트 커버리지</strong></li>
+</ol>
+
+<p>테스트는 좋은 일이지만 항상 비용 효율적인건 아니며 프로젝트에 따라 다르다.</p>
+
+<p>테스트가 필요한 경우:</p>
+
+<ul>
+<li>최소 한 달간은 건들지 않아도 될 모듈이나 마이크로서비스를 개발하는 경우</li>
+<li>오픈소스 코드를 작성하는 경우</li>
+<li>핵심 코드 또는 금전적인 부분과 맞닿는 코드를 작성하는 경우</li>
+<li>코드를 업데이트 하는 것과 동시에 테스트를 업데이트 할 수 있는 충분한 비용이 있는 경우</li>
+</ul>
+
+<p>테스트가 필요하지 않는 경우:</p>
+
+<ul>
+<li>스타트업인 경우</li>
+<li>팀이 작고 코드가 빠르게 변하는 경우</li>
+<li>출력값을 보고 간단하게 수동으로 테스트가 가능한 스크립트를 작성하는 경우</li>
+</ul>
+
+<p>나쁜 테스트 코드와 함께 코드를 짜는 것은 테스트가 없는 코드보다 더 위험할 수 있음을 기억하라.</p>
+
+<ol>
+<li><strong>간단하고 단순하게</strong></li>
+</ol>
+
+<p>복잡한 코드를 작성하지 말라. 간단하게 작성하면 버그가 줄어들고 디버깅 시간도 줄어들 수 있다. 코드는 수많은 추상화 및 기타 객체지향적인 문제 (특히 Java 개발자와 관련이 있음) 없이 딱 필요한 일만을 수행해야하며, 추후에 간단한 방법으로 코드를 업데이트하기 위해 필요한 것의 20%를 수행해야한다.</p>
+
+<ol>
+<li><strong>주석</strong></li>
+</ol>
+
+<p>주석은 나쁜 코드를 보여준다. 좋은 코드는 주석 없이도 이해할 수 있어야한다. 그러면 새로운 개발자를 위해 시간을 절약하기 위해 해야 할 일은 무엇인가? — 메서드의 정의와 사용법을 설명하는 한 줄짜리 간단한 문서를 작성하라. 이는 이해를 위한 많은 시간을 절약해 줄 것이며 — 더 많은 사람들에게 메서드를 더 잘 구현할 수 있는 기회를 제공해준다. 또한 이는 글로벌 코드 문서화를 위한 좋은 시작점이 될 것이다.</p>
+
+<ol>
+<li><strong>강한 결합 VS 느슨한 결합</strong></li>
+</ol>
+
+<p>항상 마이크로서비스 아키텍처를 사용하도록 노력하라. 모놀리틱 소프트웨어는 마이크로서비스 소프트웨어보다 빠르지만, 단일 서버 환경에서만 그렇다. 마이크로서비스는 여러분의 소프트웨어를 여러 서버로의 분산뿐만 아니라 가끔은 하나의 머신에서의 분산처리 (프로세스 분산을 의미한다)도 할 수 있는 가능성을 제공해준다.</p>
+
+<ol>
+<li><strong>코드 리뷰</strong></li>
+</ol>
+
+<p>코드 리뷰는 좋을 수도 있고 나쁠 수도 있다.</p>
+
+<p>여러분의 팀에 코드의 95%를 이해하고 있고 시간 낭비 없이 모든 업데이트 사항을 모니터링 할 수 있는 개발자가 있는 경우에만 코드 리뷰를 도입하도록 하라. 이 외의 경우에는 단지 시간 낭비가 될 수 있으며 모두가 이를 싫어하게 될 것이다.
+   이 부분은 많은 질문을 가져오기 때문에 이를 좀 더 깊게 살펴보자.</p>
+
+<p>많은 사람들은 코드 리뷰가 새로운 사람이나 코드의 다른 부분을 작업하는 팀원을 가르치는 좋은 방법이라고 생각한다. 그러나 코드 리뷰의 주요 목표는 코드 품질을 유지하는 것이지 가르치는게 아니다. 여러분의 팀이 원자로 또는 우주 로켓 엔진 냉각 시스템을 제어하는 코드를 작성했다고 가정해보자. 그리고 여러분은 아주 어려운 로직에서 큰 실수를 저질렀고, 이를 새로운 사람에게 코드 리뷰를 위해 제공했다고 해보자. 이 경우 여러분은 사고 위험에 대해 어떻게 생각하는가? — 내 대답은 70% 이상이다.</p>
+
+<p>좋은 팀은 각자가 자신의 역할을 가지고 있으며 일의 한 부분에 대해 완전한 책임감을 갖고 있는 팀이다. 만약 누가 코드의 다른 부분을 이해하고 싶으면 해당 부분을 담당하고 있는 사람에게 찾아가 질문을 하면된다. 모든걸 아는건 불가능하며 전체보다는 코드의 작은 부분을 (하지만 적어도 30%는) 완전히 이해하는것이 더 낫다.</p>
+
+<ol>
+<li><strong>리팩토링은 작동하지 않는다</strong></li>
+</ol>
+
+<p>나는 일하는 동안 &ldquo;나중에 리팩토링 할거니까 걱정하지마라&rdquo;라는 말을 많이 들었다. 그리고 나중에 이는 큰 기술적 부채로 돌아오거나 모든 코드를 다 삭제한 후 처음부터 다시 작성하게 되었다.</p>
+
+<p>따라서 처음부터 여러번 소프트웨어 다시 개발할 수 있는 자금이 있는게 아니라면 부채를 만들지 말라.</p>
+
+<ol>
+<li><strong>피곤하거나 컨디션이 좋지 않을때 코딩하지 말라</strong></li>
+</ol>
+
+<p>개발자들이 피곤할 땐 평소보다 2-5배 더 많은 버그와 실수를 만들어낸다. 따라서 과업은 매우 나쁘다. 그렇기 때문에 하루의 업무시간을 약 6시간으로 고려하는 국가가 점점 더 많아지고 있으며, 일부 국가에서는 이미 실천하고있다. 정신적인 일은 육체적인 일을 다루는 것과 같지 않다.</p>
+
+<ol>
+<li><p><strong>모든걸 한꺼번에 작성하자 말라 - 반복적으로 개발하라</strong></p>
+
+<p>코드를 작성하기 전에 우선 여러분의 고객과 클라이언트가 정말로 필요로 하는걸 분석하고 예측하고, 짧은 기간동안 개발할 수 있는 MVF(Most Valuable Features)를 추려내라. 품질 업데이트를 배포하기 위해 이러한 반복을 사용하도록 하고 무리한 요구사항과 품질 희생에 시간과 자원을 낭비하지말라.</p></li>
+
+<li><p><strong>자동화 VS 수동</strong></p>
+
+<p>자동화는 장기적으로 100% 성공이다. 따라서 지금 당장 무언가를 자동화 할 수 있는것이 있다면 바로 하도록 하라. &ldquo;5 분 밖에 걸리지 않는데, 왜 자동화 해야해?&ldquo;라고 생각할 수도 있다. 하지만 한 번 계산해보자. 예를 들어 5명의 개발자로 이루어진 팀의 일상적인 작업을 들어보자. 5분 * 5명 * 21일 * 12개월 = 6,300분 = 105시간 = 13.125 일 ~ 5,250$. 직원이 40,000명일 경우엔 비용이 얼마나 커질까?</p></li>
+
+<li><p><strong>나가서 취미를 갖자</strong></p>
+
+<p>일의 차별화는 정신 능력을 향상시키며 새롭고 신선한 아이디어를 제공한다. 따라서 잠시 쉬고 신선한 공기를 마시거나 친구들과 이야기를 하거나 기타를 연주하는등의 취미를 가져라.</p></li>
+
+<li><p><strong>여유 시간에 새로운걸 배워라</strong></p>
+
+<p>학습을 중단하면 퇴화하기 시작한다.</p></li>
+</ol>
+
+<p><br></p>
+
+<p>좋은 코드 작성에 대한 아이디어와 관행에 대한 의견을 공유해준다면 매우 감사하겠다.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-13-simple-rules-for-good-coding%2f - %5b%eb%b2%88%ec%97%ad%5d%20%ec%a2%8b%ec%9d%80%20%ec%bd%94%eb%94%a9%ec%9d%84%20%ec%9c%84%ed%95%9c%2013%20%ea%b0%80%ec%a7%80%20%ea%b0%84%eb%8b%a8%ed%95%9c%20%ea%b7%9c%ec%b9%99 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/ways-to-manage-the-configuration-in-python">파이썬에서 설정값 관리하기<aside class="dates">Mar 5 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

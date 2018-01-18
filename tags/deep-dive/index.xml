@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deep Dive on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/deep-dive/</link>
+    <description>Recent content in Deep Dive on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 10 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/deep-dive/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현</title>
+      <link>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</guid>
+      <description>Python internals: Arbitrary-precision integer implementation을 번역한 글입니다. 여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴</description>
+    </item>
+    
+    <item>
+      <title>파이썬의 Asterisk(*) 이해하기</title>
+      <link>https://mingrammer.com/understanding-the-asterisk-of-python/</link>
+      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/understanding-the-asterisk-of-python/</guid>
+      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 Asterisk(*)는 단순히 곱셈 이상의 여</description>
+    </item>
+    
+    <item>
+      <title>[번역] 이터레이터와 제너레이터</title>
+      <link>https://mingrammer.com/translation-iterators-vs-generators/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-iterators-vs-generators/</guid>
+      <description>Iterables vs. Iterators. vs Generators를 번역한 글입니다. 모든 이미지는 원문에서 발췌하였습니다. 나는 파이썬에서 다음과 같은 개념들간의 정확한 차이점에 대해 가끔씩</description>
+    </item>
+    
+    <item>
+      <title>파이썬 언더스코어(_)에 대하여</title>
+      <link>https://mingrammer.com/underscore-in-python/</link>
+      <pubDate>Sat, 05 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/underscore-in-python/</guid>
+      <description>파이썬에서 언더스코어(underscore, _)는 특별하다. 타 언어에서 언더스코어(_)는 단지 스네이크 표기법의 변수나 함수명을 위해서만 사용되어지</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] Go 둘러보기 - bytes &#43; strings 패키지 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] Go 둘러보기 - bytes &#43; strings 패키지
+                    </h1>
+                    <h2 class="headline">
+                    Nov 2, 2016 00:00
+                    · 7126 words
+                    · 15 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/go-walkthrough">go walkthrough</a>
+                          
+                              <a href="https://mingrammer.comtags/bytes">bytes</a>
+                          
+                              <a href="https://mingrammer.comtags/strings">strings</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#바이트와-스트링의-간단한-비교">바이트와 스트링의 간단한 비교</a></li>
+<li><a href="#스트림을-위한-문자열-슬라이스-개조하기">스트림을 위한 문자열&amp;슬라이스 개조하기</a>
+<ul>
+<li><a href="#인메모리-reader">인메모리 Reader</a></li>
+<li><a href="#인메모리-writer">인메모리 Writer</a></li>
+</ul></li>
+<li><a href="#패키지-구조">패키지 구조</a></li>
+<li><a href="#비교-함수">비교 함수</a>
+<ul>
+<li><a href="#동일성">동일성</a></li>
+<li><a href="#비교">비교</a></li>
+</ul></li>
+<li><a href="#검사-inspection-함수">검사(Inspection) 함수</a>
+<ul>
+<li><a href="#카운팅">카운팅</a></li>
+<li><a href="#인덱싱">인덱싱</a></li>
+</ul></li>
+<li><a href="#접두사-접미사-트리밍-trimming">접두사, 접미사 &amp; 트리밍(Trimming)</a>
+<ul>
+<li><a href="#접두사-접미사-확인하기">접두사 &amp; 접미사 확인하기</a></li>
+<li><a href="#트리밍-trimming">트리밍(Trimming)</a></li>
+</ul></li>
+<li><a href="#교체-함수">교체 함수</a>
+<ul>
+<li><a href="#기본-교체">기본 교체</a></li>
+<li><a href="#대소문자-교체">대소문자 교체</a></li>
+<li><a href="#룬-매핑하기">룬 매핑하기</a></li>
+</ul></li>
+<li><a href="#분할-splitting-결합-joining-함수">분할(Splitting) &amp; 결합(Joining) 함수</a>
+<ul>
+<li><a href="#부분-문자열-분할">부분 문자열 분할</a></li>
+<li><a href="#카테고리성-분할">카테고리성 분할</a></li>
+<li><a href="#문자열-결합">문자열 결합</a></li>
+</ul></li>
+<li><a href="#이외-함수들">이외 함수들</a></li>
+<li><a href="#결론">결론</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://medium.com/go-walkthrough">Go Walkthrough</a> 시리즈의 <a href="https://medium.com/go-walkthrough/go-walkthrough-bytes-strings-packages-499be9f4b5bd#.4jbor0c85">Go Walkthrough: bytes + strings packages</a>를 번역한 글입니다.</p>
+</blockquote>
+
+<p>우린 <a href="https://medium.com/go-walkthrough/go-walkthrough-io-package-8ac5e95a9fbd#.vjz46d3ss">지난번 포스트</a>에서 바이트 스트림을 다뤄봤는데 가끔은 제한적인 범위에서, 인메모리 바이트 슬라이스를 가지고 작업해야 할 수도 있다. 바이트의 리스트로 작업 하는 것은 충분히 간단해 보일 수 있지만, <a href="https://golang.org/pkg/bytes/">bytes</a> 패키지를 유용하게 활용할 수 있는 많은 엣지 케이스와 일반적인 연산들이 있다. 우리는 또한 <a href="https://golang.org/pkg/strings/">strings</a> 패키지는 문자열 작업을 위한것임에도 불구하고 이 API와 거의 동일하기 때문에 이 포스트에서는 이 <a href="[strings](https://golang.org/pkg/strings/)">strings</a> 패키지에 대해 파헤쳐 볼 것이다.</p>
+
+<p>이 포스트는 표준 라이브러리를  이해하는데 도움을 주기위한 Go 둘러보기 시리즈의 일부이다. 기존에 생성된 문서(자동으로 생성된 Go 문서)는 많은 정보를 제공하지만, 이는 패키지를 실제 상황에서 이해하기에는 어려울 수 있다.
+이 시리즈는 일상적으로 사용되는 애플리케이션에서 표준 패키지들이 어떻게 사용되는지에 대한 컨텍스트를 제공할 수 있도록 도와준다. 질문이나 코멘트가 있다면 트위터에서 <a href="https://twitter.com/benbjohnson">@benbjohnson</a>로 찾아오면 된다.</p>
+
+<p><br></p>
+
+<h2 id="바이트와-스트링의-간단한-비교">바이트와 스트링의 간단한 비교</h2>
+
+<p>Rob Pike는 <a href="https://blog.golang.org/strings">strings, bytes, runes, and characters</a>에 대한 훌륭한 포스트를 가지고 있지만 이 포스트에서는 애플리케이션 개발자의 관점에서 좀 더 간결한 정의를 제공하려고 한다.</p>
+
+<p>바이트 슬라이스는 변형 가능하고, 크기 조절이 가능한 연속적인 바이트 리스트를 나타낸다. 그럼 이제 이게 무슨 뜻인지를 알아보자.</p>
+
+<p>바이트 슬라이스가 하나 주어졌다:</p>
+
+<pre><code class="language-go">buf := []byte{1,2,3,4}
+</code></pre>
+
+<p>이는 변형 가능하므로 원소 갱신이 가능하다:</p>
+
+<pre><code class="language-go">buf[3] = 5  // []byte{1,2,3,5}
+</code></pre>
+
+<p>이는 크기 조절이 가능하므로 축소 또는 확장이 가능하다:</p>
+
+<pre><code class="language-go">buf = buf[:2]           // []byte{1,2}           
+buf = append(buf, 100)  // []byte{1,2,100}
+</code></pre>
+
+<p>그리고 이는 연속적이므로 메모리상에서 각 바이트는 다른 바이트의 바로 뒤에 위치한다:</p>
+
+<pre><code class="language-go">1|2|3|4
+</code></pre>
+
+<p>반면에, 문자열은 변형 불가능하고, 고정된 크기의 연속적인 바이트 리스트를 나타낸다. 이는 문자열은 갱신이 불가능함을 의미한다 - 새로운 문자열을 생성하는 수 밖에 없다. 이는 성능 관점에서 중요하다. 고성능 코드에서, 계속해서 새로운 문자열을 생성하면 가비지 컬렉터에 많은 부하가 추가된다.</p>
+
+<p>애플리케이션 개발 관점에서, 문자열은 UTF-8 데이터로 작업 할 때 사용하기 쉬우며 바이트 슬라이스를 사용할 수 없는 맵(map)의 키값으로도 쓰일 수 있다. 그리고 대다수의 API는 문자 데이터를 포함하는 인자에 문자열을 사용한다. 반면에, 바이트 슬라이스는 바이트 스트림을 처리하는 등의 로우(raw) 바이트를 다룰 때 사용하기 좋다. 이는 또한 새로 할당을 하지 않고 데이터를 재사용 해야할 경우에 유용하다.</p>
+
+<p><br></p>
+
+<h2 id="스트림을-위한-문자열-슬라이스-개조하기">스트림을 위한 문자열&amp;슬라이스 개조하기</h2>
+
+<p>바이트와 문자열 패키지의 가장 중요한 특징중 하나는 io.<a href="https://golang.org/pkg/io/#Reader">Reader</a>와 io.<a href="https://golang.org/pkg/io/#Writer">Writer</a>로 인메모리 바이트 슬라이스와 문자열을 인터페이싱할 수 있는 방법을 제공한다는 것이다.</p>
+
+<h3 id="인메모리-reader">인메모리 Reader</h3>
+
+<p>Go 표준 라이브러리에서 가장 많이 사용되는 툴 두 가지는 bytes.<a href="https://golang.org/pkg/bytes/#NewReader">NewReader</a>와 strings.<a href="https://golang.org/pkg/strings/#NewReader">NewReader</a> 함수이다:</p>
+
+<pre><code class="language-go">func NewReader(b []byte) *Reader
+func NewREader(s string) *Reader
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, (byte)Reader : <a href="https://golang.org/pkg/bytes/#Reader">Reader</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, (string)Reader : <a href="https://golang.org/pkg/strings/#Reader">Reader</a></p>
+</blockquote>
+
+<p>이 함수들은 인메모리 바이트 슬라이스 또는 문자열을 래핑하는 io.<a href="https://golang.org/pkg/io/#Reader">Reader</a> 구현체를 반환한다. 그러나 이들은 단순한 Reader가 아니다. 이들은 <a href="https://golang.org/pkg/io/">io</a>의 io.<a href="https://golang.org/pkg/io/#ReaderAt">ReaderAt</a>, io.<a href="https://golang.org/pkg/io/#WriterTo">WriterTo</a>, io.<a href="https://golang.org/pkg/io/#ByteReader">ByteReader</a>, io.<a href="https://golang.org/pkg/io/#ByteScanner">ByteScanner</a>, io.<a href="https://golang.org/pkg/io/#RuneReader">RuneReader</a>, io.<a href="https://golang.org/pkg/io/#RuneScanner">RuneScanner</a>, &amp; io.<a href="https://golang.org/pkg/io/#Seeker">Seeker</a>를 포함하는 읽기와 관련된 모든 인터페이스를 구현하고 있다.</p>
+
+<p>나는 바이트 슬라이스 또는 문자열이 bytes.<a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>에 쓰여지고 이 버퍼가 Reader로써 사용되는 코드를 자주 본다:</p>
+
+<pre><code class="language-go">var buf bytes.Buffer
+buf.WriteString(&quot;foo&quot;)
+http.Post(&quot;http://example.com/&quot;, &quot;text/plain&quot;, &amp;buf)
+</code></pre>
+
+<p>그러나, 이 방법은 힙 메모리 할당을 발생시켜 느려지고 추가적인 메모리를 사용하게 된다. 더 좋은 방안은 strings.<a href="https://golang.org/pkg/strings/#Reader">Reader</a>을 사용하는 것이다:</p>
+
+<pre><code class="language-go">r := strings.NewReader(&quot;foobar&quot;)
+http.Post(&quot;http://example.com&quot;, &quot;text/plain&quot;, r)
+</code></pre>
+
+<p>이 방법은 io.MultiReader를 사용함으로써 여러개의 문자열 또는 바이트 슬라이스를 가지고 있을 때에도 잘 동작한다:</p>
+
+<pre><code class="language-go">r := io.MultiReader(
+        strings.NewReader(&quot;HEADER&quot;),
+        bytes.NewReader([]byte{0,1,2,3,4}),
+        myFile,
+        strings.NewReader(&quot;FOOBAR&quot;),
+)
+</code></pre>
+
+<h3 id="인메모리-writer">인메모리 Writer</h3>
+
+<p>바이트 패키지는 <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>라고 부르는 io.<a href="https://golang.org/pkg/io/#Writer">Writer</a>의 인메모리 구현체를 포함하고 있다. 이는 io.<a href="https://golang.org/pkg/io/#Closer">Closer</a>와 io.<a href="https://golang.org/pkg/io/#Seeker">Seeker</a>를 제외한 <a href="https://golang.org/pkg/io/">io</a> 인터페이스의 거의 모든 것을 구현하고 있다. 여기엔 버퍼의 끝에 문자열을 쓰기위한 <a href="https://golang.org/pkg/bytes/#Buffer.WriteString">WriteString</a>()이라는 헬퍼 메서드도 있다.</p>
+
+<p>나는 유닛 테스트에서 서비스에서 나오는 로그들을 캡쳐하기위해 <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>를 광범위하게 사용한다. 여러분은 이를 log.<a href="https://golang.org/pkg/log/#New">New</a>()의 인자로써 전달할 수 있으며 나중에 출력값들을 검증할 수 있다:</p>
+
+<pre><code class="language-go">var buf bytes.Buffer
+myService.Logger = log.New(&amp;buf, &quot;&quot;, log.LstdFlags)
+myService.Run()
+
+if !strings.Contains(buf.String(), &quot;service failed&quot;) {
+        t.Fatal(&quot;expected log message&quot;)
+}
+</code></pre>
+
+<blockquote>
+<p>Buffer : <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>, LstdFlags : <a href="https://golang.org/pkg/log/#LstdFlags">LstdFlags</a>, Contains : <a href="https://golang.org/pkg/strings/#Contains">Contains</a>, String : <a href="https://golang.org/pkg/bytes/#Buffer.String">String</a>, Fatal : <a href="https://golang.org/pkg/testing/#T.Fatal">Fatal</a></p>
+</blockquote>
+
+<p>그러나, 나는 프로덕션 코드에서는 <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>를 거의 사용하지 않는다. 이름이 Buffer임에도 불구하고, 해당 목적에 좀 더 특화된 <a href="https://golang.org/pkg/bufio/">bufio</a> 패키지가 있기 때문에 Buffer를 버퍼 읽기와 쓰기에 사용하지 않는다.</p>
+
+<p><br></p>
+
+<h2 id="패키지-구조">패키지 구조</h2>
+
+<p>바이트와 문자열 패키지의 첫인상은 큰 패키지처럼 보이지만 이는 단지 그냥 간단한 헬퍼 함수들의 컬렉션이다. 우리는 이들을 몇 개의 카테고리로 그룹핑 할 수 있다.</p>
+
+<ul>
+<li>비교 함수 (Comparison functions)</li>
+<li>검사 함수 (Inspection functions)</li>
+<li>접두/접미 함수 (Prefix/suffix functions)</li>
+<li>교체 함수 (Replacement functions)</li>
+<li>분할 &amp; 결합 함수 (Splitting &amp; joining functions)</li>
+</ul>
+
+<p>함수들이 어떻게 함께 그룹핑 되는지를 이해한다면, 대형 API에 접근하기가 훨씬 쉬워질 것이다.</p>
+
+<p><br></p>
+
+<h2 id="비교-함수">비교 함수</h2>
+
+<p>두 개의 바이트 슬라이스 또는 문자열을 가지고 있을 때 다음 두 질문중 하나를 질문해야 할 수도 있다. 첫째, 두 객체가 동일한가? 둘째, 정렬시 어떤게 앞쪽에 위치하는가?</p>
+
+<h3 id="동일성">동일성</h3>
+
+<p><a href="https://golang.org/pkg/bytes/#Equal">Equal</a>() 함수는 첫번째 질문에 대한 답을 준다:</p>
+
+<pre><code class="language-go">func Equal(a, b []byte) bool
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
+</blockquote>
+
+<p>이 함수는 바이트 패키지에만 존재하는데 문자열은 == 연산자로 비교가 가능하기 때문이다.</p>
+
+<p>동일함을 확인하는건 쉬워 보일 수 있지만, 한 가지 일반적으로 나타나는 실수는 대소문자에 무관하게 동일함을 확인하기 위해 strings.<a href="https://golang.org/pkg/strings/#ToUpper">ToUpper</a>()를 사용하는 것이다.</p>
+
+<pre><code class="language-go">if strings.ToUpper(a) == strings.ToUpper(b) {
+    return True
+}
+</code></pre>
+
+<p>이는 새로운 문자열에 대한 2번의 할당이 필요하기 때문에 결점이 있다. 좀 더 나은 방법은 <a href="https://golang.org/pkg/bytes/#EqualFold">EqualFold</a>()를 사용하는 것이다:</p>
+
+<pre><code class="language-go">func EqualFold(s, t []byte) bool
+func EqualFold(s, t string) bool
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
+</blockquote>
+
+<p>&ldquo;Fold&rdquo;라는 용어는 <a href="https://www.w3.org/International/wiki/Case_folding">Unicode case-folding</a>을 말한다. 이는 A-Z에 대한 일반적인 대소문자 규칙뿐만 아니라 ϕ의 φ로의 변환과 같은 다른 언어에 대한 규칙까지 포함한다.</p>
+
+<h3 id="비교">비교</h3>
+
+<p>우리는 두 개의 바이트 슬라이스 또는 문자열의 정렬 순서를 결정하기 위해 <a href="https://golang.org/pkg/bytes/#Compare">Compare</a>()를 사용할 것이다.</p>
+
+<pre><code class="language-go">func Compare(a, b []byte) int
+func Compare(a, b string) int
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, int : <a href="https://golang.org/pkg/builtin/#int">int</a></p>
+</blockquote>
+
+<p>이 함수는 <em>a</em> 가 <em>b</em> 보다 작을 땐 -1, <em>a</em> 가 <em>b</em> 보다 클 땐 1, 그리고 <em>a</em> 와 <em>b</em> 가 같을 땐 0을 반환한다. 이 함수는 <a href="https://golang.org/pkg/strings/">strings</a> 패키지에도 존재하는데 이는 단지 바이트 패키지와의 대칭을 이루기 위해서이다. Russ Cox도 함수의 주석에 써있는 &ldquo;<a href="https://golang.org/src/strings/compare.go?s=697:741">기본적으로 그 누구도 strings.Compare를 사용해선 안된다</a>&ldquo;라는 말을 언급하며, 내장 연산자인 &lt; 와 &gt;를 대신 사용한다.</p>
+
+<p><em>&ldquo;기본적으로 그 누구도 strings.Compare를 사용해선 안된다&rdquo;, Russ Cox</em>
+{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+
+<p>일반적으로, 정렬을 하기 위해 바이트 슬라이스가 다른 바이트 슬라이스보다 작은지에 대한 여부를 알고 싶을 것이다. sort.<a href="https://golang.org/pkg/sort/#Interface">Interface</a>는 Less() 함수를 위해 이를 필요로한다. Less()는 <a href="https://golang.org/pkg/bytes/#Compare">Compare</a>()의 세 가지 값을 갖는 반환값의 부울값으로의 변환을 필요로한다. 우리는 단순히 이 값이 -1과 같은지를 확인한다:</p>
+
+<pre><code class="language-go">type ByteSlices [][]byte
+
+func (p ByteSlices) Less(i, j int) bool {
+        return bytes.Compare(p[i], p[j]) == -1
+}
+</code></pre>
+
+<p><br></p>
+
+<h2 id="검사-inspection-함수">검사(Inspection) 함수</h2>
+
+<p>바이트와 문자열 패키지는 바이트 슬라이스와 문자열내에서 데이터를 찾기 위한 몇 가지 방법들을 제공한다.</p>
+
+<h3 id="카운팅">카운팅</h3>
+
+<p>만약 여러분이 유저의 입력의 유효성을 검증하고 있다면, 특정 바이트가 존재하는지 (또는 존재하지 않는지)를 검증하는건 중요하다. 하나 이상의 부분 슬라이스 또는 부분 문자열의 존재를 확인하기 위해 <a href="https://golang.org/pkg/bytes/#Contains">Contains</a>() 함수를 사용할 수 있다:</p>
+
+<pre><code class="language-go">func Contains(b, subslice []byte) bool
+func Contains(s, substr string) bool
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
+</blockquote>
+
+<p>예를 들면, 여러분이 부적절한 특정 단어들을 가진 입력을 허용하지 않을 수도 있다:</p>
+
+<pre><code class="language-go">if strings.Contains(input, &quot;darn&quot;) {
+        return errors.New(&quot;inappropriate input&quot;)
+}
+</code></pre>
+
+<p>부분 슬라이스나 부분 문자열이 정확히 몇 번 사용되었는지를 알기 위해선, <a href="https://golang.org/pkg/bytes/#Count">Count</a>()를 사용할 수 있다:</p>
+
+<pre><code class="language-go">func Count(s, sep []byte) int
+func Count(s, sep string) int
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, int : <a href="https://golang.org/pkg/builtin/#int">int</a></p>
+</blockquote>
+
+<p><a href="https://golang.org/pkg/bytes/#Count">Count</a>()의 또 다른 사용은 문자열에 있는 룬의 갯수를 반환하는 것이다. <em>sep</em> 인자에 빈 슬라이스나 빈 문자열을 전달하면 <a href="https://golang.org/pkg/bytes/#Count">Count</a>()는 룬의 갯수 + 1을 반환할 것이다. 이는 바이트 수를 반환하는 <a href="https://golang.org/pkg/builtin/#len">len</a>()과는 다르다. 이 차이점은 멀티바이트 유니코드 문자들을 다룰 때 중요하다:</p>
+
+<pre><code class="language-go">strings.Count(&quot;I ❤ ☃&quot;, &quot;&quot;)  // 6
+len(&quot;I ❤ ☃&quot;)                // 9
+</code></pre>
+
+<p>첫번째 줄은 룬이 5개만 있기 때문에 이상하게 보일 수 있지만 <a href="https://golang.org/pkg/bytes/#Count">Count</a>()는 룬 갯수 + 1을 반환한다는 걸 기억하라.</p>
+
+<h3 id="인덱싱">인덱싱</h3>
+
+<p>내용을 단언하는건 중요하지만 가끔은 부분 슬라이스나 부분 문자열의 정확한 위치를 찾아낼 필요가 있다. 인덱스 함수를 사용하면 가능하다:</p>
+
+<pre><code class="language-go">Index(s, sep []byte) int
+IndexAny(s []byte, chars string) int
+IndexByte(s []byte, c byte) int
+IndexFunc(s []byte, f func(r rune) bool) int
+IndexRune(s []byte, r rune) int
+</code></pre>
+
+<p>각기 다른 상황을 위한 여러개의 인덱스 함수들이 있다. <a href="https://golang.org/pkg/bytes/#Index">Index</a>()는 멀티바이트 부분 슬라이스를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexByte">IndexByte</a>()는 슬라이스에서 단일 바이트를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexRune">IndexRune</a>()은 UTF-8로 해석된 바이트 슬라이스 내에서 유니코드 코드 포인트를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexAny">IndexAny</a>()는 <a href="https://golang.org/pkg/bytes/#IndexRune">IndexRune</a>()처럼 동작하지만 한 번에 여러 개의 코드 포인트를 검색한다. 마지막으로, <a href="https://golang.org/pkg/bytes/#IndexFunc">IndexFunc</a>()는 바이트 슬라이스에서 매칭될 때까지 각각의 룬을 검사하는 커스텀 함수를 전달할 수 있도록 해준다.</p>
+
+<p>또한 바이트 슬라이스 또는 문자열의 끝의 첫번째 인스턴스를 검색하기 위한 함수의 매칭 세트도 있다.</p>
+
+<pre><code class="language-go">LastIndex(s, sep []byte) int
+LastIndexAny(s []byte, chars string) int
+LastIndexByte(s []byte, c byte) int
+LastIndexFunc(s []byte, f func(r rune) bool) int
+</code></pre>
+
+<p>나는 인덱스 함수를 많이 사용하지 않는다, 왜냐하면 나는 보통 파서와 같은 좀 더 복잡한 것을 만들어야 하기 때문이다.</p>
+
+<p><br></p>
+
+<h2 id="접두사-접미사-트리밍-trimming">접두사, 접미사 &amp; 트리밍(Trimming)</h2>
+
+<p>바이트 슬라이스 또는 문자열의 처음이나 끝부분의 내용을 가지고 작업하는 일은 검사의 특수한 경우지만 이는 한 섹션으로 다룰만큼 중요하다.</p>
+
+<h3 id="접두사-접미사-확인하기">접두사 &amp; 접미사 확인하기</h3>
+
+<p>접두사는 프로그래밍에서 자주 등장한다. 예를 들면, HTTP 경로는 보통 공통 접두사를 갖는 기능별로 그룹핑된다. 또 다른 예는 유저를 멘션하기 위한 &ldquo;@&ldquo;와 같은 문자열 첫부분의 특수 문자들이다.</p>
+
+<p><a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#HasSuffix">HasSuffix</a>() 함수로 이러한 상황을 확인할 수 있다:</p>
+
+<pre><code class="language-go">func HasPrefix(s, prefix []byte) bool
+func HasPrefix(s, prefix string) bool
+
+func HasSuffix(s, prefix []byte) bool
+func HasSuffix(s, suffix string) bool
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
+</blockquote>
+
+<p>이 함수들은 너무 간단해 보일 수 있지만 내가 본 한가지 흔한 실수는 개발자들이 길이가 0인 값을 확인하는 것을 잊어버릴 때이다:</p>
+
+<pre><code class="language-go">if str[0] == '@' {
+        return true
+}
+</code></pre>
+
+<p>이 코드는 간단해 보이지만 만약 *str*이 빈 문자열이라면 프로그램은 패닉을 발생 시킬 것이다. <a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>() 함수는 여러분을 위해 이 유효성 검증을 포함하고 있다:</p>
+
+<pre><code>if strings.HasPrefix(str, &quot;@&quot;) {
+        return true
+}
+</code></pre>
+
+<blockquote>
+<p>HasPrefix : <a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>()</p>
+</blockquote>
+
+<h3 id="트리밍-trimming">트리밍(Trimming)</h3>
+
+<p><a href="https://golang.org/pkg/builtin/#byte">bytes</a>와 <a href="https://golang.org/pkg/builtin/#string">strings</a> 패키지에서의 &ldquo;trimming&rdquo;이라는 용어는 바이트 슬라스나 문자열의 첫부분 그리고/또는 끝부분에 있는 바이트 또는 룬들을 제거한다는 의미이다. 이를 위한 가장 일반적인 함수는 <a href="https://golang.org/pkg/bytes/#Trim">Trim</a>()이다:</p>
+
+<pre><code class="language-go">func Trim(s []byte, cutset string) []byte
+func Trim(s string, cutset string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이는 문자열의 첫부분과 끝부분에서 *cutset*의 모든 룬을 제거할 것이다. 여러분은 또한 <a href="https://golang.org/pkg/bytes/#TrimLeft">TrimLeft</a>()와 <a href="https://golang.org/pkg/bytes/#TrimRight">TrimRight</a>()를 사용하면 각각 문자열의 첫부분에서만 또는 끝부분에서만 룬을 제거할 수도 있다:</p>
+
+<p>그러나 일반적인 트리밍은 정말 흔하지 않다. 대다수의 경우는 공백 문자를 없애는 일이며 이를 위해 <a href="https://golang.org/pkg/bytes/#TrimSpace">TrimSpace</a>()를 사용할 수 있다:</p>
+
+<pre><code>func TrimSpace(s []byte) []byte
+func TrimSpace(s string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>&ldquo;\n\t&rdquo; cutset을 가지고 트리밍을 하는걸로도 충분하다고 생각할 수 있지만 <a href="https://golang.org/pkg/bytes/#TrimSpace">TrimSpace</a>()는 모든 유니코드로 정의된 공백을 트리밍 한다. 이는 스페이스, 개행, 그리고 탭 문자 뿐만 아니라 <a href="https://en.wikipedia.org/wiki/Thin_space">thin space</a> 또는 <a href="http://www.fileformat.info/info/unicode/char/200a/index.htm">hair space</a>와 같은 특이한 공백도 포함한다,</p>
+
+<p><a href="https://golang.org/pkg/bytes/#TrimSpace">TrimSpace</a>()는 그냥 트리밍을 위해 전행(leading)과 후행(trailing) 룬들을 평가하는 함수인 <a href="https://golang.org/pkg/bytes/#TrimFunc">TrimFunc</a>()의 <a href="https://golang.org/src/strings/strings.go#L614">씬 래퍼</a>이다.</p>
+
+<pre><code class="language-go">func TrimSpace(s string) string {
+        return TrimFunc(s, unicode.IsSpace)
+}
+</code></pre>
+
+<p>이는 여러분이 자체적으로 후행 문자만을 위한 공백 트리머를 생성하는걸 쉽게 만들어준다.</p>
+
+<pre><code class="language-go">TrimRightFunc(s, unicode.IsSpace)
+</code></pre>
+
+<blockquote>
+<p>TrimRightFunc : <a href="https://golang.org/pkg/bytes/#TrimRightFunc">TrimRightFunc</a></p>
+</blockquote>
+
+<p>마지막으로, 문자셋 대신 접두사나 접미사만을 트리밍 하고싶은 경우엔 <a href="https://golang.org/pkg/bytes/#TrimPrefix">TrimPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#TrimSuffix">TrimSuffix</a>() 함수를 사용하면 된다:</p>
+
+<pre><code class="language-go">func TrimPrefix(s, prefix []byte) []byte
+func TrimPrefix(s, prefix string) string
+
+func TrimSuffix(s, suffix []byte) []byte
+func TrimSuffix(s, suffix string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이들은 만약 여러분이 접두사나 접미어를 교체하고 싶은 경우 <a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#HasSuffix">HasSuffix</a>() 함수와 함께 사용할 수 있다. 예를 들면, 나는 나의 설정 파일 경로에 대한 배쉬 스타일의 홈 디렉토리 완성을 구현하기 위해 이를 사용한다.</p>
+
+<pre><code class="language-go">// 유저의 홈 디렉토리를 찾는다.
+u, err := user.Current()
+if err != nil {
+    return err
+} else if u.HomeDir == &quot;&quot; {
+    return errors.New(&quot;hoem directory does not exist&quot;)
+}
+
+// 물결표 대시 접두사를 홈 디렉토리로 교체.
+if strings.HasPrefix(path, &quot;~/&quot;) {
+    path = filepath.Join(u.HomeDir, strings.TrimPrefix(path, &quot;~/&quot;))
+}
+</code></pre>
+
+<p><br></p>
+
+<h2 id="교체-함수">교체 함수</h2>
+
+<h3 id="기본-교체">기본 교체</h3>
+
+<p>부분 슬라이스나 부분 문자열을 교체하는건 때때로 필수적이다. 대부분의 단순한 경우엔, <a href="https://golang.org/pkg/bytes/#Replace">Replace</a>() 함수면 다 된다:</p>
+
+<pre><code class="language-go">func Replace(s, old, new []byte, n int) []byte
+func Replace(s, old, new string, n int) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이는 문자열에서 <em>old</em> 에 해당하는 모든 인스턴스를 <em>new</em> 로 바꿀 것이다. 교체의 횟수를 제한하려면 <em>n</em> 을 음이 아닌 정수로 지정하면 된다. 이 함수는 사용자 정의 템플릿에서 간단한 플레이스홀더를 가지고 있을 때 유용하다. 예를 들면, 유저가 &ldquo;$NOW&rdquo;를 지정하면 이를 현재 시각으로 교체하도록 할 수 있다;</p>
+
+<pre><code class="language-go">now := time.Now().Format(time.Kitchen)
+println(strings.Replace(data, &quot;$NOW&quot;, now, -1))
+</code></pre>
+
+<blockquote>
+<p>Now : <a href="https://golang.org/pkg/time/#Now">Now</a>, Format : <a href="https://golang.org/pkg/time/#Time.Format">Format</a>, Kitchen : <a href="https://golang.org/pkg/time/#Kitchen">Kitchen</a>, Replace : <a href="https://golang.org/pkg/strings/#Replace">Replace</a></p>
+</blockquote>
+
+<p>만약 다중 매핑을 가지고 있다면 strings.<a href="https://golang.org/pkg/strings/#Replacer">Replacer</a>를 사용해야 할 것이다. 이는 strings.<a href="https://golang.org/pkg/strings/#NewReplacer">NewReplacer</a>()에 old/new 쌍을 지정하여 사용한다.</p>
+
+<pre><code class="language-go">r := strings.NewReplacer(&quot;$NOW&quot;, now, &quot;$USER&quot;, &quot;mary&quot;)
+println(r.Replace(&quot;Hello $USER, it is $NOW&quot;))
+
+// 출력값: Hello mary, it is 3:04PM
+</code></pre>
+
+<blockquote>
+<p>NewReplacer : <a href="https://golang.org/pkg/strings/#NewReplacer">NewReplacer</a>, Replace : <a href="https://golang.org/pkg/bytes/#Replace">Replace</a></p>
+</blockquote>
+
+<h3 id="대소문자-교체">대소문자 교체</h3>
+
+<p>여러분은 대소문자 케이싱(casing: 문자 케이스 캐스팅)이 간단하다고 생각할 수도 있다. 그러나 Go는 유니코드를 가지고 동작하며 유니코드는 결코 간단하지 않다. 문자 케이싱은 3가지 타입이 있다: 대문자(upper case), 소문자(lower case) 그리고 타이틀 케이스(title case).</p>
+
+<p>대문자와 소문자는 대다수의 언어에서 간단하며 여러분은 <a href="https://golang.org/pkg/bytes/#ToUpper">ToUpper</a>()와 <a href="https://golang.org/pkg/bytes/#ToLower">ToLower</a>() 함수를 사용할 수 있다:</p>
+
+<pre><code class="language-go">func ToUpper(s []byte) []byte
+func ToUpper(s string) string
+
+func ToLower(s []byte) []byte
+func ToLower(s string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>그러나 몇몇 언어에서는 케이싱의 룰이 다르다. 예를 들면, 터키어는 <strong>i</strong>의 대문자가 <strong>İ</strong>이다. 이러한 특수한 언어들을 위한 함수들의 특수한 버전이 존재한다.</p>
+
+<pre><code class="language-go">strings.ToUpperSpecial(unicode.TurkishCase, &quot;i&quot;)
+</code></pre>
+
+<blockquote>
+<p>ToUpperSpecial : <a href="https://golang.org/pkg/strings/#ToUpperSpecial">ToUpperSpecial</a></p>
+</blockquote>
+
+<p>다음으로 타이틀 케이스는 <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a>() 함수가 있다:</p>
+
+<pre><code class="language-go">func ToTitle(s []byte) []byte
+func ToTitle(s string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>그러나, 여러분이 <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a>()를 사용하게 되면 놀랄 것이다. 모든 문자열이 대문자가 되어버렸다:</p>
+
+<pre><code class="language-go">println(strings.ToTitle(&quot;the count of monte cristo&quot;))
+
+// 출력값 : THE COUNT OF MONTE CRISTO
+</code></pre>
+
+<blockquote>
+<p>ToTitle : <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a></p>
+</blockquote>
+
+<p>왜냐하면 유니코드에서, 타이틀 케이스는 케이싱의 특정한 유형이며 각 단어의 첫번째 문자를 대문자화 시키는 방법이 아니다. 대부분의 경우, 타이틀 케이스와 대문자화는 동일하지만 차이점을 갖는 몇 개의 코드 포인트들이 존재한다. 예를 들면, <strong><a href="https://www.compart.com/en/unicode/U+01C9">lj</a></strong> 코드 포인트 (맞다, 이는 하나의 코드 포인트이다)는 대문자화가 되면 <strong>LJ</strong>가 되지만 타이틀 케이스는 <strong>Lj</strong>이다.</p>
+
+<p>여러분이 아마 찾고 있는 것은 <a href="https://golang.org/pkg/bytes/#Title">Title</a>()이다:</p>
+
+<pre><code class="language-go">func Title(s []byte) []byte
+func Title(s string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이 함수의 출력값은 예상했던 결과값이다:</p>
+
+<pre><code class="language-go">println(strings.Title(&quot;the count of monte cristo&quot;))
+
+// 출력값 : The Count Of Monte Cristo
+</code></pre>
+
+<blockquote>
+<p>Title : <a href="https://golang.org/pkg/strings/#Title">Title</a></p>
+</blockquote>
+
+<h3 id="룬-매핑하기">룬 매핑하기</h3>
+
+<p>바이트 슬라이스 또는 문자열에서 데이터를 교체하기 위한 또 다른 함수는 <a href="https://golang.org/pkg/bytes/#Map">Map</a>()이다:</p>
+
+<pre><code class="language-go">func Map(mapping func(r rune) rune, s []byte) []byte
+func Map(mapping func(r rune) rune, s string) string
+</code></pre>
+
+<blockquote>
+<p>rune : <a href="https://golang.org/pkg/builtin/#rune">rune</a>, byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이 함수는 모든 룬을 평가하고 이를 교체하는 함수를 전달하도록 한다. 인정하건데, 나는 이 포스트를 쓰기 시작할때까지 이 함수의 존재조차 모르고 있었기에 그 어떤 개인적인 일화도 알려줄 수가 없다.</p>
+
+<p><br></p>
+
+<h2 id="분할-splitting-결합-joining-함수">분할(Splitting) &amp; 결합(Joining) 함수</h2>
+
+<p>여러 번 우리는 서로 분할시킬 필요가 있는 문자열들을 구분하고있다. 예를 들면, 유닉스에서 경로들은 콜론으로 합쳐져 있으며 CSV 파일 포맷은 기본적으로 데이터 필드를 콤마로 구분하고 있다.</p>
+
+<h3 id="부분-문자열-분할">부분 문자열 분할</h3>
+
+<p>간단한 부분 슬라이스와 부분 문자열 분할을 위해, 우리는 Split() 함수를 사용한다:</p>
+
+<pre><code class="language-go">func Split(s, sep []byte) [][]byte
+func SplitAfter(s, sep []byte) [][]byte
+func SplitAfterN(s, sep []byte, n int) [][]byte
+func SplitN(s, sep []byte, n int) [][]byte
+
+func Split(s, sep string) []string
+func SplitAfter(s, sep string) []string
+func SplitAfterN(s, sep string, n int) []string
+func SplitN(s, sep string, n int) []string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>이렇게 구분자로 바이트 슬라이스와 문자열을 쪼개면 부분 슬라이스들과 문자열들이 반환된다. &ldquo;After&rdquo; 함수는 서브 문자열의 끝에 구분자를 포함한다. &ldquo;N&rdquo; 함수는 발생할 수 있는 분할 횟수를 제한한다:</p>
+
+<pre><code class="language-go">strings.Split(&quot;a:b:c&quot;, &quot;:&quot;)       // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+strings.SplitAfter(&quot;a:b:c&quot;, &quot;:&quot;)  // [&quot;a:&quot;, &quot;b:&quot;, &quot;c&quot;]
+strings.SplitN(&quot;a:b:c&quot;, &quot;:&quot;, 2)   // [&quot;a&quot;, &quot;b:c&quot;]
+</code></pre>
+
+<p>데이터를 분할하는 것은 매우 일반적인 작업이다. 하지만, 이는 보통 CSV와 같은 파일 포맷에서의 컨텍스트나 경로 분할의 컨텍스트에서 수행된다. 이 작업들을 위해, 나는 <a href="https://golang.org/pkg/encoding/csv/">encoding/csv</a> 또는 <a href="https://golang.org/pkg/path/">path</a> 패키지를 대신 사용한다.</p>
+
+<h3 id="카테고리성-분할">카테고리성 분할</h3>
+
+<p>가끔 구분자로 룬의 열 대신 룬의 집합을 지정하고 싶을 때가 있다. 이 상황의 가장 좋은 예시는 가변적인 공백이 있는 상태에서 단어들을 쪼개는 것이다. 공백 구분 함수로 단순히 <a href="https://golang.org/pkg/bytes/#Split">Split</a>()을 사용하게되면 연속적인 다중 공백이 있을 경우 빈 부분 문자열도 반환할 것이다. 대신 Fields() 함수를 사용할 수 있다:</p>
+
+<pre><code class="language-go">func Fields(s []byte) [][]byte
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a></p>
+</blockquote>
+
+<p>이는 연속된 공백 문자들을 하나의 구분자로 여긴다:</p>
+
+<pre><code class="language-go">func FieldsFunc(s []byte, f func(rune) bool) [][]byte
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, rune : <a href="https://golang.org/pkg/builtin/#rune">rune</a></p>
+</blockquote>
+
+<h3 id="문자열-결합">문자열 결합</h3>
+
+<p>구분된 데이터를 쪼개는 대신, Join() 함수를 이용해 이를 하나로 합칠 수도 있다:</p>
+
+<pre><code class="language-go">func Join(s [][]byte, sep []byte) []byte
+func Join(a []string, sep string) string
+</code></pre>
+
+<blockquote>
+<p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
+</blockquote>
+
+<p>개발자들이 join 함수를 직접 구현할 때 내가 봤던 한가지 일반적인 실수가 있는데 이는 다음과 같다:</p>
+
+<pre><code class="language-go">var output string
+for i, s := range a {
+        output += s
+        if i &lt; len(a) - 1 {
+            output += &quot;,&quot;
+        }
+}
+return output
+</code></pre>
+
+<p>이 코드의 결점은 많은 수의 할당을 생성하고 있다는 것이다. 문자열은 변형 불가능하기 때문에, 각 반복은 각 문자열 추가를 위해 새로운 문자열을 생성하고 있다. 반면에, strings.<a href="https://golang.org/pkg/strings/#Join">Join</a>() 함수는 생성시에는 바이트 슬라이스 버퍼를 사용하며 이를 반환할 때 문자열로 변환한다. 이는 힙 메모리 할당을 최소화한다.</p>
+
+<p><br></p>
+
+<h2 id="이외-함수들">이외 함수들</h2>
+
+<p>카테고리를 찾지 못한 두 개의 함수가 있는 이는 여기서 다룬다. 첫째, <a href="https://golang.org/pkg/bytes/#Repeat">Repeat</a>() 함수는 반복된 바이트 슬라이스 또는 문자열을 생성할 수 있도록 해준다. 솔직히, 나는 이를 터미널에서 내용을 구분하기 위해 라인을 만들때 사용했던것만 기억난다:</p>
+
+<pre><code class="language-go">println(strings.Repeat(&quot;-&quot;, 80))
+</code></pre>
+
+<p>또 다른 함수는 UTF-8으로 해석된 바이트 슬라이스 또는 문자열에 있는 모든 룬들의 슬라이스를 반환하는 <a href="https://golang.org/pkg/bytes/#Runes">Runes</a>()이다. 나는 이 함수의 필요성을 전혀 느낀적이  없는데 이는 새로운 할당 없이 <em>string</em> 위에서 <em>for loop</em> 를 돌려 같은 일을 할 수 있기 때문이다.</p>
+
+<p><br></p>
+
+<h2 id="결론">결론</h2>
+
+<p>바이트 슬라이스와 문자열은 Go에서 가장 기본적인 요소이다. 이들은 바이트와 룬의 열을 위한 인메모리 표현이다. 바이트와 문자열 패키지는 io.Reader와 io.Writer 인터페이스의 개조형뿐만 아니라 수 많은 유용한 헬퍼 함수들을 제공한다.</p>
+
+<p>API의 사이즈가 크지 않기 때문에 이 패키지들의 많은 유용한 툴들을 살펴보는일은 쉽지만 나는 이 포스트가 여러분이 이 패키지가 제공해줄 수 있는 모든 것들을 이해하는데 도움이 되었으면 한다.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-go-walkthrough-bytes-strings-packages%2f - %5b%eb%b2%88%ec%97%ad%5d%20Go%20%eb%91%98%eb%9f%ac%eb%b3%b4%ea%b8%b0%20-%20bytes%20%2b%20strings%20%ed%8c%a8%ed%82%a4%ec%a7%80 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

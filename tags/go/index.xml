@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/go/</link>
+    <description>Recent content in Go on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 28 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] Go와 OOP</title>
+      <link>https://mingrammer.com/translation-go-and-oop/</link>
+      <pubDate>Tue, 28 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-and-oop/</guid>
+      <description>theamydance의 Go and OOP&amp;hellip; Sorta를 번역한 글입니다. 나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 Women Who Go 밋업에서 처음으</description>
+    </item>
+    
+    <item>
+      <title>Python vs Go 비교 레퍼런스</title>
+      <link>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</guid>
+      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 목차 버전 실행 문법 변수와 표현식 타입 및 연산자 문자열 고정 배열 동적 배열 딕셔너리(맵) 함수</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go에서 애플리케이션 설계하기</title>
+      <link>https://mingrammer.com/translation-structuring-applications-in-go/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-structuring-applications-in-go/</guid>
+      <description>Structuring Applications in Go을 번역한 글입니다. 개요 Go를 배울 때 가장 어려웠던 부분은 애플리케이션을 어떻게 설계하는가였다. Go 이전에, 나는 Rails 애플리케이션을 만들었었는데</description>
+    </item>
+    
+  </channel>
+</rss>

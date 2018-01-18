@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Iterator on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/iterator/</link>
+    <description>Recent content in Iterator on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 25 Jan 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/iterator/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 이터레이터와 제너레이터</title>
+      <link>https://mingrammer.com/translation-iterators-vs-generators/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-iterators-vs-generators/</guid>
+      <description>Iterables vs. Iterators. vs Generators를 번역한 글입니다. 모든 이미지는 원문에서 발췌하였습니다. 나는 파이썬에서 다음과 같은 개념들간의 정확한 차이점에 대해 가끔씩</description>
+    </item>
+    
+  </channel>
+</rss>

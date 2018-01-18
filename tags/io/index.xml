@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Io on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/io/</link>
+    <description>Recent content in Io on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 26 Oct 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] Go 둘러보기 - io 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-io-package/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-io-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: io package를 번역한 글입니다. Go는 바이트(bytes)를 사용하여 작업하기 위해 만들어진 프로그래밍 언어이다. 바이트의 리스트</description>
+    </item>
+    
+  </channel>
+</rss>

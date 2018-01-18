@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cookierun on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/cookierun/</link>
+    <description>Recent content in Cookierun on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 26 Oct 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/cookierun/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[리뷰] DEVIEW : 쿠키런 AI 구현하기</title>
+      <link>https://mingrammer.com/review-deview-cookierun-ai/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/review-deview-cookierun-ai/</guid>
+      <description>사실 처음엔 데뷰 관련 리뷰를 딱히 작성할 생각이 없었기에 발표 사진을 하나도 찍지 않았습니다. 이 점에 대해선 양해바랍니다. 이 글에 나오는 이미지들은 모두 발표 슬라</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기
+                    </h1>
+                    <h2 class="headline">
+                    Dec 11, 2017 00:00
+                    · 1300 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/cgo">cgo</a>
+                          
+                              <a href="https://mingrammer.comtags/compile">compile</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                
+                <section id="post-body">
+                    <p>최근에 Go 프로젝트를 macOS에서 CentOS로 크로스 컴파일 해야하는 일이 생겼다.</p>
+
+<p>Go는 일반적으로 컴파일에 관여하는 환경 변수 설정만으로 매우 쉽게 크로스 컴파일이 가능하지만 <code>cgo</code> 기반으로 개발된 라이브러리를 사용한 애플리케이션을 크로스 컴파일 하는 경우에는 조금 다르다. <code>cgo</code> 기반의 라이브러리의 경우 별도의 C 컴파일러를 요구하는 경우가 있기 때문에 기존의 방법으로는 크로스 컴파일이 불가능하다.</p>
+
+<p>따라서, <code>cgo</code> 기반의 라이브러리를 사용하는 Go 애플리케이션을 다른 OS로 컴파일 해야하는 경우 별도의 크로스 컴파일러를 사용해 빌드를 진행해야한다. 내가 최근에 사용하기도 했던 대표적인 <code>cgo</code> 기반의 Go 라이브러리로는 mattn이 만든 <code>go-sqlite3</code> 라이브러리가 있다. <code>go-sqlite3</code>의 경우 Github에도 빌드 관련 <a href="https://github.com/mattn/go-sqlite3/issues/491">이슈</a>가 자주 올라온다.</p>
+
+<p>다음과 같이 <code>go-sqlite3</code> 패키지를 호스트 OS (macOS) 용으로 빌드하는 경우에는 아무런 문제가 없다.</p>
+
+<pre><code class="language-go">// main.go
+package main
+
+import (
+    &quot;database/sql&quot;
+    &quot;fmt&quot;
+    _ &quot;github.com/mattn/go-sqlite3&quot;
+    &quot;log&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    os.Remove(&quot;log.db&quot;)
+
+    db, err := sql.Open(&quot;sqlite3&quot;, &quot;./foo.db&quot;)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
+
+    fmt.Println(db)
+}
+</code></pre>
+
+<pre><code class="language-bash">$ go build
+$ file cross-compile-example
+cross-compile-example: Mach-O 64-bit executable x86_64
+</code></pre>
+
+<p>아무 문제없이 macOS용 바이너리가 생성되었다.</p>
+
+<p>이제 위 코드를 <code>linux/amd64</code>용으로 크로스 컴파일 해보자.</p>
+
+<pre><code class="language-bash">$ GOOS=linux GOARCH=amd64 go build
+# github.com/mattn/go-sqlite3
+../../mattn/go-sqlite3/sqlite3_go18.go:18:10: undefined: SQLiteConn
+</code></pre>
+
+<p>SQLiteConn이 정의되지 않았다는 에러가 발생하였다. 실제로 SQLiteConn가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/master/sqlite3.go">소스 코드</a>와 cgo 플래그가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/b8d537f91a262b86fc5dfae4fd5a5c282d2b95fd/sqlite3_libsqlite3.go">소스 코드</a>를 보면 C 코드가 포함되어 있는데 이 부분에서 에러가 발생한걸로 보인다. 따라서 이를 리눅스용으로 컴파일 하기 위해선 macOS에서 사용할 수 있는 리눅스용 컴파일러를 <code>CC</code> 환경 변수로 지정해야 한다.</p>
+
+<p>나의 경우 macOS에서 사용할 수 있는 리눅스용 C/C++ 크로스 컴파일러로 <a href="http://crossgcc.rts-software.org/doku.php?id=compiling_for_linux">CrossGCC</a>를 사용하였다. <a href="http://crossgcc.rts-software.org/doku.php?id=compiling_for_linux">이 사이트</a>에 접속하여 타겟 리눅스의 아키텍쳐 비트수에 맞는 크로스 컴파일러를 macOS에 설치하고 설치된 크로스 컴파일러 바이너리 경로를 <code>$PATH</code>에 등록하기만 하면 된다. (설치 경로: <code>/usr/local/gcc-4.8.1-for-linux[32/64]/</code>)</p>
+
+<pre><code class="language-bash">$ ls /usr/local/gcc-4.8.1-for-linux64 -la
+-rwxr-xr-x   1 root  wheel  1072832 10 13  2013 x86_64-pc-linux-addr2line
+-rwxr-xr-x   2 root  wheel  1115744 10 13  2013 x86_64-pc-linux-ar
+-rwxr-xr-x   2 root  wheel  1723952 10 13  2013 x86_64-pc-linux-as
+-rwxr-xr-x   2 root  wheel   870360 10 13  2013 x86_64-pc-linux-c++
+-rwxr-xr-x   1 root  wheel  1071740 10 13  2013 x86_64-pc-linux-c++filt
+-rwxr-xr-x   1 root  wheel   866192 10 13  2013 x86_64-pc-linux-cpp
+-rwxr-xr-x   1 root  wheel    41068 10 13  2013 x86_64-pc-linux-elfedit
+-rwxr-xr-x   2 root  wheel   870360 10 13  2013 x86_64-pc-linux-g++
+-rwxr-xr-x   2 root  wheel   866104 10 13  2013 x86_64-pc-linux-gcc
+-rwxr-xr-x   2 root  wheel   866104 10 13  2013 x86_64-pc-linux-gcc-4.8.1
+-rwxr-xr-x   1 root  wheel    39288 10 13  2013 x86_64-pc-linux-gcc-ar
+-rwxr-xr-x   1 root  wheel    39384 10 13  2013 x86_64-pc-linux-gcc-nm
+-rwxr-xr-x   1 root  wheel    39392 10 13  2013 x86_64-pc-linux-gcc-ranlib
+-rwxr-xr-x   1 root  wheel   421340 10 13  2013 x86_64-pc-linux-gcov
+-rwxr-xr-x   1 root  wheel  1161332 10 13  2013 x86_64-pc-linux-gprof
+-rwxr-xr-x   4 root  wheel  1929396 10 13  2013 x86_64-pc-linux-ld
+-rwxr-xr-x   4 root  wheel  1929396 10 13  2013 x86_64-pc-linux-ld.bfd
+-rwxr-xr-x   2 root  wheel  1089744 10 13  2013 x86_64-pc-linux-nm
+-rwxr-xr-x   2 root  wheel  1306216 10 13  2013 x86_64-pc-linux-objcopy
+-rwxr-xr-x   2 root  wheel  2014804 10 13  2013 x86_64-pc-linux-objdump
+-rwxr-xr-x   2 root  wheel  1115736 10 13  2013 x86_64-pc-linux-ranlib
+-rwxr-xr-x   1 root  wheel   431520 10 13  2013 x86_64-pc-linux-readelf
+-rwxr-xr-x   1 root  wheel  1079092 10 13  2013 x86_64-pc-linux-size
+-rwxr-xr-x   1 root  wheel  1072808 10 13  2013 x86_64-pc-linux-strings
+-rwxr-xr-x   2 root  wheel  1306216 10 13  2013 x86_64-pc-linux-strip
+</code></pre>
+
+<pre><code class="language-bash">export PATH=&quot;${PATH}:/usr/local/gcc-4.8.1-for-linux64/bin&quot;
+</code></pre>
+
+<p>이제 이 크로스 컴파일러를 사용해 <code>linux/amd64</code>용으로 다시 컴파일을 해보자.</p>
+
+<pre><code class="language-bash"># CC로 gcc 크로스 컴파일러를 지정한다
+# CGO_ENABLED를 1로 설정해 CGO 사용을 명시한다
+$ CC=x86_64-pc-linux-gcc GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build
+$ file cross-compile-example
+cross-compile-example: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.4.0, not stripped
+</code></pre>
+
+<p>드디어 macOS에서 cgo 기반의 라이브러리를 사용하는 애플리케이션을 <code>linux/amd64</code> 바이너리로 크로스 컴파일 하는데에 성공하였다. 실제로 CentOS 7기반의 머신에서 애플리케이션을 구동하면 잘 동작한다.</p>
+
+<p>단, OS에 따라 다르지만 생성된 바이너리가 동적 링킹을 사용하고 있어 사용하고 있는 타겟 OS에 라이브러리에서 요구하는 특정 C 라이브러리가 없거나 버전이 맞지 않는 경우에는 별도의 작업이 더 필요할 수도 있다.</p>
+
+<p>사실 이 문제는 크로스 컴파일러만 설치하면 해결되는 문제라 내용은 크게 별건 없지만 누군가에게는 도움이 되었으면 한다.</p>
+
+<p><br></p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2fcgo-cross-compile-for-mac-for-linux%2f - %eb%a7%a5%ec%97%90%ec%84%9c%20%eb%a6%ac%eb%88%85%ec%8a%a4%eb%a1%9c%20CGO%20%eb%9d%bc%ec%9d%b4%eb%b8%8c%eb%9f%ac%eb%a6%ac%20%ed%81%ac%eb%a1%9c%ec%8a%a4%20%ec%bb%b4%ed%8c%8c%ec%9d%bc%ed%95%98%ea%b8%b0 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/ways-to-manage-the-configuration-in-python">파이썬에서 설정값 관리하기<aside class="dates">Mar 5 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

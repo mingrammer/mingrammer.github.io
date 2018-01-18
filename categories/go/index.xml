@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/go/</link>
+    <description>Recent content in Go on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 11 Dec 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기</title>
+      <link>https://mingrammer.com/cgo-cross-compile-for-mac-for-linux/</link>
+      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/cgo-cross-compile-for-mac-for-linux/</guid>
+      <description>최근에 Go 프로젝트를 macOS에서 CentOS로 크로스 컴파일 해야하는 일이 생겼다. Go는 일반적으로 컴파일에 관여하는 환경 변수 설정만으로 매우 쉽게 크로</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go와 OOP</title>
+      <link>https://mingrammer.com/translation-go-and-oop/</link>
+      <pubDate>Tue, 28 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-and-oop/</guid>
+      <description>theamydance의 Go and OOP&amp;hellip; Sorta를 번역한 글입니다. 나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 Women Who Go 밋업에서 처음으</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - encoding/json 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-encoding-json-package/</link>
+      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-encoding-json-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: encoding/json package를 번역한 글입니다. 좋든 나쁘든, JSON은 인터넷의 인코딩이다. 이것의 공식적인 정의는 냅킨 뒷면에 쓸 수 있을 정도로 간단</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - encoding 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-encoding-package/</link>
+      <pubDate>Wed, 09 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-encoding-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: encoding package를 번역한 글입니다. 우리는 이제까지 로우(raw) 바이트 스트림과 제한된 바이트 슬라이스를 다뤄봤지만 단순히 바이트만을</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - bytes &#43; strings 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</link>
+      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: bytes + strings packages를 번역한 글입니다. 우린 지난번 포스트에서 바이트 스트림을 다뤄봤는데 가끔은 제한적인 범위에서, 인메모리 바이트 슬</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - io 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-io-package/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-io-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: io package를 번역한 글입니다. Go는 바이트(bytes)를 사용하여 작업하기 위해 만들어진 프로그래밍 언어이다. 바이트의 리스트</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go에서 애플리케이션 설계하기</title>
+      <link>https://mingrammer.com/translation-structuring-applications-in-go/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-structuring-applications-in-go/</guid>
+      <description>Structuring Applications in Go을 번역한 글입니다. 개요 Go를 배울 때 가장 어려웠던 부분은 애플리케이션을 어떻게 설계하는가였다. Go 이전에, 나는 Rails 애플리케이션을 만들었었는데</description>
+    </item>
+    
+  </channel>
+</rss>

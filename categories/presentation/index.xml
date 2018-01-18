@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Presentation on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/presentation/</link>
+    <description>Recent content in Presentation on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 13 Jan 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/presentation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[발표] AWS 회고</title>
+      <link>https://mingrammer.com/presentation-awskrug-review-first-aws-experience/</link>
+      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/presentation-awskrug-review-first-aws-experience/</guid>
+      <description>지난 11일 AWS Korea User Group 강남 SE 모임에서 &amp;ldquo;AWS 회고&amp;rdquo;라는 주제로 발표를 했다. 처음 AWS를 사용해 아키텍쳐링을 해본 경험을 회고하며 부족했던점과 개선방</description>
+    </item>
+    
+  </channel>
+</rss>

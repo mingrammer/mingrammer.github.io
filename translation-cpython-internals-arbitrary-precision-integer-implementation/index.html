@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현
+                    </h1>
+                    <h2 class="headline">
+                    Oct 10, 2017 00:00
+                    · 2178 words
+                    · 5 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/deep-dive">deep dive</a>
+                          
+                              <a href="https://mingrammer.comtags/internal">internal</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#임의의-큰-정수를-저장하는-방법">임의의 큰 정수를 저장하는 방법</a></li>
+<li><a href="#자주-사용되는-정수들의-최적화">자주 사용되는 정수들의 최적화</a></li>
+<li><a href="#수-체계-변환">수 체계 변환</a></li>
+<li><a href="#산술-연산">산술 연산</a></li>
+<li><a href="#더-깊이-살펴보기">더 깊이 살펴보기</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://rushter.com/blog/python-integer-implementation/">Python internals: Arbitrary-precision integer implementation</a>을 번역한 글입니다.</p>
+</blockquote>
+
+<p>여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴보자.</p>
+
+<p>파이썬은 모든 객체를 C 구조체로 표현한다. 다음 자료 구조는 파이썬의 모든 정수 객체를 담당한다.</p>
+
+<pre><code class="language-c">struct _longobject {
+    PyObject_VAR_HEAD
+    digit ob_digit[1];
+} PyLongObject;
+</code></pre>
+
+<p>매크로 확장 후, 위 구조체의 단순화된 버전은 다음과 같다.</p>
+
+<pre><code class="language-c">struct {
+    ssize_t ob_refcnt;
+    struct _typeobject *ob_type;
+    ssize_t ob_size;
+    uint32_t ob_digit[1];
+}
+</code></pre>
+
+<p><code>ob_refcnt</code> 필드는 가비지 컬렉션 메커니즘에서 사용되는 <a href="http://www.informit.com/articles/article.aspx?p=1357182&amp;seqNum=3">레퍼런스 카운팅</a> 기법에서 사용되며, <code>ob_type</code>은 정수 타입을 나타내는 <a href="https://docs.python.org/2/c-api/typeobj.html">구조체</a>에 대한 포인터이다.</p>
+
+<p>일반적으로, C/C++과 같은 언어에서는 정수의 정밀도가 64비트로 제한되나, 파이썬은 <a href="https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">임의 정밀도 정수</a>를 언어 차원에서 지원한다. 파이썬 3부터는 더 이상 단순 정수 타입을 지원하지 않기 때문에, 모든 정수가 큰 숫자 (bignum)로 표현된다.</p>
+
+<p><br></p>
+
+<h1 id="임의의-큰-정수를-저장하는-방법">임의의 큰 정수를 저장하는 방법</h1>
+
+<p>한 가지 방법은 정수를 숫자들의 배열로 표현하는 것이다. 이를 효율적으로 구현하기 위해선 숫자를 <a href="https://en.wikipedia.org/wiki/Decimal">10진법</a>에서 각 자릿수가 0부터 2^30-1까지의 단일 숫자를 나타내는 2^30 진법으로 변환해야한다. 플랫폼에 따라, 파이썬은 30 비트의 자릿수를 가진 32 비트의 부호 없는 정수 배열 또는 15 비트의 자릿수를 가진 16 비트의 부호 없는 정수 배열을 사용한다. 이러한 접근법을 사용하면 <a href="https://github.com/python/cpython/blob/865e4b4f630e2ae91e61239258abb58b488f1d65/Include/longintrepr.h#L9">추가적인 요구사항</a>이 생기기 때문에 정수의 모든 비트를 사용할 수 없다. 위 구조체에서 <code>ob_digit</code> 필드는 이러한 배열을 담당한다.</p>
+
+<p>불필요한 연산을 배제하기 위해 CPython은 -2^30 부터 2^30까지의 범위에 있는 정수들에 대해서는 &ldquo;빠른 경로 (fast path)&ldquo;를 구현하고 있다. 이 정수값들은 원소가 하나인 배열에 저장되며 고정 32 비트 정수처럼 다뤄진다.</p>
+
+<p>전통적인 접근법과는 다르게, 정수의 부호는 <code>ob_size</code> 필드에 별도로 저장된다. 이 필드는 <code>ob_digit</code> 배열의 크기를 저장한다.  크기가 2인 배열의 부호를 바꾸기 위해선 <code>ob_size</code>를 -2로 변경하면 된다.</p>
+
+<p>CPython 소스 코드의 <a href="https://github.com/python/cpython/blob/c5bace2bf7874cf47ef56e1d8d19f79ad892eef5/Include/longintrepr.h#L70">주석</a>에서 다음과 같이 설명하고 있다:</p>
+
+<pre><code class="language-c">/* 큰 정수 표현법.
+   절댓값은 다음과 같이 구할 수 있다.
+     SUM(for i=0 through abs(ob_size)-1) ob_digit[i] * 2**(SHIFT*i)
+   ob_size &lt; 0이면 음수를 나타낸다.
+   ob_size == 0이면 0을 나타낸다.
+   정규화된 수의 경우, ob_digit[abs(ob_size)-1] (최상위 숫자)은 0이 될 수 없다. 또한, 모든 유효한 i 값에 대해 다음이 성립한다. (MASK는 1 &lt;&lt; 30 - 1 또는 1 &lt;&lt; 15 - 1)
+     0 &lt;= ob_digit[i] &lt;= MASK
+   할당 함수는 ob_digit[0] ... ob_digit[abs(ob_size)-1]을 실제로 사용할 수 있도록 추가 메모리를 할당한다.
+   
+   주의: PyVarObject의 서브타입을 생성하는 제네릭 코드는 정수가 ob_size의 부호 비트를 남용한다는 걸 인지해야함
+*/
+</code></pre>
+
+<p>123456789101112131415의 표현식은 다음과 같다:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ob_size</td>
+<td>3</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>ob_digit</td>
+<td>437976919</td>
+<td>87719511</td>
+<td>107</td>
+</tr>
+</tbody>
+</table>
+
+<p>위 표현식을 좀 전에 설명한 알고리즘을 통해 변환하면 다음과 같다:</p>
+
+<pre><code class="language-latex">(437976919 * 2^(30*0)) + (87719511 * 2^(30*1)) + (107 * 2^(30*2))
+</code></pre>
+
+<p><br></p>
+
+<h1 id="자주-사용되는-정수들의-최적화">자주 사용되는 정수들의 최적화</h1>
+
+<p>-5부터 256 사이의 작은 정수 객체들은 항상 초기화 도중에 미리 할당된다. 파이썬에서 정수는 불변 (immutable)이기 때문에, 이를 싱글턴으로 사용할 수 있다. 작은 정수가 필요한 경우 파이썬은 새로운 객체를 생성하는 대신 미리 할당된 객체를 가리킨다. 이로 인해 자주 사용되는 정수들에 대한 메모리 공간과 연산 비용을 상당히 많이 아낄 수 있다.</p>
+
+<p>흥미롭게도, <code>PyLongObject</code> 구조체는 할당된 모든 정수들에 대해 최소 28 바이트를 할당하기 때문에 64 비트의 C 정수보다 약 3배나 많은 메모리를 사용한다.</p>
+
+<p><br></p>
+
+<h1 id="수-체계-변환">수 체계 변환</h1>
+
+<p>그럼 이제 파이썬이 정수를 어떻게 배열로 변환하는지에 대해 살펴보자.</p>
+
+<p>부호 없는 64 비트 정수를 파이썬의 정수 표현법으로 변환하는 간단한 예제를 살펴보자. 참고로 다음 코드에서 나오는 bignum은 <code>PyLongObject</code>로 직접 변환이 가능한 표준 C 타입에서 지원하는 가장 큰 숫자다. 더 큰 숫자는 문자열이나 바이트 배열에서 변환할 수 있다.</p>
+
+<p>수 체계 변환이 익숙하지 않다면, 이 <a href="https://www.tutorialspoint.com/computer_logical_organization/number_system_conversion.htm">튜토리얼</a>을 읽어볼 수 있다.</p>
+
+<p>다음은 C 정수를 파이썬 정수로 변환하는 간단한 알고리즘이다:</p>
+
+<pre><code class="language-python">SHIFT = 30  # 각 자릿수를 나타낼 비트 갯수
+MASK = (2 ** SHIFT)
+bignum = 18446744073709551615
+
+def split_number(bignum):
+    t = abs(bignum)
+
+    num_list = []
+    while t != 0:
+        # 나머지를 얻는다
+        small_int = t % MASK  # 좀 더 효율적인 비트 연산: (t &amp; (MASK-1))
+        num_list.append(small_int)
+
+        # 나눗셈의 정수부를 얻는다 (나눗셈 내림)
+        t = t // MASK  # 좀 더 효율적인 비트 연산: t &gt;&gt;= SHIFT
+
+    return num_list
+
+def restore_number(num_list):
+    bignum = 0
+    for i, n in enumerate(num_list):
+        bignum += n * (2 ** (SHIFT * i))
+    return bignum
+
+num_list = split_number(bignum)
+assert bignum == restore_number(num_list)
+</code></pre>
+
+<p>위 알고리즘을 검증하기 위해 파이썬의 내부 표현을 살펴볼 수도 있다:</p>
+
+<pre><code class="language-python">import ctypes
+
+class PyLongObject(ctypes.Structure):
+    _fields_ = [(&quot;ob_refcnt&quot;, ctypes.c_long),
+                (&quot;ob_type&quot;, ctypes.c_void_p),
+                (&quot;ob_size&quot;, ctypes.c_ulong),
+                (&quot;ob_digit&quot;, ctypes.c_uint * 3)]
+
+
+bignum = 18446744073709551615
+
+for d in PyLongObject.from_address(id(bignum)).ob_digit:
+    print(d)
+</code></pre>
+
+<p><br></p>
+
+<h1 id="산술-연산">산술 연산</h1>
+
+<p>기본 산술 연산은 우리가 이미 알고 있는 기초적인 수학을 사용하여 구현되어 있으나 딱 한 가지 차이점은 배열의 모든 원소를 하나의 &lsquo;자릿수&rsquo;로 다룬다는 점이다.</p>
+
+<p>모든 연산은 최소 하나의 객체을 생성해낸다. 가령, <code>c += 10</code>을 실행하면 다음과 같은 단계들이 수행된다:</p>
+
+<ul>
+<li><code>10</code>을 나타내는 미리 할당된 객체의 주소를 가져온다. (10은 작은 정수이므로 새로운 객체를 생성할 필요가 없다.)</li>
+<li>덧셈의 결과값을 저장할 새로운 정수 객체를 생성한다.</li>
+<li><code>c</code>와 <code>10</code>을 더한 후, 결과값을 새로 생성된 객체에 저장한다.</li>
+<li>변수 <code>c</code>를 새 객체의 레퍼런스로 바꾼다.</li>
+<li>가비지 컬렉터가 나중에 이 객체를 파기할 수 있도록, 이전 <code>c</code> 변수의 레퍼런스 카운트를 차감한다.</li>
+</ul>
+
+<p>예시로, <a href="https://en.wikipedia.org/wiki/Carry_(arithmetic)">캐리 (carrying)</a>가 사용되는 덧셈 코드를 살펴보자.</p>
+
+<pre><code class="language-python">def add_bignum(a, b):
+    z = []
+
+    if len(a) &lt; len(b):
+        # a가 항상 b보다 크도록 만든다
+        a, b = b, a
+
+    carry = 0
+
+    for i in range(0, len(b)):
+        carry += a[i] + b[i]
+        z.append(carry % MASK)
+        carry = carry // MASK
+
+    for i in range(i + 1, len(a)):
+        carry += a[i]
+        z.append(carry % MASK)
+        carry = carry // MASK
+
+    z.append(carry)
+
+    # trailing zeros를 제거한다
+    i = len(z)
+    while i &gt; 0 and z[i-1] == 0:
+        i -= 1
+    z = z[0:i]
+
+    return z
+
+
+a = 8223372036854775807
+b = 100037203685477
+assert restore_number(add_bignum(split_number(a), split_number(b))) == a + b
+</code></pre>
+
+<p><br></p>
+
+<h1 id="더-깊이-살펴보기">더 깊이 살펴보기</h1>
+
+<p>이 포스트에서 다루지 못한 많은 세부사항들이 더 있다. 정수에 대한 상세한 내용은 CPython (<a href="https://github.com/python/cpython/blob/master/Objects/longobject.c">1</a>, <a href="https://github.com/python/cpython/blob/master/Include/longobject.h">2</a>, <a href="https://github.com/python/cpython/blob/master/Include/longintrepr.h">3</a>) 소스 코드를 참조하라.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-cpython-internals-arbitrary-precision-integer-implementation%2f - %5b%eb%b2%88%ec%97%ad%5d%20%ed%8c%8c%ec%9d%b4%ec%8d%ac%20%eb%82%b4%eb%b6%80%20%eb%8f%99%ec%9e%91%20%ec%9b%90%eb%a6%ac%3a%20%ec%9e%84%ec%9d%98%20%ec%a0%95%eb%b0%80%eb%8f%84%ec%9d%98%20%ec%a0%95%ec%88%98%20%ea%b5%ac%ed%98%84 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/ways-to-manage-the-configuration-in-python">파이썬에서 설정값 관리하기<aside class="dates">Mar 5 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

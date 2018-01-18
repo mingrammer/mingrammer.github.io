@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Comprehension on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/comprehension/</link>
+    <description>Recent content in Comprehension on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 14 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/comprehension/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>파이썬의 Comprehension 소개</title>
+      <link>https://mingrammer.com/introduce-comprehension-of-python/</link>
+      <pubDate>Wed, 14 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/introduce-comprehension-of-python/</guid>
+      <description>Comprehension이란 iterable한 오브젝트를 생성하기 위한 방법중 하나로 파이썬에서 사용할 수 있는 유용한 기능중 하나이다. 파이썬에는 다음</description>
+    </item>
+    
+  </channel>
+</rss>

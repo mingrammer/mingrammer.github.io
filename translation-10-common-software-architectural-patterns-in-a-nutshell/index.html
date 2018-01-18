@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] 10가지 소프트웨어 아키텍처 패턴 요약 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] 10가지 소프트웨어 아키텍처 패턴 요약
+                    </h1>
+                    <h2 class="headline">
+                    Sep 10, 2017 00:00
+                    · 3498 words
+                    · 7 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#아키텍쳐-패턴이란">아키텍쳐 패턴이란?</a></li>
+<li><a href="#1-계층화-패턴-layered-pattern">1. 계층화 패턴 (Layered pattern)</a>
+<ul>
+<li><a href="#활용">활용</a></li>
+</ul></li>
+<li><a href="#2-클라이언트-서버-패턴-client-server-pattern">2. 클라이언트-서버 패턴 (Client-server pattern)</a>
+<ul>
+<li><a href="#활용-1">활용</a></li>
+</ul></li>
+<li><a href="#3-마스터-슬레이브-패턴-master-slave-pattern">3. 마스터-슬레이브 패턴 (Master-slave pattern)</a>
+<ul>
+<li><a href="#활용-2">활용</a></li>
+</ul></li>
+<li><a href="#4-파이프-필터-패턴-pipe-filter-pattern">4. 파이프-필터 패턴 (Pipe-filter pattern)</a>
+<ul>
+<li><a href="#활용-3">활용</a></li>
+</ul></li>
+<li><a href="#5-브로커-패턴-broker-pattern">5. 브로커 패턴 (Broker pattern)</a>
+<ul>
+<li><a href="#활용-4">활용</a></li>
+</ul></li>
+<li><a href="#6-피어-투-피어-패턴-peer-to-peer-pattern">6. 피어 투 피어 패턴 (Peer-to-peer pattern)</a>
+<ul>
+<li><a href="#활용-5">활용</a></li>
+</ul></li>
+<li><a href="#7-이벤트-버스-패턴-event-bus-pattern">7. 이벤트-버스 패턴 (Event-bus pattern)</a>
+<ul>
+<li><a href="#활용-6">활용</a></li>
+</ul></li>
+<li><a href="#8-모델-뷰-컨트롤러-패턴-model-view-controller-pattern">8. 모델-뷰-컨트롤러 패턴 (Model-view-controller pattern)</a>
+<ul>
+<li><a href="#활용-7">활용</a></li>
+</ul></li>
+<li><a href="#9-블랙보드-패턴-blackboard-pattern">9. 블랙보드 패턴 (Blackboard pattern)</a>
+<ul>
+<li><a href="#활용-8">활용</a></li>
+</ul></li>
+<li><a href="#10-인터프리터-패턴-interpreter-pattern">10. 인터프리터 패턴 (Interpreter pattern)</a>
+<ul>
+<li><a href="#활용-9">활용</a></li>
+</ul></li>
+<li><a href="#아키텍쳐-패턴-비교">아키텍쳐 패턴 비교</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://medium.com/towards-data-science/10-common-software-architectural-patterns-in-a-nutshell-a0b47a1e9013">10 Common Software Architectural Patterns in a nutshell</a>을 번역한 글입니다.</p>
+</blockquote>
+
+<p>대형 엔터프라이즈 규모의 시스템들은 어떻게 설계되었는지에 대해 궁금해 한 적이 있나요? 우리는 주요 소프트웨어를 개발하기 전에 원하는 기능과 품질을 제공해줄 수 있는 적절한 아키텍쳐를 선택해야합니다. 따라서, 우리는 설계 단계에서 특정 아키텍쳐를 적용하기 전에, 몇 가지 다양한 아키텍쳐들에 대해 이해할 필요가 있습니다.</p>
+
+<p><img src="../images/2017-09-10-intro.png" alt="intro" /></p>
+
+<h1 id="아키텍쳐-패턴이란">아키텍쳐 패턴이란?</h1>
+
+<p>위키피디아에 따르면,</p>
+
+<blockquote>
+<p><strong>아키텍쳐 패턴</strong>이란 주어진 상황에서의 소프트웨어 아키텍쳐에서 일반적으로 발생하는 문제점들에 대한 일반화되고 재사용 가능한 솔루션이다. 아키텍쳐 패턴은 소프트웨어 디자인 패턴과 유사하지만 더 큰 범주에 속한다.</p>
+</blockquote>
+
+<p>이 글에서는, 다음의 10가지 일반적인 소프트웨어 아키텍쳐 패턴들의 활용 사례와 장단점들을 간단하게 설명할 것이다.</p>
+
+<ol>
+<li><strong>계층화 패턴 (Layered pattern)</strong></li>
+<li><strong>클라이언트-서버 패턴 (Client-server pattern)</strong></li>
+<li><strong>마스터-슬레이브 패턴 (Master-slave pattern)</strong></li>
+<li><strong>파이프-필터 패턴 (Pipe-filter pattern)</strong></li>
+<li><strong>브로커 패턴 (Broker pattern)</strong></li>
+<li><strong>피어 투 피어 패턴 (Peer-to-peer pattern)</strong></li>
+<li><strong>이벤트-버스 패턴 (Event-bus pattern)</strong></li>
+<li><strong>MVC 패턴 (Model-view-controller pattern)</strong></li>
+<li><strong>블랙보드 패턴 (Blackboard- pattern)</strong></li>
+<li><strong>인터프리터 패턴 (Interpreter pattern)</strong></li>
+</ol>
+
+<p><br></p>
+
+<h1 id="1-계층화-패턴-layered-pattern">1. 계층화 패턴 (Layered pattern)</h1>
+
+<p>이 패턴은 <strong>n-티어 아키텍쳐 패턴</strong>이라고도 불린다. 이는 하위 모듈들의 그룹으로 나눌 수 있는 구조화된 프로그램에서 사용할 수 있다. 각 하위 모듈들은 특정한 수준의 추상화를 제공한다. 각 계층은 다음 상위 계층에 서비스를 제공한다.</p>
+
+<p>일반적인 정보 시스템에서 공통적으로 볼 수 있는 계층 4가지는 다음과 같다.</p>
+
+<ul>
+<li><strong>프레젠테이션 계층</strong> (Presentation layer) - <strong>UI 계층</strong> (UI layer) 이라고도 함</li>
+<li><strong>애플리케이션 계층</strong> (Application layer) - <strong>서비스 계층</strong> (Service layer) 이라고도 함</li>
+<li><strong>비즈니스 논리 계층</strong> (Business logic layer) - <strong>도메인 계층</strong> (Domain layer) 이라고도 함</li>
+<li><strong>데이터 접근 계층</strong> (Data access layer) - <strong>영속 계층</strong> (Persistence layer) 이라고도 함</li>
+</ul>
+
+<h2 id="활용">활용</h2>
+
+<ul>
+<li>일반적인 데스크톱 애플리케이션</li>
+<li>E-commerce 웹 애플리케이션</li>
+</ul>
+
+<p><img src="../images/2017-09-10-layered-pattern.png" alt="layered pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="2-클라이언트-서버-패턴-client-server-pattern">2. 클라이언트-서버 패턴 (Client-server pattern)</h1>
+
+<p>이 패턴은 하나의 <strong>서버</strong>와 다수의 <strong>클라이언트</strong>, 두 부분으로 구성된다. 서버 컴포넌트는 다수의 클라이언트 컴포넌트로 서비스를 제공한다. 클라이언트가 서버에 서비스를 요청하면 서버는 클라이언트에게 적절한 서비스를 제공한다. 또한 서버는 계속 클라이언트로부터의 요청을 대기한다.</p>
+
+<h2 id="활용-1">활용</h2>
+
+<ul>
+<li>이메일, 문서 공유 및 은행 등의 온라인 애플리케이션</li>
+</ul>
+
+<p><img src="../images/2017-09-10-client-server-pattern.png" alt="client server pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="3-마스터-슬레이브-패턴-master-slave-pattern">3. 마스터-슬레이브 패턴 (Master-slave pattern)</h1>
+
+<p>이 패턴은 <strong>마스터</strong>와 <strong>슬레이브</strong>, 두 부분으로 구성된다. 마스터 컴포넌트는 동등한 구조를 지닌 슬레이브 컴포넌트들로 작업을 분산하고, 슬레이브가 반환한 결과값으로부터 최종 결과값을 계산한다.</p>
+
+<h2 id="활용-2">활용</h2>
+
+<ul>
+<li>데이터베이스 복제에서, 마스터 데이터베이스는 신뢰할 수 있는 데이터 소스로 간주되며 슬레이브 데이터베이스는 마스터 데이터베이스와 동기화된다.</li>
+<li>컴퓨터 시스템에서 버스와 연결된 주변장치 (마스터 드라이버와 슬레이브 드라이버)</li>
+</ul>
+
+<p><img src="../images/2017-09-10-master-slave-pattern.png" alt="master slave pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="4-파이프-필터-패턴-pipe-filter-pattern">4. 파이프-필터 패턴 (Pipe-filter pattern)</h1>
+
+<p>이 패턴은 데이터 스트림을 생성하고 처리하는 시스템에서 사용할 수 있다. 각 처리 과정은 <strong>필터 (filter)</strong> 컴포넌트에서 이루어지며, 처리되는 데이터는 <strong>파이프 (pipes)</strong>를 통해 흐른다. 이 파이프는 버퍼링 또는 동기화 목적으로 사용될 수 있다.</p>
+
+<h2 id="활용-3">활용</h2>
+
+<ul>
+<li>컴파일러. 연속한 필터들은 어휘 분석, 파싱, 의미 분석 그리고 코드 생성을 수행한다.</li>
+<li>생물정보학에서의 워크플로우</li>
+</ul>
+
+<p><img src="../images/2017-09-10-pipe-filter-pattern.png" alt="pipe filter pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="5-브로커-패턴-broker-pattern">5. 브로커 패턴 (Broker pattern)</h1>
+
+<p>이 패턴은 분리된 컴포넌트들로 이루어진 분산 시스템에서 사용된다. 이 컴포넌트들은 원격 서비스 실행을 통해 서로 상호 작용을 할 수 있다. <strong>브로커 (broker)</strong> 컴포넌트는 <strong>컴포넌트 (components)</strong> 간의 통신을 조정하는 역할을 한다.</p>
+
+<p>서버는 자신의 기능들(서비스 및 특성)을 브로커에 넘겨주며(publish), 클라이언트가 브로커에 서비스를 요청하면 브로커는 클라이언트를 자신의 레지스트리에 있는 적합한 서비스로 리디렉션한다.</p>
+
+<h2 id="활용-4">활용</h2>
+
+<ul>
+<li><strong><a href="https://en.wikipedia.org/wiki/Apache_ActiveMQ">Apache ActiveMQ</a></strong>, <strong><a href="https://en.wikipedia.org/wiki/Apache_Kafka">Apache Kafka</a></strong>, <strong><a href="https://en.wikipedia.org/wiki/RabbitMQ">RabbitMQ</a></strong> 및 <strong><a href="https://en.wikipedia.org/wiki/JBoss_Messaging">JBoss Messaging</a></strong>와 같은 메시지 브로커 소프트웨어</li>
+</ul>
+
+<p><img src="../images/2017-09-10-broker-pattern.png" alt="broker pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="6-피어-투-피어-패턴-peer-to-peer-pattern">6. 피어 투 피어 패턴 (Peer-to-peer pattern)</h1>
+
+<p>이 패턴에서는, 각 컴포넌트를 <strong>피어 (peers)</strong>라고 부른다. 피어는 <strong>클라이언트</strong>로서 피어에게 서비스를 요청할 수도 있고, <strong>서버</strong>로서 각 피어에게 서비스를 제공할 수도 있다. 피어는 클라이언트 또는 서버 혹은 둘 모두로서 동작할 수 있으며, 시간이 지남에 따라 역할이 유동적으로 바뀔 수 있다.</p>
+
+<h2 id="활용-5">활용</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Gnutella">Gnutella</a>나 <a href="https://en.wikipedia.org/wiki/Gnutella2">G2</a>와 같은 파일 공유 네트워크</li>
+<li><a href="https://en.wikipedia.org/wiki/P2PTV">P2PTV</a>나 <a href="https://en.wikipedia.org/wiki/Peer_Distributed_Transfer_Protocol">PDTP</a>와 같은 멀티미디어 프로토콜</li>
+<li><a href="https://en.wikipedia.org/wiki/Spotify">Spotify</a>와 같은 독점적 멀티미디어 애플리케이션</li>
+</ul>
+
+<p><img src="../images/2017-09-10-peer-to-peer-pattern.png" alt="peer to peer pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="7-이벤트-버스-패턴-event-bus-pattern">7. 이벤트-버스 패턴 (Event-bus pattern)</h1>
+
+<p>이 패턴은 주로 이벤트를 처리하며 <strong>이벤트 소스 (event source)</strong>, <strong>이벤트 리스너 (event listener)</strong>, <strong>채널 (channel)</strong> 그리고 <strong>이벤트 버스 (event bus)</strong>의 4가지 주요 컴포넌트들을 갖는다. 소스는 이벤트 버스를 통해 특정 채널로 메시지를 발행하며 (publish), 리스너는 특정 채널에서 메시지를 구독한다 (subscribe). 리스너는 이전에 구독한 채널에 발행된 메시지에 대해 알림을 받는다.</p>
+
+<h2 id="활용-6">활용</h2>
+
+<ul>
+<li>안드로이드 개발</li>
+<li>알림 서비스</li>
+</ul>
+
+<p><img src="../images/2017-09-10-event-bus-pattern.png" alt="event bus pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="8-모델-뷰-컨트롤러-패턴-model-view-controller-pattern">8. 모델-뷰-컨트롤러 패턴 (Model-view-controller pattern)</h1>
+
+<p>MVC 패턴이라고도 하는 이 패턴은 대화형 애플리케이션 (interactive application)을 다음의 3 부분으로 나눈다.</p>
+
+<ol>
+<li><strong>모델 (model)</strong> — 핵심 기능과 데이터를 포함한다</li>
+<li><strong>뷰 (view)</strong> — 사용자에게 정보를 표시한다 (하나 이상의 뷰가 정의될 수 있음)</li>
+<li><strong>컨트롤러 (controller)</strong> — 사용자로부터의 입력을 처리한다</li>
+</ol>
+
+<p>이는 정보가 사용자에게 제공되는 방식과 사용자로부터 받아 들여지는 방식에서 정보의 내부적인 표현을 분리하기 위해 나뉘어진다. 이는 컴포넌트를 분리하며 코드의 효율적인 재사용을 가능케한다.</p>
+
+<h2 id="활용-7">활용</h2>
+
+<ul>
+<li>일반적인 웹 애플리케이션 설계 아키텍쳐</li>
+<li><strong><a href="https://en.wikipedia.org/wiki/Django_%28web_framework%29">Django</a></strong>나 <strong><a href="https://en.wikipedia.org/wiki/Ruby_on_Rails">Rails</a></strong>와 같은 웹 프레임워크</li>
+</ul>
+
+<p><img src="../images/2017-09-10-model-view-controller-pattern.png" alt="model view controller pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="9-블랙보드-패턴-blackboard-pattern">9. 블랙보드 패턴 (Blackboard pattern)</h1>
+
+<p>이 패턴은 결정 가능한 해결 전략이 알려지지 않은 문제에 유용하다. 이 패턴은 3가지 주요 컴포넌트로 구성된다.</p>
+
+<ul>
+<li><strong>블랙보드 (blackboard)</strong> — 솔루션의 객체를 포함하는 구조화된 전역 메모리</li>
+<li><strong>지식 소스 (knowledge source)</strong> — 자체 표현을 가진 특수 모듈</li>
+<li><strong>제어 컴포넌트 (control component)</strong> — 모듈 선택, 설정 및 실행을 담당한다</li>
+</ul>
+
+<p>모든 컴포넌트는 블랙보드에 접근한다. 컴포넌트는 블랙보드에 추가되는 새로운 데이터 객체를 생성할 수 있다. 컴포넌트는 블랙보드에서 특정 종류의 데이터를 찾으며, 기존의 지식 소스와의 패턴 매칭으로 데이터를 찾는다.</p>
+
+<h2 id="활용-8">활용</h2>
+
+<ul>
+<li>음성 인식</li>
+<li>차량 식별 및 추적</li>
+<li>단백질 구조 식별</li>
+<li>수중 음파 탐지기 신호 해석</li>
+</ul>
+
+<p><img src="../images/2017-09-10-blackboard-pattern.png" alt="blackboard pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="10-인터프리터-패턴-interpreter-pattern">10. 인터프리터 패턴 (Interpreter pattern)</h1>
+
+<p>이 패턴은 특정 언어로 작성된 프로그램을 해석하는 컴포넌트를 설계할 때 사용된다. 이는 주로 특정 언어로 작성된 문장 혹은 표현식이라고 하는 프로그램의 각 라인을 수행하는 방법을 지정한다. 기본 아이디어는 언어의 각 기호에 대해 클래스를 만드는 것이다.</p>
+
+<h2 id="활용-9">활용</h2>
+
+<ul>
+<li>SQL과 같은 데이터베이스 쿼리 언어</li>
+<li>통신 프로토콜을 정의하기 위한 언어</li>
+</ul>
+
+<p><img src="../images/2017-09-10-interpreter-pattern.png" alt="interpreter pattern" /></p>
+
+<p><br><br></p>
+
+<h1 id="아키텍쳐-패턴-비교">아키텍쳐 패턴 비교</h1>
+
+<p>다음은 각 아키텍쳐 패턴의 장단점을 요약한 테이블이다.</p>
+
+<p><br></p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>아키텍쳐</th>
+<th>장점</th>
+<th>단점</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1</td>
+<td>계층식 (Layered)</td>
+<td>하위 레이어는 다른 상위 레이어에 의해 사용된다. 레이어 표준화가 쉬우며 레이어 수준을 정의하기가 수월하다. 레이어를 변경해도 다른 레이어에는 영향을 끼치지 않는다.</td>
+<td>광범위한 적용이 어렵다. 특정 상황에서는 특정 레이어가 불필요할 수도 있다.</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>클라이언트-서버 (Client-server)</td>
+<td>클라이언트가 요청할 수 있는 일련의 서비스를 모델링 할 수 있다</td>
+<td>요청은 일반적으로 서버에서 별도의 스레드로 처리된다. 프로세스간 통신은 서로 다른 클라이언트가 서로 다르게 표현되므로 오버헤드가 발생한다.</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>마스터-슬레이브 (Master-slave)</td>
+<td>정확성 - 서비스의 실행은 각기 다른 구현체를 가진 슬레이브들에게 전파된다.</td>
+<td>슬레이브가 독립적이므로 공유되는 상태가 없다. 실시간 시스템에서는 마스터-슬레이브간 레이턴시 문제가 발생할 수 있다. 이 패턴은 분리 가능한 문제에만 적용할 수 있다.</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>파이프-필터 (Pipe-filter)</td>
+<td>동시성 처리를 나타낸다. 입출력이 스트림으로 구성되고 필터가 데이터를 수신하면 연산을 수행하기 시작한다. 필터 추가가 쉽다. 시스템 확장성이 좋다. 필터는 재사용 가능하다. 주어진 필터들을 재구성하여 또 다른 파이프라인을 구축할 수 있다.</td>
+<td>가장 느린 필터 연산에 의해 효율성이 제한될 수 있다. 필터간 데이터 이동에서 데이터 변환 오버헤드가 발생한다.</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>브로커 (Broker)</td>
+<td>객체의 동적인 변경, 추가, 삭제 및 재할당이 가능하며 개발자에게 배포를 투명하게 만든다.</td>
+<td>서비스 표현에 대한 표준화가 필요하다</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>피어 투 피어 (Peer to peer)</td>
+<td>탈중앙화된 컴퓨팅을 지원한다. 특정 노드 장애에 매우 강하다. 리소스 및 컴퓨팅 성능면에서 확장성이 뛰어나다.</td>
+<td>노드들이 자발적으로 참여하기 때문에 서비스 품질에 대한 보장이 어렵다. 보안에 대한 보장이 어렵다. 노드의 갯수에 따라 성능이 좌우된다.</td>
+</tr>
+
+<tr>
+<td>7</td>
+<td>이벤트-버스 (Event-bus)</td>
+<td>새로운 발행자 (publishers)와 구독자 (subscribers) 및 연결의 추가가 수월하다. 고도로 분산화된 애플리케이션에 효과적이다.</td>
+<td>모든 메시지가 동일한 이벤트 버스를 통해 전달되기 때문에 확장성 문제가 발생할 수 있다.</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>모델-뷰-컨트롤러 (MVC)</td>
+<td>동일한 모델에 대해 여러개의 뷰를 만들 수 있으며, 런타임에 동적으로 연결 및 해제를 할 수 있다.</td>
+<td>복잡성을 증가시키며, 사용자의 행동에 대한 불필요한 업데이트가 많이 발생할 수 있다.</td>
+</tr>
+
+<tr>
+<td>9</td>
+<td>블랙보드 (Blackboard)</td>
+<td>새로운 애플리케이션을 쉽게 추가할 수 있다. 데이터 공간의 구조를 쉽게 확장할 수 있다.</td>
+<td>모든 애플리케이션이 영향을 받기 때문에 데이터 공간의 구조를 변경하기가 어렵다. 동기화 및 접근 제어가 필요할 수 있다.</td>
+</tr>
+
+<tr>
+<td>10</td>
+<td>인터프리터 (Interpreter)</td>
+<td>매우 동적인 설계가 가능하다. 최종 사용자가 프로그래밍하기 좋다. 인터프리터 프로그램을 쉽게 교체할 수 있기 때문에 유연성이 향상된다.</td>
+<td>인터프리터 언어는 일반적으로 컴파일 언어보다 느리기 때문에 성능 문제가 발생할 수 있다.</td>
+</tr>
+</tbody>
+</table>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-10-common-software-architectural-patterns-in-a-nutshell%2f - %5b%eb%b2%88%ec%97%ad%5d%2010%ea%b0%80%ec%a7%80%20%ec%86%8c%ed%94%84%ed%8a%b8%ec%9b%a8%ec%96%b4%20%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98%20%ed%8c%a8%ed%84%b4%20%ec%9a%94%ec%95%bd by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/ways-to-manage-the-configuration-in-python">파이썬에서 설정값 관리하기<aside class="dates">Mar 5 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

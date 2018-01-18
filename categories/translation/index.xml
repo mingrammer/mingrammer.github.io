@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Translation on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/translation/</link>
+    <description>Recent content in Translation on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 10 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/translation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현</title>
+      <link>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/</guid>
+      <description>Python internals: Arbitrary-precision integer implementation을 번역한 글입니다. 여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴</description>
+    </item>
+    
+    <item>
+      <title>[번역] 10가지 소프트웨어 아키텍처 패턴 요약</title>
+      <link>https://mingrammer.com/translation-10-common-software-architectural-patterns-in-a-nutshell/</link>
+      <pubDate>Sun, 10 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-10-common-software-architectural-patterns-in-a-nutshell/</guid>
+      <description>10 Common Software Architectural Patterns in a nutshell을 번역한 글입니다. 대형 엔터프라이즈 규모의 시스템들은 어떻게 설계되었는지에 대해 궁금해 한 적이 있나요? 우리는 주요 소프트</description>
+    </item>
+    
+    <item>
+      <title>[번역] 진실은 코드에 있다</title>
+      <link>https://mingrammer.com/translation-the-truth-is-in-the-code/</link>
+      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-truth-is-in-the-code/</guid>
+      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. requirementsascode의 shippingapp 모델 예시 {: style=&amp;ldquo;text-align: center;&amp;ldquo;} 머잖아, 모든 소프트웨어 개발자는 다음과 같</description>
+    </item>
+    
+    <item>
+      <title>[번역] 머신러닝 속 수학</title>
+      <link>https://mingrammer.com/translation-the-mathematics-of-machine-learning/</link>
+      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-mathematics-of-machine-learning/</guid>
+      <description>The Mathematics of Machine Learning을 번역한 글입니다. 지난 몇 달 간, 나는 데이터 과학의 세계로 모험하고 머신러닝 기술을 사용하여 통계적 규칙성을 조사하고 완벽한 데이터</description>
+    </item>
+    
+    <item>
+      <title>[번역] 좋은 코딩을 위한 13 가지 간단한 규칙</title>
+      <link>https://mingrammer.com/translation-13-simple-rules-for-good-coding/</link>
+      <pubDate>Sun, 02 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-13-simple-rules-for-good-coding/</guid>
+      <description>13 Simple Rules for Good Coding (from my 15 years of experience)를 번역한 글입니다. 나는 15년 이상의 경력을 가진 프로그래머이며 많은 여러 언어, 패러다임, 프레임워크를 사</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go와 OOP</title>
+      <link>https://mingrammer.com/translation-go-and-oop/</link>
+      <pubDate>Tue, 28 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-and-oop/</guid>
+      <description>theamydance의 Go and OOP&amp;hellip; Sorta를 번역한 글입니다. 나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 Women Who Go 밋업에서 처음으</description>
+    </item>
+    
+    <item>
+      <title>[번역] 이터레이터와 제너레이터</title>
+      <link>https://mingrammer.com/translation-iterators-vs-generators/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-iterators-vs-generators/</guid>
+      <description>Iterables vs. Iterators. vs Generators를 번역한 글입니다. 모든 이미지는 원문에서 발췌하였습니다. 나는 파이썬에서 다음과 같은 개념들간의 정확한 차이점에 대해 가끔씩</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - encoding/json 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-encoding-json-package/</link>
+      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-encoding-json-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: encoding/json package를 번역한 글입니다. 좋든 나쁘든, JSON은 인터넷의 인코딩이다. 이것의 공식적인 정의는 냅킨 뒷면에 쓸 수 있을 정도로 간단</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - encoding 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-encoding-package/</link>
+      <pubDate>Wed, 09 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-encoding-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: encoding package를 번역한 글입니다. 우리는 이제까지 로우(raw) 바이트 스트림과 제한된 바이트 슬라이스를 다뤄봤지만 단순히 바이트만을</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - bytes &#43; strings 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</link>
+      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-bytes-strings-packages/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: bytes + strings packages를 번역한 글입니다. 우린 지난번 포스트에서 바이트 스트림을 다뤄봤는데 가끔은 제한적인 범위에서, 인메모리 바이트 슬</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go 둘러보기 - io 패키지</title>
+      <link>https://mingrammer.com/translation-go-walkthrough-io-package/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-go-walkthrough-io-package/</guid>
+      <description>Go Walkthrough 시리즈의 Go Walkthrough: io package를 번역한 글입니다. Go는 바이트(bytes)를 사용하여 작업하기 위해 만들어진 프로그래밍 언어이다. 바이트의 리스트</description>
+    </item>
+    
+    <item>
+      <title>[번역] Go에서 애플리케이션 설계하기</title>
+      <link>https://mingrammer.com/translation-structuring-applications-in-go/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-structuring-applications-in-go/</guid>
+      <description>Structuring Applications in Go을 번역한 글입니다. 개요 Go를 배울 때 가장 어려웠던 부분은 애플리케이션을 어떻게 설계하는가였다. Go 이전에, 나는 Rails 애플리케이션을 만들었었는데</description>
+    </item>
+    
+    <item>
+      <title>[번역] 비동기 파이썬</title>
+      <link>https://mingrammer.com/translation-asynchronous-python/</link>
+      <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-asynchronous-python/</guid>
+      <description>Asynchronous Python을 번역한 글입니다. 파이썬에서의 비동기 프로그래밍은 최근 점점 더 많은 인기를 끌고있다. 비동기 프로그래밍을 위한 파이썬 라이브러리는 많다. 그</description>
+    </item>
+    
+  </channel>
+</rss>

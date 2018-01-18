@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pycharm on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/pycharm/</link>
+    <description>Recent content in Pycharm on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 14 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/pycharm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)</title>
+      <link>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</guid>
+      <description>보통 파이썬 프로젝트를 시작하면 주로 virtualenv를 사용해 파이썬 환경(파이썬 버전, 패키지들을 모두 포함)을 독립적으로 분리시킨 가상 환경에서 작업</description>
+    </item>
+    
+  </channel>
+</rss>

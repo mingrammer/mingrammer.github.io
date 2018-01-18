@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		
+		<meta name="generator" content="Hugo 0.31.1" />
+		<title>[번역] 비동기 파이썬 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.comimages/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.comcss/style.css">
+		<link rel="stylesheet" href="https://mingrammer.comcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.comcss/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.compost'>Archive</a>
+	<a href='https://mingrammer.comcategories'>Categories</a>
+	<a href='https://mingrammer.comtags'>Tags</a>
+	<a href='https://mingrammer.comabout'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [번역] 비동기 파이썬
+                    </h1>
+                    <h2 class="headline">
+                    Oct 3, 2016 00:00
+                    · 6046 words
+                    · 13 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.comtags/python">python</a>
+                          
+                              <a href="https://mingrammer.comtags/asynchronous">asynchronous</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#차근-차근-살펴보기">차근 차근 살펴보기</a>
+<ul>
+<li><a href="#컨텍스트-스위칭">컨텍스트 스위칭</a></li>
+<li><a href="#믿을-수-없을만큼-효율적인-비서">믿을 수 없을만큼 효율적인 비서</a></li>
+<li><a href="#그린-스레드-green-threads">그린 스레드 (Green Threads)</a></li>
+<li><a href="#이벤트-루프-코루틴-천천히-살펴봅시다">이벤트 루프? 코루틴? 천천히 살펴봅시다</a></li>
+</ul></li>
+<li><a href="#콜백-스타일의-비동기">콜백 스타일의 비동기</a></li>
+<li><a href="#콜백-지옥">콜백 지옥</a></li>
+<li><a href="#비교">비교</a>
+<ul>
+<li><a href="#그린-스레드-스타일">그린 스레드 스타일</a></li>
+<li><a href="#콜백-스타일">콜백 스타일</a></li>
+</ul></li>
+<li><a href="#어떻게-개선할-수-있을까">어떻게 개선할 수 있을까?</a>
+<ul>
+<li><a href="#비동기-async-와-대기-await">비동기(Async)와 대기(Await)</a></li>
+</ul></li>
+<li><a href="#마무리">마무리</a></li>
+<li><a href="#모든건-준비되어-있다">모든건 준비되어 있다</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://hackernoon.com/asynchronous-python-45df84b82434#.irtdum9dx">Asynchronous Python</a>을 번역한 글입니다.</p>
+</blockquote>
+
+<p>파이썬에서의 비동기 프로그래밍은 최근 점점 더 많은 인기를 끌고있다. 비동기 프로그래밍을 위한 파이썬 라이브러리는 많다. 그 중 하나는 Python 3.4에서 추가된 <em>asyncio</em> 라는 라이브러리이다. <em>Asyncio</em> 는 파이썬에서 가장 인기 있는 라이브러리중 하나이다. 이번 글에서는 비동기 프로그래밍이 무엇인지 설명하면서 라이브러리들을 비교할 것이다. 먼저 역사를 살펴보고 파이썬에서 비동기 프로그래밍이 어떻게 발전했는지 알아보자.</p>
+
+<p><br></p>
+
+<h2 id="차근-차근-살펴보기">차근 차근 살펴보기</h2>
+
+<p>프로그램은 각 라인 별로 순서대로 실행되는 특성이 있다. 예를 들어, 리소스를 가져오기 위해 원격 서버로 접속하는 코드 라인을 가지고 있다는건 서버 연결을 대기하는동안 프로그램이 아무것도 하지 못함을 의미한다. 진행하기 위해서는 응답을 기다려야한다. 이는 몇 몇 상황에서는 괜찮지만, 많은 경우엔 그렇지 않다. 물론 이런 상황에서의 표준 해결책은 스레딩(threading)이다. 프로그램은 여러 스레드를 돌릴 수 있으며, 각 스레드는 동시에 실행된다.</p>
+
+<p>스레드 여러개를 동시에 사용하면 프로그램은 동시에 여러가지 일을 할 수 있다. 물론 스레딩은 많은 주의사항을 가지고있다. 다중 스레드 프로그램은 복잡하며, 경쟁 조건(race conditions). 데드락(dead-locks), 라이브 잠금(live-locks) 그리고 기아 상태(resource-starvation) 등의 까다로운 문제들을 포함한 많은 에러가 발생하기 쉽다.</p>
+
+<h3 id="컨텍스트-스위칭">컨텍스트 스위칭</h3>
+
+<p>비동기 프로그래밍은 이러한 모든 문제들을 방지할 순 있지만, 이는 사실 CPU 컨텍스트 스위칭이라는 전혀 다른 문제를 위해 설계되었다. 다중 스레드가 실행중일 때, 각 CPU 코어는 한 번에 하나의 스레드만 돌릴 수 있다. 모든 스레드와 프로세스가 자원을 공유하기 위해 CPU 컨텍스트 전환이 자주 일어난다. 일을 매우 단순화하기 위해, CPU는 임의의 간격으로 스레드의 모든 컨텍스트 정보를 저장하고 다른 스레드로 전환된다. CPU는 정해지지 않은 간격마다 지속적으로 스레드간 전환을 한다. 스레드들 또한 자원이며, 이는 공짜가 아니다.</p>
+
+<p>비동기 프로그래밍은 기본적으로 CPU보다 스레드와 컨텍스트 스위칭을 관리하는 애플리케이션이 존재하는 소프트웨어/유저스페이스의 스레딩이다. 기본적으로, 비동기 세상에서 컨텍스트는 임의의 간격이 아닌 오직 정의된 전환점에서만 전환이된다.</p>
+
+<h3 id="믿을-수-없을만큼-효율적인-비서">믿을 수 없을만큼 효율적인 비서</h3>
+
+<p>이제 이 개념들을 현실 세계에서의 예시와 비교해보자. 믿을 수 없을 정도로 효율적이고, 한 시라도 시간을 낭비하지 않는 - 항상 모든 일을 잘 마치며, 매사에 최선을 다하는 비서가 있다고 상상해보자. 이 비서는 - &lsquo;Bob&rsquo;이라고 부르자 - 이를 달성하기위해 미친듯이 멀티태스킹을 할 것이다. Bob은 한 번에 해야하는 5개의 일을 가지고 있다 - 전화 받기, 손님들 접수 받기, 항공편 예약하기, 미팅 스케쥴 조정하기 그리고 서류 제출하기. 이제 이 상황이 낮은 트래픽의 환경에 있다고 상상해보자. 따라서 전화 받기, 방문객, 그리고 미팅 요청들이 적으며 각 업무들은 서로 떨어져있다. Bob의 대부분의 시간은 서류를 제출하는동안 항공사와 전화를 하는데 소비될 것이다. 이 모든건 꽤 일반적이며 상상하기 쉽다. 전화가 오면, Bob은 잠시 항공사와의 전화를 보류하고, 전화에 응답을 한 후, 다시 항공사와의 전화로 돌아갈 것이다. 언제 어떤 업무가 Bob에게 도착하면, 서류 제출은 뒤로 미뤄질 수 있다. 왜냐하면 이는 지금 당장 해결해야할 필요가 없기 때문이다. 이것이 사람이 동시에 여러가지 일을 하는 방식이며, 적절한 때에 컨텍스트 스위칭이 일어난다. Bob은 비동기적이다.</p>
+
+<p>이것의 스레딩 버전은 5명의 Bob이 각각 하나의 업무만 가진 것처럼 보일 것이다. 하지만 어느 주어진 시간에는  단 한 가지 일을 하는것만 허용된다. 여기엔  Bob이 일을 할 수 있게 제어하는 장치가 있을텐데, 이는 작업들에 대해 아무것도 이해하지 못한다. 이  장치는 업무들이 발생하게된 사건(이벤트)을 이해하지 못하기 때문에, 만일 3개의 작업이 아무것도 하고있지 않더라도 5개의 작업들 사이를 지속적으로 전환할 것이다. 예를 들어, 서류 제출 담당의 Bob에 인터럽트가 생기면 전화 받기 담당의 Bob이 무언가를 할 수 있게된다. 하지만 전화 받기 담당의 Bob은 아무 할 일도 없으며, 따라서 그는 잠자기 상태로 돌아간다. 아무것도 하지 않는 3개의 업무들마저 찾아내기 위해 모든 업무들간의 전환을 함으로써 시간 낭비가 발생한다. 컨텍스트 스위칭의 약 57% (3/5보다 약간 낮음)가 무의미한 작업이 될 것이다. 물론, CPU 컨텍스트 스위칭이 매우 빠르기는하지만 결코 공짜는 아니다.</p>
+
+<h3 id="그린-스레드-green-threads">그린 스레드 (Green Threads)</h3>
+
+<p>그린 스레드 (Green Threads)는 비동기 프로그래밍의 가장 기초이다. 그린 스레드는 스케쥴링을 하드웨어가 아닌 애플리케이션 코드가 대신 한다는 점을 제외하면, 일반 스레드와 정확히 같아보인다. <em><a href="http://www.gevent.org/">Gevent</a></em> 는 그린 스레드를 사용하는 유명한 파이썬 라이브러리이다. <em>Gevent</em> 는 기본적으로 그린 스레드 + eventlet (non-blocking I/O 네트워킹 라이브러리)이다. 다음은 <em>gevent</em> 를 사용하여 한 번에 여러개의 url에 요청을 날리는 예시이다.</p>
+
+<pre><code class="language-python">import gevent
+gevent.monkey.patch_all()
+urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
+
+def print_head(url):
+    print('Starting {}'.format(url))
+    data = urlopen(url).read()
+    print('{}: {} bytes: {}'.format(url, len(data), data))
+
+jobs = [genvent.spawn(print_head, _url) for _url in urls]
+
+gevent.wait(jobs)
+</code></pre>
+
+<p>위에서 볼 수 있듯이, gevent API는 스레딩과 유사해보인다. 그러나, 구현을 보면 이는 실제 스레드 대신 코루틴을 사용하며, 스케쥴링을 위해 코루틴들을 <a href="http://www.gevent.org/intro.html#event-loop">이벤트 루프</a>위에서 실행한다. 이는 코루틴에 대한 이해 없이도 경량 스레딩의 이점을 얻을 수 있음을 의미하지만, 아직도 스레딩이 가져오는 다른 문제점들을 가지고있다. Gevent는 스레딩을 이미 이해하고 있고, 경량 스레딩을 원하는 사람들에겐 좋은 라이브러리이다.</p>
+
+<h3 id="이벤트-루프-코루틴-천천히-살펴봅시다">이벤트 루프? 코루틴? 천천히 살펴봅시다</h3>
+
+<p>비동기 프로그래밍이 어떻게 동작하는지에 대해 정리해보자. 비동기 프로그래밍을 하기위한 한 가지 방법은 이벤트 루프를 사용하는 것이다. 이벤트 루프란, 이벤트/잡(events/jobs)을 관리하는 큐가 있을 때, 단지 큐에서 지속적으로 잡을 빼내고 이들을 실행해주는 루프와 정확히 같은 말이다. 이 잡들을 코루틴이라고 부른다. 이들은 큐에 넣을 수 있는 그 어떤 이벤트들을 포함하는 명령어들의 작은 집합이다.</p>
+
+<p><br></p>
+
+<h2 id="콜백-스타일의-비동기">콜백 스타일의 비동기</h2>
+
+<p>파이썬엔 많은 비동기 라이브러리들이 있지만, 그 중 가장 유명한 것들은 아마 <em>Tornado</em> 와 <em>gevent</em> 일 것이다. 우리는 이미 <em>gevent</em> 에 대한 얘기를 했으므로, Tornado가 어떻게 동작하는지에 대해 조금 더 초점을 맞춰보자. Tornado는 비동기 네트워크 I/O를 위해 콜백 스타일을 사용하는 비동기 웹 프레임워크이다. 콜백은 함수이며, 이는 &ldquo;이 작업이 완료되면, 이 함수를 실행시켜줘&rdquo;라는 의미이다. 이는 기본적으로 코드에 대한 &ldquo;완료&rdquo; 훅(hook)이다. 다시 말하면, 콜백은 당신이 고객 서비스 라인을 호출하는 즉시, 전화 번호를 남긴 후 전화를 끊으면, 전화가 올 때까지 무한정 대기하는게 아닌 그들이 전화를 사용할 수 있을 때 당신에게 다시 전화를 걸 수 있는 상황과 같은것이다.</p>
+
+<p>tornado를 이용하여 위에서 말한 것들을 어떻게 할 수 있는지 살펴보자.</p>
+
+<pre><code class="language-python">
+from tornado.httpclient import AsyncHTTPClient
+urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
+
+def handle_response(response):
+    if response.error:
+        print(&quot;Error:&quot;, response.error)
+    else:
+        url = response.request.url
+        data = response.body
+        print('{}: {} bytes: {}'.format(url, len(data), data))
+    
+http_client = AsyncHTTPClient()
+for url in urls:
+    http_client.fetch(url, handle_response)
+</code></pre>
+
+<p>코드를 조금 설명하면, 제일 마지막 라인은 non-blocking 방식으로 url를 가져오는 <em>AsyncHTTPClient.fetch</em> 라는 tornado 메서드를 호출하고있다. 이 메서드는 기본적으로 네트워크 호출을 기다리는 동안 프로그램이 다른 일을 수행할 수 있도록 실행하고 즉시 리턴이 된다. url을 가져오기전에 그 다음 라인에 도착하기 때문에, 메서드로부터 리턴 객체를 얻을 수가 없다. 이 문제에 대한 해결책은 <em>fetch</em> 메서드에서 객체를 리턴하는 대신, 결과값을 받는 함수 또는 콜백을 호출하는 것이다. 이 예제에서 콜백은 <em>handle_response</em> 이다.</p>
+
+<p><br></p>
+
+<h2 id="콜백-지옥">콜백 지옥</h2>
+
+<p>이전 예시에서, 콜백함수의 맨 처음 라인에서 에러를 확인하고 있음을 볼 수 있다. 이는 예외를 발생시킬 수 없기 때문에 꼭 필요한 부분이다. 만약 예외가 발생한다면, 이벤트 루프로 인해 코드의 적절한 부분들이 제대로 처리되지 않을 것이다. <em>fetch</em> 가 실행될 때, 이는 http 호출을 시작한 후, 결과를 처리하는 함수를 이벤트 루프에 보낸다. 에러를 발견하는 순간, 호출 스택은 오직 예외를 처리하는 코드가 없는 이벤트 루프와 해당 함수뿐일 것이다. 콜백에서 어떠한 예외라도 발생한다면 이는 이벤트 루프와 프로그램을 빠져나갈 것이다. 따라서 모든 에러들은 예외를 일으키는 대신 객체로서 전달 되어야한다. 이는 만약 당신이 에러 확인하는 걸 깜빡했을 경우, 에러는 묻혀갈 것임을 의미한다. golang에 익숙한 사람들은 이런 스타일을 인지하고 있는데 언어 자체가 이러한 스타일을 모든 부분에서 강요하고 있다. 이는 golang의 측면에서 가장 불만인 부분이다.</p>
+
+<p>비동기 세계에서 콜백의 다른 문제점은, 블로킹을 없애는 방법이 유일하게 콜백뿐이라는 것이다. 이는 콜백의 콜백의 콜백같은 매우 긴 콜백 체인을 만들 수도 있다. 당신은 스택과 변수에 접근할 수 없기 때문에, 결국  모든 콜백에 큰 객체들을 밀어 넣는다. 그러나 만약 서드파티 API를 사용한다면, 당신은 예기치 못하게 콜백에 아무것도 전달할 수가 없다. 이 또한 문제가 되는데, 왜냐하면 모든 콜백이 마치 스레드처럼 동작하기 때문이다. 그러나 태스크를 수집할 방법은 없다. 예를 들어 말하자면, 당신이 세 개의 API를 호출하고자 하면, 그 세 개의 작업이 완료될 때까지 기다린 후 집계 결과를 반환한다. <em>gevent</em> 세계에서 당신은 이 작업을 수행할 수 있지만, 콜백을 사용할 순 없다. 이를 구현하기 위해선 결과값들을 글로벌 전역 변수에 저장을 한 뒤, 콜백에서 이 값들이 마지막 결과값인지 아닌지를 확인해야할 것이다.</p>
+
+<p><br></p>
+
+<h2 id="비교">비교</h2>
+
+<p>지금까지의 내용들을 비교 해보자. 만약 I/O를 블로킹으로부터 방지하고 싶다면, 스레드 혹은 비동기를 사용하면 된다. 스레드는 기아 상태, 데드락 그리고 경쟁 조건등의 문제점들을 가지고 있다. 이는 또한 CPU에 대한 컨텍스트 스위칭 오버헤드를 만들기도 한다. 비동기 프로그래밍은 이러한 컨텍스트 스위칭 문제를 해결할 순 있지만, 자체적인 문제점들을 가지고 있다. 파이썬에서 비동기 프로그래밍을 위한 선택사항은 <em>그린 스레드</em> 또는 <em>콜백</em> 스타일이 있다.</p>
+
+<h3 id="그린-스레드-스타일">그린 스레드 스타일</h3>
+
+<ul>
+<li>스레드들이 하드웨어 대신 애플리케이션 레벨에서 관리됨</li>
+<li>일반 스레드와 유사함 : 스레드를 이해하고 있는 사람들이 사용하기 좋음</li>
+<li>CPU 컨텍스트 스위칭 문제를 제외한 일반 스레드 프로그래밍이 가진  모든 문제점들을 가지고 있음</li>
+</ul>
+
+<h3 id="콜백-스타일">콜백 스타일</h3>
+
+<ul>
+<li>스레드 프로그램과 많은 부분이 다름</li>
+<li>프로그래머는 스레드와 코루틴을 직접 볼 수 없음</li>
+<li>콜백은 예외를 발생시키지 않음</li>
+<li>콜백은 수집할 수 없음</li>
+<li>콜백의 콜백은 복잡하며 디버깅이 어려움</li>
+</ul>
+
+<p><br></p>
+
+<h2 id="어떻게-개선할-수-있을까">어떻게 개선할 수 있을까?</h2>
+
+<p>python 3.3까지는 이것이 가장 최선의 방법이었다. 더 나은 방법을 위해선 언어 자체의 지원이 필요하다. 더 나은 비동기 프로그래밍을 위해선, 파이썬은 메서드를 부분적으로 실행시키고, 실행을 중단시키고, 그리고 스택 객체와 예외를 전역적으로 관리할 수 있는 방법이 필요할 것이다. 만약  파이썬이 익숙하다면, 제너레이터가 힌트가 될 수 있다는걸 깨달을 수 있을 것이다. 제너레이터는 함수가  리스트를 리턴하는데 한 번에 하나의 아이템만 리턴할 수 있으며, 다음 아이템이 필요할 때까지 실행이 중지된다. 제너레이터의 문제점은 함수가 이를 호출해야만 수행될 수 있다는 것이다. 즉, 제너레이터는 제너레이터를 호출할 수 없고, 서로의 실행을 중지시킬 수도 없다. 그러나 이는 <a href="https://docs.python.org/3/whatsnew/3.3.html#pep-380">PEP 380</a>이 제너레이터가 다른 제너레이터의 결과값을 yield할 수 있게 해주는 <em>yield from</em> 문법을 추가할 때 까지만이다. 비동기가 정말 제너레이터의 의도는 아니지만, 이는 비동기가 잘 돌아가는데에 필요한 모든 기능을 제공한다. 제너레이터는 스택을 유지하며 예외를 발생시킬 수 있다. 만약 당신이 제너레이터를 실행하는 이벤트 루프를 작성한다면, 훌륭한 비동기 라이브러리를 가질 수 있다. 그리고 따라서, <em>asyncio</em> 라이브러리가 탄생했다. 당신이 해야 할 모든 것들은 <em>@coroutine</em> 데코레이터를 추가하는 것이며 *asyncio*는 제너레이터를 코루틴 안으로 패치할 것이다. 여기에 우리가 전에 봤듯이 세 개의 url을 호출하는 예시가 있다.</p>
+
+<pre><code class="language-python">import asyncio
+import aiohttp
+
+urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
+
+@asyncio.coroutine
+def call_url(url):
+    print('Starting {}'.format(url))
+    response = yield from aiohttp.get(url)
+    data = yield from response.text()
+    print('{}: {} bytes: {}'.format(url, len(data), data))
+    return data
+
+futures = [call_url(url) for url in urls]
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(futures))
+</code></pre>
+
+<p>주목할 부분들이 있다.</p>
+
+<ol>
+<li>에러를 볼 수가 없다. 왜냐하면 에러는 스택으로 제대로 전달되기 때문이다</li>
+<li>원할 때 객체를 리턴할 수 있음</li>
+<li>모든 코루틴을 시작하고 나중에 이들을 수집할 수 있음</li>
+<li>콜백이 없다</li>
+<li>10번째 라인은 9번째 라인이 완전히 끝나기전까지 실행되지 않는다 (동기(synchronous)와 유사하다)</li>
+</ol>
+
+<p>훌륭하다! 유일한 문제는 <em>yield from</em> 이 제너레이터와 매우 유사해보인다는 것이고, 만약 이것이 실제로 제너레이터라면 문제가 발생할 수도 있다.</p>
+
+<h3 id="비동기-async-와-대기-await">비동기(Async)와 대기(Await)</h3>
+
+<p><em>asyncio</em> 라이브러리는 많은 지지를 얻었고, 파이썬은 이를 코어 라이브러리로 만들기로 결정하였다. 코어 라이브러리의 도입과 함께, Python 3.5에는 <code>async</code>와 <code>await</code> 키워드 또한 추가되었다. 이 키워드들은 코드가 비동기임을 더욱 명확하게 알 수 있도록 디자인 되었다. 따라서 당신의 메서드가 제너레이터로 혼동되는 일이 없다. <em>async</em> 키워드는 메서드가 비동기임을 알 수 있도록 <em>def</em> 앞에 위치한다. <em>await</em> 키워드는 <em>yield from</em> 를 대신하며 코루틴이 끝날때까지 대기하고 있음을 좀 더 명확하게 알 수 있다. 여기에 async/await 키워드를 사용한 위와 똑같은 예시가 있다.</p>
+
+<pre><code class="language-python">import asyncio
+import aiohttp
+
+urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
+
+async def call_url(url):
+    print('Starting {}'.format(url))
+    response = await aiohttp.get(url)
+    data = await response.text()
+    print('{}: {} bytes: {}'.format(url, len(data), data))
+    return data
+
+futures = [call_url(url) for url in urls]
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(futures))
+</code></pre>
+
+<p>기본적으로 여기서 일어나고 있는것은 async 메서드가 실행될 때, 대기 가능한 코루틴을 리턴하는 것이다.</p>
+
+<p><br></p>
+
+<h2 id="마무리">마무리</h2>
+
+<p>파이썬은 <em>asyncio</em> 라는 훌륭한 비동기 프레임워크를 가지고 있다. 이제 스레딩의 문제점들을 짚어보고 이들을 어떻게 해결했는지를 보자.</p>
+
+<ul>
+<li><strong>CPU 컨텍스트 스위칭</strong> : <em>asyncio</em> 는 비동기이며 이벤트 루프를 사용한다. 이는 I/O를 대기하는 동안 애플리케이션이 컨텍스트 스위치를 관리할 수 있도록 한다. CPU 스위칭이 없다!</li>
+<li><strong>경쟁 조건 (Race Conditions)</strong> : <em>asyncio</em> 는 한 번에 오직 하나의 코루틴만 실행하며 정의된 지점에서만 스위칭이 일어나기 때문에, 코드는 경쟁 조건으로부터 안전하다.</li>
+<li><strong>데드락/라이브 잠금 (Dead-Locks/Live-Locks)</strong> : 경쟁 조건에 대해 걱정할 필요가 없기 때문에, 잠금을 사용할 필요가 없다. 이는 데드락으로부터 매우 안전하게 만들어준다. 만약 두 개의 코루틴이 서로를 깨워야(wake) 할 필요가 있을 경우엔 여전히 데드락이 발생할 가능성이 있지만, 이런 일을 해야할 경우는 매우 드물 것이다.</li>
+<li><strong>기아 상태 (Resource Starvation)</strong> : 모든 코루틴이 하나의 스레드에서 실행되고, 추가적인 소켓이나 메모리를 필요로하지 않기때문에, 되려 리소스가 부족하기가 힘들 것이다. 그러나 <em>Asyncio</em> 는 기본적인 스레드 풀인 &ldquo;executor pool&rdquo;을 하나 가지고 있다. 만약 매우 많은 일들을 하나의 &ldquo;executor pool&rdquo;에서 실행한다면, 여전히 리소스 부족에 대한 문제가 발생할 수 있다. 하지만, 매우 많은 실행 프로그램을 사용하는것은 안티 패턴이며, 아마 이런 일을 자주 하지는 않을 것이다.</li>
+</ul>
+
+<p>공평하게도, <em>asyncio</em> 는 매우 훌륭하지만, 자체적인 문제점들을 가지고 있다. 먼저, <em>asyncio</em> 는 파이썬의 새로운 개념이다. 몇 몇의 이상한 엣지 케이스들은 당신을 더욱 궁금한 상태로 만들 수도 있다. 두번째로, 완전한 비동기를 구현하려고하면 모든 코드베이스가 비동기여야 한다. 모든 작은 코드 조각까지 하나하나 다. 이것은 동기(synchronous) 함수가 너무 많은 시간이 걸려 이벤트 루프를 블로킹할 수도 있기 때문이다. asyncio를 위한 라이브러리는 여전히 초기 단계이기 때문에, 종종 당신의 스택의 일부분을 위한 비동기 버전을 찾기가 어렵다.</p>
+
+<p><br></p>
+
+<h2 id="모든건-준비되어-있다">모든건 준비되어 있다</h2>
+
+<p>비동기 파이썬의 여정이 끝났다. 파이썬에는 비동기 프로그래밍을 하기 위한 몇가지 옵션이 있다. 당신은 그린 스레드, 콜백 또는 진정한 코루틴을 사용할 수 있다. 옵션들이 많지만, 그 중 단연 최고는 asyncio이다. 만약 Python 3.5를 사용할 수 있다면, 파이썬 코어에 내장된걸 사용하길 바란다. 다음 프로젝트에서는 스레딩 대신 asyncio를 사용해보라.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2ftranslation-asynchronous-python%2f - %5b%eb%b2%88%ec%97%ad%5d%20%eb%b9%84%eb%8f%99%ea%b8%b0%20%ed%8c%8c%ec%9d%b4%ec%8d%ac by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/introduce-comprehension-of-python">파이썬의 Comprehension 소개<aside class="dates">Jun 14 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-truth-is-in-the-code">[번역] 진실은 코드에 있다<aside class="dates">May 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/tips-of-using-comma-in-python">파이썬의 Comma(,) 사용팁<aside class="dates">Apr 26 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-mathematics-of-machine-learning">[번역] 머신러닝 속 수학<aside class="dates">Apr 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-13-simple-rules-for-good-coding">[번역] 좋은 코딩을 위한 13 가지 간단한 규칙<aside class="dates">Apr 2 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/understanding-the-asterisk-of-python">파이썬의 Asterisk(*) 이해하기<aside class="dates">Mar 20 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.comjs/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.comjs/main.js"></script>
+<script src="https://mingrammer.comjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>
