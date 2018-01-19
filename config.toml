@@ -16,7 +16,6 @@ googleAnalytics = "UA-84081627-1"
 [params]
 	author = "mingrammer"
 	bio = "I love computer science, automation and mathematics"
-	location = "Non Euclidean Space"
 	description = "mingrammer's dev logs"
 	avatar = "images/avatar.png"
 
