@@ -54,8 +54,8 @@
                     </h1>
                     <h2 class="headline">
                     Feb 2, 2017 00:00
-                    · 3100 words
-                    · 7 minute read
+                    · 2685 words
+                    · 6 minute read
                       <span class="tags">
                       
                       
@@ -74,9 +74,6 @@
                     <div id="toc">
                       <nav id="TableOfContents">
 <ul>
-<li>
-<ul>
-<li><a href="#목차">목차</a></li>
 <li><a href="#a-name-version-버전-a"><a name='version'>버전</a></a>
 <ul>
 <li><a href="#버전-확인">버전 확인</a></li>
@@ -193,7 +190,6 @@
 <ul>
 <li><a href="#에러-처리">에러 처리</a></li>
 </ul></li>
-</ul></li>
 </ul>
 </nav>
                     </div>
@@ -204,62 +200,34 @@
 
 <blockquote>
 <p>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+)</p>
+
+<p>각 코드 블록은 Python/Go 순서</p>
 </blockquote>
-
-<h2 id="목차">목차</h2>
-
-<ul>
-<li><a href="#version">버전</a></li>
-<li><a href="#invocation">실행</a></li>
-<li><a href="#grammar">문법</a></li>
-<li><a href="#variables-and-expressions">변수와 표현식</a></li>
-<li><a href="#types-and-operators">타입 및 연산자</a></li>
-<li><a href="#strings">문자열</a></li>
-<li><a href="#fixed-arrays">고정 배열</a></li>
-<li><a href="#resizable-arrays">동적 배열</a></li>
-<li><a href="#dictionaries">딕셔너리(맵)</a></li>
-<li><a href="#functions">함수</a></li>
-<li><a href="#conditional-expression">조건문</a></li>
-<li><a href="#loop-expression">반복문</a></li>
-<li><a href="#libraries-and-namespaces">라이브러리 및 네임스페이스</a></li>
-<li><a href="#user-defined-types">사용자 정의 타입</a></li>
-<li><a href="#error-handling">에러 처리</a></li>
-</ul>
 
 <p><br></p>
 
-<h2 id="a-name-version-버전-a"><a name='version'>버전</a></h2>
+<h1 id="a-name-version-버전-a"><a name='version'>버전</a></h1>
 
-<hr />
-
-<h3 id="버전-확인">버전 확인</h3>
+<h2 id="버전-확인">버전 확인</h2>
 
 <pre><code class="language-shell">// Python
 $ python --version
 3.5
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-shell">// Go
 $ go version
 1.7
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-invocation-실행-a"><a name='invocation'>실행</a></h2>
+<h1 id="a-name-invocation-실행-a"><a name='invocation'>실행</a></h1>
 
-<hr />
-
-<h3 id="hello-world">Hello World</h3>
+<h2 id="hello-world">Hello World</h2>
 
 <pre><code class="language-python">print(&quot;Hello, World&quot;)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;fmt&quot;
 
@@ -268,12 +236,10 @@ func main() {
 }
 </code></pre>
 
-<h3 id="프로그램-실행">프로그램 실행</h3>
+<h2 id="프로그램-실행">프로그램 실행</h2>
 
 <pre><code class="language-shell">$ python3 hello.py
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-shell">$ go build hello.go
 $ ./hello
@@ -282,32 +248,24 @@ $ ./hello
 $ go run hello.go
 </code></pre>
 
-<h3 id="파일-확장자">파일 확장자</h3>
+<h2 id="파일-확장자">파일 확장자</h2>
 
 <pre><code>.py
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code>.go
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-grammar-문법-a"><a name='grammar'>문법</a></h2>
+<h1 id="a-name-grammar-문법-a"><a name='grammar'>문법</a></h1>
 
-<hr />
-
-<h3 id="블록-구분자">블록 구분자</h3>
+<h2 id="블록-구분자">블록 구분자</h2>
 
 <pre><code class="language-python"># 콜론(:)과 들여쓰기(indentation)로 구분   
 def main():
     # body
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 중괄호로 구분
 func main() {
@@ -315,7 +273,7 @@ func main() {
 }
 </code></pre>
 
-<h3 id="주석">주석</h3>
+<h2 id="주석">주석</h2>
 
 <pre><code class="language-python"># 주석
 
@@ -324,8 +282,6 @@ func main() {
 &quot;&quot;&quot;
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// 주석
 
 /*
@@ -333,7 +289,7 @@ func main() {
 */
 </code></pre>
 
-<h3 id="컨벤션">컨벤션</h3>
+<h2 id="컨벤션">컨벤션</h2>
 
 <pre><code class="language-python"># 보통 변수나 함수, 메서드는 스네이크 케이스 사용
 variables_use_snake_case = 10
@@ -342,8 +298,6 @@ def some_func()
 # 클래스는 파스칼 케이스 사용
 class SomeClass
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 보통 카멜 케이스 사용
 variablesUseCamelCase := 10
@@ -354,21 +308,15 @@ ExportedVariablesUseCapitanCase := 10
 type ExportedType struct
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-variables-and-expressions-변수와-표현식-a"><a name='variables-and-expressions'>변수와 표현식</a></h2>
+<h1 id="a-name-variables-and-expressions-변수와-표현식-a"><a name='variables-and-expressions'>변수와 표현식</a></h1>
 
-<hr />
-
-<h3 id="변수">변수</h3>
+<h2 id="변수">변수</h2>
 
 <pre><code class="language-python">i = 1
 s = &quot;string&quot;
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">var i int
 i = 1
@@ -377,7 +325,7 @@ i = 1
 s := &quot;string&quot;
 </code></pre>
 
-<h3 id="전역-변수">전역 변수</h3>
+<h2 id="전역-변수">전역 변수</h2>
 
 <pre><code class="language-python"># foo.py:
 # 최상위 스코프에 있으면 전역변수로 사용 가능
@@ -388,8 +336,6 @@ import foo
 
 print(foo.x)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// foo.go:
 package foo
@@ -414,26 +360,20 @@ func main() {
 }
 </code></pre>
 
-<h3 id="상수">상수</h3>
+<h2 id="상수">상수</h2>
 
 <pre><code class="language-python">// Python엔 상수라는 개념이 없으며
 // 관례적으로만 상수임을 나타내기위해 대문자로된 변수를 사용
 PI = 3.14159
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">const PI = 3.14159
 </code></pre>
 
-<p><br></p>
-
-<h3 id="할당">할당</h3>
+<h2 id="할당">할당</h2>
 
 <pre><code class="language-python">i = 2
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 선언과 동시에 할당
 i := 2
@@ -442,12 +382,10 @@ i := 2
 i = 2
 </code></pre>
 
-<h3 id="병렬-할당">병렬 할당</h3>
+<h2 id="병렬-할당">병렬 할당</h2>
 
 <pre><code class="language-python">x, y = 1, 2
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">x, y := 1, 2
 
@@ -455,34 +393,28 @@ i = 2
 z, w = 3, 4
 </code></pre>
 
-<h3 id="변수값-교환-swap">변수값 교환 (Swap)</h3>
+<h2 id="변수값-교환-swap">변수값 교환 (Swap)</h2>
 
 <pre><code class="language-python">x, y = y, x
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">x, y = y, x
 </code></pre>
 
-<h3 id="증감">증감</h3>
+<h2 id="증감">증감</h2>
 
 <pre><code class="language-python">i += 1
 i -= 1
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">i++
 i--
 </code></pre>
 
-<h3 id="포인터">포인터</h3>
+<h2 id="포인터">포인터</h2>
 
 <pre><code class="language-python"># none
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">i := 1
 
@@ -493,30 +425,22 @@ ptr = &amp;i
 j := *ptr
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-types-and-operators-타입-및-연산자-a"><a name='types-and-operators'>타입 및 연산자</a></h2>
+<h1 id="a-name-types-and-operators-타입-및-연산자-a"><a name='types-and-operators'>타입 및 연산자</a></h1>
 
-<hr />
-
-<h3 id="부울타입">부울타입</h3>
+<h2 id="부울타입">부울타입</h2>
 
 <pre><code class="language-python">True False
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">true false
 </code></pre>
 
-<h3 id="정수타입">정수타입</h3>
+<h2 id="정수타입">정수타입</h2>
 
 <pre><code class="language-python">int
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">int
 int8
@@ -530,28 +454,24 @@ uint32
 uint64
 </code></pre>
 
-<h3 id="실수타입">실수타입</h3>
+<h2 id="실수타입">실수타입</h2>
 
 <pre><code class="language-python">float
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">float32
 float64
 </code></pre>
 
-<h3 id="널타입">널타입</h3>
+<h2 id="널타입">널타입</h2>
 
 <pre><code class="language-python">None
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">nil
 </code></pre>
 
-<h3 id="타입-사이즈">타입 사이즈</h3>
+<h2 id="타입-사이즈">타입 사이즈</h2>
 
 <pre><code class="language-python">x = 1
 x.__sizeof__()
@@ -561,67 +481,53 @@ import sys
 sys.getsizeof(x)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">import &quot;unsafe&quot;
 
 i := 1
 unsafe.Sizeof(i)
 </code></pre>
 
-<p><br></p>
-
-<h3 id="논리-연산자">논리 연산자</h3>
+<h2 id="논리-연산자">논리 연산자</h2>
 
 <pre><code class="language-python">and or not
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">&amp;&amp; || !
 </code></pre>
 
-<h3 id="관계-연산자">관계 연산자</h3>
+<h2 id="관계-연산자">관계 연산자</h2>
 
 <pre><code class="language-python">== != &lt; &gt; &lt;= &gt;=
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">== != &lt; &gt; &lt;= &gt;=
 </code></pre>
 
-<h3 id="산술-연산자">산술 연산자</h3>
+<h2 id="산술-연산자">산술 연산자</h2>
 
 <pre><code class="language-python">+ - * / %
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">+ - * / %
 </code></pre>
 
-<h3 id="비트-연산자">비트 연산자</h3>
+<h2 id="비트-연산자">비트 연산자</h2>
 
 <pre><code class="language-python">&lt;&lt; &gt;&gt; &amp; | ^ ~
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">&lt;&lt; &gt;&gt; &amp; | ^
 </code></pre>
 
-<h3 id="삼항연산자">삼항연산자</h3>
+<h2 id="삼항연산자">삼항연산자</h2>
 
 <pre><code class="language-python">y = 1 if x &gt; 0 else 0
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// none
 </code></pre>
 
-<h3 id="나눗셈-연산">나눗셈 연산</h3>
+<h2 id="나눗셈-연산">나눗셈 연산</h2>
 
 <pre><code class="language-python">int(1 / 3)  # 정수 나누기
 1 / 3  # 실수 나누기
@@ -631,74 +537,56 @@ unsafe.Sizeof(i)
 1 / float(3)  # 실수 나누기  
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">1 / 3 // 정수 나누기
 1/ float32(3) // 실수 나누기
 </code></pre>
 
-<p><br><br></p>
-
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-strings-문자열-a"><a name='strings'>문자열</a></h2>
+<h1 id="a-name-strings-문자열-a"><a name='strings'>문자열</a></h1>
 
-<hr />
-
-<h3 id="타입">타입</h3>
+<h2 id="타입">타입</h2>
 
 <pre><code class="language-python">str
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">string
 </code></pre>
 
-<h3 id="리터럴">리터럴</h3>
+<h2 id="리터럴">리터럴</h2>
 
 <pre><code class="language-python">&quot;string&quot;
 'string'
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">&quot;string&quot;
 `string`
 </code></pre>
 
-<h3 id="리터럴-개행">리터럴 개행</h3>
+<h2 id="리터럴-개행">리터럴 개행</h2>
 
 <pre><code class="language-python">s = 'first \n second'
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">s := `first
 second`
 </code></pre>
 
-<h3 id="문자열-비교">문자열 비교</h3>
+<h2 id="문자열-비교">문자열 비교</h2>
 
 <pre><code class="language-python">'first' &lt; 'second'
 'fisrt' == 'second'
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">&quot;first&quot; &lt; &quot;second&quot;
 &quot;first&quot; == &quot;second&quot;
 </code></pre>
 
-<h3 id="문자열을-숫자로-변환">문자열을 숫자로 변환</h3>
+<h2 id="문자열을-숫자로-변환">문자열을 숫자로 변환</h2>
 
 <pre><code class="language-python">i = int('13')
 f = float('3.14')
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;strconv&quot;
 
@@ -709,13 +597,11 @@ i, _ := strconv.ParseInt(&quot;13&quot;, 10, 32)
 f, _ := strconv.ParseFloat(&quot;3.14&quot;, 32)
 </code></pre>
 
-<h3 id="숫자를-문자열로-변환">숫자를 문자열로 변환</h3>
+<h2 id="숫자를-문자열로-변환">숫자를 문자열로 변환</h2>
 
 <pre><code class="language-python">str(13)
 str(3.14)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;strconv&quot;
 
@@ -726,7 +612,7 @@ strconv.FormatInt(13, 10)
 strconv.FormatFloat(3.14, 'f', 4, 32)
 </code></pre>
 
-<h3 id="join과-split">Join과 Split</h3>
+<h2 id="join과-split">Join과 Split</h2>
 
 <pre><code class="language-python"># join
 '-'.join('ab', 'cd', 'ef')
@@ -734,8 +620,6 @@ strconv.FormatFloat(3.14, 'f', 4, 32)
 # split
 'ab-cd-ed'.split('-')
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;strings&quot;
 
@@ -747,25 +631,21 @@ s := strings.Join(parse, &quot;-&quot;)
 parts = strings.Split(s, &quot;-&quot;)
 </code></pre>
 
-<h3 id="문자-인덱스">문자 인덱스</h3>
+<h2 id="문자-인덱스">문자 인덱스</h2>
 
 <pre><code class="language-python">&quot;hello&quot;[1]  # e
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;strings&quot;
 
 strings.Index(&quot;hello&quot;, &quot;1&quot;) // 3
 </code></pre>
 
-<h3 id="케이스-변환">케이스 변환</h3>
+<h2 id="케이스-변환">케이스 변환</h2>
 
 <pre><code class="language-python">&quot;hello&quot;.upper()
 &quot;hello&quot;.lower()
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import &quot;strings&quot;
 
@@ -773,35 +653,27 @@ strings.ToUpper(&quot;hello&quot;)
 strings.ToLower(&quot;HELLO&quot;)
 </code></pre>
 
-<h3 id="문자열-길이">문자열 길이</h3>
+<h2 id="문자열-길이">문자열 길이</h2>
 
 <pre><code class="language-python">len(&quot;hello&quot;)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">len(&quot;hello&quot;)
 </code></pre>
 
-<h3 id="문자-타입">문자 타입</h3>
+<h2 id="문자-타입">문자 타입</h2>
 
 <pre><code class="language-python">str
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">rune
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-fixed-arrays-고정-배열-a"><a name='fixed-arrays'>고정 배열</a></h2>
+<h1 id="a-name-fixed-arrays-고정-배열-a"><a name='fixed-arrays'>고정 배열</a></h1>
 
-<hr />
-
-<h3 id="선언-및-초기화">선언 및 초기화</h3>
+<h2 id="선언-및-초기화">선언 및 초기화</h2>
 
 <pre><code class="language-python"># Python은 고정 배열을 네이티브로 지원하지 않음
 
@@ -814,8 +686,6 @@ import collections
 arr = collections.deque([0] * 10, maxlen=10)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// 배열(array)이라고 부름
 
 // 선언
@@ -827,15 +697,9 @@ arr := []int{1, 2, 3}
 
 <p><br></p>
 
-<hr />
+<h1 id="a-name-resizable-arrays-동적-배열-a"><a name='resizable-arrays'>동적 배열</a></h1>
 
-<p><br></p>
-
-<h2 id="a-name-resizable-arrays-동적-배열-a"><a name='resizable-arrays'>동적 배열</a></h2>
-
-<hr />
-
-<h3 id="선언-및-초기화-1">선언 및 초기화</h3>
+<h2 id="선언-및-초기화-1">선언 및 초기화</h2>
 
 <pre><code class="language-python"># 선언
 arr = [] # 또는 list()
@@ -843,8 +707,6 @@ arr = [] # 또는 list()
 # 초기화 선언
 arr = [1, 2, 3]
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 슬라이스(slice)라고 부름
 
@@ -855,12 +717,10 @@ arr = make([]int, 5, 10)
 arr := []int{1, 2, 3}
 </code></pre>
 
-<h3 id="사이즈">사이즈</h3>
+<h2 id="사이즈">사이즈</h2>
 
 <pre><code class="language-python">len(arr)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 길이. array도 동일
 len(arr)
@@ -869,7 +729,7 @@ len(arr)
 cap(arr)
 </code></pre>
 
-<h3 id="lookup과-update">lookup과 update</h3>
+<h2 id="lookup과-update">lookup과 update</h2>
 
 <pre><code class="language-python"># lookup
 a = arr[0]
@@ -877,8 +737,6 @@ a = arr[0]
 # update
 arr[0] = 1
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// array도 동일
 
@@ -889,7 +747,7 @@ a = arr[0]
 arr[0] = 1
 </code></pre>
 
-<h3 id="배열-순회">배열 순회</h3>
+<h2 id="배열-순회">배열 순회</h2>
 
 <pre><code class="language-python"># 값 순회
 for e in arr:
@@ -899,8 +757,6 @@ for e in arr:
 for i, e in enumerate(arr):
     print(&quot;index : {0}, value : {1}&quot;.format(i, e))
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// array도 동일
 
@@ -915,7 +771,7 @@ for i, e := range arr {
 }
 </code></pre>
 
-<h3 id="슬라이싱">슬라이싱</h3>
+<h2 id="슬라이싱">슬라이싱</h2>
 
 <pre><code class="language-python">arr = [1, 2, 3, 4 5]
 
@@ -925,8 +781,6 @@ arr[1:3]
 # [3, 4, 5]
 arr[2:]
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// array도 동일
 
@@ -938,19 +792,17 @@ arr[1:3]
 arr[2:]
 </code></pre>
 
-<h3 id="값-추가">값 추가</h3>
+<h2 id="값-추가">값 추가</h2>
 
 <pre><code class="language-python">arr = [1, 2, 3]
 arr.append(4)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">arr := []int{1, 2, 3}
 arr = append(arr, 4)
 </code></pre>
 
-<h3 id="확장">확장</h3>
+<h2 id="확장">확장</h2>
 
 <pre><code class="language-python">arr = [1, 2]
 arr2 = [3, 4]
@@ -962,8 +814,6 @@ arr3 = arr + arr2
 arr.extend(arr2)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// array도 동일
 
 arr = [1, 2]
@@ -973,9 +823,7 @@ arr2 = [3, 4]
 arr3 := append(a, a2...)
 </code></pre>
 
-<p><br></p>
-
-<h3 id="복사">복사</h3>
+<h2 id="복사">복사</h2>
 
 <pre><code class="language-python">from copy import deepcopy
 
@@ -988,8 +836,6 @@ arr2 = arr
 arr3 = deepcopy(arr)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">arr := []int{1, 2, 3}
 
 // 얕은 복사 (Shallow copy)
@@ -1000,15 +846,11 @@ arr3 := make([]int, len(arr))
 copy(arr3, arr)
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-dictionaries-딕셔너리-맵-a"><a name='dictionaries'>딕셔너리(맵)</a></h2>
+<h1 id="a-name-dictionaries-딕셔너리-맵-a"><a name='dictionaries'>딕셔너리(맵)</a></h1>
 
-<hr />
-
-<h3 id="선언">선언</h3>
+<h2 id="선언">선언</h2>
 
 <pre><code class="language-python"># 선언
 d = {} # 또는 dict()
@@ -1017,8 +859,6 @@ d = {} # 또는 dict()
 d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// 선언
 d := make(map[string]int)
 
@@ -1026,17 +866,15 @@ d := make(map[string]int)
 d := map[string]int{&quot;a&quot;: 1, &quot;b&quot;: 2}
 </code></pre>
 
-<h3 id="사이즈-1">사이즈</h3>
+<h2 id="사이즈-1">사이즈</h2>
 
 <pre><code class="language-python">len(d)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">len(d)
 </code></pre>
 
-<h3 id="lookup과-update-1">lookup과 update</h3>
+<h2 id="lookup과-update-1">lookup과 update</h2>
 
 <pre><code class="language-python"># lookup
 d[&quot;a&quot;]
@@ -1045,8 +883,6 @@ d[&quot;a&quot;]
 d[&quot;a&quot;] = 2
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// lookup
 d[&quot;a&quot;]
 
@@ -1054,7 +890,7 @@ d[&quot;a&quot;]
 d[&quot;a&quot;] = 2
 </code></pre>
 
-<h3 id="키값-확인">키값 확인</h3>
+<h2 id="키값-확인">키값 확인</h2>
 
 <pre><code class="language-python"># True
 'a' in d
@@ -1063,8 +899,6 @@ d[&quot;a&quot;] = 2
 'c' in d
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// ok = true
 val, ok = d[&quot;a&quot;]
 
@@ -1072,17 +906,15 @@ val, ok = d[&quot;a&quot;]
 val, ok = d[&quot;c&quot;]
 </code></pre>
 
-<h3 id="키-삭제">키 삭제</h3>
+<h2 id="키-삭제">키 삭제</h2>
 
 <pre><code class="language-python">del d['a']
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">delete(d, &quot;a&quot;)
 </code></pre>
 
-<h3 id="딕셔너리-맵-순회">딕셔너리(맵) 순회</h3>
+<h2 id="딕셔너리-맵-순회">딕셔너리(맵) 순회</h2>
 
 <pre><code class="language-python"># 키만 순회
 for k in d.keys(): # 또는 for k in a:
@@ -1096,8 +928,6 @@ for v in d.values():
 for i, v in d.items():
     print(&quot;key : {0}, value : {1}&quot;, i, v)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// 키만 순회
 for i, _ := range d {
@@ -1115,21 +945,15 @@ for i, v := range d {
 }
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-functions-함수-a"><a name='functions'>함수</a></h2>
+<h1 id="a-name-functions-함수-a"><a name='functions'>함수</a></h1>
 
-<hr />
-
-<h3 id="선언-1">선언</h3>
+<h2 id="선언-1">선언</h2>
 
 <pre><code class="language-python">def add(a, b):
     return a + b
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">func add(a int, b int) int {
     return a + b
@@ -1141,7 +965,7 @@ func add(a, b int) int {
 }
 </code></pre>
 
-<h3 id="가변-길이-인자">가변 길이 인자</h3>
+<h2 id="가변-길이-인자">가변 길이 인자</h2>
 
 <pre><code class="language-python">def concat(*args):
     ret = &quot;&quot;
@@ -1149,8 +973,6 @@ func add(a, b int) int {
         ret += s
     return ret       
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">func concat(strs ...string) string {
     var ret = &quot;&quot;
@@ -1161,7 +983,7 @@ func add(a, b int) int {
 }
 </code></pre>
 
-<h3 id="이름-있는-인자">이름 있는 인자</h3>
+<h2 id="이름-있는-인자">이름 있는 인자</h2>
 
 <pre><code class="language-python">def add(first=0, second=0):
     return first + second
@@ -1172,22 +994,16 @@ val = add(first=1, second=2)
 val = add(1, 2)
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// none
 </code></pre>
 
-<p><br><br><br><br></p>
-
-<h3 id="다중-반환">다중 반환</h3>
+<h2 id="다중-반환">다중 반환</h2>
 
 <pre><code class="language-python">def divmod(m, n):
     return m / n, m % n
     
 q, r = divmod(7, 3)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">func divmod(m, n int) (int, int) {
     return m / n, m % n
@@ -1196,12 +1012,10 @@ q, r = divmod(7, 3)
 q, r := divmod(7, 3)
 </code></pre>
 
-<h3 id="이름-있는-반환값">이름 있는 반환값</h3>
+<h2 id="이름-있는-반환값">이름 있는 반환값</h2>
 
 <pre><code class="language-python"># none
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">func divmod(m, n int) (q, r int) {
     q = m / n
@@ -1212,15 +1026,11 @@ q, r := divmod(7, 3)
 q, r := divmod(7, 3)
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-conditional-expression-조건문-a"><a name='conditional-expression'>조건문</a></h2>
+<h1 id="a-name-conditional-expression-조건문-a"><a name='conditional-expression'>조건문</a></h1>
 
-<hr />
-
-<h3 id="if문">if문</h3>
+<h2 id="if문">if문</h2>
 
 <pre><code class="language-python">x = 2
 
@@ -1231,8 +1041,6 @@ elif x == 2:
 else:
     print(&quot;x is neither 1 or 2&quot;)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">x := 2
 
@@ -1245,12 +1053,10 @@ if x == 1 {
 }
 </code></pre>
 
-<h3 id="switch문">switch문</h3>
+<h2 id="switch문">switch문</h2>
 
 <pre><code class="language-python"># none
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">// switch문은 모든 타입을 받을 수 있음
 
@@ -1264,23 +1070,17 @@ default:
 // 조건을 무시하면서 case를 통과하려면 &quot;fallthrough&quot;를 사용
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-loops-expression-반복문-a"><a name='loops-expression'>반복문</a></h2>
+<h1 id="a-name-loops-expression-반복문-a"><a name='loops-expression'>반복문</a></h1>
 
-<hr />
-
-<h3 id="while문">while문</h3>
+<h2 id="while문">while문</h2>
 
 <pre><code class="language-python">i = 0
 
 while i &lt; 10:
     i += 1
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">i := 0
 
@@ -1289,15 +1089,13 @@ for i &lt; 10 {
 }
 </code></pre>
 
-<h3 id="for문">for문</h3>
+<h2 id="for문">for문</h2>
 
 <pre><code class="language-python">n = 0
 
 for i in range(10):
     n += i
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">n := 0
 
@@ -1306,15 +1104,13 @@ for i := 0; i &lt;= 10; i++ {
 }
 </code></pre>
 
-<h3 id="for-in-range-문">for-in(range)문</h3>
+<h2 id="for-in-range-문">for-in(range)문</h2>
 
 <pre><code class="language-python">arr = [1, 2, 3]
 
 for i in arr:
     print(i)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">arr := []int{1, 2, 3}
 
@@ -1323,82 +1119,62 @@ for _, v := range arr {
 }
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-libraries-and-namespaces-라이브러리-및-네임스페이스-a"><a name='libraries-and-namespaces'>라이브러리 및 네임스페이스</a></h2>
+<h1 id="a-name-libraries-and-namespaces-라이브러리-및-네임스페이스-a"><a name='libraries-and-namespaces'>라이브러리 및 네임스페이스</a></h1>
 
-<hr />
-
-<h3 id="라이브러리-로드">라이브러리 로드</h3>
+<h2 id="라이브러리-로드">라이브러리 로드</h2>
 
 <pre><code class="language-python">import foo
 
 bar = foo.something()
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">import &quot;foo&quot;
 
 bar := foo.Something()
 </code></pre>
 
-<h3 id="서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</h3>
+<h2 id="서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</h2>
 
 <pre><code class="language-python">import foo.bar
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">import &quot;foo/bar&quot;
 </code></pre>
 
-<h3 id="네임스페이스">네임스페이스</h3>
+<h2 id="네임스페이스">네임스페이스</h2>
 
 <pre><code class="language-python"># 모듈 네임스페이스는 보통 &quot;import&quot;로 불러온 모듈명을 따라감
 import os # os
 from os import path # path
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">// 모든 소스파일 최상단에 네임스페이스를 선언해야함
 package foo
 </code></pre>
 
-<p><br></p>
-
-<h3 id="네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</h3>
+<h2 id="네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</h2>
 
 <pre><code class="language-python">import foo as fu
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">import fu &quot;foo&quot;
 </code></pre>
 
-<h3 id="미사용-임포트">미사용 임포트</h3>
+<h2 id="미사용-임포트">미사용 임포트</h2>
 
 <pre><code class="language-python"># none
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">import _ &quot;foo&quot;
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-user-defined-types-사용자-정의-타입-a"><a name='user-defined-types'>사용자 정의 타입</a></h2>
+<h1 id="a-name-user-defined-types-사용자-정의-타입-a"><a name='user-defined-types'>사용자 정의 타입</a></h1>
 
-<hr />
-
-<h3 id="정의">정의</h3>
+<h2 id="정의">정의</h2>
 
 <pre><code class="language-python"># 타입으로써의 정의는 없으며 클래스로 대체
 class Exam:
@@ -1413,8 +1189,6 @@ class Exam:
             self.name = name
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">type Exam struct {
     name    string
     avg     int
@@ -1424,14 +1198,10 @@ class Exam:
 } 
 </code></pre>
 
-<p><br><br><br></p>
-
-<h3 id="초기화">초기화</h3>
+<h2 id="초기화">초기화</h2>
 
 <pre><code class="language-python">ricky_exam = Exam(100, 92, 93, name=&quot;Ricky&quot;)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">rickyExam := Exam{&quot;Ricky&quot;, 100, 92, 93}
 
@@ -1443,27 +1213,21 @@ risaExam := Exam{
 }
 </code></pre>
 
-<h3 id="속성-멤버-값-할당">속성(멤버)값 할당</h3>
+<h2 id="속성-멤버-값-할당">속성(멤버)값 할당</h2>
 
 <pre><code class="language-python">ricky_exam.math = 97
 ricky_exam.sports = 95
 </code></pre>
 
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
-
 <pre><code class="language-go">rickyExam.math = 97
 rickyExam.sports = 95
 </code></pre>
 
-<hr />
-
 <p><br></p>
 
-<h2 id="a-name-error-handling-에러-처리-a"><a name='error-handling'>에러 처리</a></h2>
+<h1 id="a-name-error-handling-에러-처리-a"><a name='error-handling'>에러 처리</a></h1>
 
-<hr />
-
-<h3 id="에러-처리">에러 처리</h3>
+<h2 id="에러-처리">에러 처리</h2>
 
 <pre><code class="language-python">def divide(n, m):
     if m == 0:
@@ -1475,8 +1239,6 @@ try:
 except Exception as e:
     print(e)
 </code></pre>
-
-<p>{: style=&lsquo;width: 50%; float: left&rsquo;}</p>
 
 <pre><code class="language-go">import (
     &quot;errors&quot;
@@ -1495,8 +1257,6 @@ if err != nil {
     fmt.Println(err)
 }
 </code></pre>
-
-<hr />
 
                 </section>
             </article>
