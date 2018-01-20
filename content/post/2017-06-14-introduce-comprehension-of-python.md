@@ -13,10 +13,10 @@ url: /introduce-comprehension-of-python
 
 파이썬에는 다음과 같은 크게 네 가지 종류의 Comprehension이 있다.
 
-* List comprehension (LC)
-* Set comprehension (SC)
-* Dict comprehension (DC)
-* Generator expression (GE)
+* List Comprehension (LC)
+* Set Comprehension (SC)
+* Dict Comprehension (DC)
+* Generator Expression (GE)
 
 Generator의 경우 comprehension과 형태는 동일하지만 특별히 **expression**이라고 부른다.
 
@@ -24,7 +24,7 @@ Generator의 경우 comprehension과 형태는 동일하지만 특별히 **expre
 
 <br>
 
-## List comprehension (LC)
+# List Comprehension (LC)
 
 **List comprehension**은 리스트를 쉽게 생성하기 위한 방법이다. 이는 파이썬에서 보편적으로 사용되는 기능으로 조금만 응용하면 다양한 조건으로 리스트를 생성할 수 있는 강력한 기능중 하나이다.
 
@@ -81,7 +81,7 @@ flatten = [e for r in matrix for e in r]
 
 <br>
 
-## Set comprehension
+# Set Comprehension (SC)
 
 **Set comprehension**은 LC와 정확히 동일하며 단지 list가 아닌 set을 생성한다는 것만 다르다.
 
@@ -97,7 +97,7 @@ no_primes = {j for i in range(2, 9) for j in range(i * 2, 50, i)}
 
 <br>
 
-## Dict comprehension
+# Dict Comprehension (DC)
 
 **Dict comprehension** 또한 LC와 동일하며 dict를 생성한다.
 
@@ -118,7 +118,7 @@ score_dict = {t[0]: t[1] for t in score_tuples}
 
 <br>
 
-## Generator expression
+# Generator Expression (GE)
 
 **Generator expression**은 특별한 형태의 comprehension이다. 이는 한 번에 모든 원소를 반환하지 않고 한 번에 하나의 원소만 반환하는 **generator**를 생성한다.
 

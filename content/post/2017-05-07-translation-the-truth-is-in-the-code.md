@@ -14,8 +14,7 @@ url: /translation-the-truth-is-in-the-code
 
 ![shoppingapp model](../images/2017-05-07-shoppingapp-model.png)
 
-[requirementsascode](https://github.com/bertilmuth/requirementsascode)의 [shippingapp](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/shoppingappjavafx) 모델 예시
-{: style="text-align: center;"}
+<center> [requirementsascode](https://github.com/bertilmuth/requirementsascode)의 [shippingapp](https://github.com/bertilmuth/requirementsascode/tree/master/requirementsascodeexamples/shoppingappjavafx) 모델 예시 </center>
 
 <br>
 
@@ -23,8 +22,10 @@ url: /translation-the-truth-is-in-the-code
 
 <br>
 
+<center>
+
 *진실은 오직 한 곳, 코드에서만 발견된다. <br> - Robert C.Martin, [Clean Code](https://www.amazon.de/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)*
-{: style="text-align: center; font-size: 18px;"}
+</center>
 
 <br>
 
@@ -257,8 +258,10 @@ BigDecimal calculateTotal(List<BigDecimal> individualPrice){..}
 
 <br>
 
+<center>
+
 *만약 진실이 코드에 있다면, 코드는 진실을 말 할 수 있어야한다.*
-{: style="text-align: center; font-size: 18px;"}
+</center>
 
 <br>
 

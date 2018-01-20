@@ -18,9 +18,9 @@ url: /translation-go-walkthrough-encoding-package
 이 포스트는 표준 라이브러리를  이해하는데 도움을 주기위한 Go 둘러보기 시리즈의 일부이다. 기존에 생성된 문서(자동으로 생성된 Go 문서)는 많은 정보를 제공하지만, 이는 패키지를 실제 상황에서 이해하기에는 어려울 수 있다.
 이 시리즈는 일상적으로 사용되는 애플리케이션에서 표준 패키지들이 어떻게 사용되는지에 대한 컨텍스트를 제공할 수 있도록 도와준다. 질문이나 코멘트가 있다면 트위터에서 [@benbjohnson](https://twitter.com/benbjohnson)로 찾아오면 된다.
 
-<br/>
+<br>
 
-## 인코딩이란 정확히 무엇인가?
+# 인코딩이란 정확히 무엇인가?
 
 컴퓨터 과학에서는 간단한 개념에 대한 팬시한 단어들이 있다. 이 뿐만 아니라 많은 경우 하나의 개념을 지칭하는 많은 팬시한 단어들이 존재하기도 한다. *인코딩(Encoding)* 은 그 중 하나이다. 가끔 이는 *시리얼라이제이션(serialization)* 또는 *마샬링(marshaling)* 으로 불리기도 하며 이는 모두 로우(raw) 바이트에 논리적 구조체를 더한다는 것을 의미한다.
 
@@ -28,14 +28,17 @@ Go 표준 라이브러리에서, 우리는 두 가지의 분리되었지만 서�
 
 예를 들면, *encoding/json* 패키지는 각각의 io.[Writer](https://golang.org/pkg/io/#Writer)와 io.[Reader](https://golang.org/pkg/io/#Reader)로 작업을 하기 위한 json.[Encoder](https://golang.org/pkg/encoding/json/#Encoder)와 json.[Decoder](https://golang.org/pkg/encoding/json/#Decoder)를 가지고있다. 이 패키지는 또한 바이트 슬라이스에 데이터를 쓰고 읽기 위한 json.[Marshaler](https://golang.org/pkg/encoding/json/#Marshaler)과 json.[Unmarshaler](https://golang.org/pkg/encoding/json/#Unmarshaler)를 가지고 있다.
 
+<br>
 
-### 두 가지 타입의 인코딩
+## 두 가지 타입의 인코딩
 
 인코딩간에는 또 다른 중요한 차이점이 있다. 몇몇의 인코딩 패키지는 문자열, 정수등의 프리미티브에서 동작한다. 문자열은 아스키나 [유니코드](https://golang.org/pkg/unicode/) 또는 다른 [언어별 인코딩](https://godoc.org/golang.org/x/text)과 같은 문자 인코딩을 가지고 인코딩이 된다. 정수는 [엔디안(endianness)](https://en.wikipedia.org/wiki/Endianness)기반 또는 가변 길이 인코딩에 따라 조금 다르게 인코딩 될 수 있다. 심지어 바이트자체는 종종 출력가능한 문자들로 변환 하기위해 [Base64](https://golang.org/pkg/encoding/base64/)와 같은 방식으로 인코딩된다.
 
 그러나 우리는 종종 인코딩이라고 하면, 객체 인코딩을 떠올린다. 이는 *구조체(structs)*, *맵(maps)*, 그리고 슬라이스(slices) 같은 복잡한 구조체들을 바이트열로 변환하는것을 지칭한다. 이런 변환을 하는데 있어선 많은 트레이드 오프가 있으며 오랜 시간에 걸쳐 [많은 사람들이 서로 다른 객체 인코딩 방식을 개발해왔다](https://en.wikipedia.org/wiki/Comparison_of_data_serialization_formats).
 
-### 타협(Trade-offs)하기
+<br>
+
+## 타협(Trade-offs)하기
 
 이 구조체들은 이미 내부적으로 바이트 형태의 인메모리로 표현되기 때문에 처음엔 논리적 구조체를 바이트로 변환하는게 충분히 간단해 보일 수 있다. 그냥 이 포맷을 사용하면 되지 않나?
 
@@ -53,7 +56,7 @@ Go 표준 라이브러리에서, 우리는 두 가지의 분리되었지만 서�
 
 <br>
 
-## 4가지 인코딩 인터페이스
+# 4가지 인코딩 인터페이스
 
 만약 여러분이 [encoding](https://golang.org/pkg/encoding/) 패키지를 들여다본 몇 안되는 사람들 중 한 명이라면, 조금 실망했을 것이다. 이는 [errors](https://golang.org/pkg/errors/) 패키지 다음으로 두번째로 가장 작은 패키지이며 단 4개의 인터페이스만 가지고있다.
 
@@ -93,11 +96,13 @@ type TextUnmarshaler interface {
 
 <br>
 
-## 인코딩 패키지 개요
+# 인코딩 패키지 개요
 
 표준 라이브러리에는 많은 유용한 인코딩 패키지들이 있다. 우리는 이들의 자세한 내용들은 나중 포스트에서 다룰 것이지만 일단 개요를 살펴보고자 한다. 이들 중 몇몇은 *encoding* 의 서브패키지인 반면 그 외에는 다른 곳에 뿔뿔이 흩어져 있다.
 
-### 프리미티브 인코딩
+<br>
+
+## 프리미티브 인코딩
 
 Go를 시작할 때 처음으로 사용하게될 패키지는 아마 [fmt](https://golang.org/pkg/fmt/) 패키지일 것이다. ("fumpt"라 발음한다.) 이는 숫자, 문자열, 바이트, 그리고 일부 지원되는 객체 인코딩까지 포함한 것들을 인코딩 및 디코딩 하기 위해 C 스타일의 [printf](http://pubs.opengroup.org/onlinepubs/009695399/functions/fprintf.html)() 컨벤션을 사용한다. [fmt](https://golang.org/pkg/fmt/) 패키지는 템플릿으로부터 사람이 쉽게 읽을 수 있는 문자열을 훌륭하고 쉽게 만들 수 있는 방법을 제공하지만 템플릿 파싱은 추가적인 오버헤드를 발생시킬 수 있다.
 
@@ -109,7 +114,9 @@ Go 자체와 함께 이 패키지들은 여러분이 UTF-8의 문자열을 인�
 
 마지막으로, 바이트 인코딩을 위해 사용할 수 있는 패키지 쌍이 있다. 바이트 인코딩은 보통 바이트를 출력가능한 포맷으로 변환하는데 사용된다. 예를 들면, [encoding/hex](https://golang.org/pkg/encoding/hex/) 패키지는 바이너리 데이터를 16진법으로 볼 필요가 있을때 사용될 수 있다. 나는 개인적으로 디버깅 목적으로만 사용해봤다. 반면, 가끔은 역사적으로 제한된 바이너리 지원 (예로 이메일이 있다.)을 가지고 프로토콜 위에서 데이터를 전송해야하기 때문에 출력가능한 포맷이 필요할 때도 있다. [encoding/base32](https://golang.org/pkg/encoding/base32/)과 [encoding/base64](https://golang.org/pkg/encoding/base64/) 패키지는 이의 한 예이다. 또 다른 예시는 TLS 인증서를 인코딩 하기 위해 사용되는 [encoding/pem](https://golang.org/pkg/encoding/pem/) 패키지가 있다.
 
-### 객체 인코딩
+<br>
+
+## 객체 인코딩
 
 우리는 표준 라이브러리에서 객체 인코딩을 위한 몇개의 패키지들을 찾았다. 그러나 실제로 이 패키지들은 우리가 필요로 하는 모든 것들을 가지고 있다.
 
@@ -123,9 +130,9 @@ Go는 또한 [gob](https://golang.org/pkg/encoding/gob/)라고 하는 자체적�
 
 마지막으로, [encding/asn1](https://golang.org/pkg/encoding/asn1/)라는 패키지가 있다. 문서에는 제한된 정보만 있고 패키지에는 오직 25페이지의 텍스트로 이루어진 [layman의 ANS.1 가이드](http://luca.ntop.org/Teaching/Appunti/asn1.html)에 대한 링크만 있다. ANS.1은 특히 SSL/TLS의 X.509 인증서에 많이 사용되는 복잡한 객체 인코딩 스키마이다.
 
-<br> 
+<br>
 
-## 결론
+# 결론
 
 인코딩은 바이트 위에서 정보를 레이어링 하기위한 기초적인 기반을 제공한다. 이게 없다면 우린 문자열이나 데이터 구조나 데이터베이스 또는 그 어떤 유용한 애플리케이션도 가질 수 없을 것이다. 상대적으로 간단한 개념처럼 보이는것이 많은 구현의 역사와 다양한 트레이드 오프를 가지고 있다.
 

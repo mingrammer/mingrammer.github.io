@@ -21,7 +21,7 @@ url: /translation-go-walkthrough-bytes-strings-packages
 
 <br>
 
-## 바이트와 스트링의 간단한 비교
+# 바이트와 스트링의 간단한 비교
 
 Rob Pike는 [strings, bytes, runes, and characters](https://blog.golang.org/strings)에 대한 훌륭한 포스트를 가지고 있지만 이 포스트에서는 애플리케이션 개발자의 관점에서 좀 더 간결한 정의를 제공하려고 한다.
 
@@ -56,11 +56,13 @@ buf = append(buf, 100)  // []byte{1,2,100}
 
 <br>
 
-## 스트림을 위한 문자열&슬라이스 개조하기
+# 스트림을 위한 문자열&슬라이스 개조하기
 
 바이트와 문자열 패키지의 가장 중요한 특징중 하나는 io.[Reader](https://golang.org/pkg/io/#Reader)와 io.[Writer](https://golang.org/pkg/io/#Writer)로 인메모리 바이트 슬라이스와 문자열을 인터페이싱할 수 있는 방법을 제공한다는 것이다.
 
-### 인메모리 Reader
+<br>
+
+## 인메모리 Reader
 
 Go 표준 라이브러리에서 가장 많이 사용되는 툴 두 가지는 bytes.[NewReader](https://golang.org/pkg/bytes/#NewReader)와 strings.[NewReader](https://golang.org/pkg/strings/#NewReader) 함수이다:
 
@@ -98,7 +100,9 @@ r := io.MultiReader(
 )
 ```
 
-### 인메모리 Writer
+<br>
+
+## 인메모리 Writer
 
 바이트 패키지는 [Buffer](https://golang.org/pkg/bytes/#Buffer)라고 부르는 io.[Writer](https://golang.org/pkg/io/#Writer)의 인메모리 구현체를 포함하고 있다. 이는 io.[Closer](https://golang.org/pkg/io/#Closer)와 io.[Seeker](https://golang.org/pkg/io/#Seeker)를 제외한 [io](https://golang.org/pkg/io/) 인터페이스의 거의 모든 것을 구현하고 있다. 여기엔 버퍼의 끝에 문자열을 쓰기위한 [WriteString](https://golang.org/pkg/bytes/#Buffer.WriteString)()이라는 헬퍼 메서드도 있다.
 
@@ -119,7 +123,7 @@ if !strings.Contains(buf.String(), "service failed") {
 
 <br>
 
-## 패키지 구조
+# 패키지 구조
 
 바이트와 문자열 패키지의 첫인상은 큰 패키지처럼 보이지만 이는 단지 그냥 간단한 헬퍼 함수들의 컬렉션이다. 우리는 이들을 몇 개의 카테고리로 그룹핑 할 수 있다.
 
@@ -133,11 +137,13 @@ if !strings.Contains(buf.String(), "service failed") {
 
 <br>
 
-## 비교 함수
+# 비교 함수
 
 두 개의 바이트 슬라이스 또는 문자열을 가지고 있을 때 다음 두 질문중 하나를 질문해야 할 수도 있다. 첫째, 두 객체가 동일한가? 둘째, 정렬시 어떤게 앞쪽에 위치하는가?
 
-### 동일성
+<br>
+
+## 동일성
 
 [Equal](https://golang.org/pkg/bytes/#Equal)() 함수는 첫번째 질문에 대한 답을 준다:
 
@@ -166,7 +172,9 @@ func EqualFold(s, t string) bool
 
 "Fold"라는 용어는 [Unicode case-folding](https://www.w3.org/International/wiki/Case_folding)을 말한다. 이는 A-Z에 대한 일반적인 대소문자 규칙뿐만 아니라 ϕ의 φ로의 변환과 같은 다른 언어에 대한 규칙까지 포함한다.
 
-### 비교
+<br>
+
+# 비교
 
 우리는 두 개의 바이트 슬라이스 또는 문자열의 정렬 순서를 결정하기 위해 [Compare](https://golang.org/pkg/bytes/#Compare)()를 사용할 것이다.
 
@@ -193,11 +201,13 @@ func (p ByteSlices) Less(i, j int) bool {
 
 <br>
 
-## 검사(Inspection) 함수
+# 검사(Inspection) 함수
 
 바이트와 문자열 패키지는 바이트 슬라이스와 문자열내에서 데이터를 찾기 위한 몇 가지 방법들을 제공한다.
 
-### 카운팅
+<br>
+
+## 카운팅
 
 만약 여러분이 유저의 입력의 유효성을 검증하고 있다면, 특정 바이트가 존재하는지 (또는 존재하지 않는지)를 검증하는건 중요하다. 하나 이상의 부분 슬라이스 또는 부분 문자열의 존재를 확인하기 위해 [Contains](https://golang.org/pkg/bytes/#Contains)() 함수를 사용할 수 있다:
 
@@ -232,7 +242,9 @@ len("I ❤ ☃")                // 9
 
 첫번째 줄은 룬이 5개만 있기 때문에 이상하게 보일 수 있지만 [Count](https://golang.org/pkg/bytes/#Count)()는 룬 갯수 + 1을 반환한다는 걸 기억하라.
 
-### 인덱싱
+<br>
+
+## 인덱싱
 
 내용을 단언하는건 중요하지만 가끔은 부분 슬라이스나 부분 문자열의 정확한 위치를 찾아낼 필요가 있다. 인덱스 함수를 사용하면 가능하다:
 
@@ -259,11 +271,13 @@ LastIndexFunc(s []byte, f func(r rune) bool) int
 
 <br>
 
-## 접두사, 접미사 & 트리밍(Trimming)
+# 접두사, 접미사 & 트리밍(Trimming)
 
 바이트 슬라이스 또는 문자열의 처음이나 끝부분의 내용을 가지고 작업하는 일은 검사의 특수한 경우지만 이는 한 섹션으로 다룰만큼 중요하다.
 
-### 접두사 & 접미사 확인하기
+<br>
+
+## 접두사 & 접미사 확인하기
 
 접두사는 프로그래밍에서 자주 등장한다. 예를 들면, HTTP 경로는 보통 공통 접두사를 갖는 기능별로 그룹핑된다. 또 다른 예는 유저를 멘션하기 위한 "@"와 같은 문자열 첫부분의 특수 문자들이다.
 
@@ -295,7 +309,9 @@ if strings.HasPrefix(str, "@") {
 ```
 > HasPrefix : [HasPrefix](https://golang.org/pkg/bytes/#HasPrefix)()
 
-### 트리밍(Trimming)
+<br>
+
+## 트리밍(Trimming)
 
 [bytes](https://golang.org/pkg/builtin/#byte)와 [strings](https://golang.org/pkg/builtin/#string) 패키지에서의 "trimming"이라는 용어는 바이트 슬라스나 문자열의 첫부분 그리고/또는 끝부분에 있는 바이트 또는 룬들을 제거한다는 의미이다. 이를 위한 가장 일반적인 함수는 [Trim](https://golang.org/pkg/bytes/#Trim)()이다:
 
@@ -362,9 +378,11 @@ if strings.HasPrefix(path, "~/") {
 
 <br>
 
-## 교체 함수
+# 교체 함수
 
-### 기본 교체
+<br>
+
+## 기본 교체
 
 부분 슬라이스나 부분 문자열을 교체하는건 때때로 필수적이다. 대부분의 단순한 경우엔, [Replace](https://golang.org/pkg/bytes/#Replace)() 함수면 다 된다:
 
@@ -392,7 +410,9 @@ println(r.Replace("Hello $USER, it is $NOW"))
 ```
 > NewReplacer : [NewReplacer](https://golang.org/pkg/strings/#NewReplacer), Replace : [Replace](https://golang.org/pkg/bytes/#Replace)
 
-### 대소문자 교체
+<br>
+
+## 대소문자 교체
 
 여러분은 대소문자 케이싱(casing: 문자 케이스 캐스팅)이 간단하다고 생각할 수도 있다. 그러나 Go는 유니코드를 가지고 동작하며 유니코드는 결코 간단하지 않다. 문자 케이싱은 3가지 타입이 있다: 대문자(upper case), 소문자(lower case) 그리고 타이틀 케이스(title case).
 
@@ -450,7 +470,9 @@ println(strings.Title("the count of monte cristo"))
 ```
 > Title : [Title](https://golang.org/pkg/strings/#Title)
 
-### 룬 매핑하기
+<br>
+
+## 룬 매핑하기
 
 바이트 슬라이스 또는 문자열에서 데이터를 교체하기 위한 또 다른 함수는 [Map](https://golang.org/pkg/bytes/#Map)()이다:
 
@@ -464,11 +486,13 @@ func Map(mapping func(r rune) rune, s string) string
 
 <br>
 
-## 분할(Splitting) & 결합(Joining) 함수
+# 분할(Splitting) & 결합(Joining) 함수
 
 여러 번 우리는 서로 분할시킬 필요가 있는 문자열들을 구분하고있다. 예를 들면, 유닉스에서 경로들은 콜론으로 합쳐져 있으며 CSV 파일 포맷은 기본적으로 데이터 필드를 콤마로 구분하고 있다.
 
-### 부분 문자열 분할
+<br>
+
+## 부분 문자열 분할
 
 간단한 부분 슬라이스와 부분 문자열 분할을 위해, 우리는 Split() 함수를 사용한다:
 
@@ -495,7 +519,9 @@ strings.SplitN("a:b:c", ":", 2)   // ["a", "b:c"]
 
 데이터를 분할하는 것은 매우 일반적인 작업이다. 하지만, 이는 보통 CSV와 같은 파일 포맷에서의 컨텍스트나 경로 분할의 컨텍스트에서 수행된다. 이 작업들을 위해, 나는 [encoding/csv](https://golang.org/pkg/encoding/csv/) 또는 [path](https://golang.org/pkg/path/) 패키지를 대신 사용한다.
 
-### 카테고리성 분할
+<br>
+
+## 카테고리성 분할
 
 가끔 구분자로 룬의 열 대신 룬의 집합을 지정하고 싶을 때가 있다. 이 상황의 가장 좋은 예시는 가변적인 공백이 있는 상태에서 단어들을 쪼개는 것이다. 공백 구분 함수로 단순히 [Split](https://golang.org/pkg/bytes/#Split)()을 사용하게되면 연속적인 다중 공백이 있을 경우 빈 부분 문자열도 반환할 것이다. 대신 Fields() 함수를 사용할 수 있다:
 
@@ -511,7 +537,9 @@ func FieldsFunc(s []byte, f func(rune) bool) [][]byte
 ```
 > byte : [byte](https://golang.org/pkg/builtin/#byte), rune : [rune](https://golang.org/pkg/builtin/#rune)
 
-### 문자열 결합
+<br>
+
+## 문자열 결합
 
 구분된 데이터를 쪼개는 대신, Join() 함수를 이용해 이를 하나로 합칠 수도 있다:
 
@@ -538,7 +566,7 @@ return output
 
 <br>
 
-## 이외 함수들
+# 이외 함수들
 
 카테고리를 찾지 못한 두 개의 함수가 있는 이는 여기서 다룬다. 첫째, [Repeat](https://golang.org/pkg/bytes/#Repeat)() 함수는 반복된 바이트 슬라이스 또는 문자열을 생성할 수 있도록 해준다. 솔직히, 나는 이를 터미널에서 내용을 구분하기 위해 라인을 만들때 사용했던것만 기억난다:
 
@@ -550,7 +578,7 @@ println(strings.Repeat("-", 80))
 
 <br>
 
-## 결론
+# 결론
 
 바이트 슬라이스와 문자열은 Go에서 가장 기본적인 요소이다. 이들은 바이트와 룬의 열을 위한 인메모리 표현이다. 바이트와 문자열 패키지는 io.Reader와 io.Writer 인터페이스의 개조형뿐만 아니라 수 많은 유용한 헬퍼 함수들을 제공한다.
 

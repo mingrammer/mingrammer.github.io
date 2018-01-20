@@ -21,11 +21,13 @@ io 패키지는 표준 라이브러리 내에서 가장 기본적인 패키지 �
 
 <br>
 
-## 바이트 읽기
+# 바이트 읽기
 
 바이트로 작업을 할 때 사용되는 두 가지 기본적인 연산이 있는데 바로 읽기와 쓰기이다. 우선 바이트 읽기에 대해서 살펴보자.
 
-### Reader 인터페이스
+<br>
+
+## Reader 인터페이스
 
 스트림에서 바이트를 읽기 위한 기본 구조체는 [Reader](https://golang.org/pkg/io/#Reader) 인터페이스이다:
 
@@ -42,7 +44,9 @@ Reader는 동일한 바이트를 재사용할 수 있도록 버퍼(p를 말함)�
 
 Reader 인터페이스의 한 가지 문제점은 애매한 규칙들을 가지고 있다는 것이다. 첫째, 이는 스트림이 완료되면 io.EOF 에러를 정상적인 동작을 하는 것처럼 반환한다. 이는 초보자에게는 혼란을 가져올 수 있다. 둘째, 버퍼가 채워질거라는 보장이 없다. 만약 여러분이 8 바이트 슬라이스를 전달한다면 여러분은 0부터 8바이트 사이의 그 어떤값으로도 돌려받을 수 있다. 부분 읽기를 다루는것은 지저분하고 에러가 발생하기 쉽다. 다행히도 이 문제를 해결하기 위한 헬퍼 함수가 있다.
 
-### Reader의 보장성 개선하기
+<br>
+
+## Reader의 보장성 개선하기
 
 여러분이 파싱 프로토콜을 가지고있고 Reader로부터 unit64 타입의 값을 8 바이트 읽어야한다고 해보자. 이런 경우엔 고정된 크기만큼 읽어야하기 때문에 io.ReadFull()을 사용하는게 더 적합하다.
 
@@ -72,7 +76,9 @@ func ReadAtLeast(r Reader, buf []byte, min int) (n int, err error)
 
 이 함수는 추가 데이터를 읽을 수 있는 경우 이를 버퍼로 읽어들이지만 항상 최소한의 바이트 수를 반환한다. 개인적으로는 이 함수의 필요성을 찾지 못했지만 Read() 호출을 최소화하고 추가 데이터를 버퍼링하고자 한다면 유용하게 사용할 수 있을 것 같다.
 
-### 스트림 연결
+<br>
+
+## 스트림 연결
 
 여러개의 Reader를 하나로 결합해야하는 경우를 많이 볼 것이다. [MultiReader](https://golang.org/pkg/io/#MultiReader)를 사용하면 이들을 하나의 Reader로 합칠 수 있다.
 
@@ -97,7 +103,9 @@ http.Post("http://example.com", "application/octet-stream", r)
 
 MultiReader는 [http.Post()](https://golang.org/pkg/net/http/#Post)가 두 개의 Reader를 하나의 연결된 Reader로 간주하도록 한다.
 
-### 스트림 복제
+<br>
+
+## 스트림 복제
 
 Reader를 사용할 때 맞닥뜨릴 수 있는 한가지 문제는 Reader가 한 번 읽히면, 데이터를 다시 읽을 수 없다는 것이다. 예를 들어, 애플리케이션이 HTTP 요청 파싱을 실패하면 파서는 이미 데이터를 다 사용했기 때문에 디버깅을 할 수 없을 것이다.
 
@@ -126,7 +134,9 @@ if err != nil {
 
 그러나, 메모리가 부족하지 않도록 캡쳐하려는 요청을 제한하는것이 중요하다.
 
-### 스트림 길이 제한
+<br>
+
+## 스트림 길이 제한
 
 스트림은 제한이 없기 때문에 몇몇 상황에선 메모리나 디스크 이슈를 일으킬 수 있다. 가장 일반적인 예시는 파일 업로드 엔드포인트이다. 엔드포인트는 일반적으로 디스크가 꽉 차는걸 방지하기위해 크기 제한을 가지고 있지만, 이를 직접 구현하는건 지루할 수 있다.
 
@@ -141,11 +151,13 @@ LimitReader의 한가지 문제는 Reader로 읽는 데이터의 크기가 n을 
 
 <br>
 
-## 바이트 쓰기
+# 바이트 쓰기
 
 스트림으로부터 바이트를 읽는것에 대해 다뤄봤다. 이제 이를 어떻게 스트림에 쓸 수 있는에 대해 살펴보자.
 
-### Writer 인터페이스
+<br>
+
+## Writer 인터페이스
 
 Writer 인터페이스는 단순히 Reader의 반대이다. 우리는 스트림에 넣기 위한 바이트 버퍼를 제공한다.
 
@@ -158,7 +170,9 @@ type Writer interface {
 
 일반적으로 바이트 쓰기는 읽기보다 간단하다. Reader는 부분 읽기를 허용하기 때문에 데이터 다루기가 까다롭지만, 부분 쓰기는 항상 에러를 반환한다.
 
-### 쓰기 복제
+<br>
+
+## 쓰기 복제
 
 가끔은 쓰기 작업을 여러개의 스트림에 보내고 싶을 것이다. 아마 로그 파일 또는 STDERR로. 이는 읽기를 복제하는 대신 쓰기를 복제한다는것만 제외하면 [TeeReader](https://golang.org/pkg/io/#TeeReader)와 유사하다
 
@@ -186,7 +200,9 @@ s.LogOutput = io.MultiWriter(&buf, os.Stderr)
 
 MultiWriter를 사용하면 디버깅을 위해 터미널에서 전체 로그를 보는 동시에 버퍼의 내용을 검증할 수 있게 해준다.
 
-### 문자열 쓰기 최적화
+<br>
+
+## 문자열 쓰기 최적화
 
 표준 라이브러리에는 문자열을 바이트 슬라이스로 변환할 때 별다른 메모리 할당을 요구하지 않음으로써 쓰기 성능을 향상 시킬 수 있는 WriteString() 메서드를 가진 많은 Writer가 있다. io.[WriteString](https://golang.org/pkg/io/#WriteString)() 함수를 사용하면 이 최적화를 활용할 수 있다.
 
@@ -196,11 +212,13 @@ MultiWriter를 사용하면 디버깅을 위해 터미널에서 전체 로그를
 
 <br>
 
-## 바이트 복사
+# 바이트 복사
 
 이제 우린 바이트를 읽고 쓸 수 있으며, 이 양쪽을 연결하는것과 Reader와 Writer간의 복사만 이해하면된다.
 
-### Reader와 Writer를 연결
+<br>
+
+## Reader와 Writer를 연결
 
 Reader를 Writer로 복사하는 가장 기초적인 방법은 적절하게 명명된 [Copy](https://golang.org/pkg/io/#Copy)() 함수이다:
 
@@ -227,7 +245,9 @@ func CopyBuffer(dst Writer, src Reader, buf []byte) (written int64, err error)
 
 나는 Copy()의 오버헤드가 매우 커지는 경우를 본 적이 없어서 개인적으로는 CopyBuffer()를 사용하지 않는다.
 
-### 복사 최적화
+<br>
+
+## 복사 최적화
 
 중간 버퍼를 아예 사용하지 않기위해, 타입은 직접 읽기와 쓰기 인터페이스를 구현할 수 있다. 구현된 경우, Copy() 함수는 중간 버퍼를 사용하지 않고 이러한 구현을 직접 사용한다.
 
@@ -251,7 +271,9 @@ type ReaderFrom interface {
 ```
 > Reader : [Reader](https://golang.org/pkg/io/#Reader), int64 : [int64](https://golang.org/pkg/builtin/#int64), error : [error](https://golang.org/pkg/builtin/#error)
 
-### Reader와 Writer 개조하기
+<br>
+
+## Reader와 Writer 개조하기
 
 가끔 Reader를 받는 함수가 있지만 Writer만 가지고 있는 경우가 있을 수 있다. 아마도 여러분은 HTTP 요청에 동적으로 데이터를 써 보내야할 필요가 있을지도 모른다. 그러나 http.[NewRequest](https://golang.org/pkg/net/http/#NewRequest)()는 오직 Reader만 받는다.
 
@@ -268,7 +290,7 @@ func Pipe() (*PipeReader, *PipeWriter)
 
 <br>
 
-## 스트림 닫기
+# 스트림 닫기
 
 모든 좋은 것들은 마무리를 지어야하며 이는 바이트 작업시에도 예외는 아니다. 스트림을 닫기 위한 일반적인 방법으로 [Closer](https://golang.org/pkg/io/#Closer) 인터페이스가 제공된다.
 
@@ -283,7 +305,7 @@ Closer는 매우 간단해서 별로 말할게 없지만, 나는 Closer가 필�
 
 <br>
 
-## 스트림 내에서의 이동
+# 스트림 내에서의 이동
 
 스트림은 보통 시작부터 끝까지 연속적인 바이트의 흐름(flow)이지만, 몇 가지 예외가 있다. 예를 들면, 파일은 스트림으로 동작할 수 있지만 파일 내의 특정한 위치로 건너뛸 수도 있다.
 
@@ -300,11 +322,13 @@ type Seeker interface {
 
 <br>
 
-## 데이터 타입 최적화
+# 데이터 타입 최적화
 
 청크에서의 읽기와 쓰기는 단일 바이트나 단일 룬이 필요할 때에는 지루해질 수 있다. Go는 이를 쉽게 만들어주는 몇 가지 인터페이스를 제공한다.
 
-### 단일 바이트 작업
+<br>
+
+## 단일 바이트 작업
 
 [ByteReader](https://golang.org/pkg/io/#ByteReader)와 [ByteWriter](https://golang.org/pkg/io/#ByteWriter) 인터페이스는 단일 바이트를 읽고 쓰기 위한 간단한 인터페이스를 제공한다:
 
@@ -333,7 +357,9 @@ type ByteScanner interface {
 
 이는 이전에 읽은 바이트를 다음에 다시 읽을 수 있도록 Reader에 넣는다. 이는 다음에 사용 가능한 바이트를 미리 볼 수 있도록 해주기 때문에 LL(1) 파서를 작성할 때 특히 유용하다.
 
-### 단일 룬 작업
+<br>
+
+## 단일 룬 작업
 
 만약 유니코드 데이터를 파싱중이라면 개별 바이트 대신 룬으로 작업을 해야할 것이다. 이 경우, [RuneReader](https://golang.org/pkg/io/#RuneReader)와 [RuneScanner](https://golang.org/pkg/io/#RuneScanner)가 대신 사용된다.
 
@@ -350,7 +376,7 @@ type RuneScanner interface {
 
 <br>
 
-## 결론
+# 결론
 
 바이트 스트림은 대부분의 Go 프로그램에 필수적이다. 이들은 네트워크 연결에서 디스크의 파일, 키보드로부터의 사용자 입력에 이르기까지의 모든 것에 대한 인터페이스이다. [io](https://golang.org/pkg/io/) 패키지는 이러한 모든 인터랙션을 위한 기초를 제공한다.
 

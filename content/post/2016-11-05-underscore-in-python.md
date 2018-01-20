@@ -75,6 +75,7 @@ for _, val in list_of_tuple:
   ```python
   _internal_name = 'one_module' # private 변수
   _internal_version = '1.0' # private 변수
+  ```
 
 
   class _Base: # private 클래스
@@ -82,10 +83,10 @@ for _, val in list_of_tuple:
 
       def __init__(self, price):
           self._price = price
-
+    
       def _double_price(self): # private 메서드
           return self._price * self._hidden_factor
-
+    
       def get_double_price(self):
           return self._double_price()
   ```
@@ -183,6 +184,6 @@ print(hex_base) # 305441741
 
 <br>
 
-### Update
+# Update
 
 Python 3.6의 ***PEP 515 -- Underscores in Numeric Literals*** 추가

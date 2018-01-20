@@ -63,12 +63,14 @@ AlphaRun에 적용된 8가지의 알고리즘은 다음과 같으며 이 중 앞
 
 이제 1 ~ 3의 각 알고리즘을 발표 내용과 함께 살펴보겠다.
 
-### Deep Q-Network
+<br>
+
+# Deep Q-Network
 
 AlphaRun에서는 상태 $$ s_t $$와 행동 $$ a_t $$를 다음과 같은 행렬과 값으로 나타낸다.
 
-![state matrix](/images/2016-10-26-deviewalpharun-61.jpg){: width='50%' style='float: left'}
-![action values](/images/2016-10-26-deviewalpharun-62.jpg){: width='50%'}
+![state matrix](/images/2016-10-26-deviewalpharun-61.jpg)
+![action values](/images/2016-10-26-deviewalpharun-62.jpg)
 
 그리고 $$ Q $$라는 함수를 $$ s $$에서 $$ a $$를 했을 때의 '기대 미래가치'라고 정의한다. 즉, AlphaRun에서는 다음과 같은 그림으로 표현할 수 있다. 이 경우 '슬라이드'에 대한 '기대 미래가치'가 5로서 가장 크기 때문에 다음 행동은 '슬라이드'로 행하는게 좋다는걸 알 수 있다. 참고로 쿠키런에서의 '가치'란 바로 '점수'를 뜻한다. 즉 $$ Q $$는 미래에 얻을 점수의 합을 의미한다.
 
@@ -88,7 +90,9 @@ $$ loss = (Q(s,a) - (r + {\gamma}max_{a'}\hat{Q}(s,a')))^2 $$
 
 이렇게 Q-Learning 알고리즘만 적용한 AlphaRun의 영상을 보여주셨다. 어느 정도 잘 돌아가는 것처럼 보였다. 그러나 몇몇 상황에서는 쿠키가 이상한 행동을 하였으며, 따라서 이를 개선하기 위해 Double Q-Learning 알고리즘을 적용하였다고 한다.
 
-### Double Q-Learning
+<br>
+
+# Double Q-Learning
 
 $$ Q $$값이 낙관적인 예측을 하거나 발산하는걸 막기위해 사용된 알고리즘이다. Deep Q-Network에서는 $$ loss $$값은 낮아지는데 예측값($$ Q(s, a) $$)과 정답값($$ r + {\gamma}max_{a'}\hat{Q}(s,a') $$)이 계속 커지는 일이 발생할 수 있다. 따라서, 이를 막기위해 Double Q-Learning에서는 $$ loss $$를 다음과 같이 정의한다.
 
@@ -104,7 +108,9 @@ Double Q-Learning을 적용한 AlphaRun은 단순한 맵에서는 잘 동작했�
 
 이러한 문제를 개선하기위해 다른 알고리즘을 적용하여 개선작업을 계속해나갔다. 다음으로 적용한 알고리즘은 Dueling Network 알고리즘이다.
 
-### Dueling Network
+<br>
+
+# Dueling Network
 
 Dueling Network 알고리즘을 사용하게된 배경은 쿠키 앞에 젤리가 많은지 장애물이 많은지 전혀 알 수가 없어 정확한 $$ Q $$값을 예측하는게 어렵다는 것이다. 데브시스터즈 개발팀은 과연 $$ Q $$값을 정확하게 예측할 필요가 있나라는 의문을 가지며 다른 방법으로 이 문제에 접근했다고 한다. 결국은 값을 정확하게 예측하지않고, 어떤 값을 기준으로한 상대적인 값을 예측하기로 했다. 만약에 슬라이드가 $$ x $$라면 점프는 $$ x + 3 $$, 가만히는 $$ x + 1 $$이 되는 식이다.
 

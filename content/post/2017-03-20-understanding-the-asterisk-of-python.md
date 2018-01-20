@@ -102,7 +102,9 @@ def save_ranking(first, second=None, third, fourth=None):
 
 여기까지가 파이썬의 arguments에 관한 기본적인 설명이다. 그런데, 여기서 한 가지 문제를 맞닥뜨릴 수 있다. 만약, 최대 4명의 주자가 아닌 10명 또는 그 이상의 정해지지 않은 주자가 있다고 해보자. 이 경우엔 10개의 인자를 선언하기도 번거로우며, 특히, 주자의 수가 미정일 경우 위와 같은 형태로는 처리가 불가능하다. 이 때 사용하는게 바로 **가변인자 (Variadic Arguments)**이다. 가변인자는 좀 전에 위에서 설명한 positional arguments와 keyword arguments에 모두 사용할 수 있으며, 사용 방법은 다음과 같다.
 
-### positional arguments만 받을 때
+<br>
+
+## positional arguments만 받을 때
 
 ```python
 def save_ranking(*args):
@@ -111,7 +113,9 @@ save_ranking('ming', 'alice', 'tom', 'wilson', 'roy')
 # ['ming', 'alice', 'tom', 'wilson', 'roy']
 ```
 
-### keyword arguments만 받을 때
+<br>
+
+## keyword arguments만 받을 때
 
 ```python
 def save_ranking(**kwargs):
@@ -120,7 +124,9 @@ save_ranking(first='ming', second='alice', fourth='wilson', third='tom', fifth='
 # {'first': 'ming', 'second': 'alice', 'fourth': 'wilson', 'third': 'tom', 'fifth': 'roy'}
 ```
 
-### positional arguments와 keyword arguments를 모두 받을 때
+<br>
+
+## positional arguments와 keyword arguments를 모두 받을 때
 
 ```python
 def save_ranking(*args, **kwargs):
@@ -130,6 +136,8 @@ save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')
 # ('ming', 'alice', 'tom')
 # {'fourth': 'wilson', 'fifth': 'roy'}
 ```
+
+<br>
 
 위에서 `*args`는 임의의 갯수의 positional arguments를 받음을 의미하며, `**kwargs`는 임의의 갯수의 keyword arguments를 받음을 의미한다. 이 때 `*args`, `**kwargs` 형태로 가변인자를 받는걸 **packing**이라고 한다.
 

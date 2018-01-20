@@ -22,7 +22,7 @@ Go에서의 구현체는 [encoding/json](https://golang.org/pkg/encoding/json/)�
 
 <br>
 
-## JSON이란 무엇인가?
+# JSON이란 무엇인가?
 
 JSON은 *JavaScript Object Notation* 의 약자로 객체 리터럴을 정의하는 자바스크립트의 하위 집합이다. 자바스크립트는 정적 선언 타이핑이 없기 때문에 언어 리터럴은 암시적 타입을 가져야 한다. 문자열은 쌍 따옴표로 감싸고, 배열은 괄호로 감싸며, 맵은 중괄호로 감싼다.
 
@@ -34,7 +34,7 @@ JSON은 *JavaScript Object Notation* 의 약자로 객체 리터럴을 정의하
 
 <br>
 
-## JSON 사용의 트레이드 오프
+# JSON 사용의 트레이드 오프
 
 JSON은 사용하기는 쉽지만, 몇가지 문제가 발생할 수 있다. 사람이 쉽게 읽을 수 있는 포맷들은 일반적으로 컴퓨터가 파싱하기에는 느리다. 예를 들면, 내 맥북 프로에서 *encoding/json* 를 벤치마킹하면 인코딩과 디코딩 속도가 각각 100 MB/sec과 27 MB/sec가 나온다.
 
@@ -53,7 +53,7 @@ BenchmarkCodeDecoder-4      27.76 MB/s
 
 <br>
 
-## 언제 JSON을 사용해야 하는가?
+# 언제 JSON을 사용해야 하는가?
 
 일반적으로 JSON은 손쉬운 데이터 교환이 가장 큰 목적이고 성능이 크게 중요하지 않을 경우 사용된다. JSON은 사람이 읽기 쉽기 때문에, 뭔가 잘못될 경우 디버깅 하기가 쉽다. 반면에, 바이너리 프로토콜은 분석되기 전에 우선 디코딩 되어야한다.
 
@@ -61,7 +61,7 @@ BenchmarkCodeDecoder-4      27.76 MB/s
 
 <br>
 
-## 스트림 인코딩
+# 스트림 인코딩
 
 json 패키지에는 값을 JSON으로 인코딩하는 두 가지 방법이 있다. 첫번째는 값을 io.[Writer](https://golang.org/pkg/io/)로 인코딩하는 스트림 기반 json.[Encoder](https://golang.org/pkg/encoding/json/#Encoder)이다:
 
@@ -81,11 +81,15 @@ func Marshal(v interface{}) ([]byte, error)
 
 이 인코더들에 값을 전달하면, JSON 라이브러리는 타입 정의 검사, 인코더 컴파일 그리고 데이터값 재귀 처리의 복잡한 프로세스를 실행한다. 이제 각각에 대해 자세히 알아보자.
 
-### 타입 검사
+<br>
+
+## 타입 검사
 
 인코더에 값을 전달하면 가장 먼저 값의 타입 인코더를 검색한다. 타입들은 Go의 [reflect](https://golang.org/pkg/reflect/) 패키지에 의해 검사되며 [json](https://golang.org/pkg/encoding/json/) 패키지는 이 reflect.[Type](https://golang.org/pkg/reflect/#Type) 값들에 대한 내부 매핑을 가지고 있다. [json](https://golang.org/pkg/encoding/json/) 패키지에는 int, string, map, struct 그리고 slice와 같은 내장 타입들에 대한 하드코딩된 구현체들이 있다. 이들은 정말 단순하다 - *stringEncoder* 는 문자열값을 쌍 따옴표로 감싸며 필요한 경우 문자들을 이스케이프하고, *intEncoder* 는 정수를 문자열 포맷으로 변환하고, 등등.
 
-### 인코더 컴파일
+<br>
+
+## 인코더 컴파일
 
 내장 타입이 아닌 타입들에 대해선, 인코더가 즉시 생성되고 재사용을 위해 캐싱된다. 우선, 인코더는 해당 타입이 json.[Marshaler](https://golang.org/pkg/encoding/json/#Marshaler)를 구현하고 있는지 확인한다:
 
@@ -111,7 +115,9 @@ type TextMarshaler interface {
 
 마지막으로, 두 인터페이스 모두 구현되어 있지 않을 경우엔 기본 인코더를 기반으로 재귀적으로 인코더를 생성한다. 예를 들어, *int* 필드와 *string* 필드를 가지는 *struct* 로 이루어진 타입은 *intEncoder* 와 *stringEncoder* 를 갖는 *structEncoder* 를 생성할 것이다. 다시 말하지만, 인코더 생성은 딱 한 번만 이루어지며 만들어진 인코더는 차후의 사용을 위해 캐싱될 것이다.
 
-### 필드별 옵션
+<br>
+
+## 필드별 옵션
 
 구조체 인코더에 대한 한가지 중요한 점은 이는 인코딩을 위한 필드별 옵션을 결정하기 위해  필드 태그를 읽는다는 것이다. 태그는 구조체의 끝에서 가끔 볼 수 있는 역 따옴표(`)로 감싸진 문자열이다.
 
@@ -131,7 +137,9 @@ type User struct {
 * *omitempty* 플래그는 빈 값을 갖는 비구조체 필드들을 하도록 설정할 수 있다.
 * *string* 플래그는 필드가 문자열로 인코딩 되도록 강제하는데 사용될 수 있다. 예를 들면, 정수가 문자열로 인코딩 되도록 강제할 수 있다. 
 
-### 재귀 처리
+<br>
+
+## 재귀 처리
 
 마지막으로, 인코딩이 수행될 때 이는 *encodeState* 라고 하는 내장 버퍼에 기록된다. 이 객체는 값이 필요로하는 각 인코더로 전달되어 인코더가 바이트를 추가할 수 있도록 한다. json.[Marshal](https://golang.org/pkg/encoding/json/#Marshal)이 호출되면, 이 버퍼의 바이트에 대한 참조가 반환된다.
 
@@ -139,7 +147,7 @@ json.[Encoder](https://golang.org/pkg/encoding/json/#Encoder)를 사용할 때, 
 
 <br>
 
-## 스트림 디코딩
+# 스트림 디코딩
 
 JSON으로 인코딩된 바이트를 다시 객체로 변환하는 것은 인코딩 프로세스의 역과 비슷하지만 중요한 차이점이 있다.
 
@@ -161,13 +169,17 @@ func Unmarshal(data []byte, v interface{}) error
 
 이 디코더들은 두 부분으로 동작한다. 우선 *scanner* 가 입력된 바이트를 토큰화하고 *decodeState* 가 토큰들을 Go 객체로 변환한다.
 
-### JSON 스캐닝
+<br>
+
+## JSON 스캐닝
 
 *scanner* 는 JSON을 파싱하는데 쓰이는 내부 상태 머신(state machine)이다. 이는 여러 단계로 동작한다. 첫번째로, 이는 파싱을 위한 토큰의 타입을 결정하기 위해 값의 첫번째 바이트를 검사한다. 만약 그게 "{"라면 객체를 파싱해야하고, "["라면 배열을 파싱해야한다. 이는 단순한 값에도 똑같이 적용된다. 쌍 따옴표는 문자열의 시작점을 나타내고, *"t"* 나 *"f"* 는 부울값의 시작을 나타내며, *0-9* 는 숫자의 시작을 나타낸다.
 
 스캐닝 타입 결정이 끝나면, 이는 타입별 함수 (문자열 스캔, 숫자 스캔 등)로 전달된다. 맵이나 배열같은 복잡한 객체들에 대해선, 닫는 중괄호를 추적하는데 스택이 사용된다.
 
-### 버퍼 미리보기
+<br>
+
+## 버퍼 미리보기
 
 스캐닝의 흥미로운 부분은 버퍼 미리보기이다. JSON은 "LL(1)으로 파싱가능"하며 이는 스캐닝하는데 딱 하나의 바이트 버퍼만 필요하다는 의미이다. 이 버퍼는 다음 바이트를 미리 보는데 사용된다. 
 
@@ -175,7 +187,9 @@ func Unmarshal(data []byte, v interface{}) error
 
 *파서 작성에 관심이 있다면, 내가 Gopher Academy에 쓴 [Handwriting Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/)를 보라*
 
-### 토큰 디코딩
+<br>
+
+## 토큰 디코딩
 
 토큰이 스캔되면 이제 해석해야한다. 이는 *decodeState* 의 일이다. 이 단계에서 디코딩될 입력값들은 처리될 각 토큰과 일치한다.
 
@@ -183,7 +197,9 @@ func Unmarshal(data []byte, v interface{}) error
 
 여러분은 또한 Decoder.[Token](https://golang.org/pkg/encoding/json/#Decoder.Token)()과 Decoder.[More](https://golang.org/pkg/encoding/json/#Decoder.More)() 메서드를 사용해 토큰들을 스트림으로 처리할 수도 있다. 나는 이 메서드들을 사용해본 적은 없지만, 이런것들을 사용할 수 있다는걸 알아두면 좋다.
 
-### 커스텀 언마샬링(Unmarshaling)
+<br>
+
+## 커스텀 언마샬링(Unmarshaling)
 
 인코딩과 마찬가지로, 디코딩 커스텀 구현체도 만들 수 있다. 디코더는 먼저 타입이 json.[Unmarshaler](https://golang.org/pkg/encoding/json/#Unmarshaler) 를 구현하고 있는지를 검사한다:
 
@@ -207,7 +223,9 @@ type TextUnmarshaler interface {
 
 이는 사용하고 싶은 타입의 문자열 표현을 가지고 있을때 유용하다. 이의 한 예시는 내부적으로 정수로 표현되는 enum 타입을 문자열로써 인코딩/디코딩하는 경우이다.
 
-### 지연 처리
+<br>
+
+# 지연 처리
 
 json.[Unmarshaler](https://golang.org/pkg/encoding/json/#Unmarshaler)의 대체제는 json.[RawMessage] 타입이다. [RawMessage](https://golang.org/pkg/encoding/json/#RawMessage)를 사용하면, 원본 JSON 표현이 언마샬링이 완료된 후에 처리할 수 있는 필드에 저장된다. 이는 JSON 객체의 "type" 필드를 해석하고 값을 기반으로 JSON 파싱을 변경해야 할 때 유용하다.
 
@@ -253,7 +271,7 @@ if strings.Contains(t.Value, ".") {
 
 <br>
 
-## 깔끔한 출력
+# 깔끔한 출력
 
 JSON은 일반적으로 추가 공백 없이 하나의 긴 바이트로 쓰이지만, 이는 읽기가 어렵다. 여러분은 두 가지 방법으로 들여쓰기를 설정할 수 있다. JSON으로 인코딩된 인메모리 바이트 슬라이스의 경우엔 이를 json.[Indent]()() 함수에 전달할 수 있다:
 
@@ -286,7 +304,7 @@ func Compact(dst *bytes.Buffer, src []byte) error
 
 <br>
 
-## 인코딩/디코딩시 에러 핸들링
+# 인코딩/디코딩시 에러 핸들링
 
 json 패키지는 상당수의 에러 타입을 가지고 있다. 아래에 인코딩 또는 디코딩시 마주할 수 있는 에러 리스트가 있다:
 
@@ -302,7 +320,7 @@ json 패키지는 상당수의 에러 타입을 가지고 있다. 아래에 인�
 
 <br>
 
-## 대체 구현
+# 대체 구현
 
 몇 년 전 나는 리플렉션을 완전히 피하기 위해 컴파일 시 특정 타입별 인코더와 디코더를 생성해주는 [megajson](https://github.com/benbjohnson/megajson)라는 툴을 개발했었다. 이는 인코딩과 디코딩을 훨씬 빠르게 만들어주었다. 그러나, 이 툴은 개념 증명이었으며 지원의 한계가 있어 결국 버려졌다.
 
@@ -310,7 +328,7 @@ json 패키지는 상당수의 에러 타입을 가지고 있다. 아래에 인�
 
 <br>
 
-## 결론
+# 결론
 
 JSON은 빠르게 실행해야하거나 유저에게 간단한 API를 제공해야 할 때 훌륭한 데이터 포맷이 될 수 있다. Go의 구현체는 리플렉션을 사용하여 간단하게 사용할 수 있는 많은 기능들을 제공한다.
 
