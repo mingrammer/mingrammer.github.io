@@ -186,8 +186,7 @@ func Compare(a, b string) int
 
 이 함수는 *a* 가 *b* 보다 작을 땐 -1, *a* 가 *b* 보다 클 땐 1, 그리고 *a* 와 *b* 가 같을 땐 0을 반환한다. 이 함수는 [strings](https://golang.org/pkg/strings/) 패키지에도 존재하는데 이는 단지 바이트 패키지와의 대칭을 이루기 위해서이다. Russ Cox도 함수의 주석에 써있는 "[기본적으로 그 누구도 strings.Compare를 사용해선 안된다](https://golang.org/src/strings/compare.go?s=697:741)"라는 말을 언급하며, 내장 연산자인 < 와 >를 대신 사용한다.
 
-*"기본적으로 그 누구도 strings.Compare를 사용해선 안된다", Russ Cox*
-{: style="text-align: center; font-size: 18px;"}
+<center> *"기본적으로 그 누구도 strings.Compare를 사용해선 안된다", Russ Cox* </center>
 
 일반적으로, 정렬을 하기 위해 바이트 슬라이스가 다른 바이트 슬라이스보다 작은지에 대한 여부를 알고 싶을 것이다. sort.[Interface](https://golang.org/pkg/sort/#Interface)는 Less() 함수를 위해 이를 필요로한다. Less()는 [Compare](https://golang.org/pkg/bytes/#Compare)()의 세 가지 값을 갖는 반환값의 부울값으로의 변환을 필요로한다. 우리는 단순히 이 값이 -1과 같은지를 확인한다:
 
