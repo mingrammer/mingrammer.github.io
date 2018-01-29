@@ -25,14 +25,12 @@ hidden = true
 * **Language**
     * Python
     * Go
-    * JavaScript
 * **Server Framework**
     * Flask
     * Django
     * Echo
 * **Cloud Computing**
     * AWS
-    * Google App Engine
 * **Database**
     * MySQL
     * Redis
