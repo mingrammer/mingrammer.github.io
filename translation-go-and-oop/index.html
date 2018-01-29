@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 28, 2017 00:00
-                    · 3417 words
+                    · 3383 words
                     · 7 minute read
                       <span class="tags">
                       
@@ -133,7 +133,7 @@ echo $object-&gt;classVar;    // &quot;Look! I can access object!&quot;
 echo $reference-&gt;classVar; // &quot;Look! I can access object!&quot;
 </code></pre>
 
-<p>이 PHP 코드는 *$object*와 *$reference*가 모두 같은 *SomeObject*의 인스턴스를 가리키고 있음을 보여준다.</p>
+<p>이 PHP 코드는 <strong>$object</strong>와 <strong>$reference</strong>가 모두 같은 <strong>SomeObject</strong>의 인스턴스를 가리키고 있음을 보여준다.</p>
 
 <p>다양한 명명된 참조로부터 접근할 수 있는 것 외에도, 객체는 Go에서는 불가능한 상속과 서브클래스와 같은 중요한 개념 또한 포함한다. 따라서, Go를 배울 때에는, 객체에 대한 생각을 버리고, 올바른 용어를 사용하는데 집중을 하는게 가장 좋다.</p>
 
@@ -186,12 +186,9 @@ func main() {
 }
 </code></pre>
 
-<p>여기서 우리는 <em>foo</em> 메서드가 *someStruct*의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
+<p>여기서 우리는 <em>foo</em> 메서드가 <strong>someStruct</strong>의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
 
-<p>재차 말해서 Go에는 객체가 없지만, 메서드 리시버와 클래스 메서드 사이에는 유사점이 있다.</p>
-
-<p>&hellip;
-{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+<p><center> 재차 말해서 Go에는 객체가 없지만, 메서드 리시버와 클래스 메서드 사이에는 유사점이 있다. </center></p>
 
 <p>이제 용어를 알아봤으므로, 마침내 우리는 Go 코드를 해석하는데 사용할 수 있는 OOP 패턴들을 살펴볼 수 있다.</p>
 
@@ -199,15 +196,13 @@ func main() {
 
 <h1 id="1-캡슐화-encapsulation">1. 캡슐화 (Encapsulation)</h1>
 
-<p><a href="http://crackingjavainterviews.blogspot.kr/2013/04/what-are-four-principles-of-oop.html">&ldquo;캡슐화는 퍼블릭 메서드에 접근 제한을 둠으로써 데이터 구현체를 숨기는 메커니즘이다.&rdquo;</a>
-{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+<p><center> <a href="http://crackingjavainterviews.blogspot.kr/2013/04/what-are-four-principles-of-oop.html">&ldquo;캡슐화는 퍼블릭 메서드에 접근 제한을 둠으로써 데이터 구현체를 숨기는 메커니즘이다.&rdquo;</a> </center></p>
 
 <p>전통적으로, 클래스 기반 OOP에서는 캡슐화가 private과 public 변수/메서드를 통해 이루어졌다. Go에서는 <em>패키지 (package)</em> 수준에서 캡슐화가 이루어진다.</p>
 
 <p>&ldquo;Public&rdquo; 요소는 패키지 밖으로 노출될 수 있으며 첫 문자를 대문자로 표시한다. <strong>노출 (exported)</strong> vs. <strong>비노출 (unexported)</strong> 요소가 더 정확한 용어이기 때문에 public을 따옴표 안에 적었다. 비노출 요소는 첫 문자로 소문자를 사용해 표시하며, 해당 패키지 내에서만 접근이 가능하다.</p>
 
-<p><em>Public/protected/private은 클래스와 관련된 키워드이며, exporting/importing은 패키지와 관련이 있다.</em>
-{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+<p><center> <em>Public/protected/private은 클래스와 관련된 키워드이며, exporting/importing은 패키지와 관련이 있다.</em> </center></p>
 
 <pre><code class="language-go">package encapsulation
 
@@ -260,8 +255,7 @@ func main() {
 
 <h1 id="2-다형성-polymorphism">2. 다형성 (Polymorphism)</h1>
 
-<p><a href="http://stackoverflow.com/questions/1031273/what-is-polymorphism-what-is-it-for-and-how-is-it-used">&ldquo;다형성은 클래스들이 공통 인터페이스를 공유하면서 다른 기능을 갖는 객체 지향 프로그래밍의 패턴을 묘사한다.&rdquo;</a>
-{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+<p><center> <a href="http://stackoverflow.com/questions/1031273/what-is-polymorphism-what-is-it-for-and-how-is-it-used">&ldquo;다형성은 클래스들이 공통 인터페이스를 공유하면서 다른 기능을 갖는 객체 지향 프로그래밍의 패턴을 묘사한다.&rdquo;</a> </center></p>
 
 <p>Go에서는 인터페이스가 암시적으로 충족된다. 인터페이스 또한 타입이다. 이 두 문장은 많은 의미를 담고 있으므로, 이제 이를 자세히 알아보자.</p>
 
@@ -400,8 +394,7 @@ func main() {
 
 <h1 id="4-추상화-abstraction">4. 추상화 (Abstraction)</h1>
 
-<p>&ldquo;<em><a href="http://www.introprogramming.info/english-intro-csharp-book/read-online/chapter-20-object-oriented-programming-principles/#_Toc362296567">추상화란 내부적으로 어떻게 동작하는지 모른채 사용법만 알고 작업한다는 것을 의미한다. </a></em>&ldquo;
-{: style=&ldquo;text-align: center; font-size: 18px;&ldquo;}</p>
+<p><center> &ldquo;<em><a href="http://www.introprogramming.info/english-intro-csharp-book/read-online/chapter-20-object-oriented-programming-principles/#_Toc362296567">추상화란 내부적으로 어떻게 동작하는지 모른채 사용법만 알고 작업한다는 것을 의미한다. </a></em>&rdquo; </center></p>
 
 <p>구조체 내에 구조체를 임베딩 하는것과 유사하게, 구조체 내에 인터페이스를 임베딩할 수도 있다. 한 인터페이스를 만족하는 모든 타입들은 또한 해당 인터페이스 타입을 갖는다는걸 기억하라.</p>
 
