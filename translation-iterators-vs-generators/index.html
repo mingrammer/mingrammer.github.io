@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.31.1" />
+		<meta name="generator" content="Hugo 0.26" />
 		<title>[번역] 이터레이터와 제너레이터 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -76,8 +76,6 @@
                     <div id="toc">
                       <nav id="TableOfContents">
 <ul>
-<li>
-<ul>
 <li><a href="#컨테이너-container">컨테이너 (Container)</a></li>
 <li><a href="#이터레이블-iterable">이터레이블 (Iterable)</a></li>
 <li><a href="#이터레이터-iterator">이터레이터 (Iterator)</a></li>
@@ -86,7 +84,6 @@
 <li><a href="#제너레이터의-타입">제너레이터의 타입</a></li>
 </ul></li>
 <li><a href="#정리">정리</a></li>
-</ul></li>
 </ul>
 </nav>
                     </div>
@@ -116,7 +113,7 @@
 
 <p><br></p>
 
-<h2 id="컨테이너-container">컨테이너 (Container)</h2>
+<h1 id="컨테이너-container">컨테이너 (Container)</h1>
 
 <p>컨테이너 (Container)컨테이너는 원소들을 가지고 있는 데이터 구조이며 멤버쉽 테스트를 지원한다. (멤버쉽 테스트는 아래에 나온다) 이는 메모리에 상주하는 데이터 구조로, 보통 모든 원소값을 메모리에 가지고 있다. 파이썬에서 잘 알려진 컨테이너는 다음과 같다:</p>
 
@@ -168,7 +165,7 @@
 
 <p><br></p>
 
-<h2 id="이터레이블-iterable">이터레이블 (Iterable)</h2>
+<h1 id="이터레이블-iterable">이터레이블 (Iterable)</h1>
 
 <p>좀 전에도 언급했듯이, 대부분의 컨테이너는 또한 이터레이블(iterable)하다. 그러나 더 많은 것들 또한 이터레이블하다. 일례로 파일 열기, 소켓 열기등이 있다. 컨테이너가 일반적으로 유한할경우, 이터레이블은 무한한 데이터 소스를 나타낼 수도 있다.</p>
 
@@ -226,7 +223,7 @@ for elem in x:
 
 <p><br></p>
 
-<h2 id="이터레이터-iterator">이터레이터 (Iterator)</h2>
+<h1 id="이터레이터-iterator">이터레이터 (Iterator)</h1>
 
 <p>그럼 <strong>이터레이터(iterator)</strong>란 무엇인가? 이는 <strong>next()</strong>를 호출할 때 다음값을 생성해내는 상태를 가진 헬퍼 객체이다. <strong><strong>next</strong>()</strong>를 가진 모든 객체는 이터레이터이다. 값을 생성해내는 방법과는 무관하다.</p>
 
@@ -306,7 +303,7 @@ red
 
 <p><br></p>
 
-<h2 id="제너레이터-generator">제너레이터 (Generator)</h2>
+<h1 id="제너레이터-generator">제너레이터 (Generator)</h1>
 
 <p>드디어, 우리의 목적지에 도착했다! 제너레이터는 내가 파이썬에서 정말 좋아하는 기능이다. 제너레이터는 특별한 종류의 이터레이터이다. (우아한 종류의)</p>
 
@@ -353,7 +350,9 @@ red
 
 <p>이 작업은 결과 리스트가 10개의 원소를 가질때까지 계속 진행되며 <strong>list()</strong>가 <strong>islice()</strong>에 11번째 값을 요청할때, <strong>islice()</strong>는 마지막에 도달했음을 가리키는 <code>StopIteration</code> 익셉션을 발생시키고 리스트는 결괏값을 반환한다: 첫 10개의 피보나치 수들을 포함하는 리스트. 참고로 제너레이터는 11번째 <strong>next()</strong> 호출을 받지 않는다. 실제로, 이는 다시 사용되지 않으며, 나중에 가비지 컬렉션에 의해 수집된다.</p>
 
-<h3 id="제너레이터의-타입">제너레이터의 타입</h3>
+<p><br></p>
+
+<h2 id="제너레이터의-타입">제너레이터의 타입</h2>
 
 <p>파이썬에는 두 가지 타입의 제너레이터가 있다: 제너레이터 <strong>함수(functions)</strong>와 제너레이터 <strong>표현식(expressions)</strong>. 제너레이터 함수는 몸체에 <strong>yield</strong> 키워드가 나타나는 모든 함수들이다. 우리는 아까 이의 예시를 보았다. <strong>yield</strong> 키워드가 있는것만으로도 함수를 제너레이터 함수로 만들기에 충분한 조건이다.</p>
 
@@ -393,7 +392,7 @@ red
 
 <p><br></p>
 
-<h2 id="정리">정리</h2>
+<h1 id="정리">정리</h1>
 
 <p>제너레이터는 놀랍도록 강력한 프로그래밍 구조이다. 이는 몇가지 중간 변수와 데이터 구조를 가지고 스트리밍 코드를 작성할 수 있게 해준다. 게다가, 이는 메모리/CPU 효율이 더 좋다. 마지막으로, 이는 코드의 라인수를 줄여주는 경향도 있다.</p>
 

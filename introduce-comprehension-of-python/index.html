@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.31.1" />
+		<meta name="generator" content="Hugo 0.26" />
 		<title>파이썬의 Comprehension 소개 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Jun 14, 2017 00:00
-                    · 1547 words
+                    · 1550 words
                     · 4 minute read
                       <span class="tags">
                       
@@ -72,13 +72,10 @@
                     <div id="toc">
                       <nav id="TableOfContents">
 <ul>
-<li>
-<ul>
-<li><a href="#list-comprehension-lc">List comprehension (LC)</a></li>
-<li><a href="#set-comprehension">Set comprehension</a></li>
-<li><a href="#dict-comprehension">Dict comprehension</a></li>
-<li><a href="#generator-expression">Generator expression</a></li>
-</ul></li>
+<li><a href="#list-comprehension-lc">List Comprehension (LC)</a></li>
+<li><a href="#set-comprehension-sc">Set Comprehension (SC)</a></li>
+<li><a href="#dict-comprehension-dc">Dict Comprehension (DC)</a></li>
+<li><a href="#generator-expression-ge">Generator Expression (GE)</a></li>
 </ul>
 </nav>
                     </div>
@@ -92,10 +89,10 @@
 <p>파이썬에는 다음과 같은 크게 네 가지 종류의 Comprehension이 있다.</p>
 
 <ul>
-<li>List comprehension (LC)</li>
-<li>Set comprehension (SC)</li>
-<li>Dict comprehension (DC)</li>
-<li>Generator expression (GE)</li>
+<li>List Comprehension (LC)</li>
+<li>Set Comprehension (SC)</li>
+<li>Dict Comprehension (DC)</li>
+<li>Generator Expression (GE)</li>
 </ul>
 
 <p>Generator의 경우 comprehension과 형태는 동일하지만 특별히 <strong>expression</strong>이라고 부른다.</p>
@@ -104,7 +101,7 @@
 
 <p><br></p>
 
-<h2 id="list-comprehension-lc">List comprehension (LC)</h2>
+<h1 id="list-comprehension-lc">List Comprehension (LC)</h1>
 
 <p><strong>List comprehension</strong>은 리스트를 쉽게 생성하기 위한 방법이다. 이는 파이썬에서 보편적으로 사용되는 기능으로 조금만 응용하면 다양한 조건으로 리스트를 생성할 수 있는 강력한 기능중 하나이다.</p>
 
@@ -158,7 +155,7 @@ flatten = [e for r in matrix for e in r]
 
 <p><br></p>
 
-<h2 id="set-comprehension">Set comprehension</h2>
+<h1 id="set-comprehension-sc">Set Comprehension (SC)</h1>
 
 <p><strong>Set comprehension</strong>은 LC와 정확히 동일하며 단지 list가 아닌 set을 생성한다는 것만 다르다.</p>
 
@@ -173,7 +170,7 @@ no_primes = {j for i in range(2, 9) for j in range(i * 2, 50, i)}
 
 <p><br></p>
 
-<h2 id="dict-comprehension">Dict comprehension</h2>
+<h1 id="dict-comprehension-dc">Dict Comprehension (DC)</h1>
 
 <p><strong>Dict comprehension</strong> 또한 LC와 동일하며 dict를 생성한다.</p>
 
@@ -193,7 +190,7 @@ score_dict = {t[0]: t[1] for t in score_tuples}
 
 <p><br></p>
 
-<h2 id="generator-expression">Generator expression</h2>
+<h1 id="generator-expression-ge">Generator Expression (GE)</h1>
 
 <p><strong>Generator expression</strong>은 특별한 형태의 comprehension이다. 이는 한 번에 모든 원소를 반환하지 않고 한 번에 하나의 원소만 반환하는 <strong>generator</strong>를 생성한다.</p>
 

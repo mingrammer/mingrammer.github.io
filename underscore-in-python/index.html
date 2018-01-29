@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.31.1" />
+		<meta name="generator" content="Hugo 0.26" />
 		<title>파이썬 언더스코어(_)에 대하여 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Nov 5, 2016 00:00
-                    · 2528 words
+                    · 2530 words
                     · 6 minute read
                       <span class="tags">
                       
@@ -78,13 +78,8 @@
 <li><a href="#2-값을-무시하고-싶은-경우">2. 값을 무시하고 싶은 경우</a></li>
 <li><a href="#3-특별한-의미의-네이밍을-하는-경우">3. 특별한 의미의 네이밍을 하는 경우</a></li>
 <li><a href="#4-국제화-i18n-지역화-l10n-함수로-사용되는-경우">4. 국제화(i18n)/지역화(l10n) 함수로 사용되는 경우</a></li>
-<li><a href="#5-숫자-리터럴값의-자릿수-구분을-위한-구분자로써-사용할-때">5. 숫자 리터럴값의 자릿수 구분을 위한 구분자로써 사용할 때</a>
-<ul>
-<li>
-<ul>
+<li><a href="#5-숫자-리터럴값의-자릿수-구분을-위한-구분자로써-사용할-때">5. 숫자 리터럴값의 자릿수 구분을 위한 구분자로써 사용할 때</a></li>
 <li><a href="#update">Update</a></li>
-</ul></li>
-</ul></li>
 </ul>
 </nav>
                     </div>
@@ -158,26 +153,26 @@ for _, val in list_of_tuple:
 
 <pre><code class="language-python">  _internal_name = 'one_module' # private 변수
   _internal_version = '1.0' # private 변수
-
-
-  class _Base: # private 클래스
-      _hidden_factor = 2 # private 변수
-
-      def __init__(self, price):
-          self._price = price
-
-      def _double_price(self): # private 메서드
-          return self._price * self._hidden_factor
-
-      def get_double_price(self):
-          return self._double_price()
 </code></pre>
 
-<ul>
-<li><code>single_trailing_underscore_</code>: 파이썬 키워드와의 충돌을 피하기 위해 사용하는 컨벤션이다. 그리 많이 사용하지는 않을 것이다.</li>
-</ul>
+<p>class _Base: # private 클래스
+      _hidden_factor = 2 # private 변수</p>
 
-<pre><code class="language-python">  Tkinter.Toplevel(master, class_='ClassName') # class와의 충돌을 피함
+<pre><code>  def __init__(self, price):
+      self._price = price
+
+  def _double_price(self): # private 메서드
+      return self._price * self._hidden_factor
+
+  def get_double_price(self):
+      return self._double_price()
+</code></pre>
+
+<pre><code>
+* `single_trailing_underscore_`: 파이썬 키워드와의 충돌을 피하기 위해 사용하는 컨벤션이다. 그리 많이 사용하지는 않을 것이다.
+
+  ```python
+  Tkinter.Toplevel(master, class_='ClassName') # class와의 충돌을 피함
 
   list_ = List.objects.get(1) # list와의 충돌을 피함
 </code></pre>
@@ -266,7 +261,7 @@ print(hex_base) # 305441741
 
 <p><br></p>
 
-<h3 id="update">Update</h3>
+<h1 id="update">Update</h1>
 
 <p>Python 3.6의 <strong><em>PEP 515 &ndash; Underscores in Numeric Literals</em></strong> 추가</p>
 

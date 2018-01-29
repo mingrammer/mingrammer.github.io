@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.31.1" />
+		<meta name="generator" content="Hugo 0.26" />
 		<title>파이썬의 Asterisk(*) 이해하기 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -78,12 +78,9 @@
 <li><a href="#2-리스트형-컨테이너-타입의-데이터를-반복-확장하고자-할-때">2. 리스트형 컨테이너 타입의 데이터를 반복 확장하고자 할 때</a></li>
 <li><a href="#3-가변인자-variadic-parameters-를-사용하고자-할-때">3. 가변인자 (Variadic Parameters)를 사용하고자 할 때</a>
 <ul>
-<li>
-<ul>
 <li><a href="#positional-arguments만-받을-때">positional arguments만 받을 때</a></li>
 <li><a href="#keyword-arguments만-받을-때">keyword arguments만 받을 때</a></li>
 <li><a href="#positional-arguments와-keyword-arguments를-모두-받을-때">positional arguments와 keyword arguments를 모두 받을 때</a></li>
-</ul></li>
 </ul></li>
 <li><a href="#4-컨테이너-타입의-데이터를-unpacking-할-때">4. 컨테이너 타입의 데이터를 Unpacking 할 때</a></li>
 <li><a href="#결론">결론</a></li>
@@ -183,7 +180,9 @@ save_ranking('alice', 'ming', 'mike', fourth='jim')
 
 <p>여기까지가 파이썬의 arguments에 관한 기본적인 설명이다. 그런데, 여기서 한 가지 문제를 맞닥뜨릴 수 있다. 만약, 최대 4명의 주자가 아닌 10명 또는 그 이상의 정해지지 않은 주자가 있다고 해보자. 이 경우엔 10개의 인자를 선언하기도 번거로우며, 특히, 주자의 수가 미정일 경우 위와 같은 형태로는 처리가 불가능하다. 이 때 사용하는게 바로 <strong>가변인자 (Variadic Arguments)</strong>이다. 가변인자는 좀 전에 위에서 설명한 positional arguments와 keyword arguments에 모두 사용할 수 있으며, 사용 방법은 다음과 같다.</p>
 
-<h3 id="positional-arguments만-받을-때">positional arguments만 받을 때</h3>
+<p><br></p>
+
+<h2 id="positional-arguments만-받을-때">positional arguments만 받을 때</h2>
 
 <pre><code class="language-python">def save_ranking(*args):
     print(args)
@@ -191,7 +190,9 @@ save_ranking('ming', 'alice', 'tom', 'wilson', 'roy')
 # ['ming', 'alice', 'tom', 'wilson', 'roy']
 </code></pre>
 
-<h3 id="keyword-arguments만-받을-때">keyword arguments만 받을 때</h3>
+<p><br></p>
+
+<h2 id="keyword-arguments만-받을-때">keyword arguments만 받을 때</h2>
 
 <pre><code class="language-python">def save_ranking(**kwargs):
     print(kwargs)
@@ -199,7 +200,9 @@ save_ranking(first='ming', second='alice', fourth='wilson', third='tom', fifth='
 # {'first': 'ming', 'second': 'alice', 'fourth': 'wilson', 'third': 'tom', 'fifth': 'roy'}
 </code></pre>
 
-<h3 id="positional-arguments와-keyword-arguments를-모두-받을-때">positional arguments와 keyword arguments를 모두 받을 때</h3>
+<p><br></p>
+
+<h2 id="positional-arguments와-keyword-arguments를-모두-받을-때">positional arguments와 keyword arguments를 모두 받을 때</h2>
 
 <pre><code class="language-python">def save_ranking(*args, **kwargs):
     print(args)
@@ -208,6 +211,8 @@ save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')
 # ('ming', 'alice', 'tom')
 # {'fourth': 'wilson', 'fifth': 'roy'}
 </code></pre>
+
+<p><br></p>
 
 <p>위에서 <code>*args</code>는 임의의 갯수의 positional arguments를 받음을 의미하며, <code>**kwargs</code>는 임의의 갯수의 keyword arguments를 받음을 의미한다. 이 때 <code>*args</code>, <code>**kwargs</code> 형태로 가변인자를 받는걸 <strong>packing</strong>이라고 한다.</p>
 
