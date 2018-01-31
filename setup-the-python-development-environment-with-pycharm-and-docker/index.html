@@ -54,8 +54,8 @@
                     </h1>
                     <h2 class="headline">
                     Jul 14, 2017 00:00
-                    · 4560 words
-                    · 10 minute read
+                    · 4458 words
+                    · 9 minute read
                       <span class="tags">
                       
                       
@@ -107,36 +107,6 @@
 <p>그렇다면 대안은 독립적인 머신을 사용하거나 Vagrant와 같은 VM을 사용하는건데 나의 경우엔 Vagrant는 조금 부담스럽고 좀 더 가볍게 구성하고자 <a href="https://www.docker.com/"><strong>Docker</strong></a>를 사용하였다. 나는 프로젝트 크기가 크거나 IDE의 도움이 필요한 경우 주로 <strong>PyCharm</strong>으로 작업을 하는데 Docker는 터미널에서 작업하다보니 두 프로그램간의 스위칭이 너무 불편하였다. 마침 PyCharm에서 Docker를 지원하고 있었고 한 번 연동해서 써본 결과 나름 만족스러웠기에 이를 기록 및 공유하고자 이번 포스트를 쓰게되었다.</p>
 
 <p>그러면 바로 본론으로 들어가서 파이썬 프로젝트를 Docker 기반으로 개발하는 전체 과정을 살펴보기위해 Docker 컨테이너를 만든 뒤, 그 위에 Flask 애플리케이션을 띄워보고 PyCharm에서 Docker를 연동하여 좀 더 편리한 개발환경을 셋업해보자.</p>
-
-<p><br></p>
-
-<p>목차는 다음과 같다.</p>
-
-<hr>
-
-<ul>
-<li><p><strong>프로젝트 생성하기</strong></p>
-
-<ul>
-<li>프로젝트 구조 잡기</li>
-</ul></li>
-
-<li><p><strong>도커 (Docker) 세팅하기</strong></p>
-
-<ul>
-<li>도커 설치</li>
-<li>(macOS에 해당) 도커 머신 생성</li>
-<li>도커 파일 생성 및 도커 이미지 빌드</li>
-<li>도커 컨테이너 실행</li>
-</ul></li>
-
-<li><p><strong>파이참 (PyCharm) 세팅하기</strong></p>
-
-<ul>
-<li>리모트 도커 연결</li>
-<li>Flask 애플리케이션 서버 실행하기</li>
-</ul></li>
-</ul>
 
 <p><br></p>
 
