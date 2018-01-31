@@ -23,25 +23,6 @@ url: /setup-the-python-development-environment-with-pycharm-and-docker
 
 <br>
 
-목차는 다음과 같다.
-
-<hr>
-
-* **프로젝트 생성하기**
-  * 프로젝트 구조 잡기
-
-
-* **도커 (Docker) 세팅하기**
-  * 도커 설치
-  * (macOS에 해당) 도커 머신 생성
-  * 도커 파일 생성 및 도커 이미지 빌드
-  * 도커 컨테이너 실행
-* **파이참 (PyCharm) 세팅하기** 
-  * 리모트 도커 연결
-  * Flask 애플리케이션 서버 실행하기
-
-<br>
-
 # 프로젝트 생성하기
 
 ## 1. 프로젝트 구조 잡기
