@@ -896,6 +896,7 @@ a.symbol:hover {
 #TableOfContents ul li {
   list-style-type: none;
   line-height: 1.7em;
+  padding: 3px 0;
 }
 #TableOfContents > ul {
   padding: 0;
