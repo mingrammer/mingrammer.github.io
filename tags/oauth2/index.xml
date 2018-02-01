@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oauth2 on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/oauth2/</link>
+    <description>Recent content in Oauth2 on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 01 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/oauth2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go에서 OAuth2 인증하기</title>
+      <link>https://mingrammer.com/getting-started-with-oauth2-in-go/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/getting-started-with-oauth2-in-go/</guid>
+      <description>OAuth2란, 일종의 인증 프로토콜로써 소셜 인증을 통한 로그인 및 권한 제어를 위해 사용된다. Google, Twitter, Github 등 대부분의 소셜 인증 기능을 지닌 프로바이더들은 표준 인증</description>
+    </item>
+    
+  </channel>
+</rss>
