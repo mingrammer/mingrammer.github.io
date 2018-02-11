@@ -43,7 +43,7 @@ url: /translation-the-mathematics-of-machine-learning
    * QR 분해 (QR Decomposition/Factorization)
    * 대칭 행렬 (Symmetric Matrices)
    * 고유값 & 고유벡터 (Eigenvalues & Eigenvectors)
-   * 벡터 공간과 표준화 (Vector Spaces and Norms)
+   * 벡터 공간과 노름 (Vector Spaces and Norms)
 
      이상 위의 것들은 머신러닝에서 사용되는 최적화 방법들을 이해하기 위해 필요한 개념들이다.
 
