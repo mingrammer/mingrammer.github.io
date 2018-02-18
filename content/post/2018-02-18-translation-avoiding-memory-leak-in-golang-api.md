@@ -238,7 +238,7 @@ func (u *usecase) GetSample(id int64, someparam string, anotherParam string) ([]
 
 # 4단계 : 컨텍스트를 활용한 타임아웃 제어
 
-3단계까지 시도했음에도, 우리의 문제는 여전히 완벽하게 해결되지는 않았다. 우리의 `메인 API`는 여전히 높은 CPU와 메모리를 점유하고 있었다.
+3단계까지 시도 했음에도, 우리의 문제는 여전히 완벽하게 해결되지는 않았다. 우리의 `메인 API`는 여전히 높은 CPU와 메모리를 점유하고 있었다.
 
 이는 유저에게 이미 `Internal Server Error`를 반환하고 있음에도 불구하고 고루틴이 여전히 살아있었기 때문이다. 우리가 원하던건 응답이 반환되면 백그라운드에서 돌아가고있는 고루틴 및 API 호출을 포함한 모든 리소스가 예외없이 지워지는 것이다.
 
@@ -302,7 +302,7 @@ func (u *usecase) GetSample(c context.Context, id int64, someparam string, anoth
 
 우리는 코드에서 모든 고루틴 호출에 `컨텍스트`를 사용한다. 이는 메모리를 해제하고 고루틴 호출을 취소하는데 도움이 된다.
 
-추가적으로, 보다 더 제어 가능하고 신뢰성 있는 서비스를 위해 HTTP 요청에 컨텍스트를 전달한다.
+추가적으로, 보다 더 통제 가능하고 신뢰성 있는 서비스를 위해 HTTP 요청에 컨텍스트를 전달한다.
 
 ```go
 func ( u *usecase) getDataFromFacebook(ctx context.Context, id int64, param string) sampleChanel{
@@ -350,7 +350,7 @@ func ( u *usecase) getDataFromFacebook(ctx context.Context, id int64, param stri
 
 ```
 
-이 모든 설정과 타임아웃 제어로 인해, 우리의 시스템은 보다 더 안전하고 통제가능한 시스템이 되었다.
+이 모든 설정과 타임아웃 제어로 인해, 우리의 시스템은 보다 더 안전하고 통제 가능한 시스템이 되었다.
 
  <br>
 
