@@ -242,7 +242,7 @@ func (u *usecase) GetSample(id int64, someparam string, anotherParam string) ([]
 
 이는 유저에게 이미 `Internal Server Error`를 반환하고 있음에도 불구하고 고루틴이 여전히 살아있었기 때문이다. 우리가 원하던건 응답이 반환되면 백그라운드에서 돌아가고있는 고루틴 및 API 호출을 포함한 모든 리소스가 예외없이 지워지는 것이다.
 
-나중에 [이 글](http://dahernan.github.io/2015/02/04/context-and-cancellation-of-goroutines/)을 읽은 뒤, 우리는 Go에서 알지 못했던 흥미로운 특징을 발견했다. 바로  `컨텍스트 (Context)`를 활용한 고루틴의 캔슬레이션 (Cancelatioin)이다.
+나중에 [이 글](http://dahernan.github.io/2015/02/04/context-and-cancellation-of-goroutines/)을 읽은 뒤, 우리는 Go에서 알지 못했던 흥미로운 특징을 발견했다. 바로  `컨텍스트 (Context)`를 활용한 고루틴의 캔슬레이션 (Cancellation)이다.
 
 타임아웃을 위해 `time.After`를 사용하는 대신 `context.Context`를 사용하였다. 이 새로운 접근법으로 우리의 서비스는 보다 더 안정적이게 되었다.
 
