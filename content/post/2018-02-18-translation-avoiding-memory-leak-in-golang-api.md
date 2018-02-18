@@ -8,7 +8,6 @@ tags:
 - go
 title: '[번역] Go API에서 메모리 누수 예방하기'
 url: /translation-avoiding-memory-leak-in-golang-api
-draft: true
 ---
 
 > [Avoiding Memory Leak in Golang API](https://hackernoon.com/avoiding-memory-leak-in-golang-api-1843ef45fca8)를 번역한 글입니다.
