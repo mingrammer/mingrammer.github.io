@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/post/</link>
     <description>Recent content in Posts on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 01 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[번역] Go API에서 메모리 누수 예방하기</title>
+      <link>https://mingrammer.com/translation-avoiding-memory-leak-in-golang-api/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-avoiding-memory-leak-in-golang-api/</guid>
+      <description>Avoiding Memory Leak in Golang API를 번역한 글입니다. 여러분은 Go API를 프로덕션 환경에 배포하기 전에 먼저 이 글을 읽어야합니다. 이 글은 Kurio에서의 실제 경험에 기반한</description>
+    </item>
     
     <item>
       <title>Go에서 OAuth2 인증하기</title>
