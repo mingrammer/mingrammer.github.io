@@ -1,5 +1,5 @@
 +++
-date = "2015-06-20T14:02:37+02:00"
+date = "2018-02-20T14:02:37+02:00"
 title = "About"
 hidden = true
 +++
@@ -8,12 +8,12 @@ hidden = true
 * **Name** : 권민재 (MinJae Kwon)
 * **Nickname** : mingrammer
 * **Age** : 24 (23)
-* **Email** : [[k239507@gmail.com](mailto://k239507@gmail.com), [mingrammer@gmail.com](mingrammer@gmail.com)]
+* **Email** : [mingrammer@gmail.com](mingrammer@gmail.com)
 * **Github** : [https://github.com/mingrammer](https://github.com/mingrammer)
 * **Medium** : [https://medium.com/@mingrammer](https://medium.com/@mingrammer)
 * **SpeakerDeck** : [https://speakerdeck.com/mingrammer](https://speakerdeck.com/mingrammer)
-* **Company**: Sundaytoz
-* **Career Dev** : 1y 8m
+* **Company**: SundayToz
+* **Career Dev** : 1y 10m
 * **Weapons** : iMac 27", MacBook Pro Retina, iPad Air 2, iPhone 7
 * **Strength** : [한 번 꽂히면 고도의 집중력을 발휘할 수 있음, 학습욕구가 높음, 삽질을 잘함, 거짓말을 잘 못함]
 * **Weakness** : [No를 잘 못외침, 생각이 많음]
