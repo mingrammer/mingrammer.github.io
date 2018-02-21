@@ -10,6 +10,9 @@ fi
 # Commit changes to hugo branch
 git commit -m "$msg"
 
+# Push source
+git push
+
 # Build the project.
 hugo # if using a theme, replace with `hugo -t <YOURTHEME>`
 
