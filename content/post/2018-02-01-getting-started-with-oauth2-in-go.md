@@ -56,23 +56,17 @@ go get golang.org/x/oauth2
 go get github.com/gorilla/sessions
 ```
 
-<br>
-
 ## 키값 발급
 
 OAuth2 API를 사용하기 위해선 API를 제공하는 프로바이더에 애플리케이션을 등록한 뒤 OAuth2 API 사용 권한 인증을 위한 키값들을 발급받아야한다. 구글의 경우 [Google API Console](https://console.developers.google.com)에서 애플리케이션을 등록할 수 있다. 등록 후, **사용자 인증 정보** 페이지에 접속하면 **사용자 인증 정보 만들기**의 **OAuth 클라이언트 ID** 메뉴를 통해 클라이언트 ID와 시크릿 키값을 발급 받을 수 있다.
 
 이렇게 발급받은 클라이언트 ID와 시크릿 키값은 **인증 정보 설정**에서 사용할 것이다.
 
-<br>
-
 ## 콜백 URL 지정
 
 사용자가 프로바이더 인증 서버에 권한을 요청하면 인증 서버는 미리 등록된 콜백 URL을 통해 토큰 발급시 사용될 임시 코드값을 클라이언트에 전달하게 된다. (위 그림으로 보면 **3**번에서 이 과정이 이루어진다) 따라서 우리는 이 때 사용할 콜백 URL을 좀 전에 만든 애플리케이션에 미리 등록해야한다. 키값을 발급했던 페이지에 있는 **승인된 리디렉션 URI** 칸에 콜백 URL을 지정할 수 있다. 여기에서는 `http://127.0.0.1:1333/auth/callback`로 지정하도록 하자.
 
 준비는 다 끝났다. 그럼 이제 OAuth2 인증을 실제로 구현해보도록 하자. 
-
-<br>
 
 <br>
 
@@ -141,8 +135,6 @@ func RenderAuthView(w http.ResponseWriter, r *http.Request) {
 func Authenticate(w http.ResponseWriter, r *http.Request) {
 }
 ```
-
-
 
 <br>
 
@@ -369,8 +361,6 @@ func RandToken() string {
     return base64.StdEncoding.EncodeToString(b)
 }
 ```
-
-<br>
 
 ## main.go
 
