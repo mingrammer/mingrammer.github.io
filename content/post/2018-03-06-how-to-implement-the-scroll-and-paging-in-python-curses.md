@@ -14,7 +14,7 @@ TUI 애플리케이션을 개발하다보면 마주치는 어렵지는 않지만
 
 그럼 바로 본론으로 들어가서, **curses**에서 스크롤과 페이징을 구현하는 방법에 대해서 알아보겠다. 참고로 이 포스팅은 curses 튜토리얼은 아니며, 따라서 curses를 이미 사용해봤던 사람들한테 더욱 유용할 것이다.
 
-이 포스팅에서는 전체 소스코드가 아닌 스크롤 및 페이징의 구현부 소스코드만 살펴볼 것이며, 전체 소스코드 및 실행 방법은 [Python Curses Scroll Example](https://github.com/mingrammer/python-curses-scroll-example)을 참고하면 된다.
+이 포스팅에서는 전체 소스코드가 아닌 스크롤 및 페이징의 구현부 소스코드만 살펴볼 것이며, 전체 소스코드 및 실행 방법은 [Python Curses Scroll Example](https://github.com/mingrammer/python-curses-scroll-example)을 참고하면 된다. (전체 소스코드 : [tui.py](https://github.com/mingrammer/python-curses-scroll-example/blob/master/tui.py))
 
 <br>
 
