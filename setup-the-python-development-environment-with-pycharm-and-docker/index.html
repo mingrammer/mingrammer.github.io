@@ -146,8 +146,6 @@ if __name__ == '__main__':
 
 <p>기본적으로 도커가 이미 설치되어 있다고 가정하고 시작하기는 하지만 혹시나 설치가 안되어 있다면 <a href="https://docs.docker.com/engine/installation/">여기</a>에서 다운로드를 할 수 있다. (macOS에서 <strong>brew</strong>를 사용한다면 <code>brew install docker</code>로 간편하게 설치가 가능하다)</p>
 
-<p><br></p>
-
 <h2 id="2-macos에-해당-도커-머신-생성">2. (macOS에 해당) 도커 머신 생성</h2>
 
 <p>도커는 LXC 위에서 동작하기 때문에 Docker를 구동하기 위한 VM이 필요하다. VirtualBox를 사용해 도커 머신을 생성하자. 도커를 설치하면 함께 설치되는 Docker VM을 관리할 수 있는<code>docker-machine</code> 커맨드를 사용하여 도커 머신을 생성할 수 있다.</p>
@@ -171,8 +169,6 @@ export DOCKER_HOST=&quot;tcp://192.168.99.104:2376&quot;
 export DOCKER_CERT_PATH=&quot;/Users/ming/.docker/machine/machines/pyapp-container&quot;
 export DOCKER_MACHINE_NAME=&quot;pyapp-container&quot;
 </code></pre>
-
-<p><br></p>
 
 <h2 id="3-도커-파일-생성-및-도커-이미지-빌드">3. 도커 파일 생성 및 도커 이미지 빌드</h2>
 
@@ -250,8 +246,6 @@ ubuntu              16.04               d355ed3537e9        3 weeks ago         
 
 <p>아래 <code>&lt;none&gt;</code>으로 보이는 것들은 <code>pyapp</code> 이미지 빌드 도중 중간 중간 생성된 이미지들이다. <code>pyapp</code> 이미지가 제대로 생성되었음을 볼 수 있다.</p>
 
-<p><br></p>
-
 <h2 id="4-도커-컨테이너-실행">4. 도커 컨테이너 실행</h2>
 
 <p>마지막이다! 이제 위에서 만든 도커 머신과 이미지를 가지고 실제 도커 컨테이너 인스턴스를 실행해보자. 다음의 커맨드를 통해 컨테이너를 실행해보자.</p>
@@ -322,8 +316,6 @@ curl 192.168.99.104:8080
 <p>우리가 처음에 도커 이미지를 빌드할 때 설치했던 파이썬 패키지들이 잘 보이는걸로 봐서 도커 컨테이너의 인터프리터가 성공적으로 연결되었음을 알 수 있다.</p>
 
 <p>이렇게 인터프리터를 연결하면 우리는 이제 로컬 파이썬이 아닌 리모트 도커 컨테이너의 파이썬 환경을 그대로 사용할 수 있게된다. 이것으로 로컬 PyCharm 작업 환경과 도커 컨테이너 환경을 완벽하게 연동하였다.</p>
-
-<p><br></p>
 
 <h2 id="2-flask-애플리케이션-수정-및-동작-확인">2. Flask 애플리케이션 수정 및 동작 확인</h2>
 
