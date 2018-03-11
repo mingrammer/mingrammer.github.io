@@ -26,13 +26,9 @@ Go는 다양한 기능의 내장 라이브러리와 공식 서드파티 라이�
 
 OAuth2의 추상적인 플로우를 살펴보면 다음과 같다.
 
-<center>
-
  ![OAuth2 Absctract Flow](../images/2018-02-01-oauth2-abstract-flow.png)
 
-*출처: [Digital Ocean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)*
-
-</center>
+<center>*출처: [Digital Ocean](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2)*</center>
 
 1. 유저가 로그인 페이지에 접속을 한다.
 2. 로그인 페이지 접속시 유저를 식별하기 위해 생성한 랜덤한 `state`값을 사용해 구글 로그인 링크를 생성한다.
