@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/</link>
     <description>Recent content on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 06 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[번역] 웹 캐싱의 숨겨진 요소들</title>
+      <link>https://mingrammer.com/translation-the-hidden-components-of-web-caching/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/translation-the-hidden-components-of-web-caching/</guid>
+      <description>The hidden components of Web Caching을 번역한 글입니다. 캐싱(Caching)은 애플리케이션의 처리 속도를 높여준다. 이미 가져온 데이터나 계산된 결과값의 복사본을</description>
+    </item>
     
     <item>
       <title>파이썬 curses에서 스크롤 및 페이징 기능 구현하기</title>

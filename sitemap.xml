@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/translation-the-hidden-components-of-web-caching/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/how-to-implement-the-scroll-and-paging-in-python-curses/</loc>
     <lastmod>2018-03-06T00:00:00+00:00</lastmod>
   </url>
@@ -216,6 +221,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/caching/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/categories/</loc>
     <lastmod>2017-09-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -415,7 +426,7 @@
   
   <url>
     <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -480,6 +491,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/system/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tags/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -493,7 +510,7 @@
   
   <url>
     <loc>https://mingrammer.com/categories/translation/</loc>
-    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -511,7 +528,7 @@
   
   <url>
     <loc>https://mingrammer.com/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
