@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/writing-unit-test-for-time-dependent-code/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/translation-the-hidden-components-of-web-caching/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
   </url>
@@ -426,7 +431,7 @@
   
   <url>
     <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -457,6 +462,12 @@
   <url>
     <loc>https://mingrammer.com/categories/python/</loc>
     <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/random/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -503,6 +514,18 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/categories/testing/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/time/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tags/tip/</loc>
     <lastmod>2017-04-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -527,8 +550,14 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/unittest/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
