@@ -170,7 +170,7 @@ func TestCheckUserType(t *testing.T) {
         Github: "https://github.com/mingrammer",
         Avatar: "https://mingrammer.com/images/avatar@2x.png",
         ...
-        Modified: time.Date(2018, 04, 04, 12, 30, 0, 0, time.UTC)
+        Modified: time.Date(2018, 04, 04, 12, 30, 0, 0, time.UTC),
     }
     
     // 현재 시간을 2018년 4월 10일 9시 30분으로 고정
