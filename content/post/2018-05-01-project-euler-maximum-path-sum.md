@@ -140,6 +140,7 @@ print(triangle_leaves[0][0])
 ```python
 with open('data/p067_triangle.txt', 'r') as f:
     triangle = f.read()
+
     triangle_leaves = []
     for line in triangle.strip().splitlines():
         triangle_leaves.append([int(i) for i in line.split()])
