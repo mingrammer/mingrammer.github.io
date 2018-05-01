@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/categories/</link>
     <description>Recent content in Categories on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 10 Sep 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Algorithm</title>
+      <link>https://mingrammer.com/categories/algorithm/</link>
+      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/algorithm/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Architecture</title>

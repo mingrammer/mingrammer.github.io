@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithm on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/categories/algorithm/</link>
+    <description>Recent content in Algorithm on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 01 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/categories/algorithm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[프로젝트 오일러] 최대 경로합 문제 (18/67)</title>
+      <link>https://mingrammer.com/project-euler-maximum-path-sum/</link>
+      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/project-euler-maximum-path-sum/</guid>
+      <description>프로젝트 오일러 18, 67번 문제 풀이 문제 18번 문제는 위와 같이 숫자로 이루어진 삼각형의 꼭대기부터 바닥까지 이어진 경로중 가장 합이 큰 경로를 구하는 문제이다. 단</description>
+    </item>
+    
+  </channel>
+</rss>
