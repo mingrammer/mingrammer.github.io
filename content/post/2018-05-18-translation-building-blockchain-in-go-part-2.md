@@ -38,7 +38,7 @@ url: /building-blockchain-in-go-part-2
 2. 특정 데이터는 단 하나의 해시값만 가지며 해시는 고유하다.
 3. 입력 데이터에서 하나의 바이트만 수정해도 완전히 다른 해시값이 생성된다.
 
-![Hashing Example](../images/hashing-example.png)
+![Hashing Example](../images/2018-05-18-hashing-example.png)
 
 해시 함수는 데이터의 일관성을 검사하는데 널리 사용된다. 일부 소프트웨어 제공 업체는 소프트웨어 패키지와 함께 체크섬을 퍼블리싱한다. 파일을 다운로드한 후 이를 해싱 함수에 넣어 생성한 해시를 소프트웨어 개발자가 제공한 해시와 비교할 수 있다.
 
@@ -61,7 +61,7 @@ url: /building-blockchain-in-go-part-2
 
 알고리즘 시연을 위해, 이전 예제의 데이터 ("I like donuts")를 가지고 3개의 제로 바이트로 시작하는 해시를 찾았다.
 
-![Hashcash Example](../images/hashcash-example.png)
+![Hashcash Example](../images/2018-05-18-hashcash-example.png)
 
 **ca07ca**는 10진수로 13240266인 카운터의 16진수값이다.
 
