@@ -16,7 +16,7 @@
       <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/building-blockchain-in-go-part-2/</guid>
-      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 소개 이전 파트에서 블록체인 데이터베이스의 핵심인 매우 간단한 데이터 구조를 만들어보았다. 그리고 각 블록을 이전 블록에 연결</description>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 서론 이전 파트에서 블록체인 데이터베이스의 핵심인 매우 간단한 데이터 구조를 만들어보았다. 그리고 각 블록을 이전 블록에 연결</description>
     </item>
     
     <item>
