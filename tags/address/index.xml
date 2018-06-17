@@ -16,7 +16,7 @@
       <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/building-blockchain-in-go-part-5/</guid>
-      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 소개 이전 파트에서는 트랜잭션을 구현했었다. 또한 비트코인에는 사용자 계정이 없고 개인 정보 (이름, 여권 번호 및 SSN등)</description>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 서론 이전 파트에서는 트랜잭션을 구현했었다. 또한 비트코인에는 사용자 계정이 없고 개인 정보 (이름, 여권 번호 및 SSN등)</description>
     </item>
     
   </channel>
