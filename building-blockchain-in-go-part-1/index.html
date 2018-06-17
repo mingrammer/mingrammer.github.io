@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		<meta name="description" content="mingrammer&#39;s dev logs">
+		
+		
+
+		<meta name="generator" content="Hugo 0.39" />
+		<title>[Go로 구현하는 블록체인] Part 1: 기본 프로토타입 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
+		<link rel="stylesheet" href="https://mingrammer.com/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.com/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.com/post'>Archive</a>
+	<a href='https://mingrammer.com/categories'>Categories</a>
+	<a href='https://mingrammer.com/tags'>Tags</a>
+	<a href='https://mingrammer.com/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [Go로 구현하는 블록체인] Part 1: 기본 프로토타입
+                    </h1>
+                    <h2 class="headline">
+                    May 17, 2018 00:00
+                    · 1933 words
+                    · 4 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.com/tags/blockchain">blockchain</a>
+                          
+                              <a href="https://mingrammer.com/tags/prototype">prototype</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#소개">소개</a></li>
+<li><a href="#블록-block">블록 (Block)</a></li>
+<li><a href="#블록체인-blockchain">블록체인 (Blockchain)</a></li>
+<li><a href="#결론">결론</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://jeiwan.cc/posts/building-blockchain-in-go-part-1">Building Blockchain in Go</a> 시리즈를 번역한 글입니다.</p>
+</blockquote>
+
+<h1 id="소개">소개</h1>
+
+<p>블록체인은 21세기의 가장 혁명적인 기술중 하나로 현재는 성숙 단계이며 아직 완전히 실현되지는 않았다. 블록체인은 본질적으로 분산화된 데이터베이스이다. 그러나 블록체인을 독보적으로 만든건 블록체인이 프라이빗이 아닌 퍼블릭 데이터베이스라는 것이다. 즉, 블록체인을 사용하는 모든 사람들이 블록체인의 일부 복제본을 가지고 있다는 얘기이다. 그리고 새로운 레코드는 데이터베이스를 지니고 있는 사람들의 합의하에서만 추가될 수 있다. 또한 블록체인을 활용하면 암호화 화폐 및 스마트 컨트랙트를 만드는 것도 가능하다.</p>
+
+<p>이 튜토리얼 시리즈에서는 블록체인에 기반한 간단한 암호화 화폐를 구현해볼 것이다.</p>
+
+<h1 id="블록-block">블록 (Block)</h1>
+
+<p>&ldquo;블록체인&rdquo;을 구성하는 &ldquo;블록&rdquo;부터 살펴보자. 블록체인에서 블록이란 가치있는 정보를 저장하는 데이터 구조이다. 한 예로, 비트코인의 블록은 모든 암호화 화폐에 있어 필수적인 정보인 트랜잭션 정보를 저장한다. 또한 블록은 블록의 버전, 현재 시간의 타임스탬프 및 이전 블록의 해시값등의 기술적인 정보 또한 포함하고 있다. 이 튜토리얼에서는 블록체인 또는 비트코인의 스펙을 그대로 구현하지는 않을거지만 대신 중요한 정보만을 포함하는 간단한 버전의 블록을 구현할 것이다. 구현할 블록의 구조체는 다음과 같다.</p>
+
+<pre><code class="language-go">type Block struct {
+        Timestamp     int64
+        Data          []byte
+        PrevBlockHash []byte
+        Hash          []byte
+}
+</code></pre>
+
+<p><strong>Timestamp</strong>는 현재 시간의 타임스탬프 (블록 생성 시간), <strong>Data</strong>는 블록에 포함된 실제 가치를 지닌 정보, <strong>PrevBlockHash</strong>는 이전 블록의 해시값 그리고 <strong>Hash</strong>는 블록의 해시값이다. 비트코인 스펙에서는 <strong>Timestamp</strong>, <strong>PrevBlockHash</strong> 및 <strong>Hash</strong>가 블록 헤더라는 하나의 독립된 데이터 구조를 이루며 트랜잭션 (여기서는 <strong>Data</strong>)이 또 다른 독립된 데이터 구조를 갖는다. 우리는 구현을 단순히 하기위해 이 둘을 합쳤다.</p>
+
+<p>그렇다면 해시는 어떻게 계산할 수 있을까? 해시 계산법은 블록체인에서 아주 중요한 부분이며, 블록체인을 안전하게 만드는 핵심 기능이다. 해시 계산은 계산적으로 아주 어려운 작업이며, 빠른 컴퓨터에서조차 시간이 다소 걸리는 작업이다 (이게 바로 사람들이 비트코인을 채굴하기 위해 강력한 GPU를 구매하는 이유이다). 이는 의도적인 설계로, 새로운 블록을 추가하기 어렵게 만들어 블록이 추가된 후에 블록의 수정을 방지하기 위함이다. 이 메커니즘에 대한 논의와 구현은 조금 뒤에서 살펴보겠다.</p>
+
+<p>지금은 블록을 구성하는 필드들을 하나로 이은 뒤 이어진 문자열에 대해 SHA-256 해시를 계산할 것이다. 다음과 같이 <strong>SetHash</strong> 메서드를 작성한다.</p>
+
+<pre><code class="language-go">func (b *Block) SetHash() {
+        timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
+        headers := bytes.Join([][]byte{b.PrevBlockHash, b.Data, timestamp}, []byte{})
+        hash := sha256.Sum256(headers)
+        b.Hash = hash[:]
+}
+</code></pre>
+
+<p>다음은 Go의 컨벤션을 따라, 블록을 생성하는 함수를 작성한다.</p>
+
+<pre><code class="language-go">func NewBlock(data string, prevBlockHash []byte) *Block {
+        block := &amp;Block{time.Now().Unix(), []byte(data), prevBlockHash, []byte{}}
+        block.SetHash()
+        return block
+}
+</code></pre>
+
+<p>블록을 위한 코드 작성은 끝났다!</p>
+
+<h1 id="블록체인-blockchain">블록체인 (Blockchain)</h1>
+
+<p>이제 블록체인을 구현해보자. 블록체인은 본질적으로 특정한 구조를 지닌 데이터베이스일 뿐이며 순서가 지정된 링크드 리스트이다. 즉, 블록은 삽입 순서대로 저장되며 각 블록은 이전 블록과 연결된다. 이러한 구조 덕분에 최신 블록을 빠르게 가져올 수 있고 해시로 블록을 (효율적으로) 검색할 수 있다.</p>
+
+<p>Go에서는 배열과 맵을 활용해 이 구조를 구현할 수 있다. 배열은 정렬된 해시를 유지하고 맵은 해시-블록쌍을 유지한다. 그러나 지금 당장은 해시 검색 기능이 필요하지 않기 때문에 프로토타입 구현에서는 배열만 사용할 것이다.</p>
+
+<pre><code class="language-go">type Blockchain struct {
+        blocks []*Block
+}
+</code></pre>
+
+<p>우리의 첫 블록체인이 완성되었다! 아주 쉽다.</p>
+
+<p>이제 블록 추가 기능을 만들어보자.</p>
+
+<pre><code class="language-go">func (bc *BlockChain) AddBlock(data string) {
+        prevBlock := bc.blocks[len(bc.blocks)-1]
+        newBlock := NewBlock(data, prevBlock.Hash)
+        bc.blocks = append(bc.blocks, newBlock)
+}
+</code></pre>
+
+<p>그럼 이제 끝인가? 과연..</p>
+
+<p>새 블록을 추가하려면 기존 블록이 필요하다. 그러나 우리 블록체인에는 아무 블록도 없다! 따라서 모든 블록체인에는 적어도 하나의 블록이 있어야하며, 블록체인의 첫번째 블록을 <strong>제네시스 블록</strong>이라고 한다. 이 블록을 생성하는 메서드를 구현해보자.</p>
+
+<pre><code class="language-go">func NewGenesisBlock() *Block {
+        return NewBlock(&quot;Genesis Block&quot;, []byte{})
+}
+</code></pre>
+
+<p>이제 제네시스 블록을 가지고 블록체인을 생성하는 함수를 구현해보자.</p>
+
+<pre><code class="language-go">func NewBlockchain() *Blockchain {
+        return &amp;Blockchain{[]*Block{NewGenesisBlock()}}
+}
+</code></pre>
+
+<p>블록체인이 제대로 동작하는지 확인해보자.</p>
+
+<pre><code class="language-go">func main() {
+        bc := NewBlockchain()
+
+        bc.AddBlock(&quot;Send 1 BTC to Ivan&quot;)
+        bc.AddBlock(&quot;Send 2 more BTC to Ivan&quot;)
+
+        for _, block := range bc.blocks {
+                fmt.Printf(&quot;Prev. hash: %x\n&quot;, block.PrevBlockHash)
+                fmt.Printf(&quot;Data: %s\n&quot;, block.Data)
+                fmt.Printf(&quot;Hash: %x\n&quot;, block.Hash)
+                fmt.Println()
+        }
+}
+</code></pre>
+
+<p>출력:</p>
+
+<pre><code>Prev. hash:
+Data: Genesis Block
+Hash: aff955a50dc6cd2abfe81b8849eab15f99ed1dc333d38487024223b5fe0f1168
+
+Prev. hash: aff955a50dc6cd2abfe81b8849eab15f99ed1dc333d38487024223b5fe0f1168
+Data: Send 1 BTC to Ivan
+Hash: d75ce22a840abb9b4e8fc3b60767c4ba3f46a0432d3ea15b71aef9fde6a314e1
+
+Prev. hash: d75ce22a840abb9b4e8fc3b60767c4ba3f46a0432d3ea15b71aef9fde6a314e1
+Data: Send 2 more BTC to Ivan
+Hash: 561237522bb7fcfbccbc6fe0e98bbbde7427ffe01c6fb223f7562288ca2295d1
+</code></pre>
+
+<p>잘 동작한다!</p>
+
+<h1 id="결론">결론</h1>
+
+<p>이제까지 매우 간단한 블록체인 프로토타입을 만들어보았다. 이는 단지 블록들의 배열로 각 블록은 이전 블록과 연결되어있다. 실제 블록체인은 이보다 훨씬 더 복잡하다. 우리가 만든 블록체인에서 새로운 블록을 추가하는 것은 쉽고 빠르지만 실제 블록체인에서 새로운 블록을 추가하는데는 몇 가지 작업이 필요하다: 블록 추가 권한을 얻기 위해 아주 무거운 계산을 수행해야한다 (이 메커니즘을 작업 증명 (Proof of Work)이라고 한다). 또한 블록체인은 단일 의사결정자가 없는 분산화된 데이터베이스이다. 따라서, 하나의 새로운 블록은 반드시 네트워크의 참여자들로부터 확인과 승인을 받아야한다.  (이 메커니즘을 합의 또는 컨센서스 (consensus)라고 한다)). 그리고 우리의 블록체인에는 아직 트랜잭션이 없다!</p>
+
+<p>다음 파트에서는 위의 각 기능들을 살펴볼 것이다.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2fbuilding-blockchain-in-go-part-1%2f - %5bGo%eb%a1%9c%20%ea%b5%ac%ed%98%84%ed%95%98%eb%8a%94%20%eb%b8%94%eb%a1%9d%ec%b2%b4%ec%9d%b8%5d%20Part%201%3a%20%ea%b8%b0%eb%b3%b8%20%ed%94%84%eb%a1%9c%ed%86%a0%ed%83%80%ec%9e%85 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/project-euler-maximum-path-sum">[프로젝트 오일러] 최대 경로합 문제 (18/67)<aside class="dates">May 1 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/writing-unit-test-for-time-dependent-code">시간에 의존하는 코드를 위한 테스트 작성하기<aside class="dates">Apr 29 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-hidden-components-of-web-caching">[번역] 웹 캐싱의 숨겨진 요소들<aside class="dates">Apr 7 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/how-to-implement-the-scroll-and-paging-in-python-curses">파이썬 curses에서 스크롤 및 페이징 기능 구현하기<aside class="dates">Mar 6 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-avoiding-memory-leak-in-golang-api">[번역] Go API에서 메모리 누수 예방하기<aside class="dates">Feb 18 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/getting-started-with-oauth2-in-go">Go에서 OAuth2 인증하기<aside class="dates">Feb 1 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-10-common-software-architectural-patterns-in-a-nutshell">[번역] 10가지 소프트웨어 아키텍처 패턴 요약<aside class="dates">Sep 10 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/setup-the-python-development-environment-with-pycharm-and-docker">PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization)<aside class="dates">Jul 14 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+    
+    <a class="symbol" href="https://mingrammer.com/index.xml">
+        <i class="fa fa-rss-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.com/js/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.com/js/main.js"></script>
+<script src="https://mingrammer.com/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>
