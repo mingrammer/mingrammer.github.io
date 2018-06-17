@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/tags/blockchain/</link>
     <description>Recent content in Blockchain on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 17 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 18 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/blockchain/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Go로 구현하는 블록체인] Part 2: 작업 증명</title>
+      <link>https://mingrammer.com/building-blockchain-in-go-part-2/</link>
+      <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/building-blockchain-in-go-part-2/</guid>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 소개 이전 파트에서 블록체인 데이터베이스의 핵심인 매우 간단한 데이터 구조를 만들어보았다. 그리고 각 블록을 이전 블록에 연결</description>
+    </item>
     
     <item>
       <title>[Go로 구현하는 블록체인] Part 1: 기본 프로토타입</title>

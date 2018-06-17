@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pow on mingrammer&#39;s note</title>
+    <link>https://mingrammer.com/tags/pow/</link>
+    <description>Recent content in Pow on mingrammer&#39;s note</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 18 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://mingrammer.com/tags/pow/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Go로 구현하는 블록체인] Part 2: 작업 증명</title>
+      <link>https://mingrammer.com/building-blockchain-in-go-part-2/</link>
+      <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/building-blockchain-in-go-part-2/</guid>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 소개 이전 파트에서 블록체인 데이터베이스의 핵심인 매우 간단한 데이터 구조를 만들어보았다. 그리고 각 블록을 이전 블록에 연결</description>
+    </item>
+    
+  </channel>
+</rss>
