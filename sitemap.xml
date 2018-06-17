@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mingrammer.com/building-blockchain-in-go-part-1/</loc>
+    <loc>https://mingrammer.com/building-blockchain-in-go-part-5/</loc>
     <lastmod>2018-06-06T00:00:00+00:00</lastmod>
   </url>
   
@@ -202,6 +202,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/address/</loc>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tags/ai/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -324,6 +330,12 @@
   <url>
     <loc>https://mingrammer.com/tags/cookierun/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/cryptography/</loc>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -521,7 +533,7 @@
   
   <url>
     <loc>https://mingrammer.com/tags/prototype/</loc>
-    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -587,7 +599,7 @@
   
   <url>
     <loc>https://mingrammer.com/tags/</loc>
-    <lastmod>2016-10-26T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

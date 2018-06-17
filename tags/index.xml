@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/tags/</link>
     <description>Recent content in Tags on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 26 Oct 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Address</title>
+      <link>https://mingrammer.com/tags/address/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/address/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Ai</title>
@@ -142,6 +151,15 @@
       <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/cookierun/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cryptography</title>
+      <link>https://mingrammer.com/tags/cryptography/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/cryptography/</guid>
       <description></description>
     </item>
     
@@ -373,7 +391,7 @@
     <item>
       <title>Prototype</title>
       <link>https://mingrammer.com/tags/prototype/</link>
-      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/prototype/</guid>
       <description></description>
