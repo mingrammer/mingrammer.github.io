@@ -7,7 +7,7 @@ comments: true
 date: 2018-05-26T00:00:00Z
 tags:
 - blockchain
-- persistence
+- transaction
 title: "[Go로 구현하는 블록체인] Part 4: 트랜잭션 1"
 url: /building-blockchain-in-go-part-4
 ---
