@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		<meta name="description" content="mingrammer&#39;s dev logs">
+		
+		
+
+		<meta name="generator" content="Hugo 0.39" />
+		<title>[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
+		<link rel="stylesheet" href="https://mingrammer.com/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.com/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.com/post'>Archive</a>
+	<a href='https://mingrammer.com/categories'>Categories</a>
+	<a href='https://mingrammer.com/tags'>Tags</a>
+	<a href='https://mingrammer.com/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        [Go로 구현하는 블록체인] Part 3: 영속성 및 CLI
+                    </h1>
+                    <h2 class="headline">
+                    May 22, 2018 00:00
+                    · 4629 words
+                    · 10 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.com/tags/blockchain">blockchain</a>
+                          
+                              <a href="https://mingrammer.com/tags/persistence">persistence</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#소개">소개</a></li>
+<li><a href="#데이터베이스-선택">데이터베이스 선택</a></li>
+<li><a href="#boltdb">BoltDB</a></li>
+<li><a href="#데이터베이스-구조">데이터베이스 구조</a></li>
+<li><a href="#직렬화">직렬화</a></li>
+<li><a href="#영속성">영속성</a></li>
+<li><a href="#블록체인-탐색">블록체인 탐색</a></li>
+<li><a href="#cli">CLI</a></li>
+<li><a href="#결론">결론</a></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<blockquote>
+<p><a href="https://jeiwan.cc/posts/building-blockchain-in-go-part-3">Building Blockchain in Go</a> 시리즈를 번역한 글입니다.</p>
+</blockquote>
+
+<h1 id="소개">소개</h1>
+
+<p>우리는 <a href="/proof-of-work">지금까지</a> 채굴이 가능한 작업 증명 시스템을 지닌 블록체인을 구현했다. 좀 더 완벽한 기능을 갖춘 블록체인에 가까워지고 있지만 여전히 일부 중요한 기능들이 부족하다. 이번 파트에서는 블록체인을 데이터베이스에 저장하고 블록체인 연산을 수행하기 위한 간단한 커맨드라인 툴을 만들어 볼 것이다. 블록체인은 본질적으로 데이터베이스이다. 지금은 &ldquo;분산 (distributed)&ldquo;부분을 생략하고 &ldquo;데이터베이스&rdquo;부분에 집중할 것이다.</p>
+
+<h1 id="데이터베이스-선택">데이터베이스 선택</h1>
+
+<p>지금까지 구현한 블록체인에는 데이터베이스가 없기 때문에 매번 프로그램을 실행할때마다 블록을 생성하여 메모리에 저장하고 있다. 따라서 블록체인을 재사용할 수 없으며 다른 사람들과도 공유할 수 없기 때문에 이를 디스크에 저장해야할 필요가 있다.</p>
+
+<p>그렇다면 어떤 데이터베이스가 필요할까? 사실 아무거나 써도된다. <a href="https://bitcoin.org/bitcoin.pdf">비트코인 논문</a>에서도 특정 데이터베이스에 대한 언급은 없으며 이는 개발자의 선택에 달렸다. 사토시 나카모토가 초창기에 배포하고 현재 비트코인 구현체의 레퍼런스로 있는 <a href="https://github.com/bitcoin/bitcoin">비트코인 코어</a>에서는 <a href="https://github.com/google/leveldb">LevelDB</a> (물론 이는 2012년에만 도입되었지만)를 사용한다. 그리고 우리는 다음 데이터베이스를 사용할 것이다.</p>
+
+<h1 id="boltdb">BoltDB</h1>
+
+<p>BoltDB를 사용하는 이유는 다음과 같다.</p>
+
+<ol>
+<li>단순하고 가볍다.</li>
+<li>Go로 작성되었다.</li>
+<li>별도의 서버가 필요하지 않다.</li>
+<li>데이터 구조 설계가 자유롭다.</li>
+</ol>
+
+<p>BoltDB의 <a href="https://github.com/boltdb/bolt">Github README.md</a>에 따르면</p>
+
+<blockquote>
+<p>Bolt는 Howard Chu의 LMDB 프로젝트에서 영감을 받아 순수 Go로 작성된 키/값 스토어이다. 이는 Postgres나 MySQL과 같이 데이터베이스 서버가 필요하지 않은 프로젝트를 위해 간단하고 빠르며 안정적인 데이터베이스를 제공하고자 만들어졌다.</p>
+
+<p>Bolt는 저수준의 기능으로 사용되기 때문에 단순함이 중요하다. API가 적으며 값을 얻고 설정하는데에만 초점을 맞추고 있다. 이게 끝이다.</p>
+</blockquote>
+
+<p>우리의 요구사항에 완벽히 들어맞는다! 조금만 더 살펴보자.</p>
+
+<p>BoltDB는 키/값 스토리지로 SQL RDBMS (MySQL, PostgreSQL등)와 같은 테이블과 행 및 열이 필요없음을 의미한다. 대신 데이터는 Go에서의 map과 같이 키-값의 쌍으로 저장된다. 키-값 쌍은 유사한 쌍을 그룹화 하기위한 버킷에 저장된다 (이는 RDBMS에서의 테이블과 유사하다). 따라서 값을 가져오려면 버킷과 키 모두 알아야한다.</p>
+
+<p>BoltDB에서 한가지 중요한 점은 데이터 타입이 없다는 것이다. 키와 값은 바이트 배열로 저장된다. 우리는 Go 구조체 (특히 <strong>Block</strong>)를 저장할 것이기 때문에 직렬화가 필요하다. Go 구조체를 바이트 배열로 변환하고 바이트 배열로부터 구조체를 복원하는 메커니즘을 구현해야한다. 우리는 <a href="https://golang.org/pkg/encoding/gob/">encoding/gob</a>을 사용할 것이다. 이 패키지는 <strong>JSON</strong>, <strong>XML</strong> 및 <strong>Protocol Buffers</strong>와도 사용할 수 있다.</p>
+
+<h1 id="데이터베이스-구조">데이터베이스 구조</h1>
+
+<p>영속성 로직을 구현하기 전에, 우선 DB에 데이터를 저장하는 방식부터 결정해야한다. 비트코인 코어의 방식을 참조해보자.</p>
+
+<p>간단히 말하면 비트코인 코어는 데이터를 저장하기 위해 두 개의 &ldquo;버킷&rdquo;을 사용한다.</p>
+
+<ol>
+<li><strong>blocks</strong>는 체인의 모든 블록을 설명하는 메타데이터를 저장한다.</li>
+<li><strong>chainstate</strong>는 체인의 상태를 저장한다. 이 상태는 현재 사용되지 않은 모든 트랙잭션과 일부 메타데이터를 포함한다.</li>
+</ol>
+
+<p>또한 블록들은 디스크에 분리된 파일들로 저장된다. 이는 성능 때문인데 하나의 블록을 읽기 위해 전체 혹은 일부 데이터를 메모리에 로드할 필요는 없기 때문이다. 우리는 이 부분은 구현하지 않을 것이다.</p>
+
+<p><strong>block</strong>에는 다음과 같은 <strong>키-&gt;값</strong> 쌍들이 있다.</p>
+
+<ol>
+<li><strong>&lsquo;b&rsquo; + 32바이트 블록 해시 -&gt; 블록 인덱스 레코드</strong></li>
+<li><strong>&lsquo;f&rsquo; + 4바이트 파일 번호 -&gt; 파일 정보 레코드</strong></li>
+<li><strong>&lsquo;l&rsquo; -&gt; 4바이트 파일 번호: 마지막으로 사용된 블록의 파일 번호</strong></li>
+<li><strong>&lsquo;R&rsquo; -&gt; 1바이트 부울: 재색인 작업 진행 여부</strong></li>
+<li><strong>&lsquo;F&rsquo; + 1바이트 플래그명 길이 + 플래그명 -&gt; 1바이트 부울: 끄고 켤 수 있는 여러 플래그들</strong></li>
+<li><strong>&rsquo;t&rsquo; + 32바이트 트랙잭션 해시 -&gt; 트랜잭션 인덱스 레코드</strong></li>
+</ol>
+
+<p><strong>chainstate</strong>에는 다음과 같은 <strong>키-&gt;값</strong> 쌍들이 있다.</p>
+
+<ol>
+<li><strong>&lsquo;c&rsquo; + 32바이트 트랜잭션 해시 -&gt; 해당 트랜잭션에 대한 미사용 트랜잭션 출력 레코드</strong></li>
+<li><strong>&lsquo;B&rsquo; -&gt; 32바이트 블록 해시: 데이터베이스가 미사용 트랜잭션 출력을 나타내는 블록 해시</strong></li>
+</ol>
+
+<p><em>(자세한 설명은 <a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_%28ch_2%29:_Data_Storage">여기</a>에서 볼 수 있다)</em></p>
+
+<p>우리에겐 아직 트랜잭션이 없기 때문에 <strong>blocks</strong> 버킷만 가질 것이다. 또한 앞서 언급했듯이 우리는 블록들을 여러 파일에 저장하지 않고 전체 DB를 하나의 파일로 저장할 것이다. 따라서 우리는 파일 번호와 관련된 데이터는 필요하지 않다. 따라서 우리가 사용할 키-값 쌍은 다음과 같다.</p>
+
+<ol>
+<li><strong>32바이트 블록 해시 -&gt; 직렬화된 블록 구조체</strong></li>
+<li><strong>&lsquo;l&rsquo; -&gt; 체인의 마지막 블록의 해시</strong></li>
+</ol>
+
+<p>이제 영속성 메커니즘을 구현하는데 필요한 것들을 모두 살펴보았다.</p>
+
+<h1 id="직렬화">직렬화</h1>
+
+<p>이전에도 말했듯이 BoltDB에서는<strong>[]byte</strong> 타입의 값만 사용할 수 있으며 우리는 DB에 <strong>Block</strong> 구조체를 저장하려고 한다. 우리는 구조체 직렬화에 <a href="https://golang.org/pkg/encoding/gob/">encoding/gob</a>을 사용할 것이다.</p>
+
+<p><strong>Block</strong>의 <strong>Serialize</strong> 메서드를 구현해보자. (단순한 구현을 위해 에러 처리는 생략한다)</p>
+
+<pre><code class="language-go">func (b *Block) Serialize() []byte {
+        var result bytes.Buffer
+
+        encoder := gob.NewEncoder(&amp;result)
+        err := encoder.Encode(b)
+
+        return result.Bytes()
+}
+</code></pre>
+
+<p>아주 직관적인 코드로, 우선 직렬화된 데이터를 저장할 버퍼를 선언하고 <strong>gob</strong> 인코더를 초기화 한 뒤 블록을 인코딩하면 바이트 배열이 반환된다.</p>
+
+<p>다음으로 바이트 배열을 받아 <strong>Block</strong>을 반환하는 역직렬화 함수가 필요하다. 이는 메서드가 아닌 독립적인 함수로 구현한다.</p>
+
+<pre><code class="language-go">func DeserializeBlock(d []byte) *Block {
+        var block Block
+
+        decoder := gob.NewDecoder(bytes.NewReader(d))
+        err := decoder.Decode(&amp;block)
+
+        return *blcok
+}
+</code></pre>
+
+<p>직렬화 관련 작업을 끝났다!</p>
+
+<h1 id="영속성">영속성</h1>
+
+<p>이제 <strong>NewBlockchain</strong> 함수를 살펴보자. 이 함수는 현재 새로운 <strong>Blockchain</strong> 인스턴스를 생성하고 여기에 제네시스 블록을 추가하고 있다. 우리가 원하는 기능은 다음과 같다.</p>
+
+<ol>
+<li>DB 파일을 연다.</li>
+<li>저장된 블록체인이 있는지 확인한다.</li>
+<li>블록체인이 존재하면
+
+<ol>
+<li>새로운 <strong>Blockchain</strong> 인스턴스를 생성한다.</li>
+<li><strong>Blockchain</strong> 인스턴스의 끝부분을 DB에 저장된 마지막 블록의 해시로 설정한다.</li>
+</ol></li>
+<li>블록체인이 존재하지 않으면
+
+<ol>
+<li>제네시스 블록을 생성한다.</li>
+<li>DB에 저장한다.</li>
+<li>제네시스 블록의 해시를 마지막 블록의 해시로 저장한다.</li>
+<li>제네시스 블록을 끝부분으로 하는 새로운 <strong>Blockchain</strong> 인스턴스를 생성한다.</li>
+</ol></li>
+</ol>
+
+<p>코드로보면 다음과 같다.</p>
+
+<pre><code class="language-go">func NewBlockchain() *Blockchain {
+        var tip []byte
+        db, err := bolt.Open(dbFile, 0600, nil)
+
+        err = db.Update(func(tx *bolt.Tx) error {
+                b := tx.Bucket([]byte(blocksBucket))
+                if b == nil {
+                        genesis := NewGenesisBlock()
+                        b, err := tx.CreateBucket([]byte(blocksBucket))
+                        err = b.Put(genesis.Hash, genesis.Serialize())
+                        err = b.Put([]byte(&quot;l&quot;), genesis.Hash)
+                        tip = genesis.Hash
+                } else {
+                        tip = b.Get([]byte(&quot;l&quot;))
+                }
+                return nil
+        })
+
+        bc := Blockchain{tip, db}
+        return &amp;bc
+}
+</code></pre>
+
+<p>한 줄씩 살펴보자.</p>
+
+<pre><code class="language-go">db, err := bolt.Open(dbFile, 0600, nil)
+</code></pre>
+
+<p>이는 BoltDB 파일을 여는 표준 방식이다. 파일이 없어도 오류를 반환하고 있지 않음을 볼 수 있다.</p>
+
+<pre><code class="language-go">err = db.Update(func(tx *bolt.Tx) error {
+...
+})
+</code></pre>
+
+<p>BoltDB에서 데이터베이스 연산은 트랜잭션내에서 실행된다. 읽기 전용과 읽기-쓰기의 두 가지 타입의 트랜잭션이 있다. 위 코드에서는 DB에 제네시스 블록을 써넣을수도 있기 때문에 읽기-쓰기 트랜잭션 (<strong>db.Update(&hellip;)</strong>)을 연다.</p>
+
+<pre><code class="language-go">b := tx.Bucket([]byte(blocksBucket))
+if b == nil {
+        genesis := NewGenesisBlock()
+        b, err := tx.CreateBucket([]byte(blocksBucket))
+        err = b.Put(genesis.Hash, genesis.Serialize())
+        err = b.Put([]byte(&quot;l&quot;), genesis.Hash)
+        tip = genesis.Hash
+} else {
+        tip = b.Get([]byte(&quot;l&quot;))
+}
+</code></pre>
+
+<p>이 코드는 함수의 핵심이다. 블록을 저장하고 있는 버킷을 가져와 버킷이 존재하면 <strong>l</strong> 키를 읽고 존재하지 않으면 제네시스 블록을 생성하고, 버킷을 만들어 블록을 저장한뒤 체인의 마지막 블록의 해시를 저장하는 <strong>l</strong> 키를 업데이트한다.</p>
+
+<p>여기서 <strong>Blockchain</strong>을 생성하는 또 다른 방식을 볼 수 있다.</p>
+
+<pre><code>bc := Blockchain{tip, db}
+</code></pre>
+
+<p>더 이상 모든 블록을 저장하지 않고 체인의 끝 블록의 해시만 저장한다. 또한 프로그램이 실행되는동안 한 번 열어둔 데이터베이스를 유지하기 위해 DB 커넥션을 저장한다. 따라서 <strong>Blockchain</strong> 구조체는 다음과 같아진다.</p>
+
+<pre><code class="language-go">type Blockchain struct {
+    	tip []byte
+    	db  *bolt.DB
+}
+</code></pre>
+
+<p>다음으로 수정할 메서드는 <strong>AddBlock</strong> 메서드이다. 이제 체인에 블록을 추가하는건 배열에 원소를 추가하는 것만큼 쉽지않다. 지금부터는 블록을 DB에 저장할 것이다.</p>
+
+<pre><code class="language-go">func (bc *Blockchain) AddBlock(data string) {
+        var lastHash []byte
+
+        err := bc.db.View(func(tx *bolt.Tx) error {
+                b := tx.Bucket([]byte(blocksBucket))
+                lastHash = b.Get([]byte(&quot;l&quot;))
+                return nil
+        })
+
+        newBlock := NewBlock(data, lastHash)
+
+        err = bc.db.Update(func(tx *bolt.Tx) error {
+                b := tx.Bucket([]byte(blocksBucket))
+                err := b.Put(newBlock.Hash, newBlock.Serialize())
+                err = b.Put([]byte(&quot;l&quot;), newBlock.Hash)
+                bc.tip = newBlock.Hash
+                return nil
+        })
+}
+</code></pre>
+
+<p>한 줄씩 살펴보자.</p>
+
+<pre><code class="language-go">err := bc.db.View(func(tx *bolt.Tx) error {
+        b := tx.Bucket([]byte(blocksBucket))
+        lastHash = b.Get([]byte(&quot;l&quot;))
+        return nil
+})
+</code></pre>
+
+<p>이는 BoltDB의 읽기 전용 트랜잭션이다. 새로운 블록의 해시를 채굴하기 위해 DB로부터 마지막 블록의 해시값을 가져온다.</p>
+
+<pre><code class="language-go">newBlock := NewBlock(data, lastHash)
+b := tx.Bucket([]byte(blocksBucket))
+err := b.Put(newBlock.Hash, newBlock.Serialize())
+err = b.Put([]byte(&quot;l&quot;), newBlock.Hash)
+bc.tip = newBlock.Hash
+</code></pre>
+
+<p>새로운 블록의 채굴이 끝나면 직렬화하여 DB에 저장하고 새로운 블록의 해시를 저장하는 <strong>l</strong> 키를 업데이트한다.</p>
+
+<p>끝났다! 그리 어렵지는 않았다.</p>
+
+<h1 id="블록체인-탐색">블록체인 탐색</h1>
+
+<p>이제 모든 블록을 데이터베이스에 저장하고 있기 때문에 블록체인을 다시 열어 새로운 블록을 추가할 수 있다. 그러나 이를 구현한 뒤로 우리는 멋진 기능 하나를 잃었다. 더 이상 블록을 배열에 저장하고 있지 않기 때문에 블록체인의 블록들을 출력할 수 없다. 이제 이 결함을 수정해보자!</p>
+
+<p>BoltDB는 버킷의 모든 키를 순회할 수 있는 기능을 제공하지만 키들은 바이트 순서로 정렬되어있다. 그러나 우리는 블록체인에 삽입된 순서대로 블록을 출력하고싶다. 또한 (블록체인 DB가 거대해질 수 있으므로) 모든 블록을 메모리에 로드하고 싶지는 않기 때문에 블록들을 하나씩 읽을 것이다. 이를 위해선 블록체인 반복자 (Iterator)가 필요하다.</p>
+
+<pre><code class="language-go">type BlockchainIterator struct {
+        currentHash []byte
+        db          *bolt.DB
+}
+</code></pre>
+
+<p>반복자는 블록체인의 블록을 반복할때마다 만들어지며 이는 현재 반복의 블록 해시와 DB 커넥션을 저장한다. 블록의 해시와 DB 커넥션이 필요하기 때문에 반복자는 논리적으로 블록체인과 연결되어 있으며 따라서 이는 <strong>Blockchain</strong>의 메서드로 만든다.</p>
+
+<pre><code class="language-go">func (bc *Blockchain) Iterator() *BlockchainIterator {
+        bci := &amp;BlockchainIterator{bc.tip, bc.db}
+        return bci
+}
+</code></pre>
+
+<p>반복자는 초기에 블록체인의 끝을 가리킨다. 따라서 블록은 위에서 아래로, 최신 블록부터 오래된 블록의 순서로 얻을 수 있다. 사실 <strong>블록체인의 끝을 선택한다는 것은 블록체인에 대한 &ldquo;투표&rdquo;를 의미한다</strong> . 블록체인은 여러개의 가지 (브랜치)를 가질 수 있으며 가장 긴 체인이 메인 체인으로 간주된다. 블록체인의 끝을 얻으면 (이는 블록체인의 어느 블록도 가능하다) 전체 블록체인을 재구성하여 체인의 길이와 체인을 만드는데 필요한 작업을 찾을 수 있다.</p>
+
+<p><strong>BlockchainIterator</strong>는 블록체인으로부터 다음 블록을 반환하는 단 한 가지 일만 수행한다.</p>
+
+<pre><code class="language-go">func (i *BlockchainIterator) Next() *Block {
+        var block *Block
+
+        err := i.db.View(func(tx *bolt.Tx) error {
+        	b := tx.Bucket([]byte(blocksBucket))
+        	encodedBlock := b.Get(i.currentHash)
+        	block = DeserializeBlock(encodedBlock)
+        	return nil
+        })
+
+        i.currentHash = block.PrevBlockHash
+        return block
+}
+</code></pre>
+
+<p>DB 파트가 끝났다!</p>
+
+<h1 id="cli">CLI</h1>
+
+<p>지금까지 우리가 만든 구현체는 프로그램과 상호 작용할 수 있는 그 어떤 인터페이스도 제공하지 않았다. 우리는 여태 단순히 <strong>main</strong> 함수에서 <strong>NewBlockchain</strong>과 <strong>bc.AddBlock</strong>을 실행시켰었다. 이제 이를 개선해보자! 우리는 다음 명령어들이 필요하다.</p>
+
+<pre><code class="language-bash">blockchain_go addblock &quot;Pay 0.31337 for a coffee&quot;
+blockchain_go printchain
+</code></pre>
+
+<p>커맨드라인과 관련된 모든 연산들은 <strong>CLI</strong> 구조체에 의해 처리된다.</p>
+
+<pre><code class="language-go">type CLI struct {
+        bc *Blockchain
+}
+</code></pre>
+
+<p>CLI의 엔트리포인트는 <strong>Run</strong> 함수이다.</p>
+
+<pre><code class="language-go">func (cli *CLI) Run() {
+        cli.validateArgs()
+
+        addBlockCmd := flag.NewFlagSet(&quot;addblock&quot;, flag.ExitOnError)
+        printChainCmd := flag.NewFlagSet(&quot;printchain&quot;, flag.ExitOnError)
+        addBlockData := addBlockCmd.String(&quot;data&quot;, &quot;&quot;, &quot;Block data&quot;)
+
+        switch os.Args[1] {
+        case &quot;addblock&quot;:
+                err := addBlockCmd.Parse(os.Args[2:])
+        case &quot;printchain&quot;:
+                err := printChainCmd.Parse(os.Args[2:])
+        default:
+                cli.printUsage()
+                os.Exit(1)
+        }
+
+        if addBlockCmd.Parsed() {
+                if *addBlockData == &quot;&quot; {
+                        addBlockCmd.Usage()
+                        os.Exit(1)
+                }
+                cli.addBlock(*addBlockData)
+        }
+
+        if printChainCmd.Parsed() {
+                cli.printChain()
+        }
+}
+</code></pre>
+
+<p>커맨드라인 인자를 파싱하기 위해 표준 패키지인 <a href="https://golang.org/pkg/flag/">flag</a>를 사용한다.</p>
+
+<pre><code class="language-go">addBlockCmd := flag.NewFlagSet(&quot;addblock&quot;, flag.ExitOnError)
+printChainCmd := flag.NewFlagSet(&quot;printchain&quot;, flag.ExitOnError)
+addBlockData := addBlockCmd.String(&quot;data&quot;, &quot;&quot;, &quot;Block data&quot;)
+</code></pre>
+
+<p>우선, <strong>addBlock</strong>과 <strong>printchain</strong>이라는 두 개의 하위 커맨드를 만들고 <strong>addBlock</strong>에 <strong>-data</strong> 플래그를 추가한다. <strong>printchain</strong>에는 플래그가 없다.</p>
+
+<pre><code class="language-go">switch os.Args[1] {
+case &quot;addblock&quot;:
+        err := addBlockCmd.Parse(os.Args[2:])
+case &quot;printchain&quot;:
+        err := printChainCmd.Parse(os.Args[2:])
+default:
+        cli.printUsage()
+        os.Exit(1)
+}
+</code></pre>
+
+<p>다음엔 사용자가 입력한 커맨드를 검사하고 관련된 <strong>flag</strong> 하위커맨드를 파싱한다.</p>
+
+<pre><code class="language-go">if addBlockCmd.Parsed() {
+        if *addBlockData == &quot;&quot; {
+                addBlockCmd.Usage()
+                os.Exit(1)
+        }
+        cli.addBlock(*addBlockData)
+}
+
+if printChainCmd.Parsed() {
+        cli.printChain()
+}
+</code></pre>
+
+<p>다음으로 어떤 하위커맨드가 파싱되었는지 확인한 뒤 관련 함수를 실행한다.</p>
+
+<pre><code class="language-go">func (cli *CLI) addBlock(data string) {
+        cli.bc.AddBlock(data)
+        fmt.Println(&quot;Success!&quot;)
+}
+
+func (cli *CLI) printChain() {
+        bci := cli.bc.Iterator()
+
+        for {
+                block := bci.Next()
+                fmt.Printf(&quot;Prev. hash: %x\n&quot;, block.PrevBlockHash)
+                fmt.Printf(&quot;Data: %s\n&quot;, block.Data)
+                fmt.Printf(&quot;Hash: %x\n&quot;, block.Hash)
+
+                pow := NewProofOfWork(block)
+                fmt.Printf(&quot;PoW: %s\n&quot;, strconv.FormatBool(pow.Validate()))
+                fmt.Println()
+
+                if len(block.PrevBlockHash) == 0 {
+                        break
+                }
+        }
+}
+</code></pre>
+
+<p>이 코드는 이전에 봤던 코드와 아주 유사하다. 유일한 차이점은 블록체인의 블록을 순회하기 위해 <strong>BlockchainIterator</strong>를 사용하고 있다는 것이다.</p>
+
+<p>이에 맞게 <strong>main</strong> 함수를 수정하는 것도 잊지 말자.</p>
+
+<pre><code class="language-go">func main() {
+        bc := NewBlockchain()
+        defer bc.db.Close()
+
+        cli := CLI{bc}
+        cli.Run()
+}
+</code></pre>
+
+<p>커맨드라인 인자 입력과 무관하게 새로운 <strong>Blockchain</strong>이 만들어지고 있음을 볼 수 있다.</p>
+
+<p>끝났다! 모든 기능이 잘 동작하는지 확인해보자.</p>
+
+<pre><code>$ blockchain_go printchain
+No existing blockchain found. Creating a new one...
+Mining the block containing &quot;Genesis Block&quot;
+000000edc4a82659cebf087adee1ea353bd57fcd59927662cd5ff1c4f618109b
+
+Prev. hash:
+Data: Genesis Block
+Hash: 000000edc4a82659cebf087adee1ea353bd57fcd59927662cd5ff1c4f618109b
+PoW: true
+
+$ blockchain_go addblock -data &quot;Send 1 BTC to Ivan&quot;
+Mining the block containing &quot;Send 1 BTC to Ivan&quot;
+000000d7b0c76e1001cdc1fc866b95a481d23f3027d86901eaeb77ae6d002b13
+
+Success!
+
+$ blockchain_go addblock -data &quot;Pay 0.31337 BTC for a coffee&quot;
+Mining the block containing &quot;Pay 0.31337 BTC for a coffee&quot;
+000000aa0748da7367dec6b9de5027f4fae0963df89ff39d8f20fd7299307148
+
+Success!
+
+$ blockchain_go printchain
+Prev. hash: 000000d7b0c76e1001cdc1fc866b95a481d23f3027d86901eaeb77ae6d002b13
+Data: Pay 0.31337 BTC for a coffee
+Hash: 000000aa0748da7367dec6b9de5027f4fae0963df89ff39d8f20fd7299307148
+PoW: true
+
+Prev. hash: 000000edc4a82659cebf087adee1ea353bd57fcd59927662cd5ff1c4f618109b
+Data: Send 1 BTC to Ivan
+Hash: 000000d7b0c76e1001cdc1fc866b95a481d23f3027d86901eaeb77ae6d002b13
+PoW: true
+
+Prev. hash:
+Data: Genesis Block
+Hash: 000000edc4a82659cebf087adee1ea353bd57fcd59927662cd5ff1c4f618109b
+PoW: true
+</code></pre>
+
+<h1 id="결론">결론</h1>
+
+<p>다음 파트에서는 주소, 지갑 그리고 트랜잭션을 구현해볼 것이다.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2fbuilding-blockchain-in-go-part-3%2f - %5bGo%eb%a1%9c%20%ea%b5%ac%ed%98%84%ed%95%98%eb%8a%94%20%eb%b8%94%eb%a1%9d%ec%b2%b4%ec%9d%b8%5d%20Part%203%3a%20%ec%98%81%ec%86%8d%ec%84%b1%20%eb%b0%8f%20CLI by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-2">[Go로 구현하는 블록체인] Part 2: 작업 증명<aside class="dates">May 18 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-1">[Go로 구현하는 블록체인] Part 1: 기본 프로토타입<aside class="dates">May 17 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/project-euler-maximum-path-sum">[프로젝트 오일러] 최대 경로합 문제 (18/67)<aside class="dates">May 1 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/writing-unit-test-for-time-dependent-code">시간에 의존하는 코드를 위한 테스트 작성하기<aside class="dates">Apr 29 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-the-hidden-components-of-web-caching">[번역] 웹 캐싱의 숨겨진 요소들<aside class="dates">Apr 7 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/how-to-implement-the-scroll-and-paging-in-python-curses">파이썬 curses에서 스크롤 및 페이징 기능 구현하기<aside class="dates">Mar 6 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-avoiding-memory-leak-in-golang-api">[번역] Go API에서 메모리 누수 예방하기<aside class="dates">Feb 18 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/getting-started-with-oauth2-in-go">Go에서 OAuth2 인증하기<aside class="dates">Feb 1 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/cgo-cross-compile-for-mac-for-linux">맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기<aside class="dates">Dec 11 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/translation-cpython-internals-arbitrary-precision-integer-implementation">[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현<aside class="dates">Oct 10 2017</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+    
+    <a class="symbol" href="https://mingrammer.com/index.xml">
+        <i class="fa fa-rss-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2018 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.com/js/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.com/js/main.js"></script>
+<script src="https://mingrammer.com/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-84081627-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+    </body>
+</html>

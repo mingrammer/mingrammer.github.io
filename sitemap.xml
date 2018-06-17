@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/building-blockchain-in-go-part-3/</loc>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/building-blockchain-in-go-part-2/</loc>
     <lastmod>2018-05-18T00:00:00+00:00</lastmod>
   </url>
@@ -230,13 +235,13 @@
   
   <url>
     <loc>https://mingrammer.com/tags/blockchain/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/categories/blockchain/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -463,6 +468,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/persistence/</loc>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/categories/post/</loc>
     <lastmod>2017-01-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -470,7 +481,7 @@
   
   <url>
     <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -590,7 +601,7 @@
   
   <url>
     <loc>https://mingrammer.com/categories/translation/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -602,7 +613,7 @@
   
   <url>
     <loc>https://mingrammer.com/categories/tutorial/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -620,7 +631,7 @@
   
   <url>
     <loc>https://mingrammer.com/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/</link>
     <description>Recent content on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 18 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 22 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI</title>
+      <link>https://mingrammer.com/building-blockchain-in-go-part-3/</link>
+      <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/building-blockchain-in-go-part-3/</guid>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 소개 우리는 지금까지 채굴이 가능한 작업 증명 시스템을 지닌 블록체인을 구현했다. 좀 더 완벽한 기능을 갖춘 블록체인에 가까워지</description>
+    </item>
     
     <item>
       <title>[Go로 구현하는 블록체인] Part 2: 작업 증명</title>
