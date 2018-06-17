@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/tags/transaction/</link>
     <description>Recent content in Transaction on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 26 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 14 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/transaction/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Go로 구현하는 블록체인] Part 6: 트랜잭션 2</title>
+      <link>https://mingrammer.com/building-blockchain-in-go-part-6/</link>
+      <pubDate>Thu, 14 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/building-blockchain-in-go-part-6/</guid>
+      <description>Building Blockchain in Go 시리즈를 번역한 글입니다. 서론 시리즈 초반부에 필자는 블록체인은 분산된 데이터베이스라고 말한 적이 있다. 우리는 지금까지 &amp;ldquo;분산&amp;rd</description>
+    </item>
     
     <item>
       <title>[Go로 구현하는 블록체인] Part 4: 트랜잭션 1</title>
