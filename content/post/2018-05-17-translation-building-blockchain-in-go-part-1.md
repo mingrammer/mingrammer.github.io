@@ -13,6 +13,8 @@ url: /building-blockchain-in-go-part-1
 ---
 
 > [Building Blockchain in Go](https://jeiwan.cc/posts/building-blockchain-in-go-part-1) 시리즈를 번역한 글입니다.
+>
+> Go 블록체인 구현체 저장소: [Blockchain Go](https://github.com/Jeiwan/blockchain_go)
 
 # 소개
 
