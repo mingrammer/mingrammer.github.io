@@ -32,7 +32,7 @@ url: /building-blockchain-in-go-part-7
 
 블록체인 네트워크는 P2P (Peer-to-Peer) 네트워크기 때문에 노드들은 서로 직접 연결되어있다. 이 구조의 토폴로지는 평면인데 노드 역할에는 계층이 없기 때문이다. 이를 도식화하면 다음과 같다.
 
-<center> <img src="../images/2018-06-19-p2p-network.png" align="center"/> </center>
+![P2P Network](../images/2018-06-18-p2p-network.png)
 
 이러한 네트워크의 노드는 많은 연산을 수행해야하기 때문에 구현하기가 더욱 까다롭다. 각 노드는 다른 여러 노드들과 상호작용 해야하며, 다른 노드의 상태를 요청하고 자신의 상태와 비교해 오래된 값이면 상태를 업데이트 해야한다.
 
