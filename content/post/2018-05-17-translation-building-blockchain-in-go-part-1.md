@@ -16,6 +16,8 @@ url: /building-blockchain-in-go-part-1
 >
 > Go 블록체인 구현체 저장소: [Blockchain Go](https://github.com/Jeiwan/blockchain_go)
 
+![Building Blockchain in Go](../images/building-blockchain-in-go.png)
+
 # 소개
 
 블록체인은 21세기의 가장 혁명적인 기술중 하나로 현재는 성숙 단계이며 아직 완전히 실현되지는 않았다. 블록체인은 본질적으로 분산화된 데이터베이스이다. 그러나 블록체인을 독보적으로 만든건 블록체인이 프라이빗이 아닌 퍼블릭 데이터베이스라는 것이다. 즉, 블록체인을 사용하는 모든 사람들이 블록체인의 일부 복제본을 가지고 있다는 얘기이다. 그리고 새로운 레코드는 데이터베이스를 지니고 있는 사람들의 합의하에서만 추가될 수 있다. 또한 블록체인을 활용하면 암호화 화폐 및 스마트 컨트랙트를 만드는 것도 가능하다.
