@@ -138,11 +138,11 @@
 # current: 현재 보여지는 윈도우 기준 현재 커서 위치
 # max_lines: 한 번에 볼 수 있는 최대 항목의 갯수
 # bottom: 커서가 위치할 수 있는 최하단 라인의 위치
-# 
+#
 # ┌--------------------------------------┐
 # |1. Item                               |
 # |--------------------------------------| &lt;- top = 1
-# |2. Item                               | 
+# |2. Item                               |
 # |3. Item                               |
 # |4./Item///////////////////////////////| &lt;- current = 3
 # |5. Item                               |
@@ -166,19 +166,19 @@ def scroll(self, direction):
     if (direction == self.UP) and (self.top &gt; 0 and self.current == 0):
         self.top += direction
         return
-    
+
     # 윈도우 스크롤 다운
     # 다음 커서가 현재 윈도우의 하단에 위치하나, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 윈도우 스크롤 다운이 가능하다
     if (direction == self.DOWN) and (next_line == self.max_lines) and (self.top + self.max_lines &lt; self.bottom):
         self.top += direction
         return
-    
+
     # 스크롤 업
     # 현재 커서가 최상단보다 아래에 있으므로 스크롤 업이 가능하다
     if (direction == self.UP) and (self.top &gt; 0 or self.current &gt; 0):
         self.current = next_line
         return
-    
+
     # 스크롤 다운
     # 다음 커서가 현재 윈도우의 하단보다 위에 있으며, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 스크롤 다운이 가능하다
     if (direction == self.DOWN) and (next_line &lt; self.max_lines) and (self.top + next_line &lt; self.bottom):
@@ -208,7 +208,7 @@ def scroll(self, direction):
     # 윈도우의 상단 위치값과 현재 커서 위치로 현재 페이지와 다음 페이지를 계산
     current_page = (self.top + self.current) // self.max_lines
     next_page = current_page + direction
-    
+
     # 마지막 페이지에 도달 했을 때 현재 커서가 마지막 페이지에 나타나는 항목의 리스트보다 아래에 있는 경우,
     # 현재 커서를 마지막 페이지 리스트의 마지막 항목 위치로 조정
     if next_page == self.page:
@@ -220,7 +220,7 @@ def scroll(self, direction):
     if (direction == self.UP) and (current_page &gt; 0):
         self.top = max(0, self.top - self.max_lines)
         return
-    
+
     # 페이지 다운
     # 현재 페이지가 마지막 페이지가 아닌 경우, 페이지 다운이 가능하다
     if (direction == self.DOWN) and (current_page &lt; self.page):
@@ -242,8 +242,6 @@ def scroll(self, direction):
 <h1 id="마무리">마무리</h1>
 
 <p>이제까지 <strong>curses</strong>를 사용해 TUI 환경에서 스크롤과 페이징을 구현하는 기법에 대해서 살펴보았다. 비단 curses가 아니더라도 다른 언어 및 라이브러리를 활용해 TUI 스크롤/페이징을 구현하고자 한다면 기본적인 아이디어는 그대로 차용할 수 있을 것이다. 다음엔 TUI 환경에서 나타날 수 있는 다른 다양한 동작들의 구현에 대해서 포스팅을 해보겠다.</p>
-
-<p><a href="https://www.facebook.com/DevSwaaag/"><img src="../images/devswag.png" alt="Devswag" /></a></p>
 
                 </section>
             </article>
