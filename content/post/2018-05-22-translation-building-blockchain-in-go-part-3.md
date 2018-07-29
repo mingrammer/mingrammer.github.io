@@ -111,7 +111,7 @@ func DeserializeBlock(d []byte) *Block {
 }
 ```
 
-직렬화 관련 작업을 끝났다!
+직렬화 관련 작업이 끝났다!
 
 # 영속성
 
