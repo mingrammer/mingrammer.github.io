@@ -47,7 +47,9 @@ url: /translation-asynchronous-python
 
 ```python
 import gevent
-gevent.monkey.patch_all()
+from gevent import monkey
+
+monkey.patch_all()
 urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
 
 def print_head(url):
@@ -55,7 +57,7 @@ def print_head(url):
     data = urlopen(url).read()
     print('{}: {} bytes: {}'.format(url, len(data), data))
 
-jobs = [genvent.spawn(print_head, _url) for _url in urls]
+jobs = [gevent.spawn(print_head, _url) for _url in urls]
 
 gevent.wait(jobs)
 ```
