@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.37.1" />
+		<meta name="generator" content="Hugo 0.47" />
 		<title>[번역] 비동기 파이썬 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Oct 3, 2016 00:00
-                    · 6045 words
+                    · 6049 words
                     · 13 minute read
                       <span class="tags">
                       
@@ -141,7 +141,9 @@
 <p>그린 스레드 (Green Threads)는 비동기 프로그래밍의 가장 기초이다. 그린 스레드는 스케쥴링을 하드웨어가 아닌 애플리케이션 코드가 대신 한다는 점을 제외하면, 일반 스레드와 정확히 같아보인다. <em><a href="http://www.gevent.org/">Gevent</a></em> 는 그린 스레드를 사용하는 유명한 파이썬 라이브러리이다. <em>Gevent</em> 는 기본적으로 그린 스레드 + eventlet (non-blocking I/O 네트워킹 라이브러리)이다. 다음은 <em>gevent</em> 를 사용하여 한 번에 여러개의 url에 요청을 날리는 예시이다.</p>
 
 <pre><code class="language-python">import gevent
-gevent.monkey.patch_all()
+from gevent import monkey
+
+monkey.patch_all()
 urls = ['http://www.google.com', 'http://www.yandex.ru', 'http://www.python.org']
 
 def print_head(url):
@@ -149,7 +151,7 @@ def print_head(url):
     data = urlopen(url).read()
     print('{}: {} bytes: {}'.format(url, len(data), data))
 
-jobs = [genvent.spawn(print_head, _url) for _url in urls]
+jobs = [gevent.spawn(print_head, _url) for _url in urls]
 
 gevent.wait(jobs)
 </code></pre>
@@ -442,14 +444,17 @@ loop.run_until_complete(asyncio.wait(futures))
 
 
   
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-84081627-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-84081627-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
 
