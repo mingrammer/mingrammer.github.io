@@ -12,7 +12,7 @@ url: /understanding-the-asterisk-of-python
 
 파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다.
 
-특히 파이썬이 지원하는 많은 연산자중 하나인 **Asterisk(\*)**는 단순히 곱셈 이상의 여러 의미를 갖는 연산들을 가능케한다. 이번 포스트에서는 파이썬을 좀 더 파이썬스럽게 (보통 *Pythonic하다*라고 표현한다) 쓰기 위해 이 **Asterisk(\*)**로 할 수 있는 여러 연산들을 살펴보고자 한다.
+특히 파이썬이 지원하는 많은 연산자중 하나인 **Asterisk(\*)**는 단순히 곱셈 이상의 여러 의미를 갖는 연산들을 가능케한다. 이번 포스트에서는 파이썬을 좀 더 파이썬스럽게 (보통 **Pythonic하다**라고 표현한다) 쓰기 위해 이 **Asterisk(\*)**로 할 수 있는 여러 연산들을 살펴보고자 한다.
 
 파이썬에서 **Asterisk(\*)**는 다음과 같은 상황에서 사용되는데 크게 4가지의 경우가 있다.
 
@@ -81,7 +81,7 @@ def save_ranking(first, second, third=None, fourth=None):
     rank[1], rank[2] = first, second
     rank[3] = third if third is not None else 'Nobody'
     rank[4] = fourth if fourth is not None else 'Nobody'
-    print(rank)    
+    print(rank)
 
 # positional arguments 2개 전달
 save_ranking('ming', 'alice')
@@ -108,7 +108,7 @@ def save_ranking(first, second=None, third, fourth=None):
 def save_ranking(*args):
     print(args)
 save_ranking('ming', 'alice', 'tom', 'wilson', 'roy')
-# ['ming', 'alice', 'tom', 'wilson', 'roy']
+# ('ming', 'alice', 'tom', 'wilson', 'roy')
 ```
 
 ## keyword arguments만 받을 때
@@ -126,14 +126,14 @@ save_ranking(first='ming', second='alice', fourth='wilson', third='tom', fifth='
 def save_ranking(*args, **kwargs):
     print(args)
     print(kwargs)
-save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')    
+save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')
 # ('ming', 'alice', 'tom')
 # {'fourth': 'wilson', 'fifth': 'roy'}
 ```
 
 위에서 `*args`는 임의의 갯수의 positional arguments를 받음을 의미하며, `**kwargs`는 임의의 갯수의 keyword arguments를 받음을 의미한다. 이 때 `*args`, `**kwargs` 형태로 가변인자를 받는걸 **packing**이라고 한다.
 
-위의 예시에서 볼 수 있듯이, 임의의 갯수와 임의의 키값을 갖는 인자들을 전달하고 있다. positional 형태로 전달되는 인자들은 `args`라는 *list*에 저장되며, keyword 형태로 전달되는 인자들은 `kwargs`라는 *dict*에 저장된다.
+위의 예시에서 볼 수 있듯이, 임의의 갯수와 임의의 키값을 갖는 인자들을 전달하고 있다. positional 형태로 전달되는 인자들은 `args`라는 **tuple**에 저장되며, keyword 형태로 전달되는 인자들은 `kwargs`라는 **dict**에 저장된다.
 
 아까 positional과 keyword의 선언 순서를 언급했었는데, keyword는 positional보다 앞에 선언할 수 없기 때문에 다음의 코드는 에러를 발생시킨다.
 
@@ -180,11 +180,11 @@ headers = {
 def pre_process(**headers):
     content_length = headers['Content-Length']
     print('content length: ', content_length)
-    
+
     host = headers['Host']
     if 'https' not in host:
         raise ValueError('You must use SSL for http communication')
-        
+
 pre_process(**headers)
 # content length:  348
 # Traceback (most recent call last):
@@ -222,6 +222,6 @@ a, *b, c = numbers
 
 # 결론
 
-이상으로 크게 4가지의 **Asterisk(*)**를 활용한 연산들을 살펴보았다. 하나의 연산자로 여러가지 연산들을 할 수 있다는 점이 흥미로웠으며, 위의 대부분은 Pythonic한 코드를 짜기 위한 기본적인 내용들이다. 이 중 특히 3번의 경우 매우 자주 사용되는 중요한 기능이자 파이썬 초보자들이 자주 헷갈려하는 부분이기에 초보자라면 더더욱 잘 숙지하였으면 좋겠다. 
+이상으로 크게 4가지의 **Asterisk(*)**를 활용한 연산들을 살펴보았다. 하나의 연산자로 여러가지 연산들을 할 수 있다는 점이 흥미로웠으며, 위의 대부분은 Pythonic한 코드를 짜기 위한 기본적인 내용들이다. 이 중 특히 3번의 경우 매우 자주 사용되는 중요한 기능이자 파이썬 초보자들이 자주 헷갈려하는 부분이기에 초보자라면 더더욱 잘 숙지하였으면 좋겠다.
 
 다음에도 파이썬의 다른 흥미로운 내용들을 다뤄보겠다.
