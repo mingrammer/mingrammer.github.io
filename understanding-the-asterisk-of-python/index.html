@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Mar 20, 2017 00:00
-                    · 3104 words
+                    · 3099 words
                     · 7 minute read
                       <span class="tags">
                       
@@ -94,7 +94,7 @@
 
 <p>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다.</p>
 
-<p>특히 파이썬이 지원하는 많은 연산자중 하나인 <strong>Asterisk(*)</strong>는 단순히 곱셈 이상의 여러 의미를 갖는 연산들을 가능케한다. 이번 포스트에서는 파이썬을 좀 더 파이썬스럽게 (보통 *Pythonic하다*라고 표현한다) 쓰기 위해 이 <strong>Asterisk(*)</strong>로 할 수 있는 여러 연산들을 살펴보고자 한다.</p>
+<p>특히 파이썬이 지원하는 많은 연산자중 하나인 <strong>Asterisk(*)</strong>는 단순히 곱셈 이상의 여러 의미를 갖는 연산들을 가능케한다. 이번 포스트에서는 파이썬을 좀 더 파이썬스럽게 (보통 <strong>Pythonic하다</strong>라고 표현한다) 쓰기 위해 이 <strong>Asterisk(*)</strong>로 할 수 있는 여러 연산들을 살펴보고자 한다.</p>
 
 <p>파이썬에서 <strong>Asterisk(*)</strong>는 다음과 같은 상황에서 사용되는데 크게 4가지의 경우가 있다.</p>
 
@@ -160,7 +160,7 @@ def save_ranking(first, second, third=None, fourth=None):
     rank[1], rank[2] = first, second
     rank[3] = third if third is not None else 'Nobody'
     rank[4] = fourth if fourth is not None else 'Nobody'
-    print(rank)    
+    print(rank)
 
 # positional arguments 2개 전달
 save_ranking('ming', 'alice')
@@ -185,7 +185,7 @@ save_ranking('alice', 'ming', 'mike', fourth='jim')
 <pre><code class="language-python">def save_ranking(*args):
     print(args)
 save_ranking('ming', 'alice', 'tom', 'wilson', 'roy')
-# ['ming', 'alice', 'tom', 'wilson', 'roy']
+# ('ming', 'alice', 'tom', 'wilson', 'roy')
 </code></pre>
 
 <h2 id="keyword-arguments만-받을-때">keyword arguments만 받을 때</h2>
@@ -201,14 +201,14 @@ save_ranking(first='ming', second='alice', fourth='wilson', third='tom', fifth='
 <pre><code class="language-python">def save_ranking(*args, **kwargs):
     print(args)
     print(kwargs)
-save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')    
+save_ranking('ming', 'alice', 'tom', fourth='wilson', fifth='roy')
 # ('ming', 'alice', 'tom')
 # {'fourth': 'wilson', 'fifth': 'roy'}
 </code></pre>
 
 <p>위에서 <code>*args</code>는 임의의 갯수의 positional arguments를 받음을 의미하며, <code>**kwargs</code>는 임의의 갯수의 keyword arguments를 받음을 의미한다. 이 때 <code>*args</code>, <code>**kwargs</code> 형태로 가변인자를 받는걸 <strong>packing</strong>이라고 한다.</p>
 
-<p>위의 예시에서 볼 수 있듯이, 임의의 갯수와 임의의 키값을 갖는 인자들을 전달하고 있다. positional 형태로 전달되는 인자들은 <code>args</code>라는 *list*에 저장되며, keyword 형태로 전달되는 인자들은 <code>kwargs</code>라는 *dict*에 저장된다.</p>
+<p>위의 예시에서 볼 수 있듯이, 임의의 갯수와 임의의 키값을 갖는 인자들을 전달하고 있다. positional 형태로 전달되는 인자들은 <code>args</code>라는 <strong>tuple</strong>에 저장되며, keyword 형태로 전달되는 인자들은 <code>kwargs</code>라는 <strong>dict</strong>에 저장된다.</p>
 
 <p>아까 positional과 keyword의 선언 순서를 언급했었는데, keyword는 positional보다 앞에 선언할 수 없기 때문에 다음의 코드는 에러를 발생시킨다.</p>
 
@@ -252,11 +252,11 @@ product(primes)
 def pre_process(**headers):
     content_length = headers['Content-Length']
     print('content length: ', content_length)
-    
+
     host = headers['Host']
     if 'https' not in host:
         raise ValueError('You must use SSL for http communication')
-        
+
 pre_process(**headers)
 # content length:  348
 # Traceback (most recent call last):
