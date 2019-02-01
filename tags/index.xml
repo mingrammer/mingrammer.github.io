@@ -29,6 +29,15 @@
     </item>
     
     <item>
+      <title>Architecture</title>
+      <link>https://mingrammer.com/tags/architecture/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Asterisk</title>
       <link>https://mingrammer.com/tags/asterisk/</link>
       <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
@@ -49,7 +58,7 @@
     <item>
       <title>Aws</title>
       <link>https://mingrammer.com/tags/aws/</link>
-      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/aws/</guid>
       <description></description>
@@ -254,6 +263,15 @@
     </item>
     
     <item>
+      <title>Infrastructure</title>
+      <link>https://mingrammer.com/tags/infrastructure/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/infrastructure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Internal</title>
       <link>https://mingrammer.com/tags/internal/</link>
       <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
@@ -331,6 +349,15 @@
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/memory-leak/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Migration</title>
+      <link>https://mingrammer.com/tags/migration/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/migration/</guid>
       <description></description>
     </item>
     
@@ -430,6 +457,15 @@
       <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/random/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>https://mingrammer.com/tags/redis/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/redis/</guid>
       <description></description>
     </item>
     

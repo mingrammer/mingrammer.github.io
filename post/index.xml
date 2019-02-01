@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/post/</link>
     <description>Recent content in Posts on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 18 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 01 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IDC에서 AWS로 Redis 데이터 이전하기</title>
+      <link>https://mingrammer.com/redis-migration/</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/redis-migration/</guid>
+      <description>작년 3분기 즈음에 내가 맡고 있는 두 개의 게임중 한 게임의 서버 인프라를 IDC에서 AWS로 이전해야하는 일이 생겼다. 기존 인프라 구성은 LB (Load Balancer) 뒤에 게임 서버 (웹</description>
+    </item>
     
     <item>
       <title>[Go로 구현하는 블록체인] Part 7: 네트워크</title>

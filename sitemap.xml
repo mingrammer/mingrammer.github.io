@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/redis-migration/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/building-blockchain-in-go-part-7/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
   </url>
@@ -230,6 +235,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/architecture/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/categories/architecture/</loc>
     <lastmod>2017-09-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -249,7 +260,7 @@
   
   <url>
     <loc>https://mingrammer.com/tags/aws/</loc>
-    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -422,6 +433,12 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/infrastructure/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tags/internal/</loc>
     <lastmod>2017-10-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -482,6 +499,18 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/migration/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/migration/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tags/network/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -519,7 +548,7 @@
   
   <url>
     <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -574,6 +603,12 @@
   <url>
     <loc>https://mingrammer.com/tags/random/</loc>
     <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/redis/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -675,7 +710,7 @@
   
   <url>
     <loc>https://mingrammer.com/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
