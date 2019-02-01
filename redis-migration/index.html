@@ -54,8 +54,8 @@
                     </h1>
                     <h2 class="headline">
                     Feb 1, 2019 00:00
-                    · 4502 words
-                    · 9 minute read
+                    · 4784 words
+                    · 10 minute read
                       <span class="tags">
                       
                       
@@ -223,9 +223,15 @@ def fetch(src, dst):
 
 <p>레플리케이션을 맺으면 slave는 master와 데이터 동기화를 시작한다. 데이터 정확성을 보장하기 위해선 모든 데이터의 동기화가 잘 이루어졌는지를 반드시 체크해야한다. 그렇다면 레플리케이션 도중 데이터 동기화가 완료되는 시점은 어떻게 알아낼 수 있을까?</p>
 
-<p>Redis의 replication info에는 master와의 동기화 상태를 알 수 있는 <code>master_sync_in_progress</code>라는 플래그가 있다. 이 값이 1이면 동기화 진행중, 0이면 진행중이지 않음을 의미한다. 동기화가 정상적으로 이루어진 뒤 동기화가 끝나서 0인 경우도 있지만, 동기화 메커니즘이 아직 시작되지 않아서 0일 수도 있기 때문에 이 값만으로는 정상적인 동기화 종료를 판별하기가 어렵다. 따라서 slave와 master간의 연결 상태를 보여주는 <code>master_link_status</code>라는 플래그의 값도 같이 확인해야한다. 이 값은 정상적인 연결 상태라면 <code>up</code>으로 설정된다.</p>
+<p>Redis slave 서버의 레플리케이션 정보에는 master와의 연결 상태를 알 수 있는 <code>master_link_status</code>라는 플래그가 있다. 연결이 비정상적이거나 최초로 master와 full sync를 하는 동안에는 <code>down</code>으로 설정되며, full sync가 완료되고 정상적인 레플리케이션 연결이 수립되면 <code>up</code>으로 설정된다. 또한, 현재 master와의 동기화 진행 여부를 알려주는 <code>master_sync_in_progress</code>라는 플래그가 있는데, 동기화가 진행중이면  <code>1</code>, 완료되면 <code>0</code>으로 설정된다.</p>
 
-<p>따라서 이 두 값이 각각 <code>0</code>과 <code>up</code>이라면 동기화가 정상적으로 완료되었음을 알 수 있고, 이 때 레플리케이션을 끊으면 된다. (<code>r.slaveof()</code> = <code>slaveof no one</code>)</p>
+<p>따라서 <code>master_link_status</code>와<code>master_sync_in_progress</code>의 값이 각각 <code>up</code>과 <code>0</code>이 되는 시점을 동기화 완료 시점이라고 판단할 수 있으며, 이 때 레플리케이션을 끊으면 된다. (<code>r.slaveof()</code> = <code>slaveof no one</code>)</p>
+
+<blockquote>
+<p>일반적인 상황에서는 저 두 값이 <code>up</code>과 <code>0</code>인 경우를 정상적인 레플레케이션 &ldquo;상태&rdquo;라고 판단하지, 동기화 완료 &ldquo;시점&rdquo;이라고 보는건 조금 애매할 수 있다. 왜냐하면 레플리케이션에서 동기화는 지속적으로 이루어지기 때문인데,  다만, 나의 경우는 서버 점검 시간이었기 때문에 더 이상의 추가 데이터 업데이트가 이루어지지 않는 상황이었으므로 이를 동기화 완료 &ldquo;시점&rdquo;이라고 표현한 것이다.</p>
+
+<p>더 덧붙여서 좀 더 정확히는 저 두 값만 가지고는 레플리케이션 상태가 정말 정상인지를 판단하기는 어려우며 <code>master_last_io_seconds_ago</code> 등의 다른 동기화 시간과 관련된 정보도 부가적으로 확인해 볼 필요가 있다.</p>
+</blockquote>
 
 <h2 id="데이터-이전">데이터 이전</h2>
 
