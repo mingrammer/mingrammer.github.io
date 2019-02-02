@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 1, 2019 00:00
-                    · 4788 words
+                    · 4791 words
                     · 10 minute read
                       <span class="tags">
                       
@@ -175,7 +175,7 @@ def main(start, end):
     pool.starmap(run, zip(local_ports, legacy_servers))
 </code></pre>
 
-<p>스크립트를 실행하고 중간에 작업 디렉터리를 보면 다음과 같이 temp rdb와 dump rdb가 동시에 최대 8개까지 존재하는걸 볼 수 있다.</p>
+<p>스크립트를 실행하고 중간에 작업 디렉터리를 확인해 보면 다음과 같이 <strong>temp rdb</strong>와 <strong>dump rdb</strong>가 동시에 최대 8개까지 존재하는걸 볼 수 있다.</p>
 
 <pre><code class="language-shell">$ ls -l
 ... dump6400.rdb # 동기화 완료된 로컬 서버 포트. EC2 이전까지 완료되면 rdb 삭제
