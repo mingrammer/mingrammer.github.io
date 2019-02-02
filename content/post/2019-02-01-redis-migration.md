@@ -82,7 +82,7 @@ def main(start, end):
     pool.starmap(run, zip(local_ports, legacy_servers))
 ```
 
-스크립트를 실행하고 중간에 작업 디렉터리를 보면 다음과 같이 temp rdb와 dump rdb가 동시에 최대 8개까지 존재하는걸 볼 수 있다.
+스크립트를 실행하고 중간에 작업 디렉터리를 확인해 보면 다음과 같이 **temp rdb**와 **dump rdb**가 동시에 최대 8개까지 존재하는걸 볼 수 있다.
 
 ```shell
 $ ls -l
