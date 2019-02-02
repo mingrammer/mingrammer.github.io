@@ -54,7 +54,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 1, 2019 00:00
-                    · 4791 words
+                    · 4793 words
                     · 10 minute read
                       <span class="tags">
                       
@@ -228,7 +228,7 @@ def fetch(src, dst):
 <p>따라서 <code>master_link_status</code>와<code>master_sync_in_progress</code>의 값이 각각 <code>up</code>과 <code>0</code>이 되는 시점을 동기화 완료 시점이라고 판단할 수 있으며, 이 때 레플리케이션을 끊으면 된다. (<code>r.slaveof()</code> = <code>slaveof no one</code>)</p>
 
 <blockquote>
-<p>일반적인 상황에서는 저 두 값이 <code>up</code>과 <code>0</code>인 경우를 정상적인 레플레케이션 &ldquo;상태&rdquo;라고 판단하지, 동기화 완료 &ldquo;시점&rdquo;이라고 보는건 조금 애매할 수 있다. 왜냐하면 레플리케이션에서 동기화는 지속적으로 이루어지기 때문인데,  다만, 나의 경우는 서버 점검 시간이었기 때문에 더 이상의 추가 데이터 업데이트가 이루어지지 않는 상황이었으므로 이를 동기화 완료 &ldquo;시점&rdquo;이라고 표현한 것이다.</p>
+<p>일반적인 상황에서는 저 두 값이 각각 <code>up</code>과 <code>0</code>인 경우를 정상적인 레플레케이션 &ldquo;상태&rdquo;라고 판단하지, 동기화 완료 &ldquo;시점&rdquo;이라고 보는건 조금 애매할 수 있다. 왜냐하면 레플리케이션에서 동기화는 지속적으로 이루어지기 때문인데,  다만, 나의 경우는 서버 점검 시간이었기 때문에 더 이상의 추가 데이터 업데이트가 이루어지지 않는 상황이었으므로 이를 동기화 완료 &ldquo;시점&rdquo;이라고 표현한 것이다.</p>
 
 <p>더 덧붙여서 좀 더 정확히는 저 두 값만 가지고는 레플리케이션 상태가 정말 정상인지를 판단하기는 어려우며 <code>master_last_io_seconds_ago</code> 등의 다른 동기화 시간과 관련된 정보도 부가적으로 확인해 볼 필요가 있다.</p>
 </blockquote>
