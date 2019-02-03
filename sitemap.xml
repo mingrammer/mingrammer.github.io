@@ -235,14 +235,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/architecture/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/architecture/</loc>
+    <lastmod>2017-09-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/architecture/</loc>
-    <lastmod>2017-09-10T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/architecture/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -259,20 +259,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/aws/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/categories/aws/</loc>
     <lastmod>2017-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/blockchain/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/aws/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -283,13 +277,19 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/bot/</loc>
-    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/blockchain/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/categories/bot/</loc>
+    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/bot/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -385,13 +385,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/docker/</loc>
+    <loc>https://mingrammer.com/categories/docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/docker/</loc>
+    <loc>https://mingrammer.com/tags/docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -415,14 +415,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/go/</loc>
-    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/go/</loc>
+    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/go/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/go/</loc>
+    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -499,13 +499,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/migration/</loc>
+    <loc>https://mingrammer.com/categories/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/migration/</loc>
+    <loc>https://mingrammer.com/tags/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -589,14 +589,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/python/</loc>
-    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/python/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/python/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/python/</loc>
+    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -619,14 +619,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/review/</loc>
-    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/review/</loc>
+    <lastmod>2016-10-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/review/</loc>
-    <lastmod>2016-10-26T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/review/</loc>
+    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -685,14 +685,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/tutorial/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/tutorial/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/tutorial/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/tutorial/</loc>
+    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
