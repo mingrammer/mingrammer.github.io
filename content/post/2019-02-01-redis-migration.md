@@ -168,6 +168,7 @@ def migrate(src, dst, db):
         # 2,500개 키 순회
         cursor, keys = srcr.scan(cursor, count=count)
         pipeline = srcr.pipeline(transaction=False)
+
         # dump
         for key in keys:
             pipeline.pttl(key)
