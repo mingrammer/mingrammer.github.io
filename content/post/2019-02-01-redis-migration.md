@@ -135,7 +135,7 @@ def fetch(src, dst):
 
 Redis slave 서버의 레플리케이션 정보에는 master와의 연결 상태를 알 수 있는 `master_link_status`라는 플래그가 있다. 연결이 비정상적이거나 최초로 master와 full sync를 하는 동안에는 `down`으로 설정되며, full sync가 완료되고 정상적인 레플리케이션 연결이 수립되면 `up`으로 설정된다. 또한, 현재 master와의 동기화 진행 여부를 알려주는 `master_sync_in_progress`라는 플래그가 있는데, 동기화가 진행중이면  `1`, 완료되면 `0`으로 설정된다.
 
-따라서 `master_link_status`와``master_sync_in_progress``의 값이 각각 `up`과 `0`이 되는 시점을 동기화 완료 시점이라고 판단할 수 있으며, 이 때 레플리케이션을 끊으면 된다. (`r.slaveof()` = `slaveof no one`)
+따라서 `master_link_status`와 `master_sync_in_progress`의 값이 각각 `up`과 `0`이 되는 시점을 동기화 완료 시점이라고 판단할 수 있으며, 이 때 레플리케이션을 끊으면 된다. (`r.slaveof()` = `slaveof no one`)
 
 > 일반적인 상황에서는 저 두 값이 각각 `up`과 `0`인 경우를 정상적인 레플레케이션 "상태"라고 판단하지, 동기화 완료 "시점"이라고 보는건 조금 애매할 수 있다. 왜냐하면 레플리케이션에서 동기화는 지속적으로 이루어지기 때문인데,  다만, 나의 경우는 서버 점검 시간이었기 때문에 더 이상의 추가 데이터 업데이트가 이루어지지 않는 상황이었으므로 이를 동기화 완료 "시점"이라고 표현한 것이다.
 >
