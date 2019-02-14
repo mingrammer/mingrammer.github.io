@@ -10,7 +10,7 @@
 		
 		
 
-		<meta name="generator" content="Hugo 0.47" />
+		<meta name="generator" content="Hugo 0.54.0" />
 		<title>[Go로 구현하는 블록체인] Part 2: 작업 증명 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -198,7 +198,7 @@ func NewProofOfWork(b *Block) *ProofOfWork {
 <pre><code class="language-go">func (pow *ProofOfWork) prepareData(nonce int) []byte {
         data := bytes.Join(
                 [][]byte{
-                        pow.block.PrevBlockchain,
+                        pow.block.PrevBlockHash,
                         pow.block.Data,
                         IntToHex(pow.block.Timestamp),
                         IntToHex(int64(targetBits)),
