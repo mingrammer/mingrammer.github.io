@@ -397,7 +397,9 @@ func main() {
             go func(k []map[string]interface{}) {
                 defer wg.Done()
                 // 배치 작업 수행
+                // 배치 데이터를 한 번에 처리하려면 items를 고루틴 밖에서 취합하는 별도의 작업이 필요하다
                 items, _ := ddb.RetryableBatchGet(k)
+                // 테스트 로깅
                 fmt.Println(len(items))
             }(keys)
             keys = []map[string]interface{}{}
