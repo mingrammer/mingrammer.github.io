@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Aws on mingrammer&#39;s note</title>
+    <title>aws on mingrammer&#39;s note</title>
     <link>https://mingrammer.com/tags/aws/</link>
-    <description>Recent content in Aws on mingrammer&#39;s note</description>
+    <description>Recent content in aws on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 01 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DynamoDB 배치 작업 재시도 구현 (Exponential Backoff)</title>
+      <link>https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/</guid>
+      <description>약 두 달 전에 게임 서버 인프라를 이전하면서 일부 유저 데이터를 RDB와 캐시 디비에서 AWS DynamoDB로 변환 및 이전하는 작업을 진행했었다. TMI: 이전에 작성한 I</description>
+    </item>
     
     <item>
       <title>IDC에서 AWS로 Redis 데이터 이전하기</title>

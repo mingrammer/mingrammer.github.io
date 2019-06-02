@@ -5,85 +5,22 @@
     <link>https://mingrammer.com/categories/</link>
     <description>Recent content in Categories on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 01 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Algorithm</title>
+      <title>algorithm</title>
       <link>https://mingrammer.com/categories/algorithm/</link>
-      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/categories/algorithm/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Architecture</title>
-      <link>https://mingrammer.com/categories/architecture/</link>
-      <pubDate>Sun, 10 Sep 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/architecture/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Aws</title>
-      <link>https://mingrammer.com/categories/aws/</link>
-      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Blockchain</title>
-      <link>https://mingrammer.com/categories/blockchain/</link>
-      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/blockchain/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Bot</title>
-      <link>https://mingrammer.com/categories/bot/</link>
-      <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/bot/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://mingrammer.com/categories/docker/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go</title>
-      <link>https://mingrammer.com/categories/go/</link>
-      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Machine Learning</title>
-      <link>https://mingrammer.com/categories/machine-learning/</link>
-      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Migration</title>
+      <title>migration</title>
       <link>https://mingrammer.com/categories/migration/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
@@ -92,70 +29,16 @@
     </item>
     
     <item>
-      <title>Post</title>
-      <link>https://mingrammer.com/categories/post/</link>
-      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+      <title>blockchain</title>
+      <link>https://mingrammer.com/categories/blockchain/</link>
+      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/categories/post/</guid>
+      <guid>https://mingrammer.com/categories/blockchain/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Presentation</title>
-      <link>https://mingrammer.com/categories/presentation/</link>
-      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/presentation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Programming</title>
-      <link>https://mingrammer.com/categories/programming/</link>
-      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Python</title>
-      <link>https://mingrammer.com/categories/python/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Reference</title>
-      <link>https://mingrammer.com/categories/reference/</link>
-      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/reference/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Review</title>
-      <link>https://mingrammer.com/categories/review/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/review/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Testing</title>
-      <link>https://mingrammer.com/categories/testing/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/testing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Translation</title>
+      <title>translation</title>
       <link>https://mingrammer.com/categories/translation/</link>
       <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
@@ -164,11 +47,128 @@
     </item>
     
     <item>
-      <title>Tutorial</title>
+      <title>tutorial</title>
       <link>https://mingrammer.com/categories/tutorial/</link>
       <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/categories/tutorial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
+      <link>https://mingrammer.com/categories/testing/</link>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/testing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://mingrammer.com/categories/python/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://mingrammer.com/categories/go/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>architecture</title>
+      <link>https://mingrammer.com/categories/architecture/</link>
+      <pubDate>Sun, 10 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://mingrammer.com/categories/docker/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>https://mingrammer.com/categories/programming/</link>
+      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>https://mingrammer.com/categories/machine-learning/</link>
+      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>reference</title>
+      <link>https://mingrammer.com/categories/reference/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/reference/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>post</title>
+      <link>https://mingrammer.com/categories/post/</link>
+      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/post/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aws</title>
+      <link>https://mingrammer.com/categories/aws/</link>
+      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>presentation</title>
+      <link>https://mingrammer.com/categories/presentation/</link>
+      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/presentation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>review</title>
+      <link>https://mingrammer.com/categories/review/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/review/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bot</title>
+      <link>https://mingrammer.com/categories/bot/</link>
+      <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/bot/</guid>
       <description></description>
     </item>
     

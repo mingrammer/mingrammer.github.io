@@ -3,8 +3,103 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/categories/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/post/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/algorithm/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/aws/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/batchjob/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/cloud/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/dynamodb/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/pattern/</loc>
+    <lastmod>2019-06-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/redis-migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/architecture/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/infrastructure/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/migration/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/migration/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/redis/</loc>
+    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -13,13 +108,61 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/categories/blockchain/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/blockchain/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/network/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/translation/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/tutorial/</loc>
+    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/building-blockchain-in-go-part-6/</loc>
     <lastmod>2018-06-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/transaction/</loc>
+    <lastmod>2018-06-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/building-blockchain-in-go-part-5/</loc>
     <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/address/</loc>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/cryptography/</loc>
+    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -33,8 +176,20 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/persistence/</loc>
+    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/building-blockchain-in-go-part-2/</loc>
     <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/pow/</loc>
+    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -43,8 +198,50 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/prototype/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/project-euler-maximum-path-sum/</loc>
     <lastmod>2018-05-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/maximum-sum/</loc>
+    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/project-euler/</loc>
+    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/random/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/testing/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/time/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/unittest/</loc>
+    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -55,6 +252,36 @@
   <url>
     <loc>https://mingrammer.com/translation-the-hidden-components-of-web-caching/</loc>
     <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/caching/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/system/</loc>
+    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/curses/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/paging/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/python/</loc>
+    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -73,8 +300,50 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/go/</loc>
+    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/memory-leak/</loc>
+    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/getting-started-with-oauth2-in-go/</loc>
     <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/go/</loc>
+    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/oauth2/</loc>
+    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/tutorial/</loc>
+    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/cgo/</loc>
+    <lastmod>2017-12-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/compile/</loc>
+    <lastmod>2017-12-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -88,13 +357,55 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/deep-dive/</loc>
+    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/internal/</loc>
+    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/translation-10-common-software-architectural-patterns-in-a-nutshell/</loc>
     <lastmod>2017-09-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>https://mingrammer.com/categories/architecture/</loc>
+    <lastmod>2017-09-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/docker/</loc>
+    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/docker/</loc>
+    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/pycharm/</loc>
+    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/comprehension/</loc>
+    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -108,6 +419,30 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/clean-code/</loc>
+    <lastmod>2017-05-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/programming/</loc>
+    <lastmod>2017-05-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/comma/</loc>
+    <lastmod>2017-04-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/tip/</loc>
+    <lastmod>2017-04-26T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/tips-of-using-comma-in-python/</loc>
     <lastmod>2017-04-26T00:00:00+00:00</lastmod>
   </url>
@@ -118,13 +453,43 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/categories/machine-learning/</loc>
+    <lastmod>2017-04-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/mathematics/</loc>
+    <lastmod>2017-04-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/translation-13-simple-rules-for-good-coding/</loc>
     <lastmod>2017-04-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/asterisk/</loc>
+    <lastmod>2017-03-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/understanding-the-asterisk-of-python/</loc>
     <lastmod>2017-03-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/configuration/</loc>
+    <lastmod>2017-03-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/management/</loc>
+    <lastmod>2017-03-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -138,13 +503,61 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/oop/</loc>
+    <lastmod>2017-02-28T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</loc>
     <lastmod>2017-02-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/python/</loc>
+    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/reference/</loc>
+    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/translation-iterators-vs-generators/</loc>
     <lastmod>2017-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/generator/</loc>
+    <lastmod>2017-01-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/iterator/</loc>
+    <lastmod>2017-01-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/english/</loc>
+    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/medium/</loc>
+    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/post/</loc>
+    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -158,6 +571,24 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/categories/aws/</loc>
+    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/presentation/</loc>
+    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/review/</loc>
+    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/review-2016/</loc>
     <lastmod>2017-01-01T00:00:00+00:00</lastmod>
   </url>
@@ -168,8 +599,32 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/encoding/</loc>
+    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/go-walkthrough/</loc>
+    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/json/</loc>
+    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/translation-go-walkthrough-encoding-package/</loc>
     <lastmod>2016-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/underscore/</loc>
+    <lastmod>2016-11-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -183,6 +638,18 @@
   </url>
   
   <url>
+    <loc>https://mingrammer.com/tags/bytes/</loc>
+    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/strings/</loc>
+    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/review-deview-cookierun-ai/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
   </url>
@@ -193,182 +660,14 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/translation-structuring-applications-in-go/</loc>
-    <lastmod>2016-10-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/translation-asynchronous-python/</loc>
-    <lastmod>2016-10-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/dev-commit-alarm-bot/</loc>
-    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/welcome-mingrammer/</loc>
-    <lastmod>2016-09-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/</loc>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/address/</loc>
-    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/tags/ai/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/algorithm/</loc>
-    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/architecture/</loc>
-    <lastmod>2017-09-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/architecture/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/asterisk/</loc>
-    <lastmod>2017-03-20T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/asynchronous/</loc>
-    <lastmod>2016-10-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/aws/</loc>
-    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/aws/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/blockchain/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/blockchain/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/bot/</loc>
-    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/bot/</loc>
-    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/bytes/</loc>
-    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/caching/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/</loc>
-    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/cgo/</loc>
-    <lastmod>2017-12-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/clean-code/</loc>
-    <lastmod>2017-05-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/comma/</loc>
-    <lastmod>2017-04-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/compile/</loc>
-    <lastmod>2017-12-11T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/comprehension/</loc>
-    <lastmod>2017-06-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/configuration/</loc>
-    <lastmod>2017-03-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/tags/cookierun/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/cryptography/</loc>
-    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/curses/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/deep-dive/</loc>
-    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -385,236 +684,8 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/docker/</loc>
-    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/docker/</loc>
-    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/encoding/</loc>
-    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/english/</loc>
-    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/generator/</loc>
-    <lastmod>2017-01-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/go/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/go/</loc>
-    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/go-walkthrough/</loc>
-    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/infrastructure/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/internal/</loc>
-    <lastmod>2017-10-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/tags/io/</loc>
     <lastmod>2016-10-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/iterator/</loc>
-    <lastmod>2017-01-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/json/</loc>
-    <lastmod>2016-12-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/machine-learning/</loc>
-    <lastmod>2017-04-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/management/</loc>
-    <lastmod>2017-03-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/mathematics/</loc>
-    <lastmod>2017-04-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/maximum-sum/</loc>
-    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/medium/</loc>
-    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/memory-leak/</loc>
-    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/migration/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/migration/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/network/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/oauth2/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/oop/</loc>
-    <lastmod>2017-02-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/paging/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/persistence/</loc>
-    <lastmod>2018-05-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/post/</loc>
-    <lastmod>2017-01-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/pow/</loc>
-    <lastmod>2018-05-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/presentation/</loc>
-    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/programming/</loc>
-    <lastmod>2017-05-07T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/project-euler/</loc>
-    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/prototype/</loc>
-    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/pycharm/</loc>
-    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/python/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/python/</loc>
-    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/random/</loc>
-    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/redis/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/reference/</loc>
-    <lastmod>2017-02-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -625,15 +696,8 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/review/</loc>
-    <lastmod>2017-01-13T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/strings/</loc>
-    <lastmod>2016-11-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>https://mingrammer.com/translation-structuring-applications-in-go/</loc>
+    <lastmod>2016-10-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -643,74 +707,40 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/system/</loc>
-    <lastmod>2018-04-07T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/translation-asynchronous-python/</loc>
+    <lastmod>2016-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/asynchronous/</loc>
+    <lastmod>2016-10-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/</loc>
-    <lastmod>2018-06-06T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/categories/bot/</loc>
+    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/testing/</loc>
-    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/bot/</loc>
+    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/time/</loc>
-    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>https://mingrammer.com/dev-commit-alarm-bot/</loc>
+    <lastmod>2016-09-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/tip/</loc>
-    <lastmod>2017-04-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>https://mingrammer.com/welcome-mingrammer/</loc>
+    <lastmod>2016-09-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/transaction/</loc>
-    <lastmod>2018-06-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/translation/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/tutorial/</loc>
-    <lastmod>2018-06-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/tutorial/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/underscore/</loc>
-    <lastmod>2016-11-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/unittest/</loc>
-    <lastmod>2018-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/</loc>
-    <lastmod>2019-02-01T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/post/2017-08-28-translation-python-practices-for-efficient-code-performance-memory-and-usability/</loc>
     <priority>0</priority>
   </url>
   

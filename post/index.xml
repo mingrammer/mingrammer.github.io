@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/post/</link>
     <description>Recent content in Posts on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 01 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DynamoDB 배치 작업 재시도 구현 (Exponential Backoff)</title>
+      <link>https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/</guid>
+      <description>약 두 달 전에 게임 서버 인프라를 이전하면서 일부 유저 데이터를 RDB와 캐시 디비에서 AWS DynamoDB로 변환 및 이전하는 작업을 진행했었다. TMI: 이전에 작성한 I</description>
+    </item>
     
     <item>
       <title>IDC에서 AWS로 Redis 데이터 이전하기</title>
@@ -381,10 +390,10 @@
     
     <item>
       <title></title>
-      <link>https://mingrammer.com/</link>
+      <link>https://mingrammer.com/post/2017-08-28-translation-python-practices-for-efficient-code-performance-memory-and-usability/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/</guid>
+      <guid>https://mingrammer.com/post/2017-08-28-translation-python-practices-for-efficient-code-performance-memory-and-usability/</guid>
       <description></description>
     </item>
     

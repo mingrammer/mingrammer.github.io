@@ -5,31 +5,58 @@
     <link>https://mingrammer.com/tags/</link>
     <description>Recent content in Tags on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 06 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Address</title>
-      <link>https://mingrammer.com/tags/address/</link>
-      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      <title>aws</title>
+      <link>https://mingrammer.com/tags/aws/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/tags/address/</guid>
+      <guid>https://mingrammer.com/tags/aws/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ai</title>
-      <link>https://mingrammer.com/tags/ai/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      <title>batchjob</title>
+      <link>https://mingrammer.com/tags/batchjob/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/tags/ai/</guid>
+      <guid>https://mingrammer.com/tags/batchjob/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Architecture</title>
+      <title>cloud</title>
+      <link>https://mingrammer.com/tags/cloud/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/cloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dynamodb</title>
+      <link>https://mingrammer.com/tags/dynamodb/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/dynamodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pattern</title>
+      <link>https://mingrammer.com/tags/pattern/</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>architecture</title>
       <link>https://mingrammer.com/tags/architecture/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
@@ -38,232 +65,7 @@
     </item>
     
     <item>
-      <title>Asterisk</title>
-      <link>https://mingrammer.com/tags/asterisk/</link>
-      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/asterisk/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Asynchronous</title>
-      <link>https://mingrammer.com/tags/asynchronous/</link>
-      <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/asynchronous/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Aws</title>
-      <link>https://mingrammer.com/tags/aws/</link>
-      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/aws/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Blockchain</title>
-      <link>https://mingrammer.com/tags/blockchain/</link>
-      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/blockchain/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Bot</title>
-      <link>https://mingrammer.com/tags/bot/</link>
-      <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/bot/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Bytes</title>
-      <link>https://mingrammer.com/tags/bytes/</link>
-      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/bytes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Caching</title>
-      <link>https://mingrammer.com/tags/caching/</link>
-      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/caching/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cgo</title>
-      <link>https://mingrammer.com/tags/cgo/</link>
-      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/cgo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Clean Code</title>
-      <link>https://mingrammer.com/tags/clean-code/</link>
-      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/clean-code/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Comma</title>
-      <link>https://mingrammer.com/tags/comma/</link>
-      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/comma/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Compile</title>
-      <link>https://mingrammer.com/tags/compile/</link>
-      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/compile/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Comprehension</title>
-      <link>https://mingrammer.com/tags/comprehension/</link>
-      <pubDate>Wed, 14 Jun 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/comprehension/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Configuration</title>
-      <link>https://mingrammer.com/tags/configuration/</link>
-      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/configuration/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cookierun</title>
-      <link>https://mingrammer.com/tags/cookierun/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/cookierun/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cryptography</title>
-      <link>https://mingrammer.com/tags/cryptography/</link>
-      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/cryptography/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Curses</title>
-      <link>https://mingrammer.com/tags/curses/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/curses/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deep Dive</title>
-      <link>https://mingrammer.com/tags/deep-dive/</link>
-      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/deep-dive/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deep Learning</title>
-      <link>https://mingrammer.com/tags/deep-learning/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/deep-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deview</title>
-      <link>https://mingrammer.com/tags/deview/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/deview/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://mingrammer.com/tags/docker/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Encoding</title>
-      <link>https://mingrammer.com/tags/encoding/</link>
-      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/encoding/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>English</title>
-      <link>https://mingrammer.com/tags/english/</link>
-      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/english/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Generator</title>
-      <link>https://mingrammer.com/tags/generator/</link>
-      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/generator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go</title>
-      <link>https://mingrammer.com/tags/go/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go Walkthrough</title>
-      <link>https://mingrammer.com/tags/go-walkthrough/</link>
-      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/go-walkthrough/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Infrastructure</title>
+      <title>infrastructure</title>
       <link>https://mingrammer.com/tags/infrastructure/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
@@ -272,88 +74,7 @@
     </item>
     
     <item>
-      <title>Internal</title>
-      <link>https://mingrammer.com/tags/internal/</link>
-      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/internal/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Io</title>
-      <link>https://mingrammer.com/tags/io/</link>
-      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/io/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Iterator</title>
-      <link>https://mingrammer.com/tags/iterator/</link>
-      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/iterator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Json</title>
-      <link>https://mingrammer.com/tags/json/</link>
-      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/json/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Management</title>
-      <link>https://mingrammer.com/tags/management/</link>
-      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/management/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Mathematics</title>
-      <link>https://mingrammer.com/tags/mathematics/</link>
-      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/mathematics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Maximum Sum</title>
-      <link>https://mingrammer.com/tags/maximum-sum/</link>
-      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/maximum-sum/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Medium</title>
-      <link>https://mingrammer.com/tags/medium/</link>
-      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/medium/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Memory Leak</title>
-      <link>https://mingrammer.com/tags/memory-leak/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/memory-leak/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Migration</title>
+      <title>migration</title>
       <link>https://mingrammer.com/tags/migration/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
@@ -362,106 +83,7 @@
     </item>
     
     <item>
-      <title>Network</title>
-      <link>https://mingrammer.com/tags/network/</link>
-      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Oauth2</title>
-      <link>https://mingrammer.com/tags/oauth2/</link>
-      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/oauth2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Oop</title>
-      <link>https://mingrammer.com/tags/oop/</link>
-      <pubDate>Tue, 28 Feb 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/oop/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Paging</title>
-      <link>https://mingrammer.com/tags/paging/</link>
-      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/paging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Persistence</title>
-      <link>https://mingrammer.com/tags/persistence/</link>
-      <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/persistence/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pow</title>
-      <link>https://mingrammer.com/tags/pow/</link>
-      <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/pow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Project Euler</title>
-      <link>https://mingrammer.com/tags/project-euler/</link>
-      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/project-euler/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Prototype</title>
-      <link>https://mingrammer.com/tags/prototype/</link>
-      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/prototype/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Pycharm</title>
-      <link>https://mingrammer.com/tags/pycharm/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/pycharm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Python</title>
-      <link>https://mingrammer.com/tags/python/</link>
-      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Random</title>
-      <link>https://mingrammer.com/tags/random/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/random/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Redis</title>
+      <title>redis</title>
       <link>https://mingrammer.com/tags/redis/</link>
       <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
       
@@ -470,61 +92,25 @@
     </item>
     
     <item>
-      <title>Review</title>
-      <link>https://mingrammer.com/tags/review/</link>
-      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      <title>blockchain</title>
+      <link>https://mingrammer.com/tags/blockchain/</link>
+      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/tags/review/</guid>
+      <guid>https://mingrammer.com/tags/blockchain/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Strings</title>
-      <link>https://mingrammer.com/tags/strings/</link>
-      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
+      <title>network</title>
+      <link>https://mingrammer.com/tags/network/</link>
+      <pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/tags/strings/</guid>
+      <guid>https://mingrammer.com/tags/network/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Structure</title>
-      <link>https://mingrammer.com/tags/structure/</link>
-      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/structure/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>System</title>
-      <link>https://mingrammer.com/tags/system/</link>
-      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/system/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Time</title>
-      <link>https://mingrammer.com/tags/time/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/time/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tip</title>
-      <link>https://mingrammer.com/tags/tip/</link>
-      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/tip/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Transaction</title>
+      <title>transaction</title>
       <link>https://mingrammer.com/tags/transaction/</link>
       <pubDate>Thu, 14 Jun 2018 00:00:00 +0000</pubDate>
       
@@ -533,7 +119,160 @@
     </item>
     
     <item>
-      <title>Tutorial</title>
+      <title>address</title>
+      <link>https://mingrammer.com/tags/address/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/address/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cryptography</title>
+      <link>https://mingrammer.com/tags/cryptography/</link>
+      <pubDate>Wed, 06 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/cryptography/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>persistence</title>
+      <link>https://mingrammer.com/tags/persistence/</link>
+      <pubDate>Tue, 22 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/persistence/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pow</title>
+      <link>https://mingrammer.com/tags/pow/</link>
+      <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/pow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>prototype</title>
+      <link>https://mingrammer.com/tags/prototype/</link>
+      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/prototype/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>maximum-sum</title>
+      <link>https://mingrammer.com/tags/maximum-sum/</link>
+      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/maximum-sum/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>project-euler</title>
+      <link>https://mingrammer.com/tags/project-euler/</link>
+      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/project-euler/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>random</title>
+      <link>https://mingrammer.com/tags/random/</link>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/random/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>time</title>
+      <link>https://mingrammer.com/tags/time/</link>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/time/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>unittest</title>
+      <link>https://mingrammer.com/tags/unittest/</link>
+      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/unittest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>caching</title>
+      <link>https://mingrammer.com/tags/caching/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/caching/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>system</title>
+      <link>https://mingrammer.com/tags/system/</link>
+      <pubDate>Sat, 07 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/system/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>curses</title>
+      <link>https://mingrammer.com/tags/curses/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/curses/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>paging</title>
+      <link>https://mingrammer.com/tags/paging/</link>
+      <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/paging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://mingrammer.com/tags/go/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>memory leak</title>
+      <link>https://mingrammer.com/tags/memory-leak/</link>
+      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/memory-leak/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>oauth2</title>
+      <link>https://mingrammer.com/tags/oauth2/</link>
+      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/oauth2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tutorial</title>
       <link>https://mingrammer.com/tags/tutorial/</link>
       <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
       
@@ -542,7 +281,223 @@
     </item>
     
     <item>
-      <title>Underscore</title>
+      <title>cgo</title>
+      <link>https://mingrammer.com/tags/cgo/</link>
+      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/cgo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>compile</title>
+      <link>https://mingrammer.com/tags/compile/</link>
+      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/compile/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep dive</title>
+      <link>https://mingrammer.com/tags/deep-dive/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/deep-dive/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>internal</title>
+      <link>https://mingrammer.com/tags/internal/</link>
+      <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/internal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://mingrammer.com/tags/docker/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pycharm</title>
+      <link>https://mingrammer.com/tags/pycharm/</link>
+      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/pycharm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>comprehension</title>
+      <link>https://mingrammer.com/tags/comprehension/</link>
+      <pubDate>Wed, 14 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/comprehension/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>clean code</title>
+      <link>https://mingrammer.com/tags/clean-code/</link>
+      <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/clean-code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>comma</title>
+      <link>https://mingrammer.com/tags/comma/</link>
+      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/comma/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tip</title>
+      <link>https://mingrammer.com/tags/tip/</link>
+      <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/tip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mathematics</title>
+      <link>https://mingrammer.com/tags/mathematics/</link>
+      <pubDate>Mon, 24 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/mathematics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asterisk</title>
+      <link>https://mingrammer.com/tags/asterisk/</link>
+      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/asterisk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>configuration</title>
+      <link>https://mingrammer.com/tags/configuration/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/configuration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>management</title>
+      <link>https://mingrammer.com/tags/management/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/management/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>oop</title>
+      <link>https://mingrammer.com/tags/oop/</link>
+      <pubDate>Tue, 28 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/oop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://mingrammer.com/tags/python/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>generator</title>
+      <link>https://mingrammer.com/tags/generator/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/generator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iterator</title>
+      <link>https://mingrammer.com/tags/iterator/</link>
+      <pubDate>Wed, 25 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/iterator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>english</title>
+      <link>https://mingrammer.com/tags/english/</link>
+      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/english/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>medium</title>
+      <link>https://mingrammer.com/tags/medium/</link>
+      <pubDate>Mon, 16 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/medium/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>review</title>
+      <link>https://mingrammer.com/tags/review/</link>
+      <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/review/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>encoding</title>
+      <link>https://mingrammer.com/tags/encoding/</link>
+      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/encoding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go walkthrough</title>
+      <link>https://mingrammer.com/tags/go-walkthrough/</link>
+      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/go-walkthrough/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>json</title>
+      <link>https://mingrammer.com/tags/json/</link>
+      <pubDate>Sat, 03 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/json/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>underscore</title>
       <link>https://mingrammer.com/tags/underscore/</link>
       <pubDate>Sat, 05 Nov 2016 00:00:00 +0000</pubDate>
       
@@ -551,11 +506,92 @@
     </item>
     
     <item>
-      <title>Unittest</title>
-      <link>https://mingrammer.com/tags/unittest/</link>
-      <pubDate>Sun, 29 Apr 2018 00:00:00 +0000</pubDate>
+      <title>bytes</title>
+      <link>https://mingrammer.com/tags/bytes/</link>
+      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/tags/unittest/</guid>
+      <guid>https://mingrammer.com/tags/bytes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>strings</title>
+      <link>https://mingrammer.com/tags/strings/</link>
+      <pubDate>Wed, 02 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/strings/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ai</title>
+      <link>https://mingrammer.com/tags/ai/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cookierun</title>
+      <link>https://mingrammer.com/tags/cookierun/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/cookierun/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep learning</title>
+      <link>https://mingrammer.com/tags/deep-learning/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deview</title>
+      <link>https://mingrammer.com/tags/deview/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/deview/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>io</title>
+      <link>https://mingrammer.com/tags/io/</link>
+      <pubDate>Wed, 26 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/io/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>structure</title>
+      <link>https://mingrammer.com/tags/structure/</link>
+      <pubDate>Mon, 10 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/structure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>asynchronous</title>
+      <link>https://mingrammer.com/tags/asynchronous/</link>
+      <pubDate>Mon, 03 Oct 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/asynchronous/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bot</title>
+      <link>https://mingrammer.com/tags/bot/</link>
+      <pubDate>Tue, 13 Sep 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/bot/</guid>
       <description></description>
     </item>
     
