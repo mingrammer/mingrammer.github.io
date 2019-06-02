@@ -10,9 +10,6 @@ hasCJKLanguage = true
 
 googleAnalytics = "UA-84081627-1"
 
-[permalinks]
-  	post = "/:slug"
-
 [params]
 	author = "mingrammer"
 	bio = "I love computer science, automation and mathematics"
