@@ -190,14 +190,15 @@ func (ddb *DynamoDB) RetryableBatchWrite(items []map[string]interface{}) error {
             return err
         }
         // 일부 요청이 실패한 경우 unprocessed의 테이블키에 쓰기 요청을 담아서 반환해준다
-        // 따라서 테이블키의 유무로 배치 작업 성공 여부를 판별할 수 있다
+        // 모든 요청이 성공하면 empty map을 반환한다
+        // if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
         unprocessed = output.UnprocessedItems
-        if _, ok := unprocessed[ddb.table]; !ok {
+        if len(unprocessed) == 0 {
             break
         }
-        // 최대 재시도 횟수 도달시 에러 반환
+        // 최대 재시도 횟수를 넘기면 에러 반환
         if attempts > maxRetries {
-            return errors.New("reached maxiumum retry attempts")
+            return errors.New("reached maximum retry attempts")
         }
         // 재시도 수행
     }
@@ -357,14 +358,15 @@ func (ddb *DynamoDB) RetryableBatchGet(keys []map[string]interface{}) ([]map[str
             items = append(items, item)
         }
         // 일부 요청이 실패한 경우 unprocessed의 테이블키에 실패한 키를 담아서 반환해준다
-        // 따라서 테이블키의 유무로 배치 작업 성공 여부를 판별할 수 있다
+        // 모든 요청이 성공하면 empty map을 반환한다
+        // if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
         unprocessed = output.UnprocessedKeys
-        if _, ok := unprocessed[ddb.table]; !ok {
+        if len(unprocessed) == 0 {
             break
         }
-        // 최대 재시도 횟수 도달시 에러 반환
+        // 최대 재시도 횟수를 넘기면 에러 반환
         if attempts > maxRetries {
-            return nil, errors.New("reached at max retries")
+            return nil, errors.New("reached maximum retry attempts")
         }
          // 재시도 수행
     }
