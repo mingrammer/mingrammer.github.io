@@ -1,76 +1,65 @@
 +++
-date = "2018-02-20T14:02:37+02:00"
+date = "2019-06-03T00:00:00"
 title = "About"
 hidden = true
 +++
 
+# MinJae Kwon
+
+## mingrammer
+
+---
+
 ### Profile
-* **Name** : 권민재 (MinJae Kwon)
-* **Nickname** : mingrammer
-* **Age** : 24 (23)
-* **Email** : [mingrammer@gmail.com](mingrammer@gmail.com)
-* **Github** : [https://github.com/mingrammer](https://github.com/mingrammer)
-* **Medium** : [https://medium.com/@mingrammer](https://medium.com/@mingrammer)
-* **SpeakerDeck** : [https://speakerdeck.com/mingrammer](https://speakerdeck.com/mingrammer)
-* **Company**: SundayToz
-* **Career Dev** : 1y 10m
-* **Weapons** : iMac 27", MacBook Pro Retina, iPad Air 2, iPhone 7
-* **Strength** : [한 번 꽂히면 고도의 집중력을 발휘할 수 있음, 학습욕구가 높음, 삽질을 잘함, 거짓말을 잘 못함]
-* **Weakness** : [No를 잘 못외침, 생각이 많음]
-* **Who am I** : 배워서 남주는걸 좋아합니다. 제 능력을 가지고 타인에게 도움 주는걸 좋아합니다. 풀리지 않는 문제를 해결하는데에 희열을 느낍니다. <br>  프로그래밍이라는 도구를 통해 많은 문제들을 해결하며 많은사람들에게, 또한 제 스스로에게 유익한 경험과 좀 더 나은 삶을 제공해주고 싶습니다.
+
+###### Contact
+
+[mingrammer@gmail.com](mingrammer@gmail.com)
+
+###### Websites
+
+[Homepage](https://mingrammer.com), [GitHub](https://github.com/mingrammer), [Medium](https://medium.com/@mingrammer)
 
 <br>
 
-### Technologies
-* **Language**
-    * Python
-    * Go
-* **Server Framework**
-    * Flask
-    * Django
-    * Echo
-* **Cloud Computing**
-    * AWS
-* **Database**
-    * MySQL
-    * Redis
-* **DevOps**
-    * Ansible (little)
-    * Git
-    * JIRA
-* **Tools**
-    * PyCharm
-    * Goland
-    * Vim
-    * VSCode
+### Skills
+
+###### Programming Languages
+    
+Go, Python
+
+###### Backend Development
+
+Linux, AWS, Docker, MySQL, Redis
 
 <br>
 
-### Interestings
-* Python, Go, Elixir 언어에 관심이 있습니다.
-* AWS, Azure와 같은 클라우드 컴퓨팅에 관심이 있습니다.
-* 다양한 인프라/서버/아키텍처 기술에 관심이 많습니다.
-* 다양한 데이터베이스 기술에 관심이 많습니다.
-* 데이터 분석, 머신러닝 기술에 관심이 많습니다.
-* 오픈소스에 관심이 많습니다.
-* 자동화(Automation)기술에 관심이 많습니다.
-* 병렬처리, 동시성 프로그래밍에 대한 관심이 많습니다.
-* 기술 문서 번역에 대한 관심이 관심이 있습니다.
-* 로우 레벨 프로그래밍/리버스 엔지니어링에 관심이 있습니다.
-* 스스로의 성장에 대해 관심이 많습니다.
-* 수학을 좋아합니다.
+### Interests
 
-<br>
+- Scalable system design
+- Database system
+- Automation
+- Open source
 
-### Projects
-* [commonregex](https://github.com/mingrammer/commonregex) : A collection of common regular expressions for Go
-* [funmath](https://github.com/mingrammer/funmath) : Implementations of mathematical functions, formulas and concepts
-* [pyreportcard](https://github.com/mingrammer/pyreportcard) : A report card for Python application which on Github
-* [awesome-finder](https://github.com/mingrammer/awesome-finder) : Find the awesome curated list without browser
-* [fitter](https://github.com/mingrammer/fitter) : An on-demand image server for generating dynamic images
-* [sorting](https://github.com/mingrammer/sorting) : Visualize the process of sorting algorithms simply
+---
 
-<br>
+### Open Source
+
+##### [flog](https://github.com/mingrammer/flog) - A fake log generator for common log formats
+##### [commonregex](https://github.com/mingrammer/commonregex) - A collection of common regular expressions for Go
+##### [pyreportcard](https://github.com/mingrammer/pyreportcard) - A report card for Python application which on Github
+##### [fitter](https://github.com/mingrammer/fitter) - An on-demand image server for generating dynamic images
+##### [redis-migrate](https://github.com/mingrammer/redis-migrate) - Simple command line tool for redis data migration (minimal functionality)
+##### [awesome-finder](https://github.com/mingrammer/awesome-finder) - Find the awesome curated list without browser
+##### [casec](https://github.com/mingrammer/casec) - casec is a text case converter for programmers
+
+
+
+#### Contribution
+
+[go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [realize#103](https://github.com/oxequa/realize/pull/103), [lazygit#284](https://github.com/jesseduffield/lazygit/pull/284), [sup#117](https://github.com/pressly/sup/pull/117), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
+
+---
 
 ### Community Activities
 * **AWS 아키텍처 모임**, 2017.11.22
