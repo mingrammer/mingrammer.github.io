@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mingrammer.com/about/</loc>
+    <lastmod>2019-06-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mingrammer.com/categories/</loc>
     <lastmod>2019-06-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -287,11 +292,6 @@
   <url>
     <loc>https://mingrammer.com/how-to-implement-the-scroll-and-paging-in-python-curses/</loc>
     <lastmod>2018-03-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/about/</loc>
-    <lastmod>2018-02-20T14:02:37+02:00</lastmod>
   </url>
   
   <url>
