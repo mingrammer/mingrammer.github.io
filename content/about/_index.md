@@ -51,7 +51,7 @@ Linux, AWS, Docker, MySQL, Redis
 ##### [fitter](https://github.com/mingrammer/fitter) - An on-demand image server for generating dynamic images
 ##### [redis-migrate](https://github.com/mingrammer/redis-migrate) - Simple command line tool for redis data migration (minimal functionality)
 ##### [awesome-finder](https://github.com/mingrammer/awesome-finder) - Find the awesome curated list without browser
-##### [casec](https://github.com/mingrammer/casec) - casec is a text case converter for programmers
+##### [casec](https://github.com/mingrammer/casec) - Text case converter for programmers
 
 
 
