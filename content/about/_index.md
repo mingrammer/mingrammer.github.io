@@ -20,7 +20,7 @@ hidden = true
 
 [Homepage](https://mingrammer.com), [GitHub](https://github.com/mingrammer), [Medium](https://medium.com/@mingrammer)
 
-<br>
+---
 
 ### Skills
 
@@ -32,7 +32,7 @@ Go, Python
 
 Linux, AWS, Docker, MySQL, Redis
 
-<br>
+---
 
 ### Interests
 
@@ -93,7 +93,7 @@ Linux, AWS, Docker, MySQL, Redis
 * **PyCon 2015**, 2015.08.29 ~ 2015.08.30
 * **Google I/O 2015 Extended Seoul**, 2015.07.12
 
-<br>
+---
 
 ### Other Activities
 * **SICP 스터디**, 2017.01.14 ~
