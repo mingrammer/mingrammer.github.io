@@ -53,8 +53,6 @@ Linux, AWS, Docker, MySQL, Redis
 ##### [awesome-finder](https://github.com/mingrammer/awesome-finder) - Find the awesome curated list without browser
 ##### [casec](https://github.com/mingrammer/casec) - Text case converter for programmers
 
-
-
 #### Contribution
 
 [go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [realize#103](https://github.com/oxequa/realize/pull/103), [lazygit#284](https://github.com/jesseduffield/lazygit/pull/284), [sup#117](https://github.com/pressly/sup/pull/117), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
