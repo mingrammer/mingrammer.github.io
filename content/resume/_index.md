@@ -54,10 +54,9 @@ Linux, AWS, Docker, MySQL, Redis
 
 ### Interests
 
-- Scalable system design
-- Database system
-- Automation
-- Open source
+- System designing
+- Automating the boring tasks
+- Open source software
 
 ---
 
