@@ -29,7 +29,7 @@ hidden = true
 
 Developed and maintained a [mobile puzzle game](http://corp.sundaytoz.com/sachunsung-) server with 180k and 25k rpm at peak time and normal time respectively.
 
-Performed infrastructure and codebase migration from IDC to AWS, and saved costs by reducing the instances than before. Migrated a large amount of data (~3.4 billion rows) to different kind of data stores along with infrastructure migration.
+Migrated the game server infrastructure and a large amount of user data (nearly 3.4 billion rows) from IDC to AWS with a completely changed codebase and data schema.
 
 ###### Server Engineer
 ##### [Townus](https://www.townus.co.kr/), Nov 2016 - Feb 2017
@@ -54,7 +54,7 @@ Linux, AWS, Docker, MySQL, Redis
 
 ### Interests
 
-- System designing
+- Designing the system architecture
 - Automating the boring tasks
 - Open source software
 
