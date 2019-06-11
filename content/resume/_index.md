@@ -75,7 +75,7 @@ commonregex is a collection of often used regular expressions. It provides these
 ###### [pyreportcard](https://github.com/mingrammer/pyreportcard)
 ##### A report card web service for Python applications
 
-pyreportcard inspects python projects which are hosted on Github and analyzes the source code quality, existence of license and readme files, and some useful statistics of whole codebase.
+pyreportcard analyzes the source code quality of the Python projects which are hosted on GitHub, checks for license and readme files, and provides some statistics.
 
 ###### [fitter](https://github.com/mingrammer/fitter)
 ##### An on-demand image server for generating dynamic images
