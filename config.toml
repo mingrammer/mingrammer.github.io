@@ -12,7 +12,7 @@ googleAnalytics = "UA-84081627-1"
 
 [params]
 	author = "mingrammer"
-	bio = "I love computer science, automation and mathematics"
+	bio = "I love computer science, system design and automation"
 	description = "mingrammer's dev logs"
 	avatar = "images/avatar.png"
 
