@@ -62,36 +62,39 @@ Linux, AWS, Docker, MySQL, Redis
 
 ### Open Source Experience
 
-#### Projects
+###### [flog](https://github.com/mingrammer/flog)
+##### A fake log generator for common log formats
 
-##### **[flog](https://github.com/mingrammer/flog)**, a fake log generator for common log formats
+flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. It was pulled 15k times from docker hub by other developers.
 
-flog supports 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. It was pulled 15k times from docker hub by other developers.
-
-##### **[commonregex](https://github.com/mingrammer/commonregex)**, a collection of common regular expressions for Go
+###### [commonregex](https://github.com/mingrammer/commonregex)
+##### A collection of common regular expressions for Go
 
 commonregex is a collection of often used regular expressions. It provides these as simple functions for getting the matched strings corresponding to specific patterns.
 
-##### **[pyreportcard](https://github.com/mingrammer/pyreportcard)**, a report card web service for Python applications
+###### [pyreportcard](https://github.com/mingrammer/pyreportcard)
+##### A report card web service for Python applications
 
 pyreportcard inspects python projects which are hosted on Github and analyzes the source code quality, existence of license and readme files, and some useful statistics of whole codebase.
 
-##### **[fitter](https://github.com/mingrammer/fitter)**, an on-demand image server for generating dynamic images
+###### [fitter](https://github.com/mingrammer/fitter)
+##### An on-demand image server for generating dynamic images
 
 fitter is a configurable on-demand image server for generating dynamic images with desired parameters.
 
-##### **[casec](https://github.com/mingrammer/casec)** - Text case converter for programmers
+###### [casec](https://github.com/mingrammer/casec)
+##### Text case converter for programmers
 
 casec is a text case converter for programmers. casec now supports upper, lower, title, camel, pascal, snake, kebab (or lisp) cases, providing also case conversion library.
 
-#### Others
+###### Others
 
 - **[redis-migrate](https://github.com/mingrammer/redis-migrate)** - Simple command line tool for redis data migration
 - **[awesome-finder](https://github.com/mingrammer/awesome-finder)** - Find the awesome curated list without browser
 - **[dynamodb-toolkit](https://github.com/mingrammer/dynamodb-toolkit)** - A command line toolkit for aws dynamodb
 - **[sheet2db](https://github.com/mingrammer/sheet2db)** - Tiny library for syncing data from google spreadsheet to database
 
-#### Contributions
+###### Contributions
 
 [go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [realize#103](https://github.com/oxequa/realize/pull/103), [lazygit#284](https://github.com/jesseduffield/lazygit/pull/284), [sup#117](https://github.com/pressly/sup/pull/117), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
 
