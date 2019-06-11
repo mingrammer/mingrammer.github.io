@@ -62,14 +62,16 @@ Linux, AWS, Docker, MySQL, Redis
 
 ### Open Source
 
-##### [flog](https://github.com/mingrammer/flog) - A fake log generator for common log formats
-##### [commonregex](https://github.com/mingrammer/commonregex) - A collection of common regular expressions for Go
-##### [pyreportcard](https://github.com/mingrammer/pyreportcard) - A report card for Python application which on Github
-##### [fitter](https://github.com/mingrammer/fitter) - An on-demand image server for generating dynamic images
-##### [redis-migrate](https://github.com/mingrammer/redis-migrate) - Simple command line tool for redis data migration (minimal functionality)
-##### [awesome-finder](https://github.com/mingrammer/awesome-finder) - Find the awesome curated list without browser
-##### [casec](https://github.com/mingrammer/casec) - Text case converter for programmers
+###### Projects
 
-#### Contribution
+- **[flog](https://github.com/mingrammer/flog)** - A fake log generator for common log formats
+- **[commonregex](https://github.com/mingrammer/commonregex)** - A collection of common regular expressions for Go
+- **[pyreportcard](https://github.com/mingrammer/pyreportcard)** - A report card for Python applications which are on GitHub
+- **[fitter](https://github.com/mingrammer/fitter)** - An on-demand image server for generating dynamic images
+- **[redis-migrate](https://github.com/mingrammer/redis-migrate)** - Simple command line tool for redis data migration
+- **[awesome-finder](https://github.com/mingrammer/awesome-finder)** - Find the awesome curated list without browser
+- **[casec](https://github.com/mingrammer/casec)** - Text case converter for programmers
+
+###### Contributions
 
 [go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [realize#103](https://github.com/oxequa/realize/pull/103), [lazygit#284](https://github.com/jesseduffield/lazygit/pull/284), [sup#117](https://github.com/pressly/sup/pull/117), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
