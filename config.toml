@@ -34,7 +34,7 @@ googleAnalytics = "UA-84081627-1"
 	enableTwitterCard = false
 	
 	# Add custom assets with their paths relative to the static folder
-	customCSS = []
+	customCSS = ["css/custom.css"]
 	customJS  = []
 
 	# Navigation links
