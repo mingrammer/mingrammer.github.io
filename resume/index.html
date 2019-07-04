@@ -95,17 +95,22 @@
 
 <h5 id="sundaytoz-http-corp-sundaytoz-com-jul-2017"><a href="http://corp.sundaytoz.com/">SundayToz</a>, Jul 2017 -</h5>
 
-<p>Developed and maintained a <a href="http://corp.sundaytoz.com/sachunsung-">mobile puzzle game</a> server with 180k and 25k rpm at peak time and normal time respectively.</p>
-
-<p>Migrated the game server infrastructure and a large amount of user data (nearly 3.4 billion rows) from IDC to AWS with a completely changed codebase and data schema.</p>
+<ul>
+<li>Developed and maintained a <a href="http://corp.sundaytoz.com/sachunsung-">mobile puzzle game</a> server with 180k and 25k rpm (requests per minute) at peak and normal time respectively.</li>
+<li>Migrated the game server infrastructure from IDC to AWS with 8 hours downtime.</li>
+<li>Migrated 3.4 billion user data from the MySQL and Redis on IDC to the RDS and DynamoDB on AWS using Golang.</li>
+<li>Built a reproducible local development environment with Vagrant.</li>
+</ul>
 
 <h6 id="server-engineer-1">Server Engineer</h6>
 
 <h5 id="townus-https-www-townus-co-kr-nov-2016-feb-2017"><a href="https://www.townus.co.kr/">Townus</a>, Nov 2016 - Feb 2017</h5>
 
-<p>Maintained the townus API servers. Wrote unittests for almost existing APIs that have no tests before.</p>
-
-<p>Built an on-demand image resizing server to generate dynamic sized images.</p>
+<ul>
+<li>Developed and maintained the townus API servers.</li>
+<li>Wrote unit tests for almost existing APIs that have never been tested.</li>
+<li>Built an on-demand image resizing server to generate dynamic-sized images with Python.</li>
+</ul>
 
 <hr />
 
@@ -117,7 +122,7 @@
 
 <h6 id="backend-development">Backend Development</h6>
 
-<p>Linux, AWS, Docker, MySQL, Redis</p>
+<p>Linux, AWS, Vagrant, Docker, MySQL, Redis</p>
 
 <hr />
 
@@ -125,6 +130,7 @@
 
 <ul>
 <li>Designing the system architecture</li>
+<li>Make something for developers</li>
 <li>Automating the boring tasks</li>
 <li>Open source software</li>
 </ul>
@@ -137,13 +143,7 @@
 
 <h5 id="a-fake-log-generator-for-common-log-formats">A fake log generator for common log formats</h5>
 
-<p>flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. It was pulled 15k times from docker hub by other developers.</p>
-
-<h6 id="commonregex-https-github-com-mingrammer-commonregex"><a href="https://github.com/mingrammer/commonregex">commonregex</a></h6>
-
-<h5 id="a-collection-of-common-regular-expressions-for-go">A collection of common regular expressions for Go</h5>
-
-<p>commonregex is a collection of often used regular expressions. It provides these as simple functions for getting the matched strings corresponding to specific patterns.</p>
+<p>flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. Its docker image was pulled 139k times from docker hub by other developers.</p>
 
 <h6 id="pyreportcard-https-github-com-mingrammer-pyreportcard"><a href="https://github.com/mingrammer/pyreportcard">pyreportcard</a></h6>
 
@@ -166,9 +166,9 @@
 <h6 id="others">Others</h6>
 
 <ul>
+<li><strong><a href="https://github.com/mingrammer/commonregex">commonregex</a></strong> - A collection of often used regular expressions for Go</li>
 <li><strong><a href="https://github.com/mingrammer/redis-migrate">redis-migrate</a></strong> - Simple command line tool for redis data migration</li>
 <li><strong><a href="https://github.com/mingrammer/awesome-finder">awesome-finder</a></strong> - Find the awesome curated list without browser</li>
-<li><strong><a href="https://github.com/mingrammer/dynamodb-toolkit">dynamodb-toolkit</a></strong> - A command line toolkit for aws dynamodb</li>
 <li><strong><a href="https://github.com/mingrammer/sheet2db">sheet2db</a></strong> - Tiny library for syncing data from google spreadsheet to database</li>
 </ul>
 
