@@ -27,16 +27,17 @@ hidden = true
 ###### Server Engineer
 ##### [SundayToz](http://corp.sundaytoz.com/), Jul 2017 -
 
-Developed and maintained a [mobile puzzle game](http://corp.sundaytoz.com/sachunsung-) server with 180k and 25k rpm at peak time and normal time respectively.
-
-Migrated the game server infrastructure and a large amount of user data (nearly 3.4 billion rows) from IDC to AWS with a completely changed codebase and data schema.
+- Developed and maintained a [mobile puzzle game](http://corp.sundaytoz.com/sachunsung-) server with 180k and 25k rpm (requests per minute) at peak and normal time respectively.
+- Migrated the game server infrastructure from IDC to AWS with 8 hours downtime.
+- Migrated 3.4 billion user data from the MySQL and Redis on IDC to the RDS and DynamoDB on AWS using Golang.
+- Built a reproducible local development environment with Vagrant.
 
 ###### Server Engineer
 ##### [Townus](https://www.townus.co.kr/), Nov 2016 - Feb 2017
 
-Maintained the townus API servers. Wrote unittests for almost existing APIs that have no tests before.
-
-Built an on-demand image resizing server to generate dynamic sized images.
+- Developed and maintained the townus API servers.
+- Wrote unit tests for almost existing APIs that have never been tested.
+- Built an on-demand image resizing server to generate dynamic-sized images with Python.
 
 ---
 
@@ -48,13 +49,14 @@ Go, Python
 
 ###### Backend Development
 
-Linux, AWS, Docker, MySQL, Redis
+Linux, AWS, Vagrant, Docker, MySQL, Redis
 
 ---
 
 ### Interests
 
 - Designing the system architecture
+- Make something for developers
 - Automating the boring tasks
 - Open source software
 
@@ -65,12 +67,7 @@ Linux, AWS, Docker, MySQL, Redis
 ###### [flog](https://github.com/mingrammer/flog)
 ##### A fake log generator for common log formats
 
-flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. It was pulled 15k times from docker hub by other developers.
-
-###### [commonregex](https://github.com/mingrammer/commonregex)
-##### A collection of common regular expressions for Go
-
-commonregex is a collection of often used regular expressions. It provides these as simple functions for getting the matched strings corresponding to specific patterns.
+flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. Its docker image was pulled 139k times from docker hub by other developers.
 
 ###### [pyreportcard](https://github.com/mingrammer/pyreportcard)
 ##### A report card web service for Python applications
@@ -89,9 +86,9 @@ casec is a text case converter for programmers. casec now supports upper, lower,
 
 ###### Others
 
+- **[commonregex](https://github.com/mingrammer/commonregex)** - A collection of often used regular expressions for Go
 - **[redis-migrate](https://github.com/mingrammer/redis-migrate)** - Simple command line tool for redis data migration
 - **[awesome-finder](https://github.com/mingrammer/awesome-finder)** - Find the awesome curated list without browser
-- **[dynamodb-toolkit](https://github.com/mingrammer/dynamodb-toolkit)** - A command line toolkit for aws dynamodb
 - **[sheet2db](https://github.com/mingrammer/sheet2db)** - Tiny library for syncing data from google spreadsheet to database
 
 ###### Contributions
