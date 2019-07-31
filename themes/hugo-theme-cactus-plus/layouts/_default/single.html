@@ -39,6 +39,22 @@
                 {{ partial "share.html" . }}
             {{ end }}
 
+            {{ if .Site.Params.enableAd }}
+            <div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <!-- fixed -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="{{ .Site.Params.googleAdsense }}"
+                    data-ad-slot="5717491307"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            {{ end }}
+
             {{ if .Site.Params.enableDisqus }}
                 {{ partial "disqus.html" . }}
             {{ end }}

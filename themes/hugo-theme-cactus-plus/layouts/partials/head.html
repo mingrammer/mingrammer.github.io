@@ -38,14 +38,4 @@
 		{{ range .Site.Params.customCSS }}
 		<link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
 		{{ end }}
-
-		{{ if not .IsHome }}
-		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<script>
-			(adsbygoogle = window.adsbygoogle || []).push({
-				google_ad_client: "{{ .Site.Params.googleAdsense }}",
-				enable_page_level_ads: true
-			});
-		</script>
-		{{ end }}
 	</head>
