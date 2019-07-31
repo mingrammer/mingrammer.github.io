@@ -32,7 +32,7 @@ googleAnalytics = "UA-84081627-1"
 	enableGoogleAnalytics = true
 	enableBaiduAnalytics = false
 	enableTwitterCard = false
-	
+
 	# Add custom assets with their paths relative to the static folder
 	customCSS = ["css/custom.css"]
 	customJS  = []
@@ -62,7 +62,10 @@ googleAnalytics = "UA-84081627-1"
 
 	# Choose a font for the social icons in the footer. Either "mono-social" or "font-awesome"
 	iconFont = "font-awesome"
-	
+
+    # Ad
+    googleAdsense = "ca-pub-9436560391944255"
+
 [social]
 	facebook-square = "https://www.facebook.com/mingrammer"
 	twitter-square = "https://www.twitter.com/mingrammer"
