@@ -95,13 +95,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/migration/</loc>
+    <loc>https://mingrammer.com/categories/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/migration/</loc>
+    <loc>https://mingrammer.com/tags/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -118,13 +118,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/blockchain/</loc>
+    <loc>https://mingrammer.com/categories/blockchain/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/blockchain/</loc>
+    <loc>https://mingrammer.com/tags/blockchain/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -390,13 +390,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/docker/</loc>
+    <loc>https://mingrammer.com/categories/docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/docker/</loc>
+    <loc>https://mingrammer.com/tags/docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -723,13 +723,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/bot/</loc>
+    <loc>https://mingrammer.com/categories/bot/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/bot/</loc>
+    <loc>https://mingrammer.com/tags/bot/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -746,6 +746,16 @@
   
   <url>
     <loc>https://mingrammer.com/post/2017-08-28-translation-python-practices-for-efficient-code-performance-memory-and-usability/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/post/2019-06-13-profiling-the-nodejs-daemon-with-heapdump/</loc>
     <priority>0</priority>
   </url>
   
