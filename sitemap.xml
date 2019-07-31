@@ -749,14 +749,4 @@
     <priority>0</priority>
   </url>
   
-  <url>
-    <loc>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/post/2019-06-13-profiling-the-nodejs-daemon-with-heapdump/</loc>
-    <priority>0</priority>
-  </url>
-  
 </urlset>
