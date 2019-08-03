@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/post/</link>
     <description>Recent content in Posts on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cron에서 초단위로 스케줄링하기</title>
+      <link>https://mingrammer.com/scheduling-cron-job-in-seconds-interval/</link>
+      <pubDate>Sat, 03 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/scheduling-cron-job-in-seconds-interval/</guid>
+      <description>최근에 2초에 한 번씩 특정 태스크를 수행하는 스크립트를 돌려야하는 일이 생겨서 cron으로 2초 단위 스케줄을 등록하려는데 cron은 최소 스케줄링 단위가 분이</description>
+    </item>
     
     <item>
       <title>DynamoDB 배치 작업 재시도 구현 (Exponential Backoff)</title>
