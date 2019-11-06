@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/</link>
     <description>Recent content on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 03 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>푸시 데몬 메모리 누수 디버깅하기</title>
+      <link>https://mingrammer.com/debug-memory-leak-with-node-heapdump/</link>
+      <pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/debug-memory-leak-with-node-heapdump/</guid>
+      <description>지난 6월초 즈음 어느 날 갑자기 팀 슬랙으로 저녁 푸시가 안날아갔다는 메시지를 받았다. 메시지를 받고 곧바로 어드민 서버에 들어가 푸시 데몬의 상태를 확인해보니 중간</description>
+    </item>
     
     <item>
       <title>Cron에서 초단위로 스케줄링하기</title>
@@ -417,10 +426,19 @@
     
     <item>
       <title></title>
-      <link>https://mingrammer.com/post/2019-06-13-profiling-the-nodejs-daemon-with-heapdump/</link>
+      <link>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://mingrammer.com/post/2019-06-13-profiling-the-nodejs-daemon-with-heapdump/</guid>
+      <guid>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</guid>
       <description></description>
     </item>
     
