@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Nov 6, 2019 00:00
-                    · 5220 words
+                    · 5221 words
                     · 11 minute read
                       <span class="tags">
                       
@@ -356,6 +356,7 @@ tcp        0      0 172.20.57.12:58404      17.188.166.96:443       ESTABLISHED
 tcp        0      0 172.20.57.12:51122      17.188.168.15:443       ESTABLISHED
 tcp        0      0 172.20.57.12:48894      17.188.165.138:443      ESTABLISHED
 tcp6       0      0 :::12222                :::*                    LISTEN
+...
 </code></pre>
 
 <p><code>netstat</code>으로 열려있는 모든 TCP 커넥션을 확인해본 결과 443 포트로 연결되어 있는 <code>17.x</code> 형태의 아이피들을 확인할 수 있었는데 위치가 모두 애플이 위치한 캘리포니아 쿠퍼티노로 확인되었다. 즉, iOS 푸시 발송시 사용한 APNS 푸시 서버로의 커넥션이 오픈된 이후부터 줄곧 닫히지 않고 있었던게 원인이었던 것이다. 실제로 이 때 열려있던 TCP 커넥션 수와 스냅샷에서 발견된 <code>Connection</code>의 개수가 일치했기 때문에 루트 원인임을 최종 확신할 수 있었다. 또한, 사용하고 있던 <code>node-apn</code> 레포를 가봐도 커넥션이 닫히지 않아 메모리 누수가 발생한다는 <a href="https://github.com/node-apn/node-apn/issues/518">이슈</a>가 이미 오픈되어 있었다.</p>
