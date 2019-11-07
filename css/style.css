@@ -471,7 +471,7 @@ img {
 }
 
 img:hover, img:focus, img:active {
-    transform: scale(1.25);
+    transform: scale(1.4);
 }
 
 
