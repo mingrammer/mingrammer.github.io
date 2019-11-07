@@ -13,12 +13,12 @@
 <meta property="og:description" content="TUI 애플리케이션을 개발하다보면 마주치는 어렵지는 않지만 다소 까다로운 문제가 하나 있는데, 바로 TUI 환경에서 화면을 동적으로 제어하는 것이다. 특히 한정된 화면에" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/how-to-implement-the-scroll-and-paging-in-python-curses/" />
-<meta property="article:published_time" content="2018-03-06T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-03-06T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2018-03-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-03-06T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.58.3" />
 		<title>파이썬 curses에서 스크롤 및 페이징 기능 구현하기 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -141,8 +141,8 @@
 
 <ul>
 <li>현재 커서가 현재 윈도우의 최상단 혹은 최하단에 위치하면서 커서와 윈도우가 모두 움직이는 경우</li>
-<li>현재 커서가 현재 윈도우의 중간에 위치해 커서만 움직이는 경우</li>
-</ul>
+
+<li><p>현재 커서가 현재 윈도우의 중간에 위치해 커서만 움직이는 경우</p>
 
 <pre><code class="language-python"># top: 리스트에서의 현재 윈도우의 최상단 라인의 위치
 # current: 현재 보여지는 윈도우 기준 현재 커서 위치
@@ -168,32 +168,33 @@
 
 
 def scroll(self, direction):
-    # 방향에 따른 다음 라인 커서 위치 계산
-    next_line = self.current + direction
+# 방향에 따른 다음 라인 커서 위치 계산
+next_line = self.current + direction
 
-    # 윈도우 스크롤 업
-    # 현재 커서가 윈도우의 상단에 위치하나, 윈도우의 상단 라인이 최상단에 닿지 않았으므로 윈도우 스크롤 업이 가능하다
-    if (direction == self.UP) and (self.top &gt; 0 and self.current == 0):
-        self.top += direction
-        return
+# 윈도우 스크롤 업
+# 현재 커서가 윈도우의 상단에 위치하나, 윈도우의 상단 라인이 최상단에 닿지 않았으므로 윈도우 스크롤 업이 가능하다
+if (direction == self.UP) and (self.top &gt; 0 and self.current == 0):
+    self.top += direction
+    return
 
-    # 윈도우 스크롤 다운
-    # 다음 커서가 현재 윈도우의 하단에 위치하나, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 윈도우 스크롤 다운이 가능하다
-    if (direction == self.DOWN) and (next_line == self.max_lines) and (self.top + self.max_lines &lt; self.bottom):
-        self.top += direction
-        return
+# 윈도우 스크롤 다운
+# 다음 커서가 현재 윈도우의 하단에 위치하나, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 윈도우 스크롤 다운이 가능하다
+if (direction == self.DOWN) and (next_line == self.max_lines) and (self.top + self.max_lines &lt; self.bottom):
+    self.top += direction
+    return
 
-    # 스크롤 업
-    # 현재 커서가 최상단보다 아래에 있으므로 스크롤 업이 가능하다
-    if (direction == self.UP) and (self.top &gt; 0 or self.current &gt; 0):
-        self.current = next_line
-        return
+# 스크롤 업
+# 현재 커서가 최상단보다 아래에 있으므로 스크롤 업이 가능하다
+if (direction == self.UP) and (self.top &gt; 0 or self.current &gt; 0):
+    self.current = next_line
+    return
 
-    # 스크롤 다운
-    # 다음 커서가 현재 윈도우의 하단보다 위에 있으며, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 스크롤 다운이 가능하다
-    if (direction == self.DOWN) and (next_line &lt; self.max_lines) and (self.top + next_line &lt; self.bottom):
-        self.current = next_line
-</code></pre>
+# 스크롤 다운
+# 다음 커서가 현재 윈도우의 하단보다 위에 있으며, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 스크롤 다운이 가능하다
+if (direction == self.DOWN) and (next_line &lt; self.max_lines) and (self.top + next_line &lt; self.bottom):
+    self.current = next_line
+</code></pre></li>
+</ul>
 
 <h2 id="스크롤-데모">스크롤 데모</h2>
 

@@ -415,32 +415,5 @@
       <description></description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

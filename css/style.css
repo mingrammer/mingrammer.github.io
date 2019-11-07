@@ -470,6 +470,10 @@ img {
     border-radius: 3px;
 }
 
+img:hover {
+    transform: scale(1.25);
+}
+
 
 /* Made with Cactus Badge */
 
