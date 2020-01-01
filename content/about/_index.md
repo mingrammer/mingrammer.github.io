@@ -20,12 +20,16 @@ hidden = true
 
 [Homepage](https://mingrammer.com), [GitHub](https://github.com/mingrammer), [Medium](https://medium.com/@mingrammer)
 
+###### Work
+
+Server Engineer (3y) @ [Daangn Market](https://www.daangn.com/)
+
 ---
 
 ### Skills
 
 ###### Programming Languages
-    
+
 Go, Python
 
 ###### Backend Development
