@@ -25,7 +25,13 @@ hidden = true
 ### Work Experience
 
 ###### Server Engineer
-##### [SundayToz](http://corp.sundaytoz.com/), Jul 2017 -
+
+##### [Daangn Market](https://www.daangn.com/), Dec 2019 -
+
+* Working on Platform Team
+
+###### Server Engineer
+##### [SundayToz](http://corp.sundaytoz.com/), Jul 2017 - Dec 2019
 
 - Developed and maintained a [mobile puzzle game](http://corp.sundaytoz.com/sachunsung-) server with 180k and 25k rpm (requests per minute) at peak and normal time respectively.
 - Migrated the game server infrastructure from IDC to AWS with 8 hours downtime.
@@ -44,7 +50,7 @@ hidden = true
 ### Skills
 
 ###### Programming Languages
-    
+
 Go, Python
 
 ###### Backend Development
