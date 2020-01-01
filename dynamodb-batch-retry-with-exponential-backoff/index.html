@@ -13,12 +13,12 @@
 <meta property="og:description" content="약 두 달 전에 게임 서버 인프라를 이전하면서 일부 유저 데이터를 RDB와 캐시 디비에서 AWS DynamoDB로 변환 및 이전하는 작업을 진행했었다. TMI: 이전에 작성한 I" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/dynamodb-batch-retry-with-exponential-backoff/" />
-<meta property="article:published_time" content="2019-06-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-06-02T00:00:00+00:00" />
+<meta property="article:published_time" content="2019-06-02T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-06-02T00:00:00&#43;00:00"/>
 
 		
 
-		<meta name="generator" content="Hugo 0.58.3" />
+		<meta name="generator" content="Hugo 0.55.6" />
 		<title>DynamoDB 배치 작업 재시도 구현 (Exponential Backoff) &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -374,8 +374,8 @@ attempts: 6, left: 5
 <li>한 번에 요청할 수 있는 키의 개수가 100개임</li>
 <li>쓰기의 경우 인코딩한 데이터를 각각 <code>WriteRequest</code>에 <code>PutRequest</code> 형태로 담고, 읽기의 경우 인코딩한 키들을 <code>KeysAndAttribute</code>의 <code>Keys</code>에 한 번에 담는다</li>
 <li><code>UnprocessedItems</code> 대신 <code>UnprocessedKeys</code>로 실패값(키) 처리</li>
-
-<li><p><code>unprocessed[ddb.table]</code> 대신 <code>unprocessed[ddb.table].Keys</code>에 실패값(키)가 담겨져 있음</p>
+<li><code>unprocessed[ddb.table]</code> 대신 <code>unprocessed[ddb.table].Keys</code>에 실패값(키)가 담겨져 있음</li>
+</ul>
 
 <pre><code class="language-go">// keys = [
 //     {
@@ -388,78 +388,77 @@ attempts: 6, left: 5
 //     },
 // ]
 func (ddb *DynamoDB) RetryableBatchGet(keys []map[string]interface{}) ([]map[string]interface{}, error) {
-if len(keys) &lt; 1 {
-    return nil, errors.New(&quot;you must pass at least one key&quot;)
-}
-if len(keys) &gt; 100 {
-    return nil, errors.New(&quot;you must pass keys less than or equal to number of 100&quot;)
-}
+    if len(keys) &lt; 1 {
+        return nil, errors.New(&quot;you must pass at least one key&quot;)
+    }
+    if len(keys) &gt; 100 {
+        return nil, errors.New(&quot;you must pass keys less than or equal to number of 100&quot;)
+    }
 
-// 키 저장용 구조체
-attrKeys := []map[string]*dynamodb.AttributeValue{}
-for _, key := range keys {
-    attrKey := map[string]*dynamodb.AttributeValue{}
-    for k, v := range key {
-        // 값을 DynamoDB 속성값으로 인코딩
-        marshaled, err := dynamodbattribute.Marshal(v)
+    // 키 저장용 구조체
+    attrKeys := []map[string]*dynamodb.AttributeValue{}
+    for _, key := range keys {
+        attrKey := map[string]*dynamodb.AttributeValue{}
+        for k, v := range key {
+            // 값을 DynamoDB 속성값으로 인코딩
+            marshaled, err := dynamodbattribute.Marshal(v)
+            if err != nil {
+                return nil, err
+            }
+            attrKey[k] = marshaled
+        }
+        attrKeys = append(attrKeys, attrKey)
+    }
+    // 키 목록 추가
+    unprocessed := map[string]*dynamodb.KeysAndAttributes{
+        ddb.table: &amp;dynamodb.KeysAndAttributes{
+            Keys: attrKeys,
+        },
+    }
+
+    // 받아온 데이터 저장용 변수
+    items := []map[string]interface{}{}
+    attempts := 0
+    for {
+         // 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
+        if attempts &gt; 0 {
+            time.Sleep(RetryBackoff(attempts))
+        }
+        attempts++
+        // 배치 작업 수행
+        output, err := ddb.conn.BatchGetItem(&amp;dynamodb.BatchGetItemInput{
+            RequestItems: unprocessed,
+        })
         if err != nil {
             return nil, err
         }
-        attrKey[k] = marshaled
-    }
-    attrKeys = append(attrKeys, attrKey)
-}
-// 키 목록 추가
-unprocessed := map[string]*dynamodb.KeysAndAttributes{
-    ddb.table: &amp;dynamodb.KeysAndAttributes{
-        Keys: attrKeys,
-    },
-}
-
-// 받아온 데이터 저장용 변수
-items := []map[string]interface{}{}
-attempts := 0
-for {
-     // 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
-    if attempts &gt; 0 {
-        time.Sleep(RetryBackoff(attempts))
-    }
-    attempts++
-    // 배치 작업 수행
-    output, err := ddb.conn.BatchGetItem(&amp;dynamodb.BatchGetItemInput{
-        RequestItems: unprocessed,
-    })
-    if err != nil {
-        return nil, err
-    }
-    // 받아온 데이터 디코딩
-    for _, r := range output.Responses[ddb.table] {
-        item := map[string]interface{}{}
-        for k, v := range r {
-            var val interface{}
-            // DynamoDB 속성값 디코딩
-            dynamodbattribute.Unmarshal(v, &amp;val)
-            item[k] = val
+        // 받아온 데이터 디코딩
+        for _, r := range output.Responses[ddb.table] {
+            item := map[string]interface{}{}
+            for k, v := range r {
+                var val interface{}
+                // DynamoDB 속성값 디코딩
+                dynamodbattribute.Unmarshal(v, &amp;val)
+                item[k] = val
+            }
+            items = append(items, item)
         }
-        items = append(items, item)
+        // 일부 요청이 실패한 경우 unprocessed의 테이블키에 실패한 키를 담아서 반환해준다
+        // 모든 요청이 성공하면 empty map을 반환한다
+        // if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
+        unprocessed = output.UnprocessedKeys
+        if len(unprocessed) == 0 {
+            break
+        }
+        // 최대 재시도 횟수를 넘기면 에러 반환
+        if attempts &gt; maxRetries {
+            return nil, errors.New(&quot;reached maximum retry attempts&quot;)
+        }
+         // 재시도 수행
     }
-    // 일부 요청이 실패한 경우 unprocessed의 테이블키에 실패한 키를 담아서 반환해준다
-    // 모든 요청이 성공하면 empty map을 반환한다
-    // if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
-    unprocessed = output.UnprocessedKeys
-    if len(unprocessed) == 0 {
-        break
-    }
-    // 최대 재시도 횟수를 넘기면 에러 반환
-    if attempts &gt; maxRetries {
-        return nil, errors.New(&quot;reached maximum retry attempts&quot;)
-    }
-     // 재시도 수행
+    return items, nil
 }
-return items, nil
-}
-</code></pre></li>
-</ul>
+</code></pre>
 
 <p>읽기 배치의 재시도 테스트도 해보자. 읽기의 경우 쓰기보다 빠르게 처리되므로 스로틀링이 잘 걸리도록 <strong>RCU</strong>와 <strong>WCU</strong>를 의도적으로 <code>10</code>으로 낮췄다. 실제 상황에서 데이터 요청이 매우 많은 경우에는 <strong>RCU</strong>, <strong>WCU</strong>가 충분히 높아도 스로틀링이 걸릴 수 있다.</p>
 
@@ -646,7 +645,7 @@ attempts: 1, unprocessed: 18
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
     
     </p>
     <p class="small">
