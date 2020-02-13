@@ -3,7 +3,7 @@ categories:
 - debugging
 - go
 comments: true
-date: 2020-02-14T00:00:00Z
+date: 2020-02-13T00:00:00Z
 tags:
 - debugging
 - docker
@@ -188,15 +188,15 @@ services:
 
 먼저 `Run > Edit Configuration` 메뉴로 디버깅 설정 창을 열어 `+`에서 `Go Remote`를 선택한다.
 
-![debug configuration](../images/2020-02-14-debug-configuration.png)
+![debug configuration](../images/2020-02-13-debug-configuration.png)
 
 설정 화면이 나오면 `Name`은 **Docker**, `Host`는 **localhost** 그리고 `Port`는 **2345**로 설정해준다.
 
-![remote debug config](../images/2020-02-14-remote-debug-config.png)
+![remote debug config](../images/2020-02-13-remote-debug-config.png)
 
 그 다음 `Rnu > Debug 'Docker'`를 선택하여 디버깅 창을 연 다음 원하는 라인에 브레이크 포인트를 찍는다.
 
-![debug window](../images/2020-02-14-debug-window.png)
+![debug window](../images/2020-02-13-debug-window.png)
 
 이제 `curl`을 사용하여 웹 서버에 요청을 날려보자.
 
@@ -206,7 +206,7 @@ $ curl 'localhost:8001/fib?num=1000'
 
 요청을 날리면 디버깅이 시작되며 디버깅 창에서 각 변수의 값을 확인할 수 있다. 다음은 두 번째 브레이크 포인트까지 진행한 결과이다. (`n0`: 1000, `fib`: 817770325994397771)
 
-![go debugging](../images/2020-02-14-go-debugging.png)
+![go debugging](../images/2020-02-13-go-debugging.png)
 
 디버깅 프로세스를 끝내면 요청이 잘 처리되었음을 확인할 수 있다.
 
@@ -244,7 +244,7 @@ Vscode에서는 설정이 좀 더 간단하다. 좌측에서 디버깅 메뉴로
 }
 ```
 
-![vscode remote debug config](../images/2020-02-14-vscode-remote-debug-config.png)
+![vscode remote debug config](../images/2020-02-13-vscode-remote-debug-config.png)
 
 설정이 끝났으면 에디터 창으로 돌아가 브레이크 포인트를 찍은 뒤 `Debug > Start Debugging`으로 디버깅을 시작한다. 마찬가지로 `curl`로 요청을 날려보면 다음과 같은 창이 열리며 디버깅이 시작된다.
 
@@ -252,7 +252,7 @@ Vscode에서는 설정이 좀 더 간단하다. 좌측에서 디버깅 메뉴로
 $ curl 'localhost:8001/fib?num=1000'
 ```
 
-![vscode go debugging](../images/2020-02-14-vscode-go-debugging.png)
+![vscode go debugging](../images/2020-02-13-vscode-go-debugging.png)
 
 ## 마무리
 
