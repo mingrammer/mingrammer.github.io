@@ -5,10 +5,19 @@
     <link>https://mingrammer.com/tags/go/</link>
     <description>Recent content in go on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 18 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>컨테이너 내부 Go 애플리케이션 디버깅하기</title>
+      <link>https://mingrammer.com/debugging-containerized-go-app/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/debugging-containerized-go-app/</guid>
+      <description>회사에서 Go를 메인으로 서비스를 개발하다보니 당연하게도 Go 애플리케이션을 디버깅 해야하는 상황이 생기게 마련이다. 서버 애플리케이션을 개발하게 되면 디버깅</description>
+    </item>
     
     <item>
       <title>[번역] Go API에서 메모리 누수 예방하기</title>

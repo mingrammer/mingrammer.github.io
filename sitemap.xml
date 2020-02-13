@@ -3,48 +3,77 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mingrammer.com/about/</loc>
-    <lastmod>2020-01-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/categories/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/post/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/tags/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/debugging/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/categories/debugging/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/memory/</loc>
-    <lastmod>2019-11-06T00:00:00+00:00</lastmod>
+    <loc>https://mingrammer.com/tags/debugging/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/delve/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/docker/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/categories/go/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/go/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mingrammer.com/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/debugging-containerized-go-app/</loc>
+    <lastmod>2020-02-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/about/</loc>
+    <lastmod>2020-01-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mingrammer.com/tags/memory/</loc>
     <lastmod>2019-11-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -56,13 +85,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/profiling/</loc>
+    <loc>https://mingrammer.com/categories/profiling/</loc>
     <lastmod>2019-11-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/profiling/</loc>
+    <loc>https://mingrammer.com/tags/profiling/</loc>
     <lastmod>2019-11-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -78,13 +107,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/cron/</loc>
+    <loc>https://mingrammer.com/categories/cron/</loc>
     <lastmod>2019-08-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/cron/</loc>
+    <loc>https://mingrammer.com/tags/cron/</loc>
     <lastmod>2019-08-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -159,13 +188,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/migration/</loc>
+    <loc>https://mingrammer.com/categories/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/migration/</loc>
+    <loc>https://mingrammer.com/tags/migration/</loc>
     <lastmod>2019-02-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -182,13 +211,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/blockchain/</loc>
+    <loc>https://mingrammer.com/categories/blockchain/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/blockchain/</loc>
+    <loc>https://mingrammer.com/tags/blockchain/</loc>
     <lastmod>2018-06-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -369,12 +398,6 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/go/</loc>
-    <lastmod>2018-02-18T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mingrammer.com/tags/memory-leak/</loc>
     <lastmod>2018-02-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -383,12 +406,6 @@
   <url>
     <loc>https://mingrammer.com/getting-started-with-oauth2-in-go/</loc>
     <lastmod>2018-02-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/categories/go/</loc>
-    <lastmod>2018-02-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -451,12 +468,6 @@
   <url>
     <loc>https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/</loc>
     <lastmod>2017-07-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mingrammer.com/tags/docker/</loc>
-    <lastmod>2017-07-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -787,13 +798,13 @@
   </url>
   
   <url>
-    <loc>https://mingrammer.com/tags/bot/</loc>
+    <loc>https://mingrammer.com/categories/bot/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://mingrammer.com/categories/bot/</loc>
+    <loc>https://mingrammer.com/tags/bot/</loc>
     <lastmod>2016-09-13T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

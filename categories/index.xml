@@ -5,7 +5,7 @@
     <link>https://mingrammer.com/categories/</link>
     <description>Recent content in Categories on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 06 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,9 +13,18 @@
     <item>
       <title>debugging</title>
       <link>https://mingrammer.com/categories/debugging/</link>
-      <pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/categories/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://mingrammer.com/categories/go/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/categories/go/</guid>
       <description></description>
     </item>
     
@@ -97,15 +106,6 @@
       <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/categories/python/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://mingrammer.com/categories/go/</link>
-      <pubDate>Thu, 01 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/categories/go/</guid>
       <description></description>
     </item>
     

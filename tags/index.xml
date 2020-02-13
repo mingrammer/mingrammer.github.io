@@ -5,7 +5,7 @@
     <link>https://mingrammer.com/tags/</link>
     <description>Recent content in Tags on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 06 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,9 +13,36 @@
     <item>
       <title>debugging</title>
       <link>https://mingrammer.com/tags/debugging/</link>
-      <pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/debugging/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>delve</title>
+      <link>https://mingrammer.com/tags/delve/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/delve/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://mingrammer.com/tags/docker/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://mingrammer.com/tags/go/</link>
+      <pubDate>Thu, 13 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/tags/go/</guid>
       <description></description>
     </item>
     
@@ -299,15 +326,6 @@
     </item>
     
     <item>
-      <title>go</title>
-      <link>https://mingrammer.com/tags/go/</link>
-      <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/go/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>memory leak</title>
       <link>https://mingrammer.com/tags/memory-leak/</link>
       <pubDate>Sun, 18 Feb 2018 00:00:00 +0000</pubDate>
@@ -367,15 +385,6 @@
       <pubDate>Tue, 10 Oct 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tags/internal/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>docker</title>
-      <link>https://mingrammer.com/tags/docker/</link>
-      <pubDate>Fri, 14 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/tags/docker/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<meta name="author" content="mingrammer">
+		<meta name="description" content="mingrammer&#39;s dev logs">
+
+		
+		<meta property="og:title" content="컨테이너 내부 Go 애플리케이션 디버깅하기" />
+<meta property="og:description" content="회사에서 Go를 메인으로 서비스를 개발하다보니 당연하게도 Go 애플리케이션을 디버깅 해야하는 상황이 생기게 마련이다. 서버 애플리케이션을 개발하게 되면 디버깅" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mingrammer.com/debugging-containerized-go-app/" />
+<meta property="article:published_time" content="2020-02-13T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2020-02-13T00:00:00&#43;00:00"/>
+
+		
+
+		<meta name="generator" content="Hugo 0.55.6" />
+		<title>컨테이너 내부 Go 애플리케이션 디버깅하기 &middot; mingrammer&#39;s note</title>
+		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
+		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
+		<link rel="stylesheet" href="https://mingrammer.com/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://mingrammer.com/css/font-awesome.min.css">
+		
+
+		
+		<link href="https://mingrammer.com/index.xml" rel="alternate" type="application/rss+xml" title="mingrammer&#39;s note" />
+		
+
+		
+		<link rel="stylesheet" href="https://mingrammer.com/css/custom.css">
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://mingrammer.com/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://mingrammer.com/post'>Archive</a>
+	<a href='https://mingrammer.com/categories'>Categories</a>
+	<a href='https://mingrammer.com/tags'>Tags</a>
+	<a href='https://mingrammer.com/about'>About</a>
+
+	
+
+	
+	<a class="cta" href="https://mingrammer.com/index.xml">Subscribe</a>
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        컨테이너 내부 Go 애플리케이션 디버깅하기
+                    </h1>
+                    <h2 class="headline">
+                    Feb 13, 2020 00:00
+                    · 2345 words
+                    · 5 minute read
+                      <span class="tags">
+                      
+                      
+                          
+                              <a href="https://mingrammer.com/tags/debugging">debugging</a>
+                          
+                              <a href="https://mingrammer.com/tags/docker">docker</a>
+                          
+                              <a href="https://mingrammer.com/tags/go">go</a>
+                          
+                              <a href="https://mingrammer.com/tags/delve">delve</a>
+                          
+                      
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+<ul>
+<li><a href="#예제-코드-작성">예제 코드 작성</a></li>
+<li><a href="#도커-파일-작성">도커 파일 작성</a>
+<ul>
+<li><a href="#배포용-이미지">배포용 이미지</a></li>
+<li><a href="#디버깅-이미지">디버깅 이미지</a></li>
+<li><a href="#컨테이너-실행">컨테이너 실행</a></li>
+</ul></li>
+<li><a href="#컨테이너-디버깅">컨테이너 디버깅</a>
+<ul>
+<li><a href="#goland">Goland</a></li>
+<li><a href="#vscode">Vscode</a></li>
+<li><a href="#마무리">마무리</a></li>
+</ul></li>
+</ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    
+
+<p>회사에서 Go를 메인으로 서비스를 개발하다보니 당연하게도 Go 애플리케이션을 디버깅 해야하는 상황이 생기게 마련이다. 서버 애플리케이션을 개발하게 되면 디버깅하는 방식이 크게 두 가지로 나뉘는데, 하나는 로컬 서버 디버깅이고 또 하나는 원격 서버 디버깅이다.</p>
+
+<p>서버 애플리케이션은 보통 DB나 캐시 서버 같은 외부 서비스 의존성을 갖기 때문에 로컬 환경을 구성시 VM이나 컨테이너를 통해 의존 서비스들을 함께 띄우곤 한다. 우리는 기본적으로 ECS 및 EKS를 기반으로 서비스를 하고 있기 때문에 로컬 환경에서도 도커를 사용하고 있다. 이 때 외부 서비스만 도커로 띄우는 방법이 있고, 서버 애플리케이션까지 모두 도커로 띄우는 방법이 있는데, 나 같은 경우는 로컬 환경과 프로덕션 환경이 (설정을 제외한 모든 것들이) 완전히 일치하는 것을 선호하는 편이라 후자의 방식을 사용하고 있으며 따라서 컨테이너 원격 서버 디버깅을 주로 사용하고 있다.</p>
+
+<blockquote>
+<p>물론 서버 애플리케이션이 아닌 CLI를 개발할 때에는 (당연히) 로컬 디버깅을 하고 있다.</p>
+</blockquote>
+
+<p>따라서 이번 포스팅에서는 컨테이너 내부의 Go 애플리케이션을 디버깅하는 방법에 대해 소개하고자 한다.</p>
+
+<h1 id="예제-코드-작성">예제 코드 작성</h1>
+
+<p>예제로 사용할 코드는 다음과 같은 n번째 피보나치수를 계산해주는 간단한 서버 애플리케이션이다.</p>
+
+<p><strong>./main.go</strong></p>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;log&quot;
+	&quot;net/http&quot;
+	&quot;strconv&quot;
+)
+
+const port = &quot;8000&quot;
+
+func main() {
+	http.HandleFunc(&quot;/fib&quot;, fibHandler)
+
+	log.Printf(&quot;listening on port %s&quot;, port)
+	log.Fatalln(http.ListenAndServe(&quot;:&quot;+port, nil))
+}
+
+func fibHandler(w http.ResponseWriter, r *http.Request) {
+	ns, ok := r.URL.Query()[&quot;num&quot;]
+	if !ok || len(ns) &lt; 0 {
+		log.Println(&quot;param 'num' is missing&quot;)
+		return
+	}
+	n0, err := strconv.Atoi(ns[0])
+	if err != nil {
+		log.Printf(&quot;invalid number: %v&quot;, err)
+		return
+	}
+	fb := strconv.Itoa(fib(n0))
+	w.Write([]byte(fb + &quot;\n&quot;))
+}
+
+func fib(n int) int {
+	a, b := 1, 1
+	for i := 0; i &lt; n-2; i++ {
+		a, b = b, a+b
+	}
+	return b
+}
+</code></pre>
+
+<p>위 코드를 <code>main.go</code>로 저장한 다음 같은 디렉토리에서 <code>go mod init calc</code>로 모듈을 초기화 해준다. 예제 코드 준비는 모두 끝났으니 이제 이 애플리케이션을 컨테이너로 띄워보자.</p>
+
+<h1 id="도커-파일-작성">도커 파일 작성</h1>
+
+<p>Go 디버깅에는 <a href="https://github.com/go-delve/delve"><code>delve</code></a>라는 디버거를 사용하며 원격 디버깅을 위해서는 컨테이너 내부에서 디버깅 요청을 받을 수 있는 delve 디버거 서버를 띄워줘야 한다. 또한 디버깅의 정확성을 위해 보통 디버깅용 빌드에서는 컴파일러 최적화 옵션을 끄기 때문에 디버깅 환경으로 구성된 이미지는 프로덕션 환경에서 사용할 수 없다. 따라서 나 같은 경우는 실제 배포용 이미지와 디버깅용 이미지를 분리하여 사용하고 있다.</p>
+
+<blockquote>
+<p>좀 전에 프로덕션 환경과 완전히 일치하는 환경을 선호한다고 했기 때문에 디버깅용 이미지가 따로 있으면 환경이 달라지는거 아닌가하는 의문이 들 수도 있지만, 이 두 이미지는 (컴파일러 최적화 옵션을 끔으로써 발생하는) 성능 차이를 제외한 다른 모든 시스템 환경은 완전히 동일하기 때문에 내가 우려했던 OS 및 시스템 레벨에서의 환경 및 의존성이 일치하지 않음으로써 발생할 수 있는 문제는 없다.</p>
+</blockquote>
+
+<h2 id="배포용-이미지">배포용 이미지</h2>
+
+<p><strong>./Dockerfile</strong></p>
+
+<pre><code class="language-dockerfile"># Build binary
+FROM golang:1.13 AS builder
+WORKDIR /build
+
+ENV CGO_ENABLED=0
+
+COPY go.mod ./
+RUN go mod download
+
+COPY . ./
+RUN go build .
+
+# Run on scratch
+FROM alpine:3.10
+WORKDIR /bin
+
+COPY --from=builder /build/calc /bin/
+
+EXPOSE 8000
+ENTRYPOINT [&quot;/bin/calc&quot;]
+</code></pre>
+
+<p>기본적인 Go 바이너리 배포용 이미지이며 이 이미지를 기반으로 디버깅 환경을 갖춘 도커 파일을 작성해보자.</p>
+
+<h2 id="디버깅-이미지">디버깅 이미지</h2>
+
+<p><strong>./debug/Dockerfile</strong></p>
+
+<pre><code class="language-dockerfile"># Build binary
+FROM golang:1.13 AS builder
+WORKDIR /build
+
+ENV CGO_ENABLED=0
+
+COPY go.mod ./
+RUN go mod download
+
+COPY . ./
+RUN go build -gcflags &quot;all=-N -l&quot; . # -gcflags &quot;all=-N -l&quot;로 컴파일러 최적화 옵션을 끈다.
+
+# Install delve
+RUN go get -u github.com/go-delve/delve/cmd/dlv # delve 설치
+
+# Run on scratch
+FROM alpine:3.10
+WORKDIR /bin
+
+COPY --from=builder /build/calc /bin/
+COPY --from=builder /go/bin/dlv /bin/ # delve 가져오기
+
+EXPOSE 8000
+EXPOSE 2345 # 디버거 서버 포트
+ENTRYPOINT [&quot;/bin/dlv&quot;, &quot;--listen=:2345&quot;, &quot;--headless=true&quot;, &quot;--api-version=2&quot;, &quot;--accept-multiclient&quot;, &quot;exec&quot;, &quot;/bin/calc&quot;, &quot;--continue&quot;] # 디버깅 시작
+</code></pre>
+
+<p>디버깅 이미지에서는 <code>delve</code> 디버거를 설치한 후 바이너리를 직접 실행하는 대신 헤드리스 디버거 서버가 실행하도록 변경 해주면 된다. 다음 명령어는 2345번 포트에서 디버거 서버를 헤드리스 모드로 실행한 뒤 <code>/bin/calc</code> 바이너리를 실행하여 디버깅 세션을 시작하라는 의미이다.</p>
+
+<p><code>ENTRYPOINT [&quot;/bin/dlv&quot;, &quot;--listen=:2345&quot;, &quot;--headless=true&quot;, &quot;--api-version=2&quot;, &quot;--accept-multiclient&quot;, &quot;exec&quot;, &quot;/bin/calc&quot;, &quot;--continue&quot;]</code></p>
+
+<p><code>--continue</code> 옵션은 디버깅 프로세스를 곧바로 시작하라는 의미이다. 이 옵션을 주지 않으면 디버깅 요청을 보내줘야만 디버깅 프로세스가 시작된다. 즉, 이 옵션이 없으면 컨테이너가 띄워져도 웹 서버는 실행되지 않으며 2345 포트로 디버깅 요청을 보내줘야만 디버깅 프로세스와 함께 웹 서버가 시작된다.</p>
+
+<p>배포용 이미지와 디버깅 이미지를 함께 띄워두기 위해 직접 빌드하고 실행하는 대신 docker compose를 사용한다.</p>
+
+<blockquote>
+<p>함께 띄워두는 이유는 실제 서비스 개발 환경과 디버깅 환경을 동시에 사용하기 위해서이다.</p>
+</blockquote>
+
+<h2 id="컨테이너-실행">컨테이너 실행</h2>
+
+<p><strong>./docker-compose.yml</strong></p>
+
+<pre><code class="language-yaml">version: &quot;3&quot;
+services:
+  calc:
+    build:
+      context: .
+    ports:
+      - &quot;8000:8000&quot;
+  cacl-debug:
+    build:
+      context: .
+      dockerfile: ./debug/Dockerfile
+    ports:
+      - &quot;8001:8000&quot;
+      - &quot;2345:2345&quot;
+</code></pre>
+
+<p><code>docker-compose up --build -d</code> 명령어로 컨테이너를 띄우고 나면 모든 준비가 끝나며, 최종 디렉토리는 구조는 다음과 같다.</p>
+
+<pre><code>├── Dockerfile
+├── debug
+│   └── Dockerfile
+├── docker-compose.yml
+├── go.mod
+└── main.go
+</code></pre>
+
+<h1 id="컨테이너-디버깅">컨테이너 디버깅</h1>
+
+<p>나는 현재 IntelliJ + Go 플러그인 및 Goland를 주 에디터로 사용하고 있으며 서브 에디터로는 Vscode를 사용하고 있기 때문에 이 두 에디터에 대해 각각 원격 디버깅을 하는 방법을 소개하려고 한다.</p>
+
+<h2 id="goland">Goland</h2>
+
+<p>먼저 <code>Run &gt; Edit Configuration</code> 메뉴로 디버깅 설정 창을 열어 <code>+</code>에서 <code>Go Remote</code>를 선택한다.</p>
+
+<p><img src="../images/2020-02-13-debug-configuration.png" alt="debug configuration" /></p>
+
+<p>설정 화면이 나오면 <code>Name</code>은 <strong>Docker</strong>, <code>Host</code>는 <strong>localhost</strong> 그리고 <code>Port</code>는 <strong>2345</strong>로 설정해준다.</p>
+
+<p><img src="../images/2020-02-13-remote-debug-config.png" alt="remote debug config" /></p>
+
+<p>그 다음 <code>Rnu &gt; Debug 'Docker'</code>를 선택하여 디버깅 창을 연 다음 원하는 라인에 브레이크 포인트를 찍는다.</p>
+
+<p><img src="../images/2020-02-13-debug-window.png" alt="debug window" /></p>
+
+<p>이제 <code>curl</code>을 사용하여 웹 서버에 요청을 날려보자.</p>
+
+<pre><code class="language-shell">$ curl 'localhost:8001/fib?num=1000'
+</code></pre>
+
+<p>요청을 날리면 디버깅이 시작되며 디버깅 창에서 각 변수의 값을 확인할 수 있다. 다음은 두 번째 브레이크 포인트까지 진행한 결과이다. (<code>n0</code>: 1000, <code>fib</code>: 817770325994397771)</p>
+
+<p><img src="../images/2020-02-13-go-debugging.png" alt="go debugging" /></p>
+
+<p>디버깅 프로세스를 끝내면 요청이 잘 처리되었음을 확인할 수 있다.</p>
+
+<pre><code class="language-shell">$ curl 'localhost:8001/fib?num=1000'
+817770325994397771
+</code></pre>
+
+<p>웹 서버가 띄워져 있기 때문에 원할 때마다 같은 방법으로 디버깅을 반복해서 진행할 수 있다.</p>
+
+<h2 id="vscode">Vscode</h2>
+
+<p>Vscode에서는 설정이 좀 더 간단하다. 좌측에서 디버깅 메뉴로 들어가면 좌측 상단에 톱니바퀴 모양이 보이는데 해당 버튼을 누르면 <code>launch.json</code>이라는 설정 파일이 열리며 설정값은 다음과 같이 작성해주면 된다.</p>
+
+<pre><code class="language-json">{
+    &quot;version&quot;: &quot;0.2.0&quot;,
+    &quot;configurations&quot;: [
+        {
+            &quot;name&quot;: &quot;Launch remote&quot;,
+            &quot;type&quot;: &quot;go&quot;,
+            &quot;request&quot;: &quot;launch&quot;,
+            &quot;mode&quot;: &quot;remote&quot;,
+            &quot;program&quot;: &quot;${workspaceFolder}&quot;,
+            &quot;remotePath&quot;: &quot;/build&quot;,
+            &quot;host&quot;: &quot;127.0.0.1&quot;,
+            &quot;port&quot;: 2345,
+            &quot;env&quot;: {},
+            &quot;args&quot;: [],
+            &quot;showLog&quot;: true,
+            &quot;trace&quot;: &quot;verbose&quot;
+        }
+    ]
+}
+</code></pre>
+
+<p><img src="../images/2020-02-13-vscode-remote-debug-config.png" alt="vscode remote debug config" /></p>
+
+<p>설정이 끝났으면 에디터 창으로 돌아가 브레이크 포인트를 찍은 뒤 <code>Debug &gt; Start Debugging</code>으로 디버깅을 시작한다. 마찬가지로 <code>curl</code>로 요청을 날려보면 다음과 같은 창이 열리며 디버깅이 시작된다.</p>
+
+<pre><code class="language-shell">$ curl 'localhost:8001/fib?num=1000'
+</code></pre>
+
+<p><img src="../images/2020-02-13-vscode-go-debugging.png" alt="vscode go debugging" /></p>
+
+<h2 id="마무리">마무리</h2>
+
+<p>이상으로 컨테이너 내부의 Go 애플리케이션을 디버깅하는 방법을 살펴보았다. 물론 아직 로컬 디버깅 대비 단점이 하나 있는데, 그건 바로 코드 변경시 도커 이미지를 다시 컴파일 해줘야 한다는 것이다. 이 부분은 live reload 테크닉을 통해 개선할 수 있으며 이에 대해서는 다음에 소개해보려고 한다.</p>
+
+                </section>
+            </article>
+
+            
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fmingrammer.com%2fdebugging-containerized-go-app%2f - %ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%20%eb%82%b4%eb%b6%80%20Go%20%ec%95%a0%ed%94%8c%eb%a6%ac%ec%bc%80%ec%9d%b4%ec%85%98%20%eb%94%94%eb%b2%84%ea%b9%85%ed%95%98%ea%b8%b0 by @mingrammer"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+            
+
+            
+            <div class="adsense">
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-9436560391944255"
+                    data-ad-slot="5717491307"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
+
+            
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'mingrammer-blog'; 
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+            
+
+            
+                <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/debug-memory-leak-with-node-heapdump">푸시 데몬 메모리 누수 디버깅하기<aside class="dates">Nov 6 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/scheduling-cron-job-in-seconds-interval">Cron에서 초단위로 스케줄링하기<aside class="dates">Aug 3 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/dynamodb-batch-retry-with-exponential-backoff">DynamoDB 배치 작업 재시도 구현 (Exponential Backoff)<aside class="dates">Jun 2 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/redis-migration">IDC에서 AWS로 Redis 데이터 이전하기<aside class="dates">Feb 1 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-7">[Go로 구현하는 블록체인] Part 7: 네트워크<aside class="dates">Jun 18 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-6">[Go로 구현하는 블록체인] Part 6: 트랜잭션 2<aside class="dates">Jun 14 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-5">[Go로 구현하는 블록체인] Part 5: 주소<aside class="dates">Jun 6 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/building-blockchain-in-go-part-2">[Go로 구현하는 블록체인] Part 2: 작업 증명<aside class="dates">May 18 2018</aside></a>
+        </li>
+    
+</ul>
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.facebook.com/mingrammer">
+        <i class="fa fa-facebook-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.github.com/mingrammer">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/mingrammer">
+        <i class="fa fa-twitter-square"></i>
+    </a>
+    
+    
+    <a class="symbol" href="https://mingrammer.com/index.xml">
+        <i class="fa fa-rss-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> mingrammer
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://mingrammer.com/js/jquery-2.2.4.min.js"></script>
+<script src="https://mingrammer.com/js/main.js"></script>
+<script src="https://mingrammer.com/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-84081627-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>
