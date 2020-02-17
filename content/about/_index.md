@@ -50,6 +50,7 @@ Linux, AWS, Docker, MySQL, Redis
 
 ###### Projects
 
+- **[diagrams](https://github.com/mingrammer/diagrams)** - Diagram as Code for prototyping cloud system architectures
 - **[flog](https://github.com/mingrammer/flog)** - A fake log generator for common log formats
 - **[commonregex](https://github.com/mingrammer/commonregex)** - A collection of common regular expressions for Go
 - **[pyreportcard](https://github.com/mingrammer/pyreportcard)** - A report card web service for Python applications
