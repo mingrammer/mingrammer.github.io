@@ -73,7 +73,7 @@ Linux, AWS, Vagrant, Docker, MySQL, Redis
 ###### [diagrams](https://github.com/mingrammer/diagrams)
 ##### Diagram as Code for prototyping cloud system architectures
 
-Diagrams lets you draw the cloud system architecture in Python code. It was born for prototyping a new system architecture design without any design tools. You can also describe or visualize the existing system architecture as well. Diagrams currently supports five major providers: AWS, Azure, GCP, Kubernetes and Alibaba Cloud.
+Diagrams lets you draw the cloud system architecture in Python code. It was born for prototyping a new system architecture design without any design tools. You can also describe or visualize the existing system architecture as well.
 
 ###### [flog](https://github.com/mingrammer/flog)
 ##### A fake log generator for common log formats
