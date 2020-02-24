@@ -160,7 +160,7 @@ services:
       context: .
     ports:
       - "8000:8000"
-  cacl-debug:
+  calc-debug:
     build:
       context: .
       dockerfile: ./debug/Dockerfile
