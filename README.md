@@ -8,7 +8,7 @@ https://mingrammer.com
 git clone -b hugo git@github.com:mingrammer/mingrammer.github.io
 
 # Add submodule for master branch (for publish)
-git submodule add -b master git@github.com:mingramemr/mingrammer.github.io.git public
+git submodule add -b master git@github.com:mingrammer/mingrammer.github.io.git public
 ```
 
 ## Deployment
