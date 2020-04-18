@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Apr 18, 2020 00:00
-                    · 2123 words
+                    · 2125 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -191,7 +191,7 @@ $ go env -w GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname
 <p>CI 얘기는 사실 git 설정에 대한 이슈지만 참고 정도로 적어둔다. 좀 전에 언급했듯이 direct 접근은 기존과 동일하기 때문에 어쨌든 git으로 프라이빗 저장소에 접근할 수 있는 환경이 우선되어야 한다. CI에서는 ssh보다 access token을 통한 접근이 일반적이므로 다음과 같이 git config로 url만 바꿔주면 된다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># GitHub Actions 기준. ACCESS_TOKEN 넣는 부분만 맞춰주면 된다.</span>
 $ git config --global url.<span style="color:#e6db74">&#34;https://x-access-token:</span><span style="color:#e6db74">${</span>{ secrets.ACCESS_TOKEN <span style="color:#e6db74">}</span><span style="color:#e6db74">}@github.com/&#34;</span>.insteadOf <span style="color:#e6db74">&#34;https://github.com/&#34;</span>
-</code></pre></div><p>그 다음, 같은 방식으로 <strong>GOPRIVATE</strong>을 설정해주면 체크섬을 우회하고 프라이빗 모듈에 접근할 수 있다.</p>
+</code></pre></div><p>그 다음, 같은 방식으로 <strong>GOPRIVATE</strong>을 설정해주면 체크섬 검증을 우회하고 프라이빗 모듈에 접근할 수 있다.</p>
 
                 </section>
             </article>
