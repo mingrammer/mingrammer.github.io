@@ -104,4 +104,4 @@ $ # GitHub Actions 기준. ACCESS_TOKEN 넣는 부분만 맞춰주면 된다.
 $ git config --global url."https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/".insteadOf "https://github.com/"
 ```
 
-그 다음, 같은 방식으로 **GOPRIVATE**을 설정해주면 체크섬을 우회하고 프라이빗 모듈에 접근할 수 있다.
+그 다음, 같은 방식으로 **GOPRIVATE**을 설정해주면 체크섬 검증을 우회하고 프라이빗 모듈에 접근할 수 있다.
