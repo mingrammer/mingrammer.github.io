@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>asterisk on mingrammer&#39;s note</title>
@@ -16,7 +16,7 @@
       <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/understanding-the-asterisk-of-python/</guid>
-      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 Asterisk(*)는 단순히 곱셈 이상의 여</description>
+      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 **Asterisk(*)**는 단순히 곱셈</description>
     </item>
     
   </channel>

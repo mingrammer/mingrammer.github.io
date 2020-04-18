@@ -13,12 +13,12 @@
 <meta property="og:description" content="프로젝트 오일러 18, 67번 문제 풀이 문제 18번 문제는 위와 같이 숫자로 이루어진 삼각형의 꼭대기부터 바닥까지 이어진 경로중 가장 합이 큰 경로를 구하는 문제이다. 단" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/project-euler-maximum-path-sum/" />
-<meta property="article:published_time" content="2018-05-01T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-05-01T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2018-05-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-05-01T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[프로젝트 오일러] 최대 경로합 문제 (18/67) &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -83,164 +83,122 @@
                   
                     <div id="toc">
                       <nav id="TableOfContents">
-<ul>
-<li><a href="#문제">문제</a></li>
-<li><a href="#풀이">풀이</a>
-<ul>
-<li><a href="#18번-솔루션">18번 솔루션</a></li>
-<li><a href="#67번-솔루션">67번 솔루션</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#18번-솔루션">18번 솔루션</a></li>
+    <li><a href="#67번-솔루션">67번 솔루션</a></li>
+  </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p><a href="https://projecteuler.net">프로젝트 오일러</a> <a href="https://projecteuler.net/problem=18">18</a>, <a href="https://projecteuler.net/problem=67">67</a>번 문제 풀이</p>
 </blockquote>
-
 <h1 id="문제">문제</h1>
-
-<p><img src="../images/2018-05-01-project-euler-18.png" alt="Project Euler 18" /></p>
-
+<p><img src="../images/2018-05-01-project-euler-18.png" alt="Project Euler 18"></p>
 <p>18번 문제는 위와 같이 숫자로 이루어진 삼각형의 꼭대기부터 바닥까지 이어진 경로중 가장 합이 큰 경로를 구하는 문제이다. 단, 아래로 이동할 때에는 아래로 인접한 양 옆의 숫자로만 이동할 수 있다. 67번 문제도 동일한 문제이며 차이점은 삼각형의 높이가 100으로 커졌다는 것이다.</p>
-
 <p>18번 문제에서는 삼각형의 높이가 15이므로 모든 경로의 수가 16,384(2^14)개밖에 되지 않아 Brute force로 풀어도 무방하나, 67번 문제에서는 그 경로가 무려 633,825,300,114,114,700,748,351,602,688(2^99)개나 존재하기 때문에 Brute force로는 불가능하다.</p>
-
 <h1 id="풀이">풀이</h1>
-
 <p>알고리즘의 아이디어는 간단하다. 위에서부터 아래로 내려갈 때에는 바닥까지의 경로중 어떤 경로의 합이 가장 클지 알 수 없기 때문에 아래로 인접한 숫자중 큰 숫자로 계속 이동하는 경로가 가장 합이 큰지는 보장할 수 없다.</p>
-
 <p>그러나 이를 반대로 생각하여 바닥에서 시작하여 위로 이동하면서 그 합이 더 큰 경로로만 이동하면 합이 가장 큰 경로를 구할 수 있다. 왜냐하면 아래에서부터 합이 가장 큰 일부 경로를 고정시키면 삼각형의 꼭대기부터 좀 전에 구한 일부 경로의 꼭대기까지 이어진 경로중 최대 경로만 구하여 합하면 되기 때문이다. 이렇게 되면 합이 가장 큰 일부 경로 외의 모든 경로는 계산 대상에서 제외된다.</p>
-
 <pre><code>1.       75
 2.     95  64
 3.   17  47  82
 4. 18  35  87  10
-</code></pre>
-
-<p>3번 라인에서 시작해보자. 3번의 17에서 4번 라인까지의 경로는 (17, 18)과 (17, 35)가 존재한다. 이 두 경로중 더 큰 경로는 (17, 35)이다. 따라서 꼭대기부터 17까지의 경로들은 항상 4번 라인의 35로만 이동하면된다. 마찬가지로 3번 라인의 모든 숫자들에 대해서 이 계산을 수행할 수 있다. 47에 대해서는 (47-87), 82에 대해서는 (82-87)이 가장 크다. 계산을 수행한 후에는 상위 라인의 숫자들을 아래 라인에서부터의 더 큰 경로의 합으로 대체한다.</p>
-
+</code></pre><p>3번 라인에서 시작해보자. 3번의 17에서 4번 라인까지의 경로는 (17, 18)과 (17, 35)가 존재한다. 이 두 경로중 더 큰 경로는 (17, 35)이다. 따라서 꼭대기부터 17까지의 경로들은 항상 4번 라인의 35로만 이동하면된다. 마찬가지로 3번 라인의 모든 숫자들에 대해서 이 계산을 수행할 수 있다. 47에 대해서는 (47-87), 82에 대해서는 (82-87)이 가장 크다. 계산을 수행한 후에는 상위 라인의 숫자들을 아래 라인에서부터의 더 큰 경로의 합으로 대체한다.</p>
 <pre><code>1.       75
 2.     95  64
 3.   17  47  82
        \
 4. 18  35  87  10
-</code></pre>
-
-<pre><code>1.       75
+</code></pre><pre><code>1.       75
 2.     95  64
 3.   17  47  82
            \
 4. 18  35  87  10
-</code></pre>
-
-<pre><code>1.       75
+</code></pre><pre><code>1.       75
 2.     95  64
 3.   17  47  82
             /
 4. 18  35  87  10
-</code></pre>
-
-<p>이렇게 최대 경로를 계산한 뒤에 트리는 다음과 같이 바뀐다.</p>
-
+</code></pre><p>이렇게 최대 경로를 계산한 뒤에 트리는 다음과 같이 바뀐다.</p>
 <pre><code>1.          075
 2.       095   064
 3.    052   134   169
          \     \ /
 4. 018   035   087   010
-</code></pre>
-
-<p>가장 꼭대기까지 동일한 계산을 수행해보자.</p>
-
+</code></pre><p>가장 꼭대기까지 동일한 계산을 수행해보자.</p>
 <pre><code>1.          075
 2.       229   233
             \    \
 3.    052   134   169
          \     \ /
 4. 018   035   087   010
-</code></pre>
-
-<pre><code>1.          308
+</code></pre><pre><code>1.          308
               \
 2.       229   233
             \    \
 3.    052   134   169
          \     \ /
 4. 018   035   087   010
-</code></pre>
-
-<p>최대 경로의 합은 <code>308</code>이며 그 경로는 (75, 64, 82, 87)이 된다.</p>
-
+</code></pre><p>최대 경로의 합은 <code>308</code>이며 그 경로는 (75, 64, 82, 87)이 된다.</p>
 <p>즉, 가장 바닥의 바로 위 라인에서 시작하여 각 숫자를 아래 라인의 양 옆의 인접한 숫자중 더 큰 숫자와 합하면서 위로 올라가다보면 합이 가장 큰 경로를 구할 수 있게 된다.</p>
-
 <p>아래에서부터 각 라인간 인접한 숫자의 합을 계산하면서 올라가기 때문에 한 연산당 계산은 2번씩 이루어지며 연산은 삼각형에 존재하는 숫자들의 개수만큼 수행된다. 따라서  <code>n</code>을 삼각형의 높이라고 할 때 총 연산수는 <code>n(n-1)</code>가 되며 알고리즘의 복잡도는 <code>O(n^2)</code>이 된다.</p>
-
 <h2 id="18번-솔루션">18번 솔루션</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">triangle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">75
+</span><span style="color:#e6db74">95 64
+</span><span style="color:#e6db74">17 47 82
+</span><span style="color:#e6db74">18 35 87 10
+</span><span style="color:#e6db74">20 04 82 47 65
+</span><span style="color:#e6db74">19 01 23 75 03 34
+</span><span style="color:#e6db74">88 02 77 73 07 63 67
+</span><span style="color:#e6db74">99 65 04 28 06 16 70 92
+</span><span style="color:#e6db74">41 41 26 56 83 40 80 70 33
+</span><span style="color:#e6db74">41 48 72 33 47 32 37 16 94 29
+</span><span style="color:#e6db74">53 71 44 65 25 43 91 52 97 51 14
+</span><span style="color:#e6db74">70 11 33 28 77 73 17 78 39 68 17 57
+</span><span style="color:#e6db74">91 71 52 38 17 14 91 43 58 50 27 29 48
+</span><span style="color:#e6db74">63 66 04 68 89 53 67 30 73 16 69 87 40 31
+</span><span style="color:#e6db74">04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
 
-<pre><code class="language-python">triangle = &quot;&quot;&quot;
-75
-95 64
-17 47 82
-18 35 87 10
-20 04 82 47 65
-19 01 23 75 03 34
-88 02 77 73 07 63 67
-99 65 04 28 06 16 70 92
-41 41 26 56 83 40 80 70 33
-41 48 72 33 47 32 37 16 94 29
-53 71 44 65 25 43 91 52 97 51 14
-70 11 33 28 77 73 17 78 39 68 17 57
-91 71 52 38 17 14 91 43 58 50 27 29 48
-63 66 04 68 89 53 67 30 73 16 69 87 40 31
-04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
-&quot;&quot;&quot;
+triangle_leaves <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> triangle<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>splitlines():
+    triangle_leaves<span style="color:#f92672">.</span>append([int(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> line<span style="color:#f92672">.</span>split()])
 
-triangle_leaves = []
-for line in triangle.strip().splitlines():
-    triangle_leaves.append([int(i) for i in line.split()])
+n <span style="color:#f92672">=</span> len(triangle_leaves)
+<span style="color:#66d9ef">for</span> i, leaves <span style="color:#f92672">in</span> enumerate(triangle_leaves[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]):
+    <span style="color:#66d9ef">for</span> j, leaf <span style="color:#f92672">in</span> enumerate(leaves):
+        left <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j]
+        right <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
+        triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>][j] <span style="color:#f92672">+=</span> max(left, right)
 
-n = len(triangle_leaves)
-for i, leaves in enumerate(triangle_leaves[-2::-1]):
-    for j, leaf in enumerate(leaves):
-        left = triangle_leaves[n-i-1][j]
-        right = triangle_leaves[n-i-1][j+1]
-        triangle_leaves[n-i-2][j] += max(left, right)
-
-print(triangle_leaves[0][0])
-</code></pre>
-
-<blockquote>
+<span style="color:#66d9ef">print</span>(triangle_leaves[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>])
+</code></pre></div><blockquote>
 <p>최대 경로합 = 1074</p>
 </blockquote>
-
 <h2 id="67번-솔루션">67번 솔루션</h2>
-
 <blockquote>
 <p>코드는 동일하며 삼각형 데이터를 파일에서 가져옴</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;data/p067_triangle.txt&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    triangle <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
 
-<pre><code class="language-python">with open('data/p067_triangle.txt', 'r') as f:
-    triangle = f.read()
+    triangle_leaves <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> triangle<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>splitlines():
+        triangle_leaves<span style="color:#f92672">.</span>append([int(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> line<span style="color:#f92672">.</span>split()])
 
-    triangle_leaves = []
-    for line in triangle.strip().splitlines():
-        triangle_leaves.append([int(i) for i in line.split()])
+    n <span style="color:#f92672">=</span> len(triangle_leaves)
+    <span style="color:#66d9ef">for</span> i, leaves <span style="color:#f92672">in</span> enumerate(triangle_leaves[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]):
+        <span style="color:#66d9ef">for</span> j, leaf <span style="color:#f92672">in</span> enumerate(leaves):
+            left <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j]
+            right <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
+            triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>][j] <span style="color:#f92672">+=</span> max(left, right)
 
-    n = len(triangle_leaves)
-    for i, leaves in enumerate(triangle_leaves[-2::-1]):
-        for j, leaf in enumerate(leaves):
-            left = triangle_leaves[n-i-1][j]
-            right = triangle_leaves[n-i-1][j+1]
-            triangle_leaves[n-i-2][j] += max(left, right)
-
-    print(triangle_leaves[0][0])
-</code></pre>
-
-<blockquote>
+    <span style="color:#66d9ef">print</span>(triangle_leaves[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>])
+</code></pre></div><blockquote>
 <p>최대 경로합 = 7273</p>
 </blockquote>
 
@@ -287,6 +245,10 @@ print(triangle_leaves[0][0])
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -320,10 +282,6 @@ print(triangle_leaves[0][0])
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

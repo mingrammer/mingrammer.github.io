@@ -10,15 +10,15 @@
 
 		
 		<meta property="og:title" content="Python vs Go 비교 레퍼런스" />
-<meta property="og:description" content="Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5&#43;와 Go 1.7&#43;) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&quot;Hello, World&quot;) import &quot;fmt&quot; func main() { fmt.Println(&quot;Hello, World&quot;)" />
+<meta property="og:description" content="Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5&#43;와 Go 1.7&#43;) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&#34;Hello, World&#34;) import &#34;fmt&#34; func main() { fmt.Println(&#34;Hello, World&#34;)" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/" />
-<meta property="article:published_time" content="2017-02-02T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-02-02T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2017-02-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-02-02T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>Python vs Go 비교 레퍼런스 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 2, 2017 00:00
-                    · 2685 words
+                    · 2678 words
                     · 6 minute read
                       <span class="tags">
                       
@@ -83,1191 +83,800 @@
                   
                     <div id="toc">
                       <nav id="TableOfContents">
-<ul>
-<li><a href="#a-name-version-버전-a"><a name='version'>버전</a></a>
-<ul>
-<li><a href="#버전-확인">버전 확인</a></li>
-</ul></li>
-<li><a href="#a-name-invocation-실행-a"><a name='invocation'>실행</a></a>
-<ul>
-<li><a href="#hello-world">Hello World</a></li>
-<li><a href="#프로그램-실행">프로그램 실행</a></li>
-<li><a href="#파일-확장자">파일 확장자</a></li>
-</ul></li>
-<li><a href="#a-name-grammar-문법-a"><a name='grammar'>문법</a></a>
-<ul>
-<li><a href="#블록-구분자">블록 구분자</a></li>
-<li><a href="#주석">주석</a></li>
-<li><a href="#컨벤션">컨벤션</a></li>
-</ul></li>
-<li><a href="#a-name-variables-and-expressions-변수와-표현식-a"><a name='variables-and-expressions'>변수와 표현식</a></a>
-<ul>
-<li><a href="#변수">변수</a></li>
-<li><a href="#전역-변수">전역 변수</a></li>
-<li><a href="#상수">상수</a></li>
-<li><a href="#할당">할당</a></li>
-<li><a href="#병렬-할당">병렬 할당</a></li>
-<li><a href="#변수값-교환-swap">변수값 교환 (Swap)</a></li>
-<li><a href="#증감">증감</a></li>
-<li><a href="#포인터">포인터</a></li>
-</ul></li>
-<li><a href="#a-name-types-and-operators-타입-및-연산자-a"><a name='types-and-operators'>타입 및 연산자</a></a>
-<ul>
-<li><a href="#부울타입">부울타입</a></li>
-<li><a href="#정수타입">정수타입</a></li>
-<li><a href="#실수타입">실수타입</a></li>
-<li><a href="#널타입">널타입</a></li>
-<li><a href="#타입-사이즈">타입 사이즈</a></li>
-<li><a href="#논리-연산자">논리 연산자</a></li>
-<li><a href="#관계-연산자">관계 연산자</a></li>
-<li><a href="#산술-연산자">산술 연산자</a></li>
-<li><a href="#비트-연산자">비트 연산자</a></li>
-<li><a href="#삼항연산자">삼항연산자</a></li>
-<li><a href="#나눗셈-연산">나눗셈 연산</a></li>
-</ul></li>
-<li><a href="#a-name-strings-문자열-a"><a name='strings'>문자열</a></a>
-<ul>
-<li><a href="#타입">타입</a></li>
-<li><a href="#리터럴">리터럴</a></li>
-<li><a href="#리터럴-개행">리터럴 개행</a></li>
-<li><a href="#문자열-비교">문자열 비교</a></li>
-<li><a href="#문자열을-숫자로-변환">문자열을 숫자로 변환</a></li>
-<li><a href="#숫자를-문자열로-변환">숫자를 문자열로 변환</a></li>
-<li><a href="#join과-split">Join과 Split</a></li>
-<li><a href="#문자-인덱스">문자 인덱스</a></li>
-<li><a href="#케이스-변환">케이스 변환</a></li>
-<li><a href="#문자열-길이">문자열 길이</a></li>
-<li><a href="#문자-타입">문자 타입</a></li>
-</ul></li>
-<li><a href="#a-name-fixed-arrays-고정-배열-a"><a name='fixed-arrays'>고정 배열</a></a>
-<ul>
-<li><a href="#선언-및-초기화">선언 및 초기화</a></li>
-</ul></li>
-<li><a href="#a-name-resizable-arrays-동적-배열-a"><a name='resizable-arrays'>동적 배열</a></a>
-<ul>
-<li><a href="#선언-및-초기화-1">선언 및 초기화</a></li>
-<li><a href="#사이즈">사이즈</a></li>
-<li><a href="#lookup과-update">lookup과 update</a></li>
-<li><a href="#배열-순회">배열 순회</a></li>
-<li><a href="#슬라이싱">슬라이싱</a></li>
-<li><a href="#값-추가">값 추가</a></li>
-<li><a href="#확장">확장</a></li>
-<li><a href="#복사">복사</a></li>
-</ul></li>
-<li><a href="#a-name-dictionaries-딕셔너리-맵-a"><a name='dictionaries'>딕셔너리(맵)</a></a>
-<ul>
-<li><a href="#선언">선언</a></li>
-<li><a href="#사이즈-1">사이즈</a></li>
-<li><a href="#lookup과-update-1">lookup과 update</a></li>
-<li><a href="#키값-확인">키값 확인</a></li>
-<li><a href="#키-삭제">키 삭제</a></li>
-<li><a href="#딕셔너리-맵-순회">딕셔너리(맵) 순회</a></li>
-</ul></li>
-<li><a href="#a-name-functions-함수-a"><a name='functions'>함수</a></a>
-<ul>
-<li><a href="#선언-1">선언</a></li>
-<li><a href="#가변-길이-인자">가변 길이 인자</a></li>
-<li><a href="#이름-있는-인자">이름 있는 인자</a></li>
-<li><a href="#다중-반환">다중 반환</a></li>
-<li><a href="#이름-있는-반환값">이름 있는 반환값</a></li>
-</ul></li>
-<li><a href="#a-name-conditional-expression-조건문-a"><a name='conditional-expression'>조건문</a></a>
-<ul>
-<li><a href="#if문">if문</a></li>
-<li><a href="#switch문">switch문</a></li>
-</ul></li>
-<li><a href="#a-name-loops-expression-반복문-a"><a name='loops-expression'>반복문</a></a>
-<ul>
-<li><a href="#while문">while문</a></li>
-<li><a href="#for문">for문</a></li>
-<li><a href="#for-in-range-문">for-in(range)문</a></li>
-</ul></li>
-<li><a href="#a-name-libraries-and-namespaces-라이브러리-및-네임스페이스-a"><a name='libraries-and-namespaces'>라이브러리 및 네임스페이스</a></a>
-<ul>
-<li><a href="#라이브러리-로드">라이브러리 로드</a></li>
-<li><a href="#서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</a></li>
-<li><a href="#네임스페이스">네임스페이스</a></li>
-<li><a href="#네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</a></li>
-<li><a href="#미사용-임포트">미사용 임포트</a></li>
-</ul></li>
-<li><a href="#a-name-user-defined-types-사용자-정의-타입-a"><a name='user-defined-types'>사용자 정의 타입</a></a>
-<ul>
-<li><a href="#정의">정의</a></li>
-<li><a href="#초기화">초기화</a></li>
-<li><a href="#속성-멤버-값-할당">속성(멤버)값 할당</a></li>
-</ul></li>
-<li><a href="#a-name-error-handling-에러-처리-a"><a name='error-handling'>에러 처리</a></a>
-<ul>
-<li><a href="#에러-처리">에러 처리</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#버전-확인">버전 확인</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#hello-world">Hello World</a></li>
+    <li><a href="#프로그램-실행">프로그램 실행</a></li>
+    <li><a href="#파일-확장자">파일 확장자</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#블록-구분자">블록 구분자</a></li>
+    <li><a href="#주석">주석</a></li>
+    <li><a href="#컨벤션">컨벤션</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#변수">변수</a></li>
+    <li><a href="#전역-변수">전역 변수</a></li>
+    <li><a href="#상수">상수</a></li>
+    <li><a href="#할당">할당</a></li>
+    <li><a href="#병렬-할당">병렬 할당</a></li>
+    <li><a href="#변수값-교환-swap">변수값 교환 (Swap)</a></li>
+    <li><a href="#증감">증감</a></li>
+    <li><a href="#포인터">포인터</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#부울타입">부울타입</a></li>
+    <li><a href="#정수타입">정수타입</a></li>
+    <li><a href="#실수타입">실수타입</a></li>
+    <li><a href="#널타입">널타입</a></li>
+    <li><a href="#타입-사이즈">타입 사이즈</a></li>
+    <li><a href="#논리-연산자">논리 연산자</a></li>
+    <li><a href="#관계-연산자">관계 연산자</a></li>
+    <li><a href="#산술-연산자">산술 연산자</a></li>
+    <li><a href="#비트-연산자">비트 연산자</a></li>
+    <li><a href="#삼항연산자">삼항연산자</a></li>
+    <li><a href="#나눗셈-연산">나눗셈 연산</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#타입">타입</a></li>
+    <li><a href="#리터럴">리터럴</a></li>
+    <li><a href="#리터럴-개행">리터럴 개행</a></li>
+    <li><a href="#문자열-비교">문자열 비교</a></li>
+    <li><a href="#문자열을-숫자로-변환">문자열을 숫자로 변환</a></li>
+    <li><a href="#숫자를-문자열로-변환">숫자를 문자열로 변환</a></li>
+    <li><a href="#join과-split">Join과 Split</a></li>
+    <li><a href="#문자-인덱스">문자 인덱스</a></li>
+    <li><a href="#케이스-변환">케이스 변환</a></li>
+    <li><a href="#문자열-길이">문자열 길이</a></li>
+    <li><a href="#문자-타입">문자 타입</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#선언-및-초기화">선언 및 초기화</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#선언-및-초기화-1">선언 및 초기화</a></li>
+    <li><a href="#사이즈">사이즈</a></li>
+    <li><a href="#lookup과-update">lookup과 update</a></li>
+    <li><a href="#배열-순회">배열 순회</a></li>
+    <li><a href="#슬라이싱">슬라이싱</a></li>
+    <li><a href="#값-추가">값 추가</a></li>
+    <li><a href="#확장">확장</a></li>
+    <li><a href="#복사">복사</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#선언">선언</a></li>
+    <li><a href="#사이즈-1">사이즈</a></li>
+    <li><a href="#lookup과-update-1">lookup과 update</a></li>
+    <li><a href="#키값-확인">키값 확인</a></li>
+    <li><a href="#키-삭제">키 삭제</a></li>
+    <li><a href="#딕셔너리맵-순회">딕셔너리(맵) 순회</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#선언-1">선언</a></li>
+    <li><a href="#가변-길이-인자">가변 길이 인자</a></li>
+    <li><a href="#이름-있는-인자">이름 있는 인자</a></li>
+    <li><a href="#다중-반환">다중 반환</a></li>
+    <li><a href="#이름-있는-반환값">이름 있는 반환값</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#if문">if문</a></li>
+    <li><a href="#switch문">switch문</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#while문">while문</a></li>
+    <li><a href="#for문">for문</a></li>
+    <li><a href="#for-inrange문">for-in(range)문</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#라이브러리-로드">라이브러리 로드</a></li>
+    <li><a href="#서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</a></li>
+    <li><a href="#네임스페이스">네임스페이스</a></li>
+    <li><a href="#네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</a></li>
+    <li><a href="#미사용-임포트">미사용 임포트</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#정의">정의</a></li>
+    <li><a href="#초기화">초기화</a></li>
+    <li><a href="#속성멤버값-할당">속성(멤버)값 할당</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#에러-처리">에러 처리</a></li>
+  </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+)</p>
-
 <p>각 코드 블록은 Python/Go 순서</p>
 </blockquote>
-
-<p><br></p>
-
-<h1 id="a-name-version-버전-a"><a name='version'>버전</a></h1>
-
+<!-- raw HTML omitted -->
+<h1 id="a-nameversion버전a"><!-- raw HTML omitted -->버전<!-- raw HTML omitted --></h1>
 <h2 id="버전-확인">버전 확인</h2>
-
-<pre><code class="language-shell">// Python
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// Python
 $ python --version
 3.5
-</code></pre>
-
-<pre><code class="language-shell">// Go
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">// Go
 $ go version
 1.7
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-invocation-실행-a"><a name='invocation'>실행</a></h1>
-
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameinvocation실행a"><!-- raw HTML omitted -->실행<!-- raw HTML omitted --></h1>
 <h2 id="hello-world">Hello World</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Hello, World&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-<pre><code class="language-python">print(&quot;Hello, World&quot;)
-</code></pre>
-
-<pre><code class="language-go">import &quot;fmt&quot;
-
-func main() {
-  fmt.Println(&quot;Hello, World&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+  <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Hello, World&#34;</span>)
 }
-</code></pre>
-
-<h2 id="프로그램-실행">프로그램 실행</h2>
-
-<pre><code class="language-shell">$ python3 hello.py
-</code></pre>
-
-<pre><code class="language-shell">$ go build hello.go
+</code></pre></div><h2 id="프로그램-실행">프로그램 실행</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ python3 hello.py
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go build hello.go
 $ ./hello
 
-# 또는 다음과 같이 직접 실행할 수 있음
+<span style="color:#75715e"># 또는 다음과 같이 직접 실행할 수 있음</span>
 $ go run hello.go
-</code></pre>
-
-<h2 id="파일-확장자">파일 확장자</h2>
-
+</code></pre></div><h2 id="파일-확장자">파일 확장자</h2>
 <pre><code>.py
-</code></pre>
-
-<pre><code>.go
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-grammar-문법-a"><a name='grammar'>문법</a></h1>
-
+</code></pre><pre><code>.go
+</code></pre><!-- raw HTML omitted -->
+<h1 id="a-namegrammar문법a"><!-- raw HTML omitted -->문법<!-- raw HTML omitted --></h1>
 <h2 id="블록-구분자">블록 구분자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 콜론(:)과 들여쓰기(indentation)로 구분   </span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    <span style="color:#75715e"># body</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 중괄호로 구분
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#75715e">// body
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h2 id="주석">주석</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 주석</span>
 
-<pre><code class="language-python"># 콜론(:)과 들여쓰기(indentation)로 구분   
-def main():
-    # body
-</code></pre>
+<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">멀티라인 주석
+</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 주석
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">멀티라인 주석
+</span><span style="color:#75715e">*/</span>
+</code></pre></div><h2 id="컨벤션">컨벤션</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 보통 변수나 함수, 메서드는 스네이크 케이스 사용</span>
+variables_use_snake_case <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">some_func</span>()
 
-<pre><code class="language-go">// 중괄호로 구분
-func main() {
-    // body
-}
-</code></pre>
+<span style="color:#75715e"># 클래스는 파스칼 케이스 사용</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeClass</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 보통 카멜 케이스 사용
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">variablesUseCamelCase</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">10</span>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">someFunc</span>()
 
-<h2 id="주석">주석</h2>
-
-<pre><code class="language-python"># 주석
-
-&quot;&quot;&quot;
-멀티라인 주석
-&quot;&quot;&quot;
-</code></pre>
-
-<pre><code class="language-go">// 주석
-
-/*
-멀티라인 주석
-*/
-</code></pre>
-
-<h2 id="컨벤션">컨벤션</h2>
-
-<pre><code class="language-python"># 보통 변수나 함수, 메서드는 스네이크 케이스 사용
-variables_use_snake_case = 10
-def some_func()
-
-# 클래스는 파스칼 케이스 사용
-class SomeClass
-</code></pre>
-
-<pre><code class="language-go">// 보통 카멜 케이스 사용
-variablesUseCamelCase := 10
-func someFunc()
-
-// 노출되는 변수나 함수, 타입은 파스칼 케이스 사용
-ExportedVariablesUseCapitanCase := 10
-type ExportedType struct
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-variables-and-expressions-변수와-표현식-a"><a name='variables-and-expressions'>변수와 표현식</a></h1>
-
+<span style="color:#75715e">// 노출되는 변수나 함수, 타입은 파스칼 케이스 사용
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">ExportedVariablesUseCapitanCase</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">10</span>
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ExportedType</span> <span style="color:#66d9ef">struct</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namevariables-and-expressions변수와-표현식a"><!-- raw HTML omitted -->변수와 표현식<!-- raw HTML omitted --></h1>
 <h2 id="변수">변수</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;string&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>
+<span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">1</span>
 
-<pre><code class="language-python">i = 1
-s = &quot;string&quot;
-</code></pre>
+<span style="color:#75715e">// var s string = &#34;string&#34;과 동일
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;string&#34;</span>
+</code></pre></div><h2 id="전역-변수">전역 변수</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># foo.py:</span>
+<span style="color:#75715e"># 최상위 스코프에 있으면 전역변수로 사용 가능</span>
+x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
 
-<pre><code class="language-go">var i int
-i = 1
+<span style="color:#75715e"># bar.py:</span>
+<span style="color:#f92672">import</span> foo
 
-// var s string = &quot;string&quot;과 동일
-s := &quot;string&quot;
-</code></pre>
+<span style="color:#66d9ef">print</span>(foo<span style="color:#f92672">.</span>x)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// foo.go:
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">foo</span>
 
-<h2 id="전역-변수">전역 변수</h2>
+<span style="color:#75715e">// 대문자로 시작하면 타 패키지에서도 참조 가능
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">X</span> = <span style="color:#ae81ff">1</span>
+<span style="color:#75715e">// 소문자로 시작하는 변수가 최상위 스코프에 있으면
+</span><span style="color:#75715e">// 한 패키지에서만 전역 변수로 사용 가능
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">y</span> = <span style="color:#ae81ff">1</span>
 
-<pre><code class="language-python"># foo.py:
-# 최상위 스코프에 있으면 전역변수로 사용 가능
-x = 1
+<span style="color:#75715e">// bar.go:
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">bar</span>
 
-# bar.py:
-import foo
-
-print(foo.x)
-</code></pre>
-
-<pre><code class="language-go">// foo.go:
-package foo
-
-// 대문자로 시작하면 타 패키지에서도 참조 가능
-var X = 1
-// 소문자로 시작하는 변수가 최상위 스코프에 있으면
-// 한 패키지에서만 전역 변수로 사용 가능
-var y = 1
-
-// bar.go:
-package bar
-
-import (
-    &quot;fmt&quot;
-    &quot;foo&quot;
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;foo&#34;</span>
 )
 
-func main() {
-    fmt.Println(foo.X)
-    // fmt.Println(foo.y)는 불가능
-}
-</code></pre>
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">foo</span>.<span style="color:#a6e22e">X</span>)
+    <span style="color:#75715e">// fmt.Println(foo.y)는 불가능
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h2 id="상수">상수</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">//</span> Python엔 <span style="color:#960050;background-color:#1e0010">상수라는</span> <span style="color:#960050;background-color:#1e0010">개념이</span> <span style="color:#960050;background-color:#1e0010">없으며</span>
+<span style="color:#f92672">//</span> <span style="color:#960050;background-color:#1e0010">관례적으로만</span> <span style="color:#960050;background-color:#1e0010">상수임을</span> <span style="color:#960050;background-color:#1e0010">나타내기위해</span> <span style="color:#960050;background-color:#1e0010">대문자로된</span> <span style="color:#960050;background-color:#1e0010">변수를</span> <span style="color:#960050;background-color:#1e0010">사용</span>
+PI <span style="color:#f92672">=</span> <span style="color:#ae81ff">3.14159</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">PI</span> = <span style="color:#ae81ff">3.14159</span>
+</code></pre></div><h2 id="할당">할당</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">i <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 선언과 동시에 할당
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">2</span>
 
-<h2 id="상수">상수</h2>
+<span style="color:#75715e">// 변수 i가 미리 선언되어 있어야함
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">2</span>
+</code></pre></div><h2 id="병렬-할당">병렬 할당</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x, y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>
 
-<pre><code class="language-python">// Python엔 상수라는 개념이 없으며
-// 관례적으로만 상수임을 나타내기위해 대문자로된 변수를 사용
-PI = 3.14159
-</code></pre>
+<span style="color:#75715e">// z, w가 미리 선언되어 있어야함
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">z</span>, <span style="color:#a6e22e">w</span> = <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>
+</code></pre></div><h2 id="변수값-교환-swap">변수값 교환 (Swap)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x, y <span style="color:#f92672">=</span> y, x
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> = <span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">x</span>
+</code></pre></div><h2 id="증감">증감</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+i <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>
+<span style="color:#a6e22e">i</span><span style="color:#f92672">--</span>
+</code></pre></div><h2 id="포인터">포인터</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># none</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 
-<pre><code class="language-go">const PI = 3.14159
-</code></pre>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ptr</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">int</span>
+<span style="color:#a6e22e">ptr</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">i</span>
 
-<h2 id="할당">할당</h2>
-
-<pre><code class="language-python">i = 2
-</code></pre>
-
-<pre><code class="language-go">// 선언과 동시에 할당
-i := 2
-
-// 변수 i가 미리 선언되어 있어야함
-i = 2
-</code></pre>
-
-<h2 id="병렬-할당">병렬 할당</h2>
-
-<pre><code class="language-python">x, y = 1, 2
-</code></pre>
-
-<pre><code class="language-go">x, y := 1, 2
-
-// z, w가 미리 선언되어 있어야함
-z, w = 3, 4
-</code></pre>
-
-<h2 id="변수값-교환-swap">변수값 교환 (Swap)</h2>
-
-<pre><code class="language-python">x, y = y, x
-</code></pre>
-
-<pre><code class="language-go">x, y = y, x
-</code></pre>
-
-<h2 id="증감">증감</h2>
-
-<pre><code class="language-python">i += 1
-i -= 1
-</code></pre>
-
-<pre><code class="language-go">i++
-i--
-</code></pre>
-
-<h2 id="포인터">포인터</h2>
-
-<pre><code class="language-python"># none
-</code></pre>
-
-<pre><code class="language-go">i := 1
-
-var ptr *int
-ptr = &amp;i
-
-// 역참조
-j := *ptr
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-types-and-operators-타입-및-연산자-a"><a name='types-and-operators'>타입 및 연산자</a></h1>
-
+<span style="color:#75715e">// 역참조
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ptr</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nametypes-and-operators타입-및-연산자a"><!-- raw HTML omitted -->타입 및 연산자<!-- raw HTML omitted --></h1>
 <h2 id="부울타입">부울타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">True False
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">true</span> <span style="color:#66d9ef">false</span>
+</code></pre></div><h2 id="정수타입">정수타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">int
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">int</span>
+<span style="color:#66d9ef">int8</span>
+<span style="color:#66d9ef">int16</span>
+<span style="color:#66d9ef">int32</span> (<span style="color:#66d9ef">rune</span>)
+<span style="color:#66d9ef">int64</span>
 
-<pre><code class="language-python">True False
-</code></pre>
+<span style="color:#66d9ef">uint8</span> (<span style="color:#66d9ef">byte</span>)
+<span style="color:#66d9ef">uint16</span>
+<span style="color:#66d9ef">uint32</span>
+<span style="color:#66d9ef">uint64</span>
+</code></pre></div><h2 id="실수타입">실수타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">float
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">float32</span>
+<span style="color:#66d9ef">float64</span>
+</code></pre></div><h2 id="널타입">널타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">None
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">nil</span>
+</code></pre></div><h2 id="타입-사이즈">타입 사이즈</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+x<span style="color:#f92672">.</span>__sizeof__()
 
-<pre><code class="language-go">true false
-</code></pre>
+<span style="color:#75715e"># sys 모듈을 사용할 때</span>
+<span style="color:#f92672">import</span> sys
+sys<span style="color:#f92672">.</span>getsizeof(x)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;unsafe&#34;</span>
 
-<h2 id="정수타입">정수타입</h2>
+<span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Sizeof</span>(<span style="color:#a6e22e">i</span>)
+</code></pre></div><h2 id="논리-연산자">논리 연산자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">and</span> <span style="color:#f92672">or</span> <span style="color:#f92672">not</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">||</span> !
+</code></pre></div><h2 id="관계-연산자">관계 연산자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">==</span> <span style="color:#f92672">!=</span> <span style="color:#f92672">&lt;</span> <span style="color:#f92672">&gt;</span> <span style="color:#f92672">&lt;=</span> <span style="color:#f92672">&gt;=</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">==</span> <span style="color:#f92672">!=</span> &lt; &gt; <span style="color:#f92672">&lt;=</span> <span style="color:#f92672">&gt;=</span>
+</code></pre></div><h2 id="산술-연산자">산술 연산자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">+</span> <span style="color:#f92672">-</span> <span style="color:#f92672">*</span> <span style="color:#f92672">/</span> <span style="color:#f92672">%</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">+</span> <span style="color:#f92672">-</span> <span style="color:#f92672">*</span> <span style="color:#f92672">/</span> <span style="color:#f92672">%</span>
+</code></pre></div><h2 id="비트-연산자">비트 연산자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> <span style="color:#f92672">|</span> <span style="color:#f92672">^</span> <span style="color:#f92672">~</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> | ^
+</code></pre></div><h2 id="삼항연산자">삼항연산자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">y <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> x <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// none
+</span></code></pre></div><h2 id="나눗셈-연산">나눗셈 연산</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">int(<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>)  <span style="color:#75715e"># 정수 나누기</span>
+<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>  <span style="color:#75715e"># 실수 나누기</span>
 
-<pre><code class="language-python">int
-</code></pre>
-
-<pre><code class="language-go">int
-int8
-int16
-int32 (rune)
-int64
-
-uint8 (byte)
-uint16
-uint32
-uint64
-</code></pre>
-
-<h2 id="실수타입">실수타입</h2>
-
-<pre><code class="language-python">float
-</code></pre>
-
-<pre><code class="language-go">float32
-float64
-</code></pre>
-
-<h2 id="널타입">널타입</h2>
-
-<pre><code class="language-python">None
-</code></pre>
-
-<pre><code class="language-go">nil
-</code></pre>
-
-<h2 id="타입-사이즈">타입 사이즈</h2>
-
-<pre><code class="language-python">x = 1
-x.__sizeof__()
-
-# sys 모듈을 사용할 때
-import sys
-sys.getsizeof(x)
-</code></pre>
-
-<pre><code class="language-go">import &quot;unsafe&quot;
-
-i := 1
-unsafe.Sizeof(i)
-</code></pre>
-
-<h2 id="논리-연산자">논리 연산자</h2>
-
-<pre><code class="language-python">and or not
-</code></pre>
-
-<pre><code class="language-go">&amp;&amp; || !
-</code></pre>
-
-<h2 id="관계-연산자">관계 연산자</h2>
-
-<pre><code class="language-python">== != &lt; &gt; &lt;= &gt;=
-</code></pre>
-
-<pre><code class="language-go">== != &lt; &gt; &lt;= &gt;=
-</code></pre>
-
-<h2 id="산술-연산자">산술 연산자</h2>
-
-<pre><code class="language-python">+ - * / %
-</code></pre>
-
-<pre><code class="language-go">+ - * / %
-</code></pre>
-
-<h2 id="비트-연산자">비트 연산자</h2>
-
-<pre><code class="language-python">&lt;&lt; &gt;&gt; &amp; | ^ ~
-</code></pre>
-
-<pre><code class="language-go">&lt;&lt; &gt;&gt; &amp; | ^
-</code></pre>
-
-<h2 id="삼항연산자">삼항연산자</h2>
-
-<pre><code class="language-python">y = 1 if x &gt; 0 else 0
-</code></pre>
-
-<pre><code class="language-go">// none
-</code></pre>
-
-<h2 id="나눗셈-연산">나눗셈 연산</h2>
-
-<pre><code class="language-python">int(1 / 3)  # 정수 나누기
-1 / 3  # 실수 나누기
-
-# 참고로 Python2에선 다음과 같다
-1 / 3  # 정수 나누기
-1 / float(3)  # 실수 나누기  
-</code></pre>
-
-<pre><code class="language-go">1 / 3 // 정수 나누기
-1/ float32(3) // 실수 나누기
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-strings-문자열-a"><a name='strings'>문자열</a></h1>
-
+<span style="color:#75715e"># 참고로 Python2에선 다음과 같다</span>
+<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span>  <span style="color:#75715e"># 정수 나누기</span>
+<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> float(<span style="color:#ae81ff">3</span>)  <span style="color:#75715e"># 실수 나누기  </span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span> <span style="color:#75715e">// 정수 나누기
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span><span style="color:#f92672">/</span> float32(<span style="color:#ae81ff">3</span>) <span style="color:#75715e">// 실수 나누기
+</span></code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namestrings문자열a"><!-- raw HTML omitted -->문자열<!-- raw HTML omitted --></h1>
 <h2 id="타입">타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">str
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">string</span>
+</code></pre></div><h2 id="리터럴">리터럴</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;string&#34;</span>
+<span style="color:#e6db74">&#39;string&#39;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#e6db74">&#34;string&#34;</span>
+<span style="color:#e6db74">`string`</span>
+</code></pre></div><h2 id="리터럴-개행">리터럴 개행</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;first </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> second&#39;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">`first
+</span><span style="color:#e6db74">second`</span>
+</code></pre></div><h2 id="문자열-비교">문자열 비교</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#39;first&#39;</span> <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">&#39;second&#39;</span>
+<span style="color:#e6db74">&#39;fisrt&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;second&#39;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#e6db74">&#34;first&#34;</span> &lt; <span style="color:#e6db74">&#34;second&#34;</span>
+<span style="color:#e6db74">&#34;first&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;second&#34;</span>
+</code></pre></div><h2 id="문자열을-숫자로-변환">문자열을 숫자로 변환</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">i <span style="color:#f92672">=</span> int(<span style="color:#e6db74">&#39;13&#39;</span>)
+f <span style="color:#f92672">=</span> float(<span style="color:#e6db74">&#39;3.14&#39;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;strconv&#34;</span>
 
-<pre><code class="language-python">str
-</code></pre>
+<span style="color:#75715e">// 두번째 인자는 밑수(base), 세번째 인자는 비트 크기
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">ParseInt</span>(<span style="color:#e6db74">&#34;13&#34;</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">32</span>)
 
-<pre><code class="language-go">string
-</code></pre>
+<span style="color:#75715e">// 두번째 인자는 비트 크기
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">ParseFloat</span>(<span style="color:#e6db74">&#34;3.14&#34;</span>, <span style="color:#ae81ff">32</span>)
+</code></pre></div><h2 id="숫자를-문자열로-변환">숫자를 문자열로 변환</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">str(<span style="color:#ae81ff">13</span>)
+str(<span style="color:#ae81ff">3.14</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;strconv&#34;</span>
 
-<h2 id="리터럴">리터럴</h2>
+<span style="color:#75715e">// 두번째 인자는 밑수(base)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">FormatInt</span>(<span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">10</span>)
 
-<pre><code class="language-python">&quot;string&quot;
-'string'
-</code></pre>
+<span style="color:#75715e">// 세번째 인자는 소숫점 아래 정확도, 네번째 인자는 비트 크기 
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">FormatFloat</span>(<span style="color:#ae81ff">3.14</span>, <span style="color:#e6db74">&#39;f&#39;</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">32</span>)
+</code></pre></div><h2 id="join과-split">Join과 Split</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># join</span>
+<span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">.</span>join(<span style="color:#e6db74">&#39;ab&#39;</span>, <span style="color:#e6db74">&#39;cd&#39;</span>, <span style="color:#e6db74">&#39;ef&#39;</span>)
 
-<pre><code class="language-go">&quot;string&quot;
-`string`
-</code></pre>
+<span style="color:#75715e"># split</span>
+<span style="color:#e6db74">&#39;ab-cd-ed&#39;</span><span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;-&#39;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;strings&#34;</span>
 
-<h2 id="리터럴-개행">리터럴 개행</h2>
+<span style="color:#75715e">// join
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">parts</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;ab&#34;</span>, <span style="color:#e6db74">&#34;cd&#34;</span>, <span style="color:#e6db74">&#34;ef&#34;</span>}
+<span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">parse</span>, <span style="color:#e6db74">&#34;-&#34;</span>)
 
-<pre><code class="language-python">s = 'first \n second'
-</code></pre>
+<span style="color:#75715e">// split
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">parts</span> = <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Split</span>(<span style="color:#a6e22e">s</span>, <span style="color:#e6db74">&#34;-&#34;</span>)
+</code></pre></div><h2 id="문자-인덱스">문자 인덱스</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;hello&#34;</span>[<span style="color:#ae81ff">1</span>]  <span style="color:#75715e"># e</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;strings&#34;</span>
 
-<pre><code class="language-go">s := `first
-second`
-</code></pre>
+<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Index</span>(<span style="color:#e6db74">&#34;hello&#34;</span>, <span style="color:#e6db74">&#34;1&#34;</span>) <span style="color:#75715e">// 3
+</span></code></pre></div><h2 id="케이스-변환">케이스 변환</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">.</span>upper()
+<span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">.</span>lower()
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;strings&#34;</span>
 
-<h2 id="문자열-비교">문자열 비교</h2>
-
-<pre><code class="language-python">'first' &lt; 'second'
-'fisrt' == 'second'
-</code></pre>
-
-<pre><code class="language-go">&quot;first&quot; &lt; &quot;second&quot;
-&quot;first&quot; == &quot;second&quot;
-</code></pre>
-
-<h2 id="문자열을-숫자로-변환">문자열을 숫자로 변환</h2>
-
-<pre><code class="language-python">i = int('13')
-f = float('3.14')
-</code></pre>
-
-<pre><code class="language-go">import &quot;strconv&quot;
-
-// 두번째 인자는 밑수(base), 세번째 인자는 비트 크기
-i, _ := strconv.ParseInt(&quot;13&quot;, 10, 32)
-
-// 두번째 인자는 비트 크기
-f, _ := strconv.ParseFloat(&quot;3.14&quot;, 32)
-</code></pre>
-
-<h2 id="숫자를-문자열로-변환">숫자를 문자열로 변환</h2>
-
-<pre><code class="language-python">str(13)
-str(3.14)
-</code></pre>
-
-<pre><code class="language-go">import &quot;strconv&quot;
-
-// 두번째 인자는 밑수(base)
-strconv.FormatInt(13, 10)
-
-// 세번째 인자는 소숫점 아래 정확도, 네번째 인자는 비트 크기 
-strconv.FormatFloat(3.14, 'f', 4, 32)
-</code></pre>
-
-<h2 id="join과-split">Join과 Split</h2>
-
-<pre><code class="language-python"># join
-'-'.join('ab', 'cd', 'ef')
-
-# split
-'ab-cd-ed'.split('-')
-</code></pre>
-
-<pre><code class="language-go">import &quot;strings&quot;
-
-// join
-parts := []string{&quot;ab&quot;, &quot;cd&quot;, &quot;ef&quot;}
-s := strings.Join(parse, &quot;-&quot;)
-
-// split
-parts = strings.Split(s, &quot;-&quot;)
-</code></pre>
-
-<h2 id="문자-인덱스">문자 인덱스</h2>
-
-<pre><code class="language-python">&quot;hello&quot;[1]  # e
-</code></pre>
-
-<pre><code class="language-go">import &quot;strings&quot;
-
-strings.Index(&quot;hello&quot;, &quot;1&quot;) // 3
-</code></pre>
-
-<h2 id="케이스-변환">케이스 변환</h2>
-
-<pre><code class="language-python">&quot;hello&quot;.upper()
-&quot;hello&quot;.lower()
-</code></pre>
-
-<pre><code class="language-go">import &quot;strings&quot;
-
-strings.ToUpper(&quot;hello&quot;)
-strings.ToLower(&quot;HELLO&quot;)
-</code></pre>
-
-<h2 id="문자열-길이">문자열 길이</h2>
-
-<pre><code class="language-python">len(&quot;hello&quot;)
-</code></pre>
-
-<pre><code class="language-go">len(&quot;hello&quot;)
-</code></pre>
-
-<h2 id="문자-타입">문자 타입</h2>
-
-<pre><code class="language-python">str
-</code></pre>
-
-<pre><code class="language-go">rune
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-fixed-arrays-고정-배열-a"><a name='fixed-arrays'>고정 배열</a></h1>
-
+<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToUpper</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
+<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>(<span style="color:#e6db74">&#34;HELLO&#34;</span>)
+</code></pre></div><h2 id="문자열-길이">문자열 길이</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">len(<span style="color:#e6db74">&#34;hello&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">len(<span style="color:#e6db74">&#34;hello&#34;</span>)
+</code></pre></div><h2 id="문자-타입">문자 타입</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">str
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">rune</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namefixed-arrays고정-배열a"><!-- raw HTML omitted -->고정 배열<!-- raw HTML omitted --></h1>
 <h2 id="선언-및-초기화">선언 및 초기화</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Python은 고정 배열을 네이티브로 지원하지 않음</span>
 
-<pre><code class="language-python"># Python은 고정 배열을 네이티브로 지원하지 않음
+<span style="color:#75715e"># 명시적으로 표기할 순 있지만 길이 변경이 가능함</span>
+arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>
 
-# 명시적으로 표기할 순 있지만 길이 변경이 가능함
-arr = [0] * 10
+<span style="color:#75715e"># collections 내장 패키지를 사용해 흉내낼 순 있음</span>
+<span style="color:#75715e"># 길이는 보장되지만 일반적인 고정 배열처럼 동작하진 않음</span>
+<span style="color:#f92672">import</span> collections
+arr <span style="color:#f92672">=</span> collections<span style="color:#f92672">.</span>deque([<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>, maxlen<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 배열(array)이라고 부름
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 선언
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">arr</span> [<span style="color:#ae81ff">10</span>]<span style="color:#66d9ef">int</span>
 
-# collections 내장 패키지를 사용해 흉내낼 순 있음
-# 길이는 보장되지만 일반적인 고정 배열처럼 동작하진 않음
-import collections
-arr = collections.deque([0] * 10, maxlen=10)
-</code></pre>
-
-<pre><code class="language-go">// 배열(array)이라고 부름
-
-// 선언
-var arr [10]int
-
-// 초기화 리터럴 선언
-arr := []int{1, 2, 3}
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-resizable-arrays-동적-배열-a"><a name='resizable-arrays'>동적 배열</a></h1>
-
+<span style="color:#75715e">// 초기화 리터럴 선언
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameresizable-arrays동적-배열a"><!-- raw HTML omitted -->동적 배열<!-- raw HTML omitted --></h1>
 <h2 id="선언-및-초기화-1">선언 및 초기화</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 선언</span>
+arr <span style="color:#f92672">=</span> [] <span style="color:#75715e"># 또는 list()</span>
 
-<pre><code class="language-python"># 선언
-arr = [] # 또는 list()
+<span style="color:#75715e"># 초기화 선언</span>
+arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 슬라이스(slice)라고 부름
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 선언. 5는 길이, 10은 수용크기 (capacity)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr</span> = make([]<span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">10</span>)
 
-# 초기화 선언
-arr = [1, 2, 3]
-</code></pre>
+<span style="color:#75715e">// 초기화 리터럴 선언
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+</code></pre></div><h2 id="사이즈">사이즈</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">len(arr)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 길이. array도 동일
+</span><span style="color:#75715e"></span>len(<span style="color:#a6e22e">arr</span>)
 
-<pre><code class="language-go">// 슬라이스(slice)라고 부름
+<span style="color:#75715e">// capacity 크기. 미리 할당된 메모리로 추가적인 값을 저장할 수 있음
+</span><span style="color:#75715e"></span>cap(<span style="color:#a6e22e">arr</span>)
+</code></pre></div><h2 id="lookup과-update">lookup과 update</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># lookup</span>
+a <span style="color:#f92672">=</span> arr[<span style="color:#ae81ff">0</span>]
 
-// 선언. 5는 길이, 10은 수용크기 (capacity)
-arr = make([]int, 5, 10)
+<span style="color:#75715e"># update</span>
+arr[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// array도 동일
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// lookup
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">a</span> = <span style="color:#a6e22e">arr</span>[<span style="color:#ae81ff">0</span>]
 
-// 초기화 리터럴 선언
-arr := []int{1, 2, 3}
-</code></pre>
+<span style="color:#75715e">// update
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#ae81ff">1</span>
+</code></pre></div><h2 id="배열-순회">배열 순회</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 값 순회</span>
+<span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> arr:
+    <span style="color:#66d9ef">print</span>(e)
 
-<h2 id="사이즈">사이즈</h2>
-
-<pre><code class="language-python">len(arr)
-</code></pre>
-
-<pre><code class="language-go">// 길이. array도 동일
-len(arr)
-
-// capacity 크기. 미리 할당된 메모리로 추가적인 값을 저장할 수 있음
-cap(arr)
-</code></pre>
-
-<h2 id="lookup과-update">lookup과 update</h2>
-
-<pre><code class="language-python"># lookup
-a = arr[0]
-
-# update
-arr[0] = 1
-</code></pre>
-
-<pre><code class="language-go">// array도 동일
-
-// lookup
-a = arr[0]
-
-// update
-arr[0] = 1
-</code></pre>
-
-<h2 id="배열-순회">배열 순회</h2>
-
-<pre><code class="language-python"># 값 순회
-for e in arr:
-    print(e)
-
-# 인덱스, 값 순회
-for i, e in enumerate(arr):
-    print(&quot;index : {0}, value : {1}&quot;.format(i, e))
-</code></pre>
-
-<pre><code class="language-go">// array도 동일
-
-// 값 순회
-for _, e := range arr {
-    fmt.Println(e)
+<span style="color:#75715e"># 인덱스, 값 순회</span>
+<span style="color:#66d9ef">for</span> i, e <span style="color:#f92672">in</span> enumerate(arr):
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;index : {0}, value : {1}&#34;</span><span style="color:#f92672">.</span>format(i, e))
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// array도 동일
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 값 순회
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">arr</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">e</span>)
 }
 
-// 인덱스, 값 순회
-for i, e := range arr {
-    fmt.Printf(&quot;index : %d, value : %d\n&quot;, i, e)
+<span style="color:#75715e">// 인덱스, 값 순회
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">arr</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;index : %d, value : %d\n&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">e</span>)
 }
-</code></pre>
+</code></pre></div><h2 id="슬라이싱">슬라이싱</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span>]
 
-<h2 id="슬라이싱">슬라이싱</h2>
+<span style="color:#75715e"># [2, 3]</span>
+arr[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">3</span>]
 
-<pre><code class="language-python">arr = [1, 2, 3, 4 5]
+<span style="color:#75715e"># [3, 4, 5]</span>
+arr[<span style="color:#ae81ff">2</span>:]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// array도 동일
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>}
+<span style="color:#960050;background-color:#1e0010">#</span> {<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+<span style="color:#a6e22e">arr</span>[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">3</span>]
 
-# [2, 3]
-arr[1:3]
+<span style="color:#75715e">// {3, 4, 5}
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr</span>[<span style="color:#ae81ff">2</span>:]
+</code></pre></div><h2 id="값-추가">값 추가</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
+arr<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">4</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+<span style="color:#a6e22e">arr</span> = append(<span style="color:#a6e22e">arr</span>, <span style="color:#ae81ff">4</span>)
+</code></pre></div><h2 id="확장">확장</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]
+arr2 <span style="color:#f92672">=</span> [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>]
 
-# [3, 4, 5]
-arr[2:]
-</code></pre>
+<span style="color:#75715e"># [1, 2, 3, 4]</span>
+arr3 <span style="color:#f92672">=</span> arr <span style="color:#f92672">+</span> arr2
 
-<pre><code class="language-go">// array도 동일
+<span style="color:#75715e"># arr = [1, 2, 3, 4]</span>
+arr<span style="color:#f92672">.</span>extend(arr2)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// array도 동일
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">arr</span> = [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]
+<span style="color:#a6e22e">arr2</span> = [<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>]
 
-arr := []int{1, 2, 3, 4, 5}
-# {2, 3}
-arr[1:3]
+<span style="color:#75715e">// [1, 2, 3, 4]
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr3</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">a2</span><span style="color:#f92672">...</span>)
+</code></pre></div><h2 id="복사">복사</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> copy <span style="color:#f92672">import</span> deepcopy
 
-// {3, 4, 5}
-arr[2:]
-</code></pre>
+arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
 
-<h2 id="값-추가">값 추가</h2>
+<span style="color:#75715e"># 얕은 복사 (Shallow copy)</span>
+arr2 <span style="color:#f92672">=</span> arr
 
-<pre><code class="language-python">arr = [1, 2, 3]
-arr.append(4)
-</code></pre>
+<span style="color:#75715e"># 깊은 복사 (Deep copy)</span>
+arr3 <span style="color:#f92672">=</span> deepcopy(arr)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
 
-<pre><code class="language-go">arr := []int{1, 2, 3}
-arr = append(arr, 4)
-</code></pre>
+<span style="color:#75715e">// 얕은 복사 (Shallow copy)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">arr</span>
 
-<h2 id="확장">확장</h2>
-
-<pre><code class="language-python">arr = [1, 2]
-arr2 = [3, 4]
-
-# [1, 2, 3, 4]
-arr3 = arr + arr2
-
-# arr = [1, 2, 3, 4]
-arr.extend(arr2)
-</code></pre>
-
-<pre><code class="language-go">// array도 동일
-
-arr = [1, 2]
-arr2 = [3, 4]
-
-// [1, 2, 3, 4]
-arr3 := append(a, a2...)
-</code></pre>
-
-<h2 id="복사">복사</h2>
-
-<pre><code class="language-python">from copy import deepcopy
-
-arr = [1, 2, 3]
-
-# 얕은 복사 (Shallow copy)
-arr2 = arr
-
-# 깊은 복사 (Deep copy)
-arr3 = deepcopy(arr)
-</code></pre>
-
-<pre><code class="language-go">arr := []int{1, 2, 3}
-
-// 얕은 복사 (Shallow copy)
-arr2 := arr
-
-// 깊은 복사 (Deep copy)
-arr3 := make([]int, len(arr))
-copy(arr3, arr)
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-dictionaries-딕셔너리-맵-a"><a name='dictionaries'>딕셔너리(맵)</a></h1>
-
+<span style="color:#75715e">// 깊은 복사 (Deep copy)
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">arr3</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">int</span>, len(<span style="color:#a6e22e">arr</span>))
+copy(<span style="color:#a6e22e">arr3</span>, <span style="color:#a6e22e">arr</span>)
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namedictionaries딕셔너리맵a"><!-- raw HTML omitted -->딕셔너리(맵)<!-- raw HTML omitted --></h1>
 <h2 id="선언">선언</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 선언</span>
+d <span style="color:#f92672">=</span> {} <span style="color:#75715e"># 또는 dict()</span>
 
-<pre><code class="language-python"># 선언
-d = {} # 또는 dict()
+<span style="color:#75715e"># 초기화 선언</span>
+d <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;a&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;b&#34;</span>: <span style="color:#ae81ff">2</span>}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 선언
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">d</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>)
 
-# 초기화 선언
-d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
-</code></pre>
+<span style="color:#75715e">// 초기화 리터럴 선언
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">d</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{<span style="color:#e6db74">&#34;a&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;b&#34;</span>: <span style="color:#ae81ff">2</span>}
+</code></pre></div><h2 id="사이즈-1">사이즈</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">len(d)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">len(<span style="color:#a6e22e">d</span>)
+</code></pre></div><h2 id="lookup과-update-1">lookup과 update</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># lookup</span>
+d[<span style="color:#e6db74">&#34;a&#34;</span>]
 
-<pre><code class="language-go">// 선언
-d := make(map[string]int)
+<span style="color:#75715e"># update</span>
+d[<span style="color:#e6db74">&#34;a&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// lookup
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">d</span>[<span style="color:#e6db74">&#34;a&#34;</span>]
 
-// 초기화 리터럴 선언
-d := map[string]int{&quot;a&quot;: 1, &quot;b&quot;: 2}
-</code></pre>
+<span style="color:#75715e">// update
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">d</span>[<span style="color:#e6db74">&#34;a&#34;</span>] = <span style="color:#ae81ff">2</span>
+</code></pre></div><h2 id="키값-확인">키값 확인</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># True</span>
+<span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">in</span> d
 
-<h2 id="사이즈-1">사이즈</h2>
+<span style="color:#75715e"># False</span>
+<span style="color:#e6db74">&#39;c&#39;</span> <span style="color:#f92672">in</span> d
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// ok = true
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">val</span>, <span style="color:#a6e22e">ok</span> = <span style="color:#a6e22e">d</span>[<span style="color:#e6db74">&#34;a&#34;</span>]
 
-<pre><code class="language-python">len(d)
-</code></pre>
+<span style="color:#75715e">// ok = false
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">val</span>, <span style="color:#a6e22e">ok</span> = <span style="color:#a6e22e">d</span>[<span style="color:#e6db74">&#34;c&#34;</span>]
+</code></pre></div><h2 id="키-삭제">키 삭제</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">del</span> d[<span style="color:#e6db74">&#39;a&#39;</span>]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">delete(<span style="color:#a6e22e">d</span>, <span style="color:#e6db74">&#34;a&#34;</span>)
+</code></pre></div><h2 id="딕셔너리맵-순회">딕셔너리(맵) 순회</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 키만 순회</span>
+<span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> d<span style="color:#f92672">.</span>keys(): <span style="color:#75715e"># 또는 for k in a:</span>
+    <span style="color:#66d9ef">print</span>(k)
 
-<pre><code class="language-go">len(d)
-</code></pre>
-
-<h2 id="lookup과-update-1">lookup과 update</h2>
-
-<pre><code class="language-python"># lookup
-d[&quot;a&quot;]
-
-# update
-d[&quot;a&quot;] = 2
-</code></pre>
-
-<pre><code class="language-go">// lookup
-d[&quot;a&quot;]
-
-// update
-d[&quot;a&quot;] = 2
-</code></pre>
-
-<h2 id="키값-확인">키값 확인</h2>
-
-<pre><code class="language-python"># True
-'a' in d
-
-# False
-'c' in d
-</code></pre>
-
-<pre><code class="language-go">// ok = true
-val, ok = d[&quot;a&quot;]
-
-// ok = false
-val, ok = d[&quot;c&quot;]
-</code></pre>
-
-<h2 id="키-삭제">키 삭제</h2>
-
-<pre><code class="language-python">del d['a']
-</code></pre>
-
-<pre><code class="language-go">delete(d, &quot;a&quot;)
-</code></pre>
-
-<h2 id="딕셔너리-맵-순회">딕셔너리(맵) 순회</h2>
-
-<pre><code class="language-python"># 키만 순회
-for k in d.keys(): # 또는 for k in a:
-    print(k)
-
-# 값만 순회
-for v in d.values():
-    print(v)
+<span style="color:#75715e"># 값만 순회</span>
+<span style="color:#66d9ef">for</span> v <span style="color:#f92672">in</span> d<span style="color:#f92672">.</span>values():
+    <span style="color:#66d9ef">print</span>(v)
     
-# 키,값 순회
-for i, v in d.items():
-    print(&quot;key : {0}, value : {1}&quot;, i, v)
-</code></pre>
-
-<pre><code class="language-go">// 키만 순회
-for i, _ := range d {
-    print(k)
+<span style="color:#75715e"># 키,값 순회</span>
+<span style="color:#66d9ef">for</span> i, v <span style="color:#f92672">in</span> d<span style="color:#f92672">.</span>items():
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;key : {0}, value : {1}&#34;</span>, i, v)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 키만 순회
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">d</span> {
+    print(<span style="color:#a6e22e">k</span>)
 }
 
-// 값만 순회
-for _, v := range d {
-    print(v)
+<span style="color:#75715e">// 값만 순회
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">d</span> {
+    print(<span style="color:#a6e22e">v</span>)
 }
 
-// 키,값 순회
-for i, v := range d {
-    fmt.Printf(&quot;key : %s, value : %d&quot;, i, v)
+<span style="color:#75715e">// 키,값 순회
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">d</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;key : %s, value : %d&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span>)
 }
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-functions-함수-a"><a name='functions'>함수</a></h1>
-
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namefunctions함수a"><!-- raw HTML omitted -->함수<!-- raw HTML omitted --></h1>
 <h2 id="선언-1">선언</h2>
-
-<pre><code class="language-python">def add(a, b):
-    return a + b
-</code></pre>
-
-<pre><code class="language-go">func add(a int, b int) int {
-    return a + b
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(a, b):
+    <span style="color:#66d9ef">return</span> a <span style="color:#f92672">+</span> b
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>
 }
 
-// 같은 타입은 묶을 수도 있음
-func add(a, b int) int {
-    return a + b
+<span style="color:#75715e">// 같은 타입은 묶을 수도 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>
 }
-</code></pre>
-
-<h2 id="가변-길이-인자">가변 길이 인자</h2>
-
-<pre><code class="language-python">def concat(*args):
-    ret = &quot;&quot;
-    for s in args:
-        ret += s
-    return ret       
-</code></pre>
-
-<pre><code class="language-go">func concat(strs ...string) string {
-    var ret = &quot;&quot;
-    for _, str := range strs {
-        ret += str
+</code></pre></div><h2 id="가변-길이-인자">가변 길이 인자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">concat</span>(<span style="color:#f92672">*</span>args):
+    ret <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+    <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> args:
+        ret <span style="color:#f92672">+=</span> s
+    <span style="color:#66d9ef">return</span> ret       
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">concat</span>(<span style="color:#a6e22e">strs</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ret</span> = <span style="color:#e6db74">&#34;&#34;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">str</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">strs</span> {
+        <span style="color:#a6e22e">ret</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">str</span>
     }
-    return ret
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ret</span>
 }
-</code></pre>
-
-<h2 id="이름-있는-인자">이름 있는 인자</h2>
-
-<pre><code class="language-python">def add(first=0, second=0):
-    return first + second
+</code></pre></div><h2 id="이름-있는-인자">이름 있는 인자</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(first<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, second<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>):
+    <span style="color:#66d9ef">return</span> first <span style="color:#f92672">+</span> second
     
-val = add(first=1, second=2)
+val <span style="color:#f92672">=</span> add(first<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, second<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
 
-# 생략하면 위치에 따라 값이 들어감
-val = add(1, 2)
-</code></pre>
-
-<pre><code class="language-go">// none
-</code></pre>
-
-<h2 id="다중-반환">다중 반환</h2>
-
-<pre><code class="language-python">def divmod(m, n):
-    return m / n, m % n
+<span style="color:#75715e"># 생략하면 위치에 따라 값이 들어감</span>
+val <span style="color:#f92672">=</span> add(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// none
+</span></code></pre></div><h2 id="다중-반환">다중 반환</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divmod</span>(m, n):
+    <span style="color:#66d9ef">return</span> m <span style="color:#f92672">/</span> n, m <span style="color:#f92672">%</span> n
     
-q, r = divmod(7, 3)
-</code></pre>
-
-<pre><code class="language-go">func divmod(m, n int) (int, int) {
-    return m / n, m % n
+q, r <span style="color:#f92672">=</span> divmod(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">divmod</span>(<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">int</span>) {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">m</span> <span style="color:#f92672">%</span> <span style="color:#a6e22e">n</span>
 }
 
-q, r := divmod(7, 3)
-</code></pre>
-
-<h2 id="이름-있는-반환값">이름 있는 반환값</h2>
-
-<pre><code class="language-python"># none
-</code></pre>
-
-<pre><code class="language-go">func divmod(m, n int) (q, r int) {
-    q = m / n
-    r = m % n
-    return
+<span style="color:#a6e22e">q</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">divmod</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</code></pre></div><h2 id="이름-있는-반환값">이름 있는 반환값</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># none</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">divmod</span>(<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">q</span>, <span style="color:#a6e22e">r</span> <span style="color:#66d9ef">int</span>) {
+    <span style="color:#a6e22e">q</span> = <span style="color:#a6e22e">m</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">n</span>
+    <span style="color:#a6e22e">r</span> = <span style="color:#a6e22e">m</span> <span style="color:#f92672">%</span> <span style="color:#a6e22e">n</span>
+    <span style="color:#66d9ef">return</span>
 }
 
-q, r := divmod(7, 3)
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-conditional-expression-조건문-a"><a name='conditional-expression'>조건문</a></h1>
-
+<span style="color:#a6e22e">q</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">divmod</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">3</span>)
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameconditional-expression조건문a"><!-- raw HTML omitted -->조건문<!-- raw HTML omitted --></h1>
 <h2 id="if문">if문</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
 
-<pre><code class="language-python">x = 2
+<span style="color:#66d9ef">if</span> x <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;x is 1&#34;</span>)
+<span style="color:#66d9ef">elif</span> x <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;x is 2&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;x is neither 1 or 2&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">2</span>
 
-if x == 1:
-    print(&quot;x is 1&quot;)
-elif x == 2:
-    print(&quot;x is 2&quot;)
-else:
-    print(&quot;x is neither 1 or 2&quot;)
-</code></pre>
-
-<pre><code class="language-go">x := 2
-
-if x == 1 {
-    fmt.Println(&quot;x is 1&quot;)
-} else if x == 2 {
-    fmt.Println(&quot;x is 2&quot;)
-} else {
-    fmt.Println(&quot;x is neither 1 or 2&quot;)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;x is 1&#34;</span>)
+} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;x is 2&#34;</span>)
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;x is neither 1 or 2&#34;</span>)
 }
-</code></pre>
-
-<h2 id="switch문">switch문</h2>
-
-<pre><code class="language-python"># none
-</code></pre>
-
-<pre><code class="language-go">// switch문은 모든 타입을 받을 수 있음
-
-switch i {
-case 0, 1:
-    fmt.Println(&quot;i is boolean&quot;)
-default:
-    fmt.Println(&quot;i is not a boolean&quot;)
+</code></pre></div><h2 id="switch문">switch문</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># none</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// switch문은 모든 타입을 받을 수 있음
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">i</span> {
+<span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>:
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;i is boolean&#34;</span>)
+<span style="color:#66d9ef">default</span>:
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;i is not a boolean&#34;</span>)
 }
 
-// 조건을 무시하면서 case를 통과하려면 &quot;fallthrough&quot;를 사용
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-loops-expression-반복문-a"><a name='loops-expression'>반복문</a></h1>
-
+<span style="color:#75715e">// 조건을 무시하면서 case를 통과하려면 &#34;fallthrough&#34;를 사용
+</span></code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameloops-expression반복문a"><!-- raw HTML omitted -->반복문<!-- raw HTML omitted --></h1>
 <h2 id="while문">while문</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
-<pre><code class="language-python">i = 0
+<span style="color:#66d9ef">while</span> i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>:
+    i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
 
-while i &lt; 10:
-    i += 1
-</code></pre>
-
-<pre><code class="language-go">i := 0
-
-for i &lt; 10 {
-    i++
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">10</span> {
+    <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>
 }
-</code></pre>
+</code></pre></div><h2 id="for문">for문</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
-<h2 id="for문">for문</h2>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>):
+    n <span style="color:#f92672">+=</span> i
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
 
-<pre><code class="language-python">n = 0
-
-for i in range(10):
-    n += i
-</code></pre>
-
-<pre><code class="language-go">n := 0
-
-for i := 0; i &lt;= 10; i++ {
-    n += i
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+    <span style="color:#a6e22e">n</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">i</span>
 }
-</code></pre>
+</code></pre></div><h2 id="for-inrange문">for-in(range)문</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arr <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
 
-<h2 id="for-in-range-문">for-in(range)문</h2>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> arr:
+    <span style="color:#66d9ef">print</span>(i)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">arr</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
 
-<pre><code class="language-python">arr = [1, 2, 3]
-
-for i in arr:
-    print(i)
-</code></pre>
-
-<pre><code class="language-go">arr := []int{1, 2, 3}
-
-for _, v := range arr {
-    fmt.Println(v)
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">arr</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">v</span>)
 }
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-libraries-and-namespaces-라이브러리-및-네임스페이스-a"><a name='libraries-and-namespaces'>라이브러리 및 네임스페이스</a></h1>
-
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-namelibraries-and-namespaces라이브러리-및-네임스페이스a"><!-- raw HTML omitted -->라이브러리 및 네임스페이스<!-- raw HTML omitted --></h1>
 <h2 id="라이브러리-로드">라이브러리 로드</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> foo
 
-<pre><code class="language-python">import foo
+bar <span style="color:#f92672">=</span> foo<span style="color:#f92672">.</span>something()
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;foo&#34;</span>
 
-bar = foo.something()
-</code></pre>
-
-<pre><code class="language-go">import &quot;foo&quot;
-
-bar := foo.Something()
-</code></pre>
-
-<h2 id="서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</h2>
-
-<pre><code class="language-python">import foo.bar
-</code></pre>
-
-<pre><code class="language-go">import &quot;foo/bar&quot;
-</code></pre>
-
-<h2 id="네임스페이스">네임스페이스</h2>
-
-<pre><code class="language-python"># 모듈 네임스페이스는 보통 &quot;import&quot;로 불러온 모듈명을 따라감
-import os # os
-from os import path # path
-</code></pre>
-
-<pre><code class="language-go">// 모든 소스파일 최상단에 네임스페이스를 선언해야함
-package foo
-</code></pre>
-
-<h2 id="네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</h2>
-
-<pre><code class="language-python">import foo as fu
-</code></pre>
-
-<pre><code class="language-go">import fu &quot;foo&quot;
-</code></pre>
-
-<h2 id="미사용-임포트">미사용 임포트</h2>
-
-<pre><code class="language-python"># none
-</code></pre>
-
-<pre><code class="language-go">import _ &quot;foo&quot;
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-user-defined-types-사용자-정의-타입-a"><a name='user-defined-types'>사용자 정의 타입</a></h1>
-
+<span style="color:#a6e22e">bar</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">foo</span>.<span style="color:#a6e22e">Something</span>()
+</code></pre></div><h2 id="서브디렉토리에-있는-라이브러리-로드">서브디렉토리에 있는 라이브러리 로드</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> foo.bar
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;foo/bar&#34;</span>
+</code></pre></div><h2 id="네임스페이스">네임스페이스</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 모듈 네임스페이스는 보통 &#34;import&#34;로 불러온 모듈명을 따라감</span>
+<span style="color:#f92672">import</span> os <span style="color:#75715e"># os</span>
+<span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> path <span style="color:#75715e"># path</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 모든 소스파일 최상단에 네임스페이스를 선언해야함
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">foo</span>
+</code></pre></div><h2 id="네임스페이스-별명붙이기-aliasing">네임스페이스 별명붙이기 (aliasing)</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> foo <span style="color:#f92672">as</span> fu
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#a6e22e">fu</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+</code></pre></div><h2 id="미사용-임포트">미사용 임포트</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># none</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameuser-defined-types사용자-정의-타입a"><!-- raw HTML omitted -->사용자 정의 타입<!-- raw HTML omitted --></h1>
 <h2 id="정의">정의</h2>
-
-<pre><code class="language-python"># 타입으로써의 정의는 없으며 클래스로 대체
-class Exam:
-    name = 'example'
-    avg = 0
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 타입으로써의 정의는 없으며 클래스로 대체</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Exam</span>:
+    name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;example&#39;</span>
+    avg <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
     
-    def __init__(self, math, physics, sports, name=&quot;&quot;):
-        self.math = math
-        self.physics = physics
-        self.sports = sports
-        if name:
-            self.name = name
-</code></pre>
-
-<pre><code class="language-go">type Exam struct {
-    name    string
-    avg     int
-    math    int
-    physics int
-    sports  int
+    <span style="color:#66d9ef">def</span> __init__(self, math, physics, sports, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>):
+        self<span style="color:#f92672">.</span>math <span style="color:#f92672">=</span> math
+        self<span style="color:#f92672">.</span>physics <span style="color:#f92672">=</span> physics
+        self<span style="color:#f92672">.</span>sports <span style="color:#f92672">=</span> sports
+        <span style="color:#66d9ef">if</span> name:
+            self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Exam</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">name</span>    <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">avg</span>     <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">math</span>    <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">physics</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">sports</span>  <span style="color:#66d9ef">int</span>
 } 
-</code></pre>
+</code></pre></div><h2 id="초기화">초기화</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ricky_exam <span style="color:#f92672">=</span> Exam(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">92</span>, <span style="color:#ae81ff">93</span>, name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Ricky&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">rickyExam</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Exam</span>{<span style="color:#e6db74">&#34;Ricky&#34;</span>, <span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">92</span>, <span style="color:#ae81ff">93</span>}
 
-<h2 id="초기화">초기화</h2>
-
-<pre><code class="language-python">ricky_exam = Exam(100, 92, 93, name=&quot;Ricky&quot;)
-</code></pre>
-
-<pre><code class="language-go">rickyExam := Exam{&quot;Ricky&quot;, 100, 92, 93}
-
-risaExam := Exam{
-    name: &quot;Risa&quot;,
-    math: 89,
-    physics: 78,
-    sports: 88,
+<span style="color:#a6e22e">risaExam</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Exam</span>{
+    <span style="color:#a6e22e">name</span>: <span style="color:#e6db74">&#34;Risa&#34;</span>,
+    <span style="color:#a6e22e">math</span>: <span style="color:#ae81ff">89</span>,
+    <span style="color:#a6e22e">physics</span>: <span style="color:#ae81ff">78</span>,
+    <span style="color:#a6e22e">sports</span>: <span style="color:#ae81ff">88</span>,
 }
-</code></pre>
-
-<h2 id="속성-멤버-값-할당">속성(멤버)값 할당</h2>
-
-<pre><code class="language-python">ricky_exam.math = 97
-ricky_exam.sports = 95
-</code></pre>
-
-<pre><code class="language-go">rickyExam.math = 97
-rickyExam.sports = 95
-</code></pre>
-
-<p><br></p>
-
-<h1 id="a-name-error-handling-에러-처리-a"><a name='error-handling'>에러 처리</a></h1>
-
+</code></pre></div><h2 id="속성멤버값-할당">속성(멤버)값 할당</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ricky_exam<span style="color:#f92672">.</span>math <span style="color:#f92672">=</span> <span style="color:#ae81ff">97</span>
+ricky_exam<span style="color:#f92672">.</span>sports <span style="color:#f92672">=</span> <span style="color:#ae81ff">95</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">rickyExam</span>.<span style="color:#a6e22e">math</span> = <span style="color:#ae81ff">97</span>
+<span style="color:#a6e22e">rickyExam</span>.<span style="color:#a6e22e">sports</span> = <span style="color:#ae81ff">95</span>
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="a-nameerror-handling에러-처리a"><!-- raw HTML omitted -->에러 처리<!-- raw HTML omitted --></h1>
 <h2 id="에러-처리">에러 처리</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divide</span>(n, m):
+    <span style="color:#66d9ef">if</span> m <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;divisor is zero&#34;</span>)
+    <span style="color:#66d9ef">return</span> n <span style="color:#f92672">/</span> m
 
-<pre><code class="language-python">def divide(n, m):
-    if m == 0:
-        raise ValueError(&quot;divisor is zero&quot;)
-    return n / m
-
-try:
-    q = divide(10, 0)
-except Exception as e:
-    print(e)
-</code></pre>
-
-<pre><code class="language-go">import (
-    &quot;errors&quot;
-    &quot;fmt&quot;
+<span style="color:#66d9ef">try</span>:
+    q <span style="color:#f92672">=</span> divide(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>)
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+    <span style="color:#66d9ef">print</span>(e)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;errors&#34;</span>
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
 )
 
-func divide(n, m int) (float32, error) {
-    if m == 0 {
-        return 0,0, errors.New(&quot;divisor is zero&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">divide</span>(<span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">m</span> <span style="color:#66d9ef">int</span>) (<span style="color:#66d9ef">float32</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;divisor is zero&#34;</span>)
     }
-    return n / float32(m), nil
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">/</span> float32(<span style="color:#a6e22e">m</span>), <span style="color:#66d9ef">nil</span>
 }
 
-q, err := divide(10, 0)
-if err != nil {
-    fmt.Println(err)
+<span style="color:#a6e22e">q</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">divide</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
 }
-</code></pre>
-
+</code></pre></div>
                 </section>
             </article>
 
@@ -1311,6 +920,10 @@ if err != nil {
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -1344,10 +957,6 @@ if err != nil {
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

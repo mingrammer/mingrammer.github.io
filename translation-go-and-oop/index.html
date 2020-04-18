@@ -13,12 +13,12 @@
 <meta property="og:description" content="theamydance의 Go and OOP&hellip; Sorta를 번역한 글입니다. 나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 Women Who Go 밋업에서 처음으" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/translation-go-and-oop/" />
-<meta property="article:published_time" content="2017-02-28T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-02-28T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2017-02-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-02-28T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[번역] Go와 OOP &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 28, 2017 00:00
-                    · 3384 words
+                    · 3083 words
                     · 7 minute read
                       <span class="tags">
                       
@@ -83,401 +83,320 @@
                   
                     <div id="toc">
                       <nav id="TableOfContents">
-<ul>
-<li><a href="#0-용어">0. 용어</a>
-<ul>
-<li><a href="#객체-vs-값">객체 vs. 값</a></li>
-<li><a href="#타입과-메서드-집합">타입과 메서드 집합</a></li>
-</ul></li>
-<li><a href="#1-캡슐화-encapsulation">1. 캡슐화 (Encapsulation)</a></li>
-<li><a href="#2-다형성-polymorphism">2. 다형성 (Polymorphism)</a></li>
-<li><a href="#3-컴포지션-composition">3. 컴포지션 (Composition)</a></li>
-<li><a href="#4-추상화-abstraction">4. 추상화 (Abstraction)</a></li>
-</ul>
+  <ul>
+    <li><a href="#객체-vs-값">객체 vs. 값</a></li>
+    <li><a href="#타입과-메서드-집합">타입과 메서드 집합</a></li>
+  </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p><a href="https://twitter.com/@theamydance">theamydance</a>의 <a href="https://medium.com/behancetech/oop-and-go-sorta-c6682359a41b#.b3flpbm9i">Go and OOP&hellip; Sorta</a>를 번역한 글입니다.</p>
 </blockquote>
-
-<p><em>나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 <a href="http://www.womenwhogo.org/">Women Who Go</a> 밋업에서 처음으로 기술 토크를 했다. 이 글은 그 토크를 글로 옮긴 글이다. 이 글의 독자는 &ldquo;클래스 (class)&rdquo;, &ldquo;구현 (implements)&rdquo;, &ldquo;추상화 (abstract)&ldquo;의 키워드를 가진 클래스 기반 언어를 사용했던 사람들을 대상으로 한다. 나는 특별히 Go를 시작하기 전에 PHP로 프로그래밍을 했었다.</em></p>
-
-<p><br></p>
-
+<p><em>나는 2016년 7월 18일에 Go를 시작했다. 3주 후, 나는 NYC의 <a href="http://www.womenwhogo.org/">Women Who Go</a> 밋업에서 처음으로 기술 토크를 했다. 이 글은 그 토크를 글로 옮긴 글이다. 이 글의 독자는 &ldquo;클래스 (class)&quot;, &ldquo;구현 (implements)&quot;, &ldquo;추상화 (abstract)&ldquo;의 키워드를 가진 클래스 기반 언어를 사용했던 사람들을 대상으로 한다. 나는 특별히 Go를 시작하기 전에 PHP로 프로그래밍을 했었다.</em></p>
+<!-- raw HTML omitted -->
 <h1 id="0-용어">0. 용어</h1>
-
-<p><center> <a href="https://nathany.com/good/">&ldquo;Go는 클래스와 객체보다는 타입과 값을 갖는다&rdquo;</a> </center></p>
-
-<p>먼저 객체 없이도 객체 지향 프로그래밍 원리를 사용할 수 있다는 것을 이해하는 것이 중요하다. &ldquo;객체&rdquo;라는 용어는 Go에서는 사용할 수 없는 많은 의미들을 함축하고 있다.</p>
-
+<!-- raw HTML omitted -->
+<p>먼저 객체 없이도 객체 지향 프로그래밍 원리를 사용할 수 있다는 것을 이해하는 것이 중요하다. &ldquo;객체&quot;라는 용어는 Go에서는 사용할 수 없는 많은 의미들을 함축하고 있다.</p>
 <p>Go는 전통적인 OOP 언어들이 객체를 가지고 있는 반면, <strong>값</strong>을 가진다. 이 둘의 차이점을 살펴보자.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h2 id="객체-vs-값">객체 vs. 값</h2>
-
 <p><strong>객체</strong>는 클래스의 인터스턴스이다. 객체는 명명된 참조를 통해 접근된다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
 
-<pre><code class="language-php">&lt;?php
-
-class SomeObject {
-    public $classVar;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeObject</span> {
+    <span style="color:#66d9ef">public</span> $classVar;
   
-    public function __construct( $classVar ) {
-      	$this-&gt;classVar = $classVar;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct( $classVar ) {
+      	$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span> <span style="color:#f92672">=</span> $classVar;
     }
 }
 
 
-$object    = new SomeObject( &quot;Hello, World.&quot; );
-$reference = $object;
+$object    <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SomeObject</span>( <span style="color:#e6db74">&#34;Hello, World.&#34;</span> );
+$reference <span style="color:#f92672">=</span> $object;
 
-$reference-&gt;classVar = &quot;Look! I can access object!&quot;;
+$reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Look! I can access object!&#34;</span>;
 
-echo $object-&gt;classVar;    // &quot;Look! I can access object!&quot;
-echo $reference-&gt;classVar; // &quot;Look! I can access object!&quot;
-</code></pre>
-
-<p>이 PHP 코드는 <strong>$object</strong>와 <strong>$reference</strong>가 모두 같은 <strong>SomeObject</strong>의 인스턴스를 가리키고 있음을 보여준다.</p>
-
+<span style="color:#66d9ef">echo</span> $object<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span>;    <span style="color:#75715e">// &#34;Look! I can access object!&#34;
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">echo</span> $reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span>; <span style="color:#75715e">// &#34;Look! I can access object!&#34;
+</span></code></pre></div><p>이 PHP 코드는 <strong>$object</strong>와 <strong>$reference</strong>가 모두 같은 <strong>SomeObject</strong>의 인스턴스를 가리키고 있음을 보여준다.</p>
 <p>다양한 명명된 참조로부터 접근할 수 있는 것 외에도, 객체는 Go에서는 불가능한 상속과 서브클래스와 같은 중요한 개념 또한 포함한다. 따라서, Go를 배울 때에는, 객체에 대한 생각을 버리고, 올바른 용어를 사용하는데 집중을 하는게 가장 좋다.</p>
-
 <p><strong>값</strong>은 정확히 바로 그 값이다. 예를 들어, 구조체는 값이다. 구조체의 각 인스턴스는 전달될 때 복사된다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
+<span style="color:#f92672">import</span> (<span style="color:#e6db74">&#34;fmt&#34;</span>)
 
-import (&quot;fmt&quot;)
-
-type SomeStruct struct {
-    Field string
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SomeStruct</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Field</span> <span style="color:#66d9ef">string</span>
 }
 
-func main() {
-    value := SomeStruct{Field: &quot;Structs are values&quot;}
-    copy  := value
-    copy.Field = &quot;This is a Copy &amp; doesn't change the variable value&quot;
-    fmt.Println(value.Field) // &quot;Structs are values&quot;
-    fmt.Println(copy.Field)  // &quot;This is a Copy &amp; doesn't change the variable value&quot;
-}
-</code></pre>
-
-<p>위 예제에서, *copy.Field*에 값을 할당할 때, *value.Field*는 값을 변경하지 않는다는걸 볼 수 있다. 같은 인스턴스를 참조하고 싶을 땐, C와 유사하게, <strong>명시적으로 그렇게 할 수 있는 포인터</strong>를 사용한다.</p>
-
-<p><br></p>
-
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">value</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">SomeStruct</span>{<span style="color:#a6e22e">Field</span>: <span style="color:#e6db74">&#34;Structs are values&#34;</span>}
+    <span style="color:#a6e22e">copy</span>  <span style="color:#f92672">:=</span> <span style="color:#a6e22e">value</span>
+    <span style="color:#a6e22e">copy</span>.<span style="color:#a6e22e">Field</span> = <span style="color:#e6db74">&#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">Field</span>) <span style="color:#75715e">// &#34;Structs are values&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">copy</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>위 예제에서, <em>copy.Field</em>에 값을 할당할 때, <em>value.Field</em>는 값을 변경하지 않는다는걸 볼 수 있다. 같은 인스턴스를 참조하고 싶을 땐, C와 유사하게, <strong>명시적으로 그렇게 할 수 있는 포인터</strong>를 사용한다.</p>
+<!-- raw HTML omitted -->
 <h2 id="타입과-메서드-집합">타입과 메서드 집합</h2>
-
 <p>이제 Go에 객체가 없는 이유를 알았으므로, <strong>타입</strong>의 인스턴스, 특히 구조체 타입을 어떻게 조작하는지 살펴보자.</p>
-
 <p><strong>타입</strong>은 <strong>메서드 집합</strong>과 관련이 있다. 메서드 집합의 각 메서드는 주어진 <strong>리시버 (receiver)</strong> 위에서 동작한다.</p>
-
-<pre><code class="language-go">type SomeStruct struct {
-    Field string
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SomeStruct</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Field</span> <span style="color:#66d9ef">string</span>
 }
 
-// foo는 SomeStruct의 메서드 집합에 속함
-// (s *SomeStruct)는 SomeStruct 포인터에 대한 리시버이다
-func (s *SomeStruct) foo(field string) {    
-    s.Field = field
+<span style="color:#75715e">// foo는 SomeStruct의 메서드 집합에 속함
+</span><span style="color:#75715e">// (s *SomeStruct)는 SomeStruct 포인터에 대한 리시버이다
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SomeStruct</span>) <span style="color:#a6e22e">foo</span>(<span style="color:#a6e22e">field</span> <span style="color:#66d9ef">string</span>) {    
+    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Field</span> = <span style="color:#a6e22e">field</span>
 }
 
-func main() {
-    someStruct := new(SomeStruct)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">someStruct</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">SomeStruct</span>)
     
-    someStruct.foo(&quot;a&quot;)
-    fmt.Println(someStruct.Field)  // &quot;a&quot;
-    someStruct.foo(&quot;b&quot;)
-    fmt.Println(someStruct.Field)  // &quot;b&quot;
-}
-</code></pre>
-
-<p>여기서 우리는 <em>foo</em> 메서드가 <strong>someStruct</strong>의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
-
-<p><center> 재차 말해서 Go에는 객체가 없지만, 메서드 리시버와 클래스 메서드 사이에는 유사점이 있다. </center></p>
-
+    <span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">foo</span>(<span style="color:#e6db74">&#34;a&#34;</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;a&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">foo</span>(<span style="color:#e6db74">&#34;b&#34;</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;b&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>여기서 우리는 <em>foo</em> 메서드가 <strong>someStruct</strong>의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
+<!-- raw HTML omitted -->
 <p>이제 용어를 알아봤으므로, 마침내 우리는 Go 코드를 해석하는데 사용할 수 있는 OOP 패턴들을 살펴볼 수 있다.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h1 id="1-캡슐화-encapsulation">1. 캡슐화 (Encapsulation)</h1>
-
-<p><center> <a href="http://crackingjavainterviews.blogspot.kr/2013/04/what-are-four-principles-of-oop.html">&ldquo;캡슐화는 퍼블릭 메서드에 접근 제한을 둠으로써 데이터 구현체를 숨기는 메커니즘이다.&rdquo;</a> </center></p>
-
+<!-- raw HTML omitted -->
 <p>전통적으로, 클래스 기반 OOP에서는 캡슐화가 private과 public 변수/메서드를 통해 이루어졌다. Go에서는 <em>패키지 (package)</em> 수준에서 캡슐화가 이루어진다.</p>
-
 <p>&ldquo;Public&rdquo; 요소는 패키지 밖으로 노출될 수 있으며 첫 문자를 대문자로 표시한다. <strong>노출 (exported)</strong> vs. <strong>비노출 (unexported)</strong> 요소가 더 정확한 용어이기 때문에 public을 따옴표 안에 적었다. 비노출 요소는 첫 문자로 소문자를 사용해 표시하며, 해당 패키지 내에서만 접근이 가능하다.</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">encapsulation</span>
 
-<p><center> <em>Public/protected/private은 클래스와 관련된 키워드이며, exporting/importing은 패키지와 관련이 있다.</em> </center></p>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-<pre><code class="language-go">package encapsulation
+<span style="color:#75715e">// Encapsulation 구조체는 이 패키지 밖으로 노출될 수 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Encapsulation</span> <span style="color:#66d9ef">struct</span>{}
 
-import &quot;fmt&quot;
-
-// Encapsulation 구조체는 이 패키지 밖으로 노출될 수 있음
-type Encapsulation struct{}
-
-// Expose 메서드는 패키지 밖을 노출될 수 있음
-func (e *Encapsulation) Expose() {
-    fmt.Println(&quot;AHHHH! I'm exposed!&quot;)
+<span style="color:#75715e">// Expose 메서드는 패키지 밖을 노출될 수 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">Expose</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;AHHHH! I&#39;m exposed!&#34;</span>)
 }
 
-// hide 메서드는 패키지 내부에서만 사용할 수 있음
-func (e *Encapsulation) hide() {
-    fmt.Println(&quot;Shhhh... this is super secret&quot;)
+<span style="color:#75715e">// hide 메서드는 패키지 내부에서만 사용할 수 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">hide</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Shhhh... this is super secret&#34;</span>)
 }
 
-// Unhide는 노출되지 않은 hide 메서드를 사용함
-func (e *Encapsulation) Unhide() {
-    e.hide()
-    fmt.Println(&quot;...jk&quot;)
+<span style="color:#75715e">// Unhide는 노출되지 않은 hide 메서드를 사용함
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">Unhide</span>() {
+    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">hide</span>()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;...jk&#34;</span>)
 }
-</code></pre>
+</code></pre></div><p><em>encapsulation</em> 패키지에서, <em>Encapsulation (구조체)</em>, Expose (메서드) *Unhide (메서드)*는 모두 노출되어 있으며 타 패키지에서 사용될 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<p><em>encapsulation</em> 패키지에서, <em>Encapsulation (구조체)</em>, Expose (메서드) *Unhide (메서드)*는 모두 노출되어 있으며 타 패키지에서 사용될 수 있다.</p>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/encapsulation&#34;</span>
 
-<pre><code class="language-go">package main
-
-import &quot;github.com/amy/tech-talk/encapsulation&quot;
-
-func main() {
-    e := encapsulation.Encapsulation{}
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">encapsulation</span>.<span style="color:#a6e22e">Encapsulation</span>{}
     
-    e.Expose()     // &quot;AHHHH! I'm exposed!&quot;
-    
-    // e.hide()    // 주석을 없애면, 다음의 에러가 발생함
-                   // ./main.go:10: e.hide undefined (cannot refer
-                   // to unexported field or method encapsulation.
-                   // (*Encapsulation).&quot;&quot;.hide)         
-    
-    e.Unhide()     // &quot;Shhhh... this is super secret&quot;
-                   // &quot;...jk&quot;
-}
-</code></pre>
-
-<p>여기서 우리는 <em>encapsulation</em> 패키지와 노출 가능한 요소들을 <em>main</em> 패키지에서 가져와 사용했다. <em>hide</em> 메서드를 사용하려고하면 컴파일러는 에러를 발생시킨다.</p>
-
-<p><br></p>
-
+    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Expose</span>()     <span style="color:#75715e">// &#34;AHHHH! I&#39;m exposed!&#34;
+</span><span style="color:#75715e"></span>    
+    <span style="color:#75715e">// e.hide()    // 주석을 없애면, 다음의 에러가 발생함
+</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// ./main.go:10: e.hide undefined (cannot refer
+</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// to unexported field or method encapsulation.
+</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// (*Encapsulation).&#34;&#34;.hide)         
+</span><span style="color:#75715e"></span>    
+    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Unhide</span>()     <span style="color:#75715e">// &#34;Shhhh... this is super secret&#34;
+</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// &#34;...jk&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>여기서 우리는 <em>encapsulation</em> 패키지와 노출 가능한 요소들을 <em>main</em> 패키지에서 가져와 사용했다. <em>hide</em> 메서드를 사용하려고하면 컴파일러는 에러를 발생시킨다.</p>
+<!-- raw HTML omitted -->
 <h1 id="2-다형성-polymorphism">2. 다형성 (Polymorphism)</h1>
-
-<p><center> <a href="http://stackoverflow.com/questions/1031273/what-is-polymorphism-what-is-it-for-and-how-is-it-used">&ldquo;다형성은 클래스들이 공통 인터페이스를 공유하면서 다른 기능을 갖는 객체 지향 프로그래밍의 패턴을 묘사한다.&rdquo;</a> </center></p>
-
+<!-- raw HTML omitted -->
 <p>Go에서는 인터페이스가 암시적으로 충족된다. 인터페이스 또한 타입이다. 이 두 문장은 많은 의미를 담고 있으므로, 이제 이를 자세히 알아보자.</p>
-
 <p><strong>인터페이스가 암시적으로 충족된다</strong> <strong>→</strong> 인터페이스의 모든 메서드가 어떤 타입의 메서드 집합에 모두 포함되어 있을 경우 해당 타입은 인터페이스를 만족한다. Go에는 <em>implements</em> 키워드가 없다.</p>
-
 <p><strong>인터페이스는 타입이다</strong> <strong>→</strong> 어떤 타입이 한 인터페이스를 만족하면, 그 타입은 또한 타입이 만족하는 인터페이스에 의해 제한되는 모든 타입을 만족한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">polymorphism</span> 
 
-<pre><code class="language-go">package polymorphism 
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-import &quot;fmt&quot;
-
-type SloganSayer interface {
-    Slogan()
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SloganSayer</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Slogan</span>()
 }
 
-// SaySlogan은 SloganSayer 타입을 파라미터로 받음
-func SaySlogan(sloganSayer SloganSayer) {
-    sloganSayer.Slogan()
+<span style="color:#75715e">// SaySlogan은 SloganSayer 타입을 파라미터로 받음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">sloganSayer</span> <span style="color:#a6e22e">SloganSayer</span>) {
+    <span style="color:#a6e22e">sloganSayer</span>.<span style="color:#a6e22e">Slogan</span>()
 }
 
-// Hillary는 Slogan 함수를 구현함으로써 암묵적으로 SloganSayer 인터페이스를 만족
-// 따라서, Hillary도 SloganSayer 타입이다
-type Hillary struct{}
+<span style="color:#75715e">// Hillary는 Slogan 함수를 구현함으로써 암묵적으로 SloganSayer 인터페이스를 만족
+</span><span style="color:#75715e">// 따라서, Hillary도 SloganSayer 타입이다
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hillary</span> <span style="color:#66d9ef">struct</span>{}
 
-func (h *Hillary) Slogan() {
-    fmt.Println(&quot;Stronger together.&quot;)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hillary</span>) <span style="color:#a6e22e">Slogan</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Stronger together.&#34;</span>)
 }
 
-// Trump에 대해서도 동일하게 적용됨
-type Trump struct{}
+<span style="color:#75715e">// Trump에 대해서도 동일하게 적용됨
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Trump</span> <span style="color:#66d9ef">struct</span>{}
 
-func (t *Trump) Slogan() {
-    fmt.Println(&quot;Make America great again.&quot;)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Trump</span>) <span style="color:#a6e22e">Slogan</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Make America great again.&#34;</span>)
 }
-</code></pre>
+</code></pre></div><p>여기서 주의 깊게 볼건 SaySlogan 함수는 파라미터를 SloganSayer 타입으로 제한할 수 있다는 것이다. 따라서, 해당 인터페이스를 만족하는 모든 타입이 파라미터로 사용될 수 있다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span> 
 
-<p>여기서 주의 깊게 볼건 SaySlogan 함수는 파라미터를 SloganSayer 타입으로 제한할 수 있다는 것이다. 따라서, 해당 인터페이스를 만족하는 모든 타입이 파라미터로 사용될 수 있다.</p>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/polymorphism&#34;</span>
 
-<pre><code class="language-go">package main 
-
-import &quot;github.com/amy/tech-talk/polymorphism&quot;
-
-func main() {
-    hillary := new(polymorphism.Hillary)
-    hillary.Slogan()                  // &quot;Stronger together.&quot;
-    polymorphism.SaySlogan(hillary)   // &quot;Stronger together.&quot;
-    trump := new(polymorphism.Trump)
-    polymorphism.SaySlogan(trump)     // &quot;Make America great again.&quot;
-}
-</code></pre>
-
-<p>우리는 대통령 후보가 슬로건을 말하는것에 대해 걱정할 필요가 없다. 타입이 SloganSayer 인터페이스를 구현하는 한, 이를 SaySlogan으로 전달할 수 있다.</p>
-
-<p><br></p>
-
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">hillary</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">Hillary</span>)
+    <span style="color:#a6e22e">hillary</span>.<span style="color:#a6e22e">Slogan</span>()                  <span style="color:#75715e">// &#34;Stronger together.&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">hillary</span>)   <span style="color:#75715e">// &#34;Stronger together.&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">trump</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">Trump</span>)
+    <span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">trump</span>)     <span style="color:#75715e">// &#34;Make America great again.&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>우리는 대통령 후보가 슬로건을 말하는것에 대해 걱정할 필요가 없다. 타입이 SloganSayer 인터페이스를 구현하는 한, 이를 SaySlogan으로 전달할 수 있다.</p>
+<!-- raw HTML omitted -->
 <h1 id="3-컴포지션-composition">3. 컴포지션 (Composition)</h1>
-
-<p>Go에서 상속은 불가능하다. 대신, 우리는 <strong>임베딩 (embedding)</strong>을 사용해 조합 가능하고 재사용이 가능한 구조체를 만들 수 있다.</p>
-
+<p>Go에서 상속은 불가능하다. 대신, 우리는 **임베딩 (embedding)**을 사용해 조합 가능하고 재사용이 가능한 구조체를 만들 수 있다.</p>
 <p>Go는 인터페이스나 구조체 안에 타입을 임베드 할 수 있게 해준다. 임베딩을 통해, 우리는 내부 타입에서 선언된 메서드를 외부 타입으로 전달할 수 있다.</p>
-
 <blockquote>
 <p><em><a href="https://golang.org/doc/effective_go.html#embedding">타입을 임베드하면, 해당 타입의 메서드는 외부 타입의 메서드가 되지만, 메서드가 실행될때의 메서드 리시버는 외부 타입이 아니라 내부 타입이다.</a></em></p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">composition</span> 
 
-<pre><code class="language-go">package composition 
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-import &quot;fmt&quot;
-
-type Human struct {
-    FirstName   string
-    LastName    string
-    CanSwim     bool
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Human</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">FirstName</span>   <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">LastName</span>    <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">CanSwim</span>     <span style="color:#66d9ef">bool</span>
 }
 
-// Amy는 Human 타입으로 임베딩 되어있으며 따라서 Human의 메서드 집합에 속하는 메서드를 실행할 수 있음
-type Amy struct {
-    Human
+<span style="color:#75715e">// Amy는 Human 타입으로 임베딩 되어있으며 따라서 Human의 메서드 집합에 속하는 메서드를 실행할 수 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Amy</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Human</span>
 }
 
-// Alan 또한 Human 타입으로 임베딩 되어있음
-type Alan struct {
-    Human
+<span style="color:#75715e">// Alan 또한 Human 타입으로 임베딩 되어있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Alan</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Human</span>
 }
 
-func (h *Human) Name() {
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Human</span>) <span style="color:#a6e22e">Name</span>() {
     
-    fmt.Printf(&quot;Hello! My name is %v %v&quot;, h.FirstName, h.LastName)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Hello! My name is %v %v&#34;</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">FirstName</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">LastName</span>)
 }
 
-func (h *Human) Swim() {
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Human</span>) <span style="color:#a6e22e">Swim</span>() {
     
-    if h.CanSwim == true {
-        fmt.Println(&quot;I can swim!&quot;)
-    } else {
-        fmt.Println(&quot;I can not swim.&quot;)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">CanSwim</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;I can swim!&#34;</span>)
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;I can not swim.&#34;</span>)
     }
 }
-</code></pre>
+</code></pre></div><p>여러분은 &ldquo;<strong><a href="http://stackoverflow.com/questions/49002/prefer-composition-over-inheritance/891908#891908">상속보단 컴포지션</a></strong>&ldquo;이라는 말을 종종 들어봤을 것이다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<p>여러분은 &ldquo;<strong><a href="http://stackoverflow.com/questions/49002/prefer-composition-over-inheritance/891908#891908">상속보단 컴포지션</a></strong>&ldquo;이라는 말을 종종 들어봤을 것이다.</p>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/composition&#34;</span>
 
-<pre><code class="language-go">package main
-
-import &quot;github.com/amy/tech-talk/composition&quot;
-
-func main() {
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
     
-    // amy는 Human 타입으로 구성됨
-    amy := composition.Amy{
-        Human: composition.Human{
-            FirstName: &quot;Amy&quot;,
-            LastName:  &quot;Chen&quot;,
-            CanSwim:   true,
+    <span style="color:#75715e">// amy는 Human 타입으로 구성됨
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Amy</span>{
+        <span style="color:#a6e22e">Human</span>: <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Human</span>{
+            <span style="color:#a6e22e">FirstName</span>: <span style="color:#e6db74">&#34;Amy&#34;</span>,
+            <span style="color:#a6e22e">LastName</span>:  <span style="color:#e6db74">&#34;Chen&#34;</span>,
+            <span style="color:#a6e22e">CanSwim</span>:   <span style="color:#66d9ef">true</span>,
         },
     }
 
-    // alan은 Human 타입으로 구성됨
-    alan:= composition.Alan{
-        Human: composition.Human{
-            FirstName: &quot;Alan&quot;,
-            LastName:  &quot;Chen&quot;,
-            CanSwim:   false,
+    <span style="color:#75715e">// alan은 Human 타입으로 구성됨
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Alan</span>{
+        <span style="color:#a6e22e">Human</span>: <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Human</span>{
+            <span style="color:#a6e22e">FirstName</span>: <span style="color:#e6db74">&#34;Alan&#34;</span>,
+            <span style="color:#a6e22e">LastName</span>:  <span style="color:#e6db74">&#34;Chen&#34;</span>,
+            <span style="color:#a6e22e">CanSwim</span>:   <span style="color:#66d9ef">false</span>,
         },
     }
     
-    // Human의 메서드 집합은 Amy 타입으로 전달됨
-    amy.Name()     // &quot;Hello! My name is Amy Chen&quot;
-    amy.CanSwim()  // &quot;I can swim!&quot;
-    alan.Name()    // &quot;Hello! My name is Alan Chen&quot;
-    alan.CanSwim() // &quot;I can't swim&quot;
-}
-</code></pre>
-
-<p><br></p>
-
+    <span style="color:#75715e">// Human의 메서드 집합은 Amy 타입으로 전달됨
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span>.<span style="color:#a6e22e">Name</span>()     <span style="color:#75715e">// &#34;Hello! My name is Amy Chen&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span>.<span style="color:#a6e22e">CanSwim</span>()  <span style="color:#75715e">// &#34;I can swim!&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span>.<span style="color:#a6e22e">Name</span>()    <span style="color:#75715e">// &#34;Hello! My name is Alan Chen&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span>.<span style="color:#a6e22e">CanSwim</span>() <span style="color:#75715e">// &#34;I can&#39;t swim&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><!-- raw HTML omitted -->
 <h1 id="4-추상화-abstraction">4. 추상화 (Abstraction)</h1>
-
-<p><center> &ldquo;<em><a href="http://www.introprogramming.info/english-intro-csharp-book/read-online/chapter-20-object-oriented-programming-principles/#_Toc362296567">추상화란 내부적으로 어떻게 동작하는지 모른채 사용법만 알고 작업한다는 것을 의미한다. </a></em>&rdquo; </center></p>
-
+<!-- raw HTML omitted -->
 <p>구조체 내에 구조체를 임베딩 하는것과 유사하게, 구조체 내에 인터페이스를 임베딩할 수도 있다. 한 인터페이스를 만족하는 모든 타입들은 또한 해당 인터페이스 타입을 갖는다는걸 기억하라.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">abstraction</span>
 
-<pre><code class="language-go">package abstraction
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-import &quot;fmt&quot;
-
-type SloganSayer interface {
-    Slogan()
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SloganSayer</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Slogan</span>()
 }
 
-// Campaign은 자기 자신의 인스턴스에서 SloganSayer를 받을 수 있음
-// Campaign은 또한 SloganSayer 인터페이스를 구현하고 있으므로 SloganSayer이기도 함
-// 이는 체이닝시 유용하다
-type Campaign struct{
-    SloganSayer
+<span style="color:#75715e">// Campaign은 자기 자신의 인스턴스에서 SloganSayer를 받을 수 있음
+</span><span style="color:#75715e">// Campaign은 또한 SloganSayer 인터페이스를 구현하고 있으므로 SloganSayer이기도 함
+</span><span style="color:#75715e">// 이는 체이닝시 유용하다
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Campaign</span> <span style="color:#66d9ef">struct</span>{
+    <span style="color:#a6e22e">SloganSayer</span>
 }
 
-// SaySlogan은 파라미터로 Campaign 또한 받을 수 있음
-func SaySlogan(s SloganSayer) {
-    s.Slogan()
+<span style="color:#75715e">// SaySlogan은 파라미터로 Campaign 또한 받을 수 있음
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">SloganSayer</span>) {
+    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Slogan</span>()
 }
 
-// Hillary는 SloganSayer 인터페이스를 구현함
-// Hillary는 SloganSayer임
-type Hillary struct{}
+<span style="color:#75715e">// Hillary는 SloganSayer 인터페이스를 구현함
+</span><span style="color:#75715e">// Hillary는 SloganSayer임
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hillary</span> <span style="color:#66d9ef">struct</span>{}
 
-func (h *Hillary) Slogan() {
-    fmt.Println(&quot;Stronger together.&quot;)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hillary</span>) <span style="color:#a6e22e">Slogan</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Stronger together.&#34;</span>)
 }
 
-// Trump는 SloganSayer 인터페이스를 구현함
-// Trump는 SloganSayer임
-type Trump struct{}
+<span style="color:#75715e">// Trump는 SloganSayer 인터페이스를 구현함
+</span><span style="color:#75715e">// Trump는 SloganSayer임
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Trump</span> <span style="color:#66d9ef">struct</span>{}
 
-func (t *Trump) Slogan() {
-    fmt.Println(&quot;Make American great again.&quot;)
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Trump</span>) <span style="color:#a6e22e">Slogan</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Make American great again.&#34;</span>)
 }
-</code></pre>
+</code></pre></div><p>인터페이스 임베딩의 유용함은 이게 사용되는것을 볼 때 더욱 분명해진다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<p>인터페이스 임베딩의 유용함은 이게 사용되는것을 볼 때 더욱 분명해진다.</p>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/abstraction&#34;</span>
 
-<pre><code class="language-go">package main
-
-import &quot;github.com/amy/tech-talk/abstraction&quot;
-
-func main() {
-    hillary := new(abstraction.Hillary)
-    trump := new(abstraction.Trump)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">hillary</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Hillary</span>)
+    <span style="color:#a6e22e">trump</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Trump</span>)
   
-    h := abstraction.Campaign{hillary}
-    t := abstraction.Campaign{trump}
+    <span style="color:#a6e22e">h</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Campaign</span>{<span style="color:#a6e22e">hillary</span>}
+    <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Campaign</span>{<span style="color:#a6e22e">trump</span>}
   
-    // Slogan의 Hillary와 Trump 구현체는 추상화 되어있다
-    // 대신, Campaign은 단지 이게 SloganSayer이고 따라서 Slogan을 호출할 수 있음을 알고있음
-    h.Slogan()  // &quot;Stronger together.&quot;
-    t.Slogan()  // &quot;Make America great again.&quot;
-  
-    // SloganSayer를 SaySlogan의 파라미터로 주입할 수 있음
-    abstraction.SaySlogan(hillary)  // &quot;Stronger together.&quot;
-    abstraction.SaySlogan(trump)    // &quot;Make America great again.&quot;
-  
-    // h와 t는 또한 Campaign 타입이라는걸 기억하라
-    abstraction.SaySlogan(h)  // &quot;Stronger together.&quot;
-    abstraction.SaySlogan(t)  // &quot;Make America great again.&quot;
-}
-</code></pre>
-
-<p><br></p>
-
+    <span style="color:#75715e">// Slogan의 Hillary와 Trump 구현체는 추상화 되어있다
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 대신, Campaign은 단지 이게 SloganSayer이고 따라서 Slogan을 호출할 수 있음을 알고있음
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">Slogan</span>()  <span style="color:#75715e">// &#34;Stronger together.&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Slogan</span>()  <span style="color:#75715e">// &#34;Make America great again.&#34;
+</span><span style="color:#75715e"></span>  
+    <span style="color:#75715e">// SloganSayer를 SaySlogan의 파라미터로 주입할 수 있음
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">hillary</span>)  <span style="color:#75715e">// &#34;Stronger together.&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">trump</span>)    <span style="color:#75715e">// &#34;Make America great again.&#34;
+</span><span style="color:#75715e"></span>  
+    <span style="color:#75715e">// h와 t는 또한 Campaign 타입이라는걸 기억하라
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">h</span>)  <span style="color:#75715e">// &#34;Stronger together.&#34;
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">t</span>)  <span style="color:#75715e">// &#34;Make America great again.&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><!-- raw HTML omitted -->
 <p>이게 끝이다! 이제 여러분은 기존에 익숙했던 OOP 원리들을 어떻게 빌릴 수 있는지 알았으니, 모듈화를 시작해보라. 다음은 OOP 원칙이 Go에서 어떻게 바뀌는지를 요약한 것이다.</p>
-
-<p><img src="../images/2017-02-28-go-and-oop.png" alt="oop-in-go" /></p>
+<p><img src="../images/2017-02-28-go-and-oop.png" alt="oop-in-go"></p>
 
                 </section>
             </article>
@@ -522,6 +441,10 @@ func main() {
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -555,10 +478,6 @@ func main() {
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

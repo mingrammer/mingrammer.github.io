@@ -13,12 +13,12 @@
 <meta property="og:description" content="보통 파이썬 프로젝트를 시작하면 주로 virtualenv를 사용해 파이썬 환경(파이썬 버전, 패키지들을 모두 포함)을 독립적으로 분리시킨 가상 환경에서 작업" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/setup-the-python-development-environment-with-pycharm-and-docker/" />
-<meta property="article:published_time" content="2017-07-14T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-07-14T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2017-07-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-07-14T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>PyCharm &#43; Docker로 파이썬 개발환경 셋업하기 (Dockerization) &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,8 +64,8 @@
                     </h1>
                     <h2 class="headline">
                     Jul 14, 2017 00:00
-                    · 4459 words
-                    · 9 minute read
+                    · 4516 words
+                    · 10 minute read
                       <span class="tags">
                       
                       
@@ -83,164 +83,118 @@
                   
                     <div id="toc">
                       <nav id="TableOfContents">
-<ul>
-<li><a href="#프로젝트-생성하기">프로젝트 생성하기</a>
-<ul>
-<li><a href="#1-프로젝트-구조-잡기">1. 프로젝트 구조 잡기</a></li>
-</ul></li>
-<li><a href="#도커-docker-세팅하기">도커 (Docker) 세팅하기</a>
-<ul>
-<li><a href="#1-도커-설치">1. 도커 설치</a></li>
-<li><a href="#2-macos에-해당-도커-머신-생성">2. (macOS에 해당) 도커 머신 생성</a></li>
-<li><a href="#3-도커-파일-생성-및-도커-이미지-빌드">3. 도커 파일 생성 및 도커 이미지 빌드</a></li>
-<li><a href="#4-도커-컨테이너-실행">4. 도커 컨테이너 실행</a></li>
-</ul></li>
-<li><a href="#파이참-pycharm-세팅하기">파이참 (PyCharm) 세팅하기</a>
-<ul>
-<li><a href="#1-리모트-도커-연결">1. 리모트 도커 연결</a></li>
-<li><a href="#2-flask-애플리케이션-수정-및-동작-확인">2. Flask 애플리케이션 수정 및 동작 확인</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#1-프로젝트-구조-잡기">1. 프로젝트 구조 잡기</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-도커-설치">1. 도커 설치</a></li>
+    <li><a href="#2-macos에-해당-도커-머신-생성">2. (macOS에 해당) 도커 머신 생성</a></li>
+    <li><a href="#3-도커-파일-생성-및-도커-이미지-빌드">3. 도커 파일 생성 및 도커 이미지 빌드</a></li>
+    <li><a href="#4-도커-컨테이너-실행">4. 도커 컨테이너 실행</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#1-리모트-도커-연결">1. 리모트 도커 연결</a></li>
+    <li><a href="#2-flask-애플리케이션-수정-및-동작-확인">2. Flask 애플리케이션 수정 및 동작 확인</a></li>
+  </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<p>보통 파이썬 프로젝트를 시작하면 주로 <strong>virtualenv</strong>를 사용해 파이썬 환경(파이썬 버전, 패키지들을 모두 포함)을 독립적으로 분리시킨 가상 환경에서 작업을 한다.</p>
-
+                    <p>보통 파이썬 프로젝트를 시작하면 주로 <strong>virtualenv</strong>를 사용해 파이썬 환경(파이썬 버전, 패키지들을 모두 포함)을 독립적으로 분리시킨 가상 환경에서 작업을 한다.</p>
 <p>그러나 여기엔 한 가지 한계점이 있는데 <strong>virtualenv</strong>를 사용하면 파이썬 환경은 독립적으로 구성할 수 있지만 OS 환경까지 독립적으로 구성할 순 없다는 점이다. 즉, 프로젝트가 파이썬뿐만 아니라 OS 레벨 혹은 시스템 레벨까지 독립적으로 구성해야하는 경우엔 <strong>virtualenv</strong>는 애초에 적합하지 않다.</p>
-
 <p>최근에 파이썬 프로젝트를 하나 시작했는데 이 프로젝트가 바로 이 경우이다. 물론 OS나 시스템 레벨을 직접 건드리는 부분은 없지만 하나의 (네트워크) 시스템 환경을 구축하는 작업이었기에 아예 독립적으로 구성하는게 나아보였다.</p>
-
 <p>그렇다면 대안은 독립적인 머신을 사용하거나 Vagrant와 같은 VM을 사용하는건데 나의 경우엔 Vagrant는 조금 부담스럽고 좀 더 가볍게 구성하고자 <a href="https://www.docker.com/"><strong>Docker</strong></a>를 사용하였다. 나는 프로젝트 크기가 크거나 IDE의 도움이 필요한 경우 주로 <strong>PyCharm</strong>으로 작업을 하는데 Docker는 터미널에서 작업하다보니 두 프로그램간의 스위칭이 너무 불편하였다. 마침 PyCharm에서 Docker를 지원하고 있었고 한 번 연동해서 써본 결과 나름 만족스러웠기에 이를 기록 및 공유하고자 이번 포스트를 쓰게되었다.</p>
-
 <p>그러면 바로 본론으로 들어가서 파이썬 프로젝트를 Docker 기반으로 개발하는 전체 과정을 살펴보기위해 Docker 컨테이너를 만든 뒤, 그 위에 Flask 애플리케이션을 띄워보고 PyCharm에서 Docker를 연동하여 좀 더 편리한 개발환경을 셋업해보자.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h1 id="프로젝트-생성하기">프로젝트 생성하기</h1>
-
 <h2 id="1-프로젝트-구조-잡기">1. 프로젝트 구조 잡기</h2>
-
 <p>우선 도커에 띄우고자 하는 파이썬 프로젝트가 있어야한다. 물론 그냥 단순히 프로젝트용 디렉토리 하나만 있어도되며, 기존에 작업중이던 파이썬 프로젝트여도 상관없다. (프로젝트를 Docker 기반의 애플리케이션으로 만드는 작업을 보통 <strong>Dockerization</strong>이라고 부른다.)</p>
-
 <p>여기선 파이썬 프로젝트 디렉토리를 하나 생성하고 간단한 Flask 애플리케이션 코드를 작성해보자. 또한 <code>requirements.txt</code>에 <code>Flask</code> 패키지를 명시하자.</p>
-
-<pre><code class="language-shell">mkdir python-docker &amp;&amp; cd python-docker
-echo &quot;Flask==0.12.2&quot; &gt; requirements.txt
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir python-docker <span style="color:#f92672">&amp;&amp;</span> cd python-docker
+echo <span style="color:#e6db74">&#34;Flask==0.12.2&#34;</span> &gt; requirements.txt
 touch app.py
-</code></pre>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># app.py</span>
+<span style="color:#f92672">from</span> flask <span style="color:#f92672">import</span> Flask
 
-<pre><code class="language-python"># app.py
-from flask import Flask
-
-app = Flask('app')
+app <span style="color:#f92672">=</span> Flask(<span style="color:#e6db74">&#39;app&#39;</span>)
 
 
-@app.route('/')
-def index():
-    return &quot;I'm from docker&quot;
+<span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">index</span>():
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;I&#39;m from docker&#34;</span>
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
-</code></pre>
-
-<p><br></p>
-
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+    app<span style="color:#f92672">.</span>run(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, debug<span style="color:#f92672">=</span>True)
+</code></pre></div><!-- raw HTML omitted -->
 <h1 id="도커-docker-세팅하기">도커 (Docker) 세팅하기</h1>
-
 <h2 id="1-도커-설치">1. 도커 설치</h2>
-
 <p>기본적으로 도커가 이미 설치되어 있다고 가정하고 시작하기는 하지만 혹시나 설치가 안되어 있다면 <a href="https://docs.docker.com/engine/installation/">여기</a>에서 다운로드를 할 수 있다. (macOS에서 <strong>brew</strong>를 사용한다면 <code>brew install docker</code>로 간편하게 설치가 가능하다)</p>
-
 <h2 id="2-macos에-해당-도커-머신-생성">2. (macOS에 해당) 도커 머신 생성</h2>
-
 <p>도커는 LXC 위에서 동작하기 때문에 Docker를 구동하기 위한 VM이 필요하다. VirtualBox를 사용해 도커 머신을 생성하자. 도커를 설치하면 함께 설치되는 Docker VM을 관리할 수 있는<code>docker-machine</code> 커맨드를 사용하여 도커 머신을 생성할 수 있다.</p>
-
-<pre><code class="language-shell"># &lt;machine-name&gt;은 여러분이 원하는 이름으로 설정하라. (필자는 테스트용으로 pyapp-container를 사용하였다)
-# docker-machine create &lt;machine-name&gt; --driver virtualbox
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># &lt;machine-name&gt;은 여러분이 원하는 이름으로 설정하라. (필자는 테스트용으로 pyapp-container를 사용하였다)</span>
+<span style="color:#75715e"># docker-machine create &lt;machine-name&gt; --driver virtualbox</span>
 docker-machine create pyapp-container --driver virtualbox
-</code></pre>
-
-<p>생성된 도커 머신을 사용하기 위해선 해당 머신에 대한 설정값들을 환경변수로 export 해야한다.</p>
-
-<pre><code class="language-shell"># &lt;machine-name&gt;은 여러분이 원하는 이름으로 설정하라. (필자는 테스트용으로 pyapp-container를 사용하였다)
-# eval $(docker-machine env &lt;machine-name&gt;)
-eval $(docker-machine env pyapp-container)
-</code></pre>
-
-<p>위 커맨드를 실행하면 다음의 커맨드들이 실행되어 필요한 환경변수들이 설정된다. (<code>DOCKER_HOST</code>는 다를 수 있음)</p>
-
-<pre><code class="language-shell">export DOCKER_TLS_VERIFY=&quot;1&quot;
-export DOCKER_HOST=&quot;tcp://192.168.99.104:2376&quot;
-export DOCKER_CERT_PATH=&quot;/Users/ming/.docker/machine/machines/pyapp-container&quot;
-export DOCKER_MACHINE_NAME=&quot;pyapp-container&quot;
-</code></pre>
-
-<h2 id="3-도커-파일-생성-및-도커-이미지-빌드">3. 도커 파일 생성 및 도커 이미지 빌드</h2>
-
+</code></pre></div><p>생성된 도커 머신을 사용하기 위해선 해당 머신에 대한 설정값들을 환경변수로 export 해야한다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># &lt;machine-name&gt;은 여러분이 원하는 이름으로 설정하라. (필자는 테스트용으로 pyapp-container를 사용하였다)</span>
+<span style="color:#75715e"># eval $(docker-machine env &lt;machine-name&gt;)</span>
+eval <span style="color:#66d9ef">$(</span>docker-machine env pyapp-container<span style="color:#66d9ef">)</span>
+</code></pre></div><p>위 커맨드를 실행하면 다음의 커맨드들이 실행되어 필요한 환경변수들이 설정된다. (<code>DOCKER_HOST</code>는 다를 수 있음)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export DOCKER_TLS_VERIFY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span>
+export DOCKER_HOST<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tcp://192.168.99.104:2376&#34;</span>
+export DOCKER_CERT_PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/Users/ming/.docker/machine/machines/pyapp-container&#34;</span>
+export DOCKER_MACHINE_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pyapp-container&#34;</span>
+</code></pre></div><h2 id="3-도커-파일-생성-및-도커-이미지-빌드">3. 도커 파일 생성 및 도커 이미지 빌드</h2>
 <p>도커 컨테이너를 띄우기 위해서는 이미지(image)가 필요하다. 이미지는 도커 컨테이너를 띄우기 위한 일종의 스냅샷이다. OS 이미지의 그 이미지라고 생각하면 된다. 우리는 우리의 파이썬 프로젝트를 위한 이미지를 만들 것이다.</p>
-
 <p>도커는 <strong>Dockerfile</strong>이라고 하는 도커 이미지를 구성하고 빌드하기 위한 명령어들을 저장해놓는 파일을 지원한다. 그럼 이제 우리가 사용할 이미지를 빌드하기 위한 도커 파일을 작성해보자. (아까 우리가 생성한 프로젝트 디렉토리에 작성하면 된다.) 여기서는 컨테이너 OS로 <strong>Ubuntu 16.04</strong>를 사용할 것이다. (원한다면 다른 OS를 써도 무방하며 명령어를 해당 OS에 맞게 변경하면 된다)</p>
-
-<pre><code class="language-dockerfile"># 베이스 이미지로 ubuntu:16.04 사용 
-FROM ubuntu:16.04
-
-# 메인테이너 정보 (옵션)
-MAINTAINER &lt;your-nickname&gt; &lt;&lt;your-email&gt;&gt;
-
-# 환경변수 설정 (옵션)
-ENV PATH /usr/local/bin:$PATH
-ENV LANG C.UTF-8
-
-# 기본 패키지들 설치 및 Python 3.6 설치
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:fkrull/deadsnakes
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends python3.6 python3.6-dev python3-pip python3-setuptools python3-wheel gcc
-RUN apt-get install -y git
-
-# pip 업그레이드
-RUN python3.6 -m pip install pip --upgrade
-
-# 여러분의 현재 디렉토리의 모든 파일들을 도커 컨테이너의 /python-docker 디렉토리로 복사 (원하는 디렉토리로 설정해도 됨)
-ADD . /python-docker
-
-# 5000번 포트 개방 (Flask 웹 애플리케이션을 5000번 포트에서 띄움)
-EXPOSE 5000
-
-# 작업 디렉토리로 이동
-WORKDIR /python-docker
-
-# 작업 디렉토리에 있는 requirements.txt로 패키지 설치
-RUN pip3 install -r requirements.txt
-
-# 컨테이너에서 실행될 명령어. 컨테이거나 실행되면 app.py를 실행시킨다.
-CMD python3.6 app.py
-</code></pre>
-
-<p>그럼 이제 위 Dockerfile을 빌드해서 실제 이미지를 만들어보자.</p>
-
-<pre><code class="language-shell"># image-name은 빌드할 도커 이미지명이다. 보통 &lt;image-name&gt;:&lt;tag&gt; 형태의 이름을 사용한다.
-# dockerfile-path-directory는 Dockerfile이 위치한 디렉토리 경로를 의미한다.
-# 여기선 현재 프로젝트 디렉토리에 있으므로 &quot;.&quot;을 사용
-# docker build -t &lt;image-name&gt; &lt;dockerfile-path-directory&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># 베이스 이미지로 ubuntu:16.04 사용 </span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> ubuntu:16.04</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 메인테이너 정보 (옵션)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">MAINTAINER</span><span style="color:#e6db74"> &lt;your-nickname&gt; &lt;&lt;your-email&gt;&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 환경변수 설정 (옵션)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> PATH /usr/local/bin:$PATH<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> LANG C.UTF-8<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 기본 패키지들 설치 및 Python 3.6 설치</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get install -y software-properties-common<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> add-apt-repository -y ppa:fkrull/deadsnakes<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get update<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get install -y --no-install-recommends python3.6 python3.6-dev python3-pip python3-setuptools python3-wheel gcc<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> apt-get install -y git<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># pip 업그레이드</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> python3.6 -m pip install pip --upgrade<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 여러분의 현재 디렉토리의 모든 파일들을 도커 컨테이너의 /python-docker 디렉토리로 복사 (원하는 디렉토리로 설정해도 됨)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> . /python-docker<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 5000번 포트 개방 (Flask 웹 애플리케이션을 5000번 포트에서 띄움)</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 5000</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 작업 디렉토리로 이동</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /python-docker</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 작업 디렉토리에 있는 requirements.txt로 패키지 설치</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip3 install -r requirements.txt<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># 컨테이너에서 실행될 명령어. 컨테이거나 실행되면 app.py를 실행시킨다.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> python3.6 app.py<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>그럼 이제 위 Dockerfile을 빌드해서 실제 이미지를 만들어보자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># image-name은 빌드할 도커 이미지명이다. 보통 &lt;image-name&gt;:&lt;tag&gt; 형태의 이름을 사용한다.</span>
+<span style="color:#75715e"># dockerfile-path-directory는 Dockerfile이 위치한 디렉토리 경로를 의미한다.</span>
+<span style="color:#75715e"># 여기선 현재 프로젝트 디렉토리에 있으므로 &#34;.&#34;을 사용</span>
+<span style="color:#75715e"># docker build -t &lt;image-name&gt; &lt;dockerfile-path-directory&gt;</span>
 docker build -t pyapp:latest .
-</code></pre>
-
-<p>첫 빌드시에는 베이스 이미지를 받아와 모든 필요한 패키지들을 설치하고 모든 커맨드를 처음부터 실행하므로 조금 오래 걸릴 수도 있다. 하지만 한 번 빌드한 뒤부터는 캐시를 사용하기 때문에 빌드 속도가 빨라질 것이다.</p>
-
+</code></pre></div><p>첫 빌드시에는 베이스 이미지를 받아와 모든 필요한 패키지들을 설치하고 모든 커맨드를 처음부터 실행하므로 조금 오래 걸릴 수도 있다. 하지만 한 번 빌드한 뒤부터는 캐시를 사용하기 때문에 빌드 속도가 빨라질 것이다.</p>
 <p>빌드가 끝나면 이미지가 잘 생성되었는지 확인해보자.</p>
-
-<pre><code class="language-shell">docker images
-</code></pre>
-
-<p>실행 결과</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker images
+</code></pre></div><p>실행 결과</p>
 <pre><code>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 pyapp               latest              372c329c5b81        10 minutes ago      504MB
 &lt;none&gt;              &lt;none&gt;              b4bf2c8f2db7        12 minutes ago      504MB
@@ -252,109 +206,60 @@ pyapp               latest              372c329c5b81        10 minutes ago      
 &lt;none&gt;              &lt;none&gt;              a0a69fd8fdf2        8 hours ago         504MB
 &lt;none&gt;              &lt;none&gt;              2fdab6374fe3        8 hours ago         498MB
 ubuntu              16.04               d355ed3537e9        3 weeks ago         119MB
-</code></pre>
-
-<p>아래 <code>&lt;none&gt;</code>으로 보이는 것들은 <code>pyapp</code> 이미지 빌드 도중 중간 중간 생성된 이미지들이다. <code>pyapp</code> 이미지가 제대로 생성되었음을 볼 수 있다.</p>
-
+</code></pre><p>아래 <code>&lt;none&gt;</code>으로 보이는 것들은 <code>pyapp</code> 이미지 빌드 도중 중간 중간 생성된 이미지들이다. <code>pyapp</code> 이미지가 제대로 생성되었음을 볼 수 있다.</p>
 <h2 id="4-도커-컨테이너-실행">4. 도커 컨테이너 실행</h2>
-
 <p>마지막이다! 이제 위에서 만든 도커 머신과 이미지를 가지고 실제 도커 컨테이너 인스턴스를 실행해보자. 다음의 커맨드를 통해 컨테이너를 실행해보자.</p>
-
-<pre><code class="language-shell"># docker run --name &lt;machine-name&gt; -d -p 8080:5000 -v $(pwd):/python-docker &lt;image-name&gt;
-docker run --name pyapp-container -d -p 8080:5000 -v $(pwd):/python-docker pyapp:latest
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># docker run --name &lt;machine-name&gt; -d -p 8080:5000 -v $(pwd):/python-docker &lt;image-name&gt;</span>
+docker run --name pyapp-container -d -p 8080:5000 -v <span style="color:#66d9ef">$(</span>pwd<span style="color:#66d9ef">)</span>:/python-docker pyapp:latest
+</code></pre></div><ul>
 <li><code>--name</code> 옵션으로 우리가 사용할 도커 머신명을 지정한다.</li>
 <li><code>-d</code> 옵션으로 도커 컨테이너를 백그라운드로 실행시킨다.</li>
 <li><code>-v</code> 옵션으로 호스트 디렉토리와 도커 디렉토리의 디스크 볼륨을 마운트한다. 따라서, 호스트에서 해당 디렉토리의 파일을 수정하면 도커 컨테이너에도 반영된다.</li>
 <li><code>-p</code> 옵션으로 포트를 맵핑한다. <code>8080:5000</code>의 의미는 호스트에서 8080 포트 접속시 도커 컨테이너의 5000 포트 프로세스가 맵핑된다는 소리다. (5000 포트에서 열린 프로세스가 반응)</li>
 </ul>
-
 <p>도커 컨테이너가 실행되면 다음과 같이 컨테이너의 ID가 보일 것이다 (ID는 다를 수 있음)</p>
-
 <pre><code>f76cb8a34bd1f258b799cd0ab84d8a611851a62b92fdb729882a003ec0473229
-</code></pre>
-
-<p>그럼 이제 도커 컨테이너에서 실행된 Flask 애플리케이션에 접속해보자. 접속 방법은 리눅스와 macOS가 조금 다른데 왜냐하면 위에서도 언급했지만 macOS의 경우 도커를 위한 VM을 띄우고 이 위에서 도커 컨테이너를 실행했으므로 VM IP로 접속해야하기 때문이다. (리눅스 환경이라면 호스트에서 도커를 바로 띄울 수 있으므로 <code>localhost</code>로 접속이 가능하다.)</p>
-
+</code></pre><p>그럼 이제 도커 컨테이너에서 실행된 Flask 애플리케이션에 접속해보자. 접속 방법은 리눅스와 macOS가 조금 다른데 왜냐하면 위에서도 언급했지만 macOS의 경우 도커를 위한 VM을 띄우고 이 위에서 도커 컨테이너를 실행했으므로 VM IP로 접속해야하기 때문이다. (리눅스 환경이라면 호스트에서 도커를 바로 띄울 수 있으므로 <code>localhost</code>로 접속이 가능하다.)</p>
 <p>따라서 macOS의 경우 다음 명령어를 통해 VM의 IP를 얻어온 다음 해당 IP의 <code>8080</code> 포트로 접속하면된다.</p>
-
-<pre><code class="language-shell"># macOS에만 해당
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># macOS에만 해당</span>
 docker-machine ip pyapp-container
-</code></pre>
-
-<p>도커 컨테이너에서 실행된 Flask 애플리케이션에 요청을 날려보자. (웹 브라우저에서 접속해도된다.)</p>
-
-<pre><code class="language-shell"># Linux: curl localhost:8080
+</code></pre></div><p>도커 컨테이너에서 실행된 Flask 애플리케이션에 요청을 날려보자. (웹 브라우저에서 접속해도된다.)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Linux: curl localhost:8080</span>
 curl 192.168.99.104:8080
-# I'm from docker
-</code></pre>
-
-<p>우리는 Flask 애플리케이션을 성공적으로 도커 컨테이너 위에 올렸고 실행까지 성공했다. 이제 PyCharm에서 Flask 애플리케이션에 기능을 좀 더 추가해보자. 그런데 우리는 방금 애플리케이션을 도커 컨테이너 위에 올렸으니 PyCharm에 도커를 연동하여 바로 도커 위에서 작업할 수 있는 환경을 만들어보자.</p>
-
-<p><br></p>
-
+<span style="color:#75715e"># I&#39;m from docker</span>
+</code></pre></div><p>우리는 Flask 애플리케이션을 성공적으로 도커 컨테이너 위에 올렸고 실행까지 성공했다. 이제 PyCharm에서 Flask 애플리케이션에 기능을 좀 더 추가해보자. 그런데 우리는 방금 애플리케이션을 도커 컨테이너 위에 올렸으니 PyCharm에 도커를 연동하여 바로 도커 위에서 작업할 수 있는 환경을 만들어보자.</p>
+<!-- raw HTML omitted -->
 <h1 id="파이참-pycharm-세팅하기">파이참 (PyCharm) 세팅하기</h1>
-
 <h2 id="1-리모트-도커-연결">1. 리모트 도커 연결</h2>
-
 <p>PyCharm에서 좀 전에 실행한 도커 컨테이너를 연결해보자. <code>Preferences</code> 메뉴의 <code>Build, Execution, Deployment &gt; Docker</code> 메뉴로 들어가면 다음과 같은 화면이 나온다.</p>
-
-<p><img src="../images/2017-07-14-docker-preference.png" alt="docker preference" /></p>
-
+<p><img src="../images/2017-07-14-docker-preference.png" alt="docker preference"></p>
 <p><code>+</code> 버튼을 눌러 설정을 추가하고 이름을 설정한다. (필자의 경우 <strong>Pyapp Docker</strong>로 설정했음을 볼 수 있다)</p>
-
 <p>아래의 <code>Import credentials from Docker Machine</code> 체크박스를 활성화 한 뒤 Machine에서 아까 생성하고 실행한 <strong>pyapp-container</strong>를 선택한 후 <code>OK</code>를 눌러 설정을 마친다. 그러면 아래와 같은 도커뷰가 보일 것이고 <strong>Pyapp Docker</strong>에서 다음과 같은 정보들을 볼 수 있다.</p>
-
-<p><img src="../images/2017-07-14-docker-view.png" alt="docker view" /></p>
-
+<p><img src="../images/2017-07-14-docker-view.png" alt="docker view"></p>
 <p><code>Log</code> 탭에서는 도커 컨테이너 안에서 실행되고 프로세스들의 로그를 볼 수 있는데 Flask 애플리케이션을 실행한 로그와 접속 로그가 잘 보인다. 성공적으로 도커를 연결했음을 볼 수 있다. 이 외의 <code>Port Bindings</code>나 <code>Volume Bindings</code> 탭을 보면 우리가 아까 <code>docker run</code> 커맨드로 명시했던 모든 맵핑 테이블을 볼 수 있다. (필요한 경우 PyCharm에서 +/- 버튼으로 동적으로 추가/제거를 할 수 있다.)</p>
-
 <p>그러나 아직 할 일이 한 가지 남았다. 도커는 연결했지만 PyCharm과 도커 컨테이너 내부의 파이썬 인터프리터는 아직 연결하지 않았다. 우리는 로컬 환경이 아닌 독립된 도커 컨테이너에서 모든 파이썬 버전 및 패키지들을 설치하고 관리할 것이므로 로컬 환경의 인터프리터가 아닌 도커 내부의 인터프리터를 사용해야한다. <code>Preferences</code>에 들어가 <code>interpreter</code>로 검색을 하면 인터프리터 설정 화면이 나온다.</p>
-
-<p><img src="../images/2017-07-14-python-interpreter-preference.png" alt="python interpreter preference" /></p>
-
+<p><img src="../images/2017-07-14-python-interpreter-preference.png" alt="python interpreter preference"></p>
 <p><code>Add Remote</code>를 선택한 후 <code>Docker</code> 버튼을 눌러 컨테이너를 선택한다. 이미지 로딩에 조금 시간이 걸릴 수 있는데 조금 기다리면 된다. 그리고 인터프리터 <strong>path</strong>는 <code>/usr/bin/python3.6</code>으로 적는다.</p>
-
-<p><img src="../images/2017-07-14-select-interpreter.png" alt="select interpreter" /></p>
-
+<p><img src="../images/2017-07-14-select-interpreter.png" alt="select interpreter"></p>
 <p><code>OK</code>를 누르면 인터프리터와 패키지들이 로딩되고 잠시 후 다음과 같은 화면을 볼 수 있다.</p>
-
-<p><img src="../images/2017-07-14-packages-list.png" alt="packages list" /></p>
-
+<p><img src="../images/2017-07-14-packages-list.png" alt="packages list"></p>
 <p>우리가 처음에 도커 이미지를 빌드할 때 설치했던 파이썬 패키지들이 잘 보이는걸로 봐서 도커 컨테이너의 인터프리터가 성공적으로 연결되었음을 알 수 있다.</p>
-
 <p>이렇게 인터프리터를 연결하면 우리는 이제 로컬 파이썬이 아닌 리모트 도커 컨테이너의 파이썬 환경을 그대로 사용할 수 있게된다. 이것으로 로컬 PyCharm 작업 환경과 도커 컨테이너 환경을 완벽하게 연동하였다.</p>
-
 <h2 id="2-flask-애플리케이션-수정-및-동작-확인">2. Flask 애플리케이션 수정 및 동작 확인</h2>
-
 <p>이제 애플리케이션을 수정해보자. <code>app.py</code>의 <code>index</code> 함수 아래에 다음과 같은 코드를 추가해보자.</p>
-
-<pre><code class="language-python">@app.route('/me')
-def me():
-    return &quot;I'm mingrammer on docker&quot;
-</code></pre>
-
-<p>파일을 저장하면 도커뷰의 <code>Log</code> 탭의 내용이 조금 바뀔 것이다. 디버그 모드에서 파일을 수정하면 Flask는 웹서버를 재실행하는데 컨테이너에서 Flask 웹서버가 정상적으로 재실행 되었음을 볼 수 있다.</p>
-
-<p><img src="../images/2017-07-14-changed-docker-view.png" alt="changed docker view" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#39;/me&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">me</span>():
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;I&#39;m mingrammer on docker&#34;</span>
+</code></pre></div><p>파일을 저장하면 도커뷰의 <code>Log</code> 탭의 내용이 조금 바뀔 것이다. 디버그 모드에서 파일을 수정하면 Flask는 웹서버를 재실행하는데 컨테이너에서 Flask 웹서버가 정상적으로 재실행 되었음을 볼 수 있다.</p>
+<p><img src="../images/2017-07-14-changed-docker-view.png" alt="changed docker view"></p>
 <p>따라서 우리는 로컬 환경에서 작업한 코드를 실시간으로 도커와 동기화 하였고, 이를 PyCharm에서도 확인할 수 있게 되었다. (도커와의 코드 동기화는 도커 자체의 기능으로 PyCharm과는 관련이 없다. 다만 이제 이를 PyCharm에서 모두 확인할 수 있다는 것이다.)</p>
-
 <p>정상적으로 반영되었는지 확인하기 위해 추가한 엔드포인트로 요청을 날려보자.</p>
-
-<pre><code class="language-shell"># Linux: curl localhost:8080/me
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># Linux: curl localhost:8080/me</span>
 curl 192.168.99.104:8080/me
-# I'm mingrammer on docker
-</code></pre>
-
-<p>위와 같은 응답이 날아온다면 성공적으로 반영이 된 것이다. (Olleh!)</p>
-
-<p><br></p>
-
+<span style="color:#75715e"># I&#39;m mingrammer on docker</span>
+</code></pre></div><p>위와 같은 응답이 날아온다면 성공적으로 반영이 된 것이다. (Olleh!)</p>
+<!-- raw HTML omitted -->
 <p>이상으로 파이썬 프로젝트를 <strong>Dockerize</strong>하는 방법과 도커를 PyCharm과 연동하는 과정을 살펴보았다. 이 외에도 도커와 PyCharm으로 할 수 있는일은 무궁무진하다. 다만 여기서는 튜토리얼 수준으로만 다뤄보았다. 애초에 예시로 든 애플리케이션이 매우 간단하여 복잡한 세팅이나 작업이 필요없기도하다.</p>
-
 <p>다음에는 단일 웹 애플리케이션이 아닌 데이터베이스 서버, 캐시 서버등의 좀 더 복잡한 환경과 아키텍쳐에서 도커를 활용하는 방법들을 포스팅 해보겠다.</p>
 
                 </section>
@@ -400,6 +305,10 @@ curl 192.168.99.104:8080/me
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -433,10 +342,6 @@ curl 192.168.99.104:8080/me
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

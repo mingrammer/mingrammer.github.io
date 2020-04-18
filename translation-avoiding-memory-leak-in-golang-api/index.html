@@ -13,12 +13,12 @@
 <meta property="og:description" content="Avoiding Memory Leak in Golang API를 번역한 글입니다. 여러분은 Go API를 프로덕션 환경에 배포하기 전에 먼저 이 글을 읽어야합니다. 이 글은 Kurio에서의 실제 경험에 기반한" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/translation-avoiding-memory-leak-in-golang-api/" />
-<meta property="article:published_time" content="2018-02-18T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-02-18T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2018-02-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-02-18T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[번역] Go API에서 메모리 누수 예방하기 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 18, 2018 00:00
-                    · 3583 words
+                    · 3544 words
                     · 8 minute read
                       <span class="tags">
                       
@@ -83,370 +83,287 @@
                   
                     <div id="toc">
                       <nav id="TableOfContents">
-<ul>
-<li><a href="#아키텍처">아키텍처</a></li>
-<li><a href="#문제점">문제점</a></li>
-<li><a href="#1단계-http-client-커스터마이징">1단계 : http.Client 커스터마이징</a></li>
-<li><a href="#2단계-닫히지-않은-응답-바디에서의-메모리-누수-방지">2단계 : 닫히지 않은 응답 바디에서의 메모리 누수 방지</a></li>
-<li><a href="#3단계-go-채널의-타임아웃-제어">3단계 : Go 채널의 타임아웃 제어</a>
-<ul>
-<li><a href="#첫-시도-해결책">첫 시도 해결책</a></li>
-</ul></li>
-<li><a href="#4단계-컨텍스트를-활용한-타임아웃-제어">4단계 : 컨텍스트를 활용한 타임아웃 제어</a></li>
-<li><a href="#배운점">배운점</a></li>
-</ul>
+  <ul>
+    <li><a href="#첫-시도-해결책">첫 시도 해결책</a></li>
+  </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p><a href="https://hackernoon.com/avoiding-memory-leak-in-golang-api-1843ef45fca8">Avoiding Memory Leak in Golang API</a>를 번역한 글입니다.</p>
 </blockquote>
-
 <p><em>여러분은 Go API를 프로덕션 환경에 배포하기 전에 먼저 이 글을 읽어야합니다. 이 글은 Kurio에서의 실제 경험에 기반한 것이며, 우리가 올바른 방식으로 개발하고 있지 않아서 모든 배포를 위해 얼마나 고군분투 했었는지에 대한 경험담입니다.</em></p>
-
 <p>몇 주 전, 우리는 <a href="https://kurio.co/article-feed">Kurio</a>의 메인 서비스에서 발생한 이상하고 감지도 되지 않는 버그들을 고치고 있었다. 우리는 다양한 방법으로 디버깅과 버그 수정을 시도했었다. 서비스는 몇 주 동안 프로덕션 환경에서 동작해왔기 때문에 비즈니스 로직에서 발생한 버그는 아니었다. 그러나 오토 스케일링으로 서비스를 항상 살렸기 때문에 이는 잘 동작하는 것처럼 보였다.</p>
-
 <p>나중에 우리팀은 이 문제가 코드의 문제임을 발견했고 우리가 제대로 하고 있지 않았음을 알아냈다.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h1 id="아키텍처">아키텍처</h1>
-
 <p>참고로, 우리는 아키텍처에 마이크로서비스 패턴을 사용하고있다. 우리는 유저(모바일 및 웹)에게 API를 제공하는 <code>메인 API</code>라고 하는 하나의 게이트웨이 API를 가지고있는데, 이는 API 게이트웨이와 유사한 역할을 하기 때문에 단순히 유저로부터 받은 요청을 처리한 다음 요청에 맞는 필요한 서비스를 호출하고 유저에게 응답을 반환한다. 이 <code>메인 API</code>는 100% Go로 작성되었다. Go를 선택한 이유는 다른 얘기이므로 여기서 그 이유를 설명하진 않겠다.</p>
-
 <p>우리의 시스템을 그림으로 그려보면 다음과 같다.</p>
-
-<p><img src="../images/2018-02-18-kurio-architecture.png" alt="Kurio architecture" /></p>
-
-<p><br></p>
-
+<p><img src="../images/2018-02-18-kurio-architecture.png" alt="Kurio architecture"></p>
+<!-- raw HTML omitted -->
 <h1 id="문제점">문제점</h1>
-
 <p>우리는 한동안 항상 다운되고 모바일앱에 긴 응답 시간을 보내며 가끔은 접속 장애까지 일으키는 메인 API로 인해 많은 고생을 했다. API 대시보드 모니터는 어느새 빨간색으로 바뀌었다. 솔직히 말하면 API 대시보드 모니터가 빨간색으로 바뀐다는건 위험한 일이었고 이는 엔지니어에게 스트레스와 패닉을 안겨주었다.</p>
-
 <p>또 다른 문제는 CPU와 메모리 사용량이 점점 더 높아지고 있었다는 것이다. 이런일이 발생하면 우리는 서비스를 수동으로 다시 시작하고 재실행될 때까지 기다렸다.</p>
-
-<p><img src="../images/2018-02-18-kurio-api-response-time.png" alt="Our API response time up-to 86 seconds for a single request" /></p>
-
-<p><center>단일 요청에 대한 API 응답 시간이 86초까지 치솟음</center></p>
-
-<p><img src="../images/2018-02-18-kurio-api-response-time-graph.png" alt="graph our API response time, and doing restart manually for safety" /></p>
-
-<p><center>수동으로 재시작한 후의 API 응답 시간 그래프</center></p>
-
+<p><img src="../images/2018-02-18-kurio-api-response-time.png" alt="Our API response time up-to 86 seconds for a single request"></p>
+<!-- raw HTML omitted -->
+<p><img src="../images/2018-02-18-kurio-api-response-time-graph.png" alt="graph our API response time, and doing restart manually for safety"></p>
+<!-- raw HTML omitted -->
 <p>이 버그는 버그에 대한 그 어떠한 특별한 정보도 로깅하고 있지 않았기 때문에 매우 난처했다. 응답시간이 매우 길어지고 CPU와 메모리 사용량이 증가했다. 정말 악몽 같았다.</p>
-
-<p><br></p>
-
-<h1 id="1단계-http-client-커스터마이징">1단계 : http.Client 커스터마이징</h1>
-
+<!-- raw HTML omitted -->
+<h1 id="1단계--httpclient-커스터마이징">1단계 : http.Client 커스터마이징</h1>
 <p>서비스를 개발하면서 배운것중 하나는 디폴트 설정은 신뢰할 수 없다는 것이다.</p>
-
 <p>우리는 http 패키지의 디폴트 설정을 사용하는 대신 직접 커스터마이징한 <code>http.Client</code>를 사용했다.</p>
-
-<pre><code class="language-go">client := http.Client{} // default
-</code></pre>
-
-<p>우리는 몇가지 필요한 설정을 추가했다. 커넥션 재사용을 위해 전송 (Transport) 정보를 설정하고 재사용 가능한 커넥션에 대한 최대 유휴 (Idle) 시간을 조절했다.</p>
-
-<pre><code class="language-go">keepAliveTimeout:= 600 * time.Second
-timeout:= 2 * time.Second
-defaultTransport := &amp;http.Transport{
-    Dial: (&amp;net.Dialer{
-               KeepAlive: keepAliveTimeout,
-          }).Dial,
-    MaxIdleConns: 100,
-    MaxIdleConnsPerHost: 100,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Client</span>{} <span style="color:#75715e">// default
+</span></code></pre></div><p>우리는 몇가지 필요한 설정을 추가했다. 커넥션 재사용을 위해 전송 (Transport) 정보를 설정하고 재사용 가능한 커넥션에 대한 최대 유휴 (Idle) 시간을 조절했다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">keepAliveTimeout</span><span style="color:#f92672">:=</span> <span style="color:#ae81ff">600</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>
+<span style="color:#a6e22e">timeout</span><span style="color:#f92672">:=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>
+<span style="color:#a6e22e">defaultTransport</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Transport</span>{
+    <span style="color:#a6e22e">Dial</span>: (<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Dialer</span>{
+               <span style="color:#a6e22e">KeepAlive</span>: <span style="color:#a6e22e">keepAliveTimeout</span>,
+          }).<span style="color:#a6e22e">Dial</span>,
+    <span style="color:#a6e22e">MaxIdleConns</span>: <span style="color:#ae81ff">100</span>,
+    <span style="color:#a6e22e">MaxIdleConnsPerHost</span>: <span style="color:#ae81ff">100</span>,
 }
-client:= &amp;http.Client{
-    Transport: defaultTransport,
-    Timeout:   timeout,
+<span style="color:#a6e22e">client</span><span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Client</span>{
+    <span style="color:#a6e22e">Transport</span>: <span style="color:#a6e22e">defaultTransport</span>,
+    <span style="color:#a6e22e">Timeout</span>:   <span style="color:#a6e22e">timeout</span>,
 }
-</code></pre>
-
-<p>이 설정을 통해 다른 서비스를 호출하는데 소요되는 최대 시간을 줄일 수 있었다.</p>
-
-<p><br></p>
-
-<h1 id="2단계-닫히지-않은-응답-바디에서의-메모리-누수-방지">2단계 : 닫히지 않은 응답 바디에서의 메모리 누수 방지</h1>
-
+</code></pre></div><p>이 설정을 통해 다른 서비스를 호출하는데 소요되는 최대 시간을 줄일 수 있었다.</p>
+<!-- raw HTML omitted -->
+<h1 id="2단계--닫히지-않은-응답-바디에서의-메모리-누수-방지">2단계 : 닫히지 않은 응답 바디에서의 메모리 누수 방지</h1>
 <p>이 단계에서 우리가 배운 것은 커넥션 풀을 다른 서비스에서 재사용하기 위해선 반드시 응답 바디를 모두 읽고 종료 해야한다는 것이다.</p>
-
 <p><code>메인 API</code>는 단지 다른 서비스들을 호출하고 있었기 때문에, 우리는 치명적인 실수를 저질렀다. <code>메인 API</code>는 <code>http.Client</code>에서 사용가능한 커넥션을 재사용한다고 가정하고 있기 때문에 어떤 일이 생기면 설령 필요없다고 하더라도 반드시 응답 바디를 읽어야한다. 또한 반드시 응답 바디를 닫아야한다. 이 두 가지는 우리 서버에서 메모리 누수를 방지하는데 도움이 되었다.</p>
-
 <p>우리는 코드에서 응답 바디를 닫는다는걸 잊고 있었다. 그리고 이는 후에 우리의 프로덕션에 큰 재앙을 일으켰다.</p>
-
 <p>해결책은 응답 바디는 반드시 닫고, 반환되는 데이터가 필요없을지라도 응답 바디를 읽는 것이었다.</p>
-
-<pre><code class="language-go">req, err := http.NewRequest(&quot;GET&quot;, &quot;http://example.com?q=one&quot;, nil)
-if err != nil {
-    return err
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://example.com?q=one&#34;</span>, <span style="color:#66d9ef">nil</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 }
-resp, err := client.Do(req)
-//=================================================
-// 응답 바디를 닫음
-//=================================================
-if resp != nil {
-    defer resp.Body.Close() // 반드시 닫아야함
+<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
+<span style="color:#75715e">//=================================================
+</span><span style="color:#75715e">// 응답 바디를 닫음
+</span><span style="color:#75715e">//=================================================
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resp</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>() <span style="color:#75715e">// 반드시 닫아야함
+</span><span style="color:#75715e"></span>}
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 }
-if err != nil {
-    return err
+<span style="color:#75715e">//=================================================
+</span><span style="color:#75715e">// HTTP 커넥션을 재사용할때 메모리 누수를 피하기 위해선 데이터가 필요없더라도 응답 바디를 읽어야함
+</span><span style="color:#75715e">//=================================================
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">Discard</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>) <span style="color:#75715e">// 응답 바디를 읽음. (데이터가 필요 없으므로 devnull에 write)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> { 
+     <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
 }
-//=================================================
-// HTTP 커넥션을 재사용할때 메모리 누수를 피하기 위해선 데이터가 필요없더라도 응답 바디를 읽어야함
-//=================================================
-_, err = io.Copy(ioutil.Discard, resp.Body) // 응답 바디를 읽음. (데이터가 필요 없으므로 devnull에 write)
-if err != nil { 
-     return err
-}
-</code></pre>
-
-<p>우리는 <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/">이 훌륭한 글</a>을 읽고 위 문제를 해결했다.</p>
-
+</code></pre></div><p>우리는 <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/">이 훌륭한 글</a>을 읽고 위 문제를 해결했다.</p>
 <p>1단계와 2단계 및 오토 스케일링의 도움으로 이 버그를 줄일 수 있었으며, 이는 작년 (2017) 이후 3개월간은 다시 발생하지 않았다.</p>
-
-<p><br></p>
-
-<h1 id="3단계-go-채널의-타임아웃-제어">3단계 : Go 채널의 타임아웃 제어</h1>
-
+<!-- raw HTML omitted -->
+<h1 id="3단계--go-채널의-타임아웃-제어">3단계 : Go 채널의 타임아웃 제어</h1>
 <p>잘 동작하다가 몇 개월 후, 버그가 재발하였다. 2018년 1월 첫 주, <code>메인 API</code>가 호출하는 서비스중 하나인  <code>콘텐츠 서비스</code>가 다운되었는데, 어떤 이유로 접속 불능 상태가 되었다.</p>
-
 <p>따라서 <code>콘텐츠 서비스</code>가 다운되면서 <code>메인 API</code>는 다시 중단되었다. API 대시보드는 다시 빨간색으로 바뀌고, API 응답 시간이 길어지면서 느려졌다. 오토 스케일링을 사용중임에도 불구하고 CPU와 메모리 사용량이 매우 높아졌다.</p>
-
 <p>또 다시 우리는 문제의 근원을 찾기 시작했다. <code>콘텐츠 서비스</code>를 재실행하니 다시 잘 동작하였다.</p>
-
 <p>우리는 왜 이런일이 발생했는지 의아해했다. 생각해보니, 우리는 <code>http.Client</code>에 타임아웃 기한을 설정했기 때문에 이런 일은 절대 발생하지 않을 것이다.</p>
-
 <p>그런 다음, 코드에서 잠재적인 문제를 찾다가 몇가지 위험한 코드를 발견했다.</p>
-
 <p>빠른 이해를 위해 바로 코드를 살펴보자.</p>
-
 <blockquote>
 <p>아래 함수는 예시 함수이긴하나, 우리가 마주한 패턴과 유사한 코드이다.</p>
 </blockquote>
-
-<pre><code class="language-go">// 고치기전 코드
-type sampleChannel struct{
-    Data *Sample
-    Err error
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 고치기전 코드
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">sampleChannel</span> <span style="color:#66d9ef">struct</span>{
+    <span style="color:#a6e22e">Data</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>
+    <span style="color:#a6e22e">Err</span> <span style="color:#66d9ef">error</span>
 }
 
-func (u *usecase) GetSample(id int64, someparam string, anotherParam string) ([]*Sample, error) {
-    chanSample := make(chan sampleChannel, 3)
-    wg := sync.WaitGroup{}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
+    <span style="color:#a6e22e">wg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>{}
 
-    wg.Add(1)
-    go func() {
-        defer wg.Done()
-        chanSample &lt;- u.getDataFromGoogle(id, anotherParam) // 함수의 예시
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
+</span><span style="color:#75715e"></span>    }()
+
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
     }()
 
-    wg.Add(1)
-    go func() {
-        defer wg.Done()
-        chanSample &lt;- u.getDataFromFacebook(id, anotherParam)
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
     }()
 
-    wg.Add(1)
-    go func() {
-        defer wg.Done()
-        chanSample &lt;- u.getDataFromTwitter(id,anotherParam)
-    }()
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
+    close(<span style="color:#a6e22e">chanSample</span>)
 
-    wg.Wait()
-    close(chanSample)
+    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#ae81ff">0</span>)
 
-    result := make([]*Sample, 0)
-
-    for sampleItem := range chanSample {
-        if sampleItem.Error != nil {
-            logrus.Error(sampleItem.Err)
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">chanSample</span> {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Error</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+            <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span>)
         }
-        if sampleItem.Data == nil { 
-            continue
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> { 
+            <span style="color:#66d9ef">continue</span>
         }
-        result = append(result, sampleItem.Data)
+        <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
     }
   
-    return result
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
 }
-</code></pre>
-
-<p>위 코드를 보면 아무 문제가 없어보인다. 그러나 이 함수는 우리의 <code>메인 API</code>에서 가장 많이 접근하는 함수이며, 가장 무거운 호출이다. 왜냐하면 이 함수는 큰 작업을 처리하는 3개의 API를 호출하기 때문이다.</p>
-
+</code></pre></div><p>위 코드를 보면 아무 문제가 없어보인다. 그러나 이 함수는 우리의 <code>메인 API</code>에서 가장 많이 접근하는 함수이며, 가장 무거운 호출이다. 왜냐하면 이 함수는 큰 작업을 처리하는 3개의 API를 호출하기 때문이다.</p>
 <p>이를 개선하기 위해선 채널에서 타임아웃을 사용하는 새로운 접근법을 도입해야한다. 위와 같은 형태의 코드에서는 <code>WaitGroup</code>이 모든 프로세스가 끝날 때까지 대기하고 있기 때문에 모든 응답을 처리하고 반환하기 위해서는 모든 API 호출이 끝날때까지 기다려야한다.</p>
-
 <p>이는 우리가 저지른 큰 실수중 하나이다. 이 코드는 하나의 서비스가 죽었을 때 큰 문제를 일으킬 수 있다. 죽은 서비스가 복구될때까지 계속 기다릴 것이기 때문이다. 물론 초당 5K개의 호출이 들어오면 이는 재앙이 된다.</p>
-
 <h2 id="첫-시도-해결책">첫 시도 해결책</h2>
-
 <p>우리는 타임아웃을 추가하여 코드를 수정했다. 따라서 유저는 오랫동안 기다리지 않아도 되며 대신 <code>Internal Server Error</code>를 받게될 것이다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
+    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">chanSample</span>)
 
-<pre><code class="language-go">func (u *usecase) GetSample(id int64, someparam string, anotherParam string) ([]*Sample, error) {
-    chanSample := make(chan sampleChannel, 3)
-    defer close(chanSample)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
+</span><span style="color:#75715e"></span>    }()
 
-    go func() {
-        chanSample &lt;- u.getDataFromGoogle(id, anotherParam) // 함수의 예시
-    }()
-
-    go func() {
-        chanSample &lt;- u.getDataFromFacebook(id, anotherParam)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
     }()
    
-    go func() {
-        chanSample &lt;- u.getDataFromTwitter(id,anotherParam)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
     }()
  
-    result := make([]*feed.Feed, 0)
-    timeout := time.After(time.Second * 2)
+    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">feed</span>.<span style="color:#a6e22e">Feed</span>, <span style="color:#ae81ff">0</span>)
+    <span style="color:#a6e22e">timeout</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>)
   
-    for loop := 0; loop &lt; 3; loop++ {
-        select {
-        case sampleItem := &lt;-chanSample:
-            if sampleItem.Err != nil {
-                logrus.Error(sampleItem.Err)
-                continue
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">loop</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">loop</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">loop</span><span style="color:#f92672">++</span> {
+        <span style="color:#66d9ef">select</span> {
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">chanSample</span>:
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+                <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span>)
+                <span style="color:#66d9ef">continue</span>
             }
-            if feedItem.Data == nil {
-                continue
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">feedItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+                <span style="color:#66d9ef">continue</span>
             }
-            result = append(result,sampleItem.Data)
-        case &lt;-timeout:
-            err := fmt.Errorf(&quot;Timeout to get sample id: %d. &quot;, id)
-            result = make([]*sample, 0)
-            return result, err
+            <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>,<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
+        <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">timeout</span>:
+            <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Timeout to get sample id: %d. &#34;</span>, <span style="color:#a6e22e">id</span>)
+            <span style="color:#a6e22e">result</span> = make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">sample</span>, <span style="color:#ae81ff">0</span>)
+            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span>
         }
     }
 
-    return result, nil;
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#66d9ef">nil</span>;
 }
-</code></pre>
-
-<p><br></p>
-
-<h1 id="4단계-컨텍스트를-활용한-타임아웃-제어">4단계 : 컨텍스트를 활용한 타임아웃 제어</h1>
-
+</code></pre></div><!-- raw HTML omitted -->
+<h1 id="4단계--컨텍스트를-활용한-타임아웃-제어">4단계 : 컨텍스트를 활용한 타임아웃 제어</h1>
 <p>3단계까지 시도 했음에도, 우리의 문제는 여전히 완벽하게 해결되지는 않았다. 우리의 <code>메인 API</code>는 여전히 높은 CPU와 메모리를 점유하고 있었다.</p>
-
 <p>이는 유저에게 이미 <code>Internal Server Error</code>를 반환하고 있음에도 불구하고 고루틴이 여전히 살아있었기 때문이다. 우리가 원하던건 응답이 반환되면 백그라운드에서 돌아가고있는 고루틴 및 API 호출을 포함한 모든 리소스가 예외없이 지워지는 것이다.</p>
-
 <p>나중에 <a href="http://dahernan.github.io/2015/02/04/context-and-cancellation-of-goroutines/">이 글</a>을 읽은 뒤, 우리는 Go에서 알지 못했던 흥미로운 특징을 발견했다. 바로  <code>컨텍스트 (Context)</code>를 활용한 고루틴의 캔슬레이션 (Cancellation)이다.</p>
-
 <p>타임아웃을 위해 <code>time.After</code>를 사용하는 대신 <code>context.Context</code>를 사용하였다. 이 새로운 접근법으로 우리의 서비스는 보다 더 안정적이게 되었다.</p>
-
 <p>그 다음 관련 함수에 컨텍스트를 추가하여 코드 구조를 다시 변경하였다.</p>
-
-<pre><code class="language-go">// 컨텍스트를 사용한 최종 수정 코드
-func (u *usecase) GetSample(c context.Context, id int64, someparam string, anotherParam string) ([]*Sample, error) {
-    if c== nil {
-        c= context.Background()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 컨텍스트를 사용한 최종 수정 코드
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span><span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">c</span>= <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>()
     }
   
-    ctx, cancel := context.WithTimeout(c, time.Second * 2)
-    defer cancel()
+    <span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithTimeout</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>)
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">cancel</span>()
   
-    chanSample := make(chan sampleChannel, 3)
-    defer close(chanSample)
+    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
+    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">chanSample</span>)
     
-    go func() {
-        chanSample &lt;- u.getDataFromGoogle(ctx, id, anotherParam) // 함수의 예시
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
+</span><span style="color:#75715e"></span>    }()
+
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
     }()
 
-    go func() {
-        chanSample &lt;- u.getDataFromFacebook(ctx, id, anotherParam)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
     }()
 
-    go func() {
-        chanSample &lt;- u.getDataFromTwitter(ctx, id,anotherParam)
-    }()
-
-    result := make([]*feed.Feed, 0)
+    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">feed</span>.<span style="color:#a6e22e">Feed</span>, <span style="color:#ae81ff">0</span>)
   
-    for loop := 0; loop &lt; 3; loop++ {
-        select {
-            case sampleItem := &lt;-chanSample:
-                if sampleItem.Err != nil {
-                    continue
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">loop</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">loop</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">loop</span><span style="color:#f92672">++</span> {
+        <span style="color:#66d9ef">select</span> {
+            <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">chanSample</span>:
+                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+                    <span style="color:#66d9ef">continue</span>
                 }
-                if feedItem.Data == nil {
-                    continue
+                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">feedItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+                    <span style="color:#66d9ef">continue</span>
                 }
-                result = append(result,sampleItem.Data)
-                // ============================================================
-                // 일관성 없는 데이터를 방지하기 위해 컨텍스트가 타임아웃을 초과하는 경우
-                // 유저에게 빈 배열과 에러 메시지를 보낸다
-                // ============================================================
-            case &lt;-ctx.Done(): // 컨텍스트가 타임아웃을 초과했다는 알림 시그널을 받음
-                err := fmt.Errorf(&quot;Timeout to get sample id: %d. &quot;, id)
-                result = make([]*sample, 0)
-                return result, err
+                <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>,<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
+                <span style="color:#75715e">// ============================================================
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 일관성 없는 데이터를 방지하기 위해 컨텍스트가 타임아웃을 초과하는 경우
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 유저에게 빈 배열과 에러 메시지를 보낸다
+</span><span style="color:#75715e"></span>                <span style="color:#75715e">// ============================================================
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>(): <span style="color:#75715e">// 컨텍스트가 타임아웃을 초과했다는 알림 시그널을 받음
+</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Timeout to get sample id: %d. &#34;</span>, <span style="color:#a6e22e">id</span>)
+                <span style="color:#a6e22e">result</span> = make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">sample</span>, <span style="color:#ae81ff">0</span>)
+                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span>
         }
     }
 
-    return result, nil;
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#66d9ef">nil</span>;
 }
-</code></pre>
-
-<p>우리는 코드에서 모든 고루틴 호출에 <code>컨텍스트</code>를 사용한다. 이는 메모리를 해제하고 고루틴 호출을 취소하는데 도움이 된다.</p>
-
+</code></pre></div><p>우리는 코드에서 모든 고루틴 호출에 <code>컨텍스트</code>를 사용한다. 이는 메모리를 해제하고 고루틴 호출을 취소하는데 도움이 된다.</p>
 <p>추가적으로, 보다 더 통제 가능하고 신뢰성 있는 서비스를 위해 HTTP 요청에 컨텍스트를 전달한다.</p>
-
-<pre><code class="language-go">func ( u *usecase) getDataFromFacebook(ctx context.Context, id int64, param string) sampleChanel{
-    req,err := http.NewRequest(&quot;GET&quot;, &quot;https://facebook.com&quot;, nil)
-    if err != nil {
-        return sampleChannel{
-            Err: err,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> ( <span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">param</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">sampleChanel</span>{
+    <span style="color:#a6e22e">req</span>,<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;https://facebook.com&#34;</span>, <span style="color:#66d9ef">nil</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
+            <span style="color:#a6e22e">Err</span>: <span style="color:#a6e22e">err</span>,
         }
     }
-    // ============================================================
-    // 요청에 컨텍스트를 전달한다
-    // 이 기능은 Go 1.7부터 사용할 수 있다
-    // ============================================================
-    if ctx != nil {
-        req = req.WithContext(ctx) // HTTP 호출 요청에 컨텍스트를 사용하고있다.
-    }
+    <span style="color:#75715e">// ============================================================
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 요청에 컨텍스트를 전달한다
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 이 기능은 Go 1.7부터 사용할 수 있다
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// ============================================================
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ctx</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">req</span> = <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">WithContext</span>(<span style="color:#a6e22e">ctx</span>) <span style="color:#75715e">// HTTP 호출 요청에 컨텍스트를 사용하고있다.
+</span><span style="color:#75715e"></span>    }
   
-    resp, err:= u.httpClient.Do(req)
-    if err != nil {
-        return sampleChannel{
-            Err: err,
+    <span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">httpClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
+            <span style="color:#a6e22e">Err</span>: <span style="color:#a6e22e">err</span>,
         }
     }
   
-    body,err:= ioutils.ReadAll(resp.Body)
-    if err!= nil {
-        return sampleChannel{
-            Err:err,
+    <span style="color:#a6e22e">body</span>,<span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutils</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span><span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
+            <span style="color:#a6e22e">Err</span>:<span style="color:#a6e22e">err</span>,
         }
     }
     
-    sample:= new(Sample)
-    err:= json.Unmarshall(body,&amp;sample)
-    if err != nil {
-        return sampleChannle{
-            Err:err,
+    <span style="color:#a6e22e">sample</span><span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Sample</span>)
+    <span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshall</span>(<span style="color:#a6e22e">body</span>,<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sample</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannle</span>{
+            <span style="color:#a6e22e">Err</span>:<span style="color:#a6e22e">err</span>,
         }
     }
     
-    return sampleChannel{
-        Err:nil,
-        Data:sample,
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
+        <span style="color:#a6e22e">Err</span>:<span style="color:#66d9ef">nil</span>,
+        <span style="color:#a6e22e">Data</span>:<span style="color:#a6e22e">sample</span>,
     }
 }
 
-</code></pre>
-
-<p>이 모든 설정과 타임아웃 제어로 인해, 우리의 시스템은 보다 더 안전하고 통제 가능한 시스템이 되었다.</p>
-
-<p><br></p>
-
+</code></pre></div><p>이 모든 설정과 타임아웃 제어로 인해, 우리의 시스템은 보다 더 안전하고 통제 가능한 시스템이 되었다.</p>
+<!-- raw HTML omitted -->
 <h1 id="배운점">배운점</h1>
-
 <ul>
 <li>프로덕션 환경에서는 절대 디폴트 옵션을 사용하지 말자.
 디폴트 옵션을 사용하지 않으며 큰 프로젝트를 만들고 있다면 절대 디폴트 옵션을 사용하지 말라.</li>
@@ -497,6 +414,10 @@ func (u *usecase) GetSample(c context.Context, id int64, someparam string, anoth
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -530,10 +451,6 @@ func (u *usecase) GetSample(c context.Context, id int64, someparam string, anoth
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

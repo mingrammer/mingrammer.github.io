@@ -1,14 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on mingrammer&#39;s note</title>
     <link>https://mingrammer.com/post/</link>
     <description>Recent content in Posts on mingrammer&#39;s note</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 13 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://mingrammer.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go 프라이빗 모듈 가져오기</title>
+      <link>https://mingrammer.com/go-modules-private-repo/</link>
+      <pubDate>Sat, 18 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://mingrammer.com/go-modules-private-repo/</guid>
+      <description>이번 글에서는 프라이빗 저장소에 저장된 Go 패키지를 가져오는 방법에 대해 알아보려고 한다. 먼저 프라이빗 모듈을 가져오기 전에 간단하게 go get의 동작 방식부터 짚</description>
+    </item>
     
     <item>
       <title>컨테이너 내부 Go 애플리케이션 디버깅하기</title>
@@ -223,7 +232,7 @@
       <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/translation-the-truth-is-in-the-code/</guid>
-      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. requirementsascode의 shippingapp 모델 예시 머잖아, 모든 소프트웨어 개발자는 다음과 같은 말을</description>
+      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. 머잖아, 모든 소프트웨어 개발자는 다음과 같은 말을 들을것이다: 진실은 오직 한 곳, 코드에서만 발견된다.</description>
     </item>
     
     <item>
@@ -232,7 +241,7 @@
       <pubDate>Wed, 26 Apr 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/tips-of-using-comma-in-python/</guid>
-      <description>파이썬에서 Comma(,)를 활용할 수 있는 몇가지 팁을 정리해보고자 한다. 아마 많은 사람들이 이미 다 알고있을 내용이기 때문에, 이 또한 파이썬 초보자들을 대상</description>
+      <description>파이썬에서 **Comma(,)**를 활용할 수 있는 몇가지 팁을 정리해보고자 한다. 아마 많은 사람들이 이미 다 알고있을 내용이기 때문에, 이 또한 파이썬 초보자</description>
     </item>
     
     <item>
@@ -259,7 +268,7 @@
       <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/understanding-the-asterisk-of-python/</guid>
-      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 Asterisk(*)는 단순히 곱셈 이상의 여</description>
+      <description>파이썬은 타 언어에 비해 비교적 연산자 및 연산의 종류가 풍부한 편이다. 특히 파이썬이 지원하는 많은 연산자중 하나인 **Asterisk(*)**는 단순히 곱셈</description>
     </item>
     
     <item>
@@ -286,7 +295,7 @@
       <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</guid>
-      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&amp;quot;Hello, World&amp;quot;) import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;Hello, World&amp;quot;)</description>
+      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&amp;#34;Hello, World&amp;#34;) import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello, World&amp;#34;)</description>
     </item>
     
     <item>
@@ -313,7 +322,7 @@
       <pubDate>Fri, 13 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/presentation-awskrug-review-first-aws-experience/</guid>
-      <description>지난 11일 AWS Korea User Group 강남 SE 모임에서 &amp;ldquo;AWS 회고&amp;rdquo;라는 주제로 발표를 했다. 처음 AWS를 사용해 아키텍쳐링을 해본 경험을 회고하며 부족했던점과 개선방</description>
+      <description>지난 11일 AWS Korea User Group 강남 SE 모임에서 &amp;ldquo;AWS 회고&amp;quot;라는 주제로 발표를 했다. 처음 AWS를 사용해 아키텍쳐링을 해본 경험을 회고하며 부족했던점과 개선방법</description>
     </item>
     
     <item>
@@ -421,42 +430,6 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/post/2017-08-28-translation-python-practices-for-efficient-code-performance-memory-and-usability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-06-12-s3-object-updated-waiter/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-09-03-how-to-use-error-values-in-go-1-13/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-10-25-daily-report-with-airflow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://mingrammer.com/post/2019-12-22-translation-docker-anti-patterns/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://mingrammer.com/post/2019-12-22-translation-docker-anti-patterns/</guid>
       <description></description>
     </item>
     

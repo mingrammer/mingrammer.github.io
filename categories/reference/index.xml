@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>reference on mingrammer&#39;s note</title>
@@ -16,7 +16,7 @@
       <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/side-by-side-reference-sheet-of-python-and-go/</guid>
-      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&amp;quot;Hello, World&amp;quot;) import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;Hello, World&amp;quot;)</description>
+      <description>Python과 Go의 비교 레퍼런스 (각기 버전은 Python 3.5+와 Go 1.7+) 각 코드 블록은 Python/Go 순서 버전 버전 확인 // Python $ python --version 3.5 // Go $ go version 1.7 실행 Hello World print(&amp;#34;Hello, World&amp;#34;) import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello, World&amp;#34;)</description>
     </item>
     
   </channel>

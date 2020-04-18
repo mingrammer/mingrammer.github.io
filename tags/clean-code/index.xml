@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>clean code on mingrammer&#39;s note</title>
@@ -16,7 +16,7 @@
       <pubDate>Sun, 07 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://mingrammer.com/translation-the-truth-is-in-the-code/</guid>
-      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. requirementsascode의 shippingapp 모델 예시 머잖아, 모든 소프트웨어 개발자는 다음과 같은 말을</description>
+      <description>Bertil Muth의 The truth is in the code을 번역한 글입니다. 머잖아, 모든 소프트웨어 개발자는 다음과 같은 말을 들을것이다: 진실은 오직 한 곳, 코드에서만 발견된다.</description>
     </item>
     
   </channel>

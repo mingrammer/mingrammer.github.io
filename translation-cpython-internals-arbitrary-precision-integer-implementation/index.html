@@ -13,12 +13,12 @@
 <meta property="og:description" content="Python internals: Arbitrary-precision integer implementation을 번역한 글입니다. 여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/translation-cpython-internals-arbitrary-precision-integer-implementation/" />
-<meta property="article:published_time" content="2017-10-10T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-10-10T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2017-10-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-10-10T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Oct 10, 2017 00:00
-                    · 2181 words
+                    · 2175 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -82,76 +82,47 @@
                 
                   
                     <div id="toc">
-                      <nav id="TableOfContents">
-<ul>
-<li><a href="#임의의-큰-정수를-저장하는-방법">임의의 큰 정수를 저장하는 방법</a></li>
-<li><a href="#자주-사용되는-정수들의-최적화">자주 사용되는 정수들의 최적화</a></li>
-<li><a href="#수-체계-변환">수 체계 변환</a></li>
-<li><a href="#산술-연산">산술 연산</a></li>
-<li><a href="#더-깊이-살펴보기">더 깊이 살펴보기</a></li>
-</ul>
-</nav>
+                      <nav id="TableOfContents"></nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    
-
-<blockquote>
+                    <blockquote>
 <p><a href="https://rushter.com/blog/python-integer-implementation/">Python internals: Arbitrary-precision integer implementation</a>을 번역한 글입니다.</p>
 </blockquote>
-
 <p>여러분은 파이썬을 사용하면서 정수의 크기에 제약이 없다는걸 알아챈 적이 있는가? 이에 대해 한 번 살펴보자.</p>
-
 <p>파이썬은 모든 객체를 C 구조체로 표현한다. 다음 자료 구조는 파이썬의 모든 정수 객체를 담당한다.</p>
-
-<pre><code class="language-c">struct _longobject {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> _longobject {
     PyObject_VAR_HEAD
-    digit ob_digit[1];
+    digit ob_digit[<span style="color:#ae81ff">1</span>];
 } PyLongObject;
-</code></pre>
-
-<p>매크로 확장 후, 위 구조체의 단순화된 버전은 다음과 같다.</p>
-
-<pre><code class="language-c">struct {
+</code></pre></div><p>매크로 확장 후, 위 구조체의 단순화된 버전은 다음과 같다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> {
     ssize_t ob_refcnt;
-    struct _typeobject *ob_type;
+    <span style="color:#66d9ef">struct</span> _typeobject <span style="color:#f92672">*</span>ob_type;
     ssize_t ob_size;
-    uint32_t ob_digit[1];
+    uint32_t ob_digit[<span style="color:#ae81ff">1</span>];
 }
-</code></pre>
-
-<p><code>ob_refcnt</code> 필드는 가비지 컬렉션 메커니즘에서 사용되는 <a href="http://www.informit.com/articles/article.aspx?p=1357182&amp;seqNum=3">레퍼런스 카운팅</a> 기법에서 사용되며, <code>ob_type</code>은 정수 타입을 나타내는 <a href="https://docs.python.org/2/c-api/typeobj.html">구조체</a>에 대한 포인터이다.</p>
-
+</code></pre></div><p><code>ob_refcnt</code> 필드는 가비지 컬렉션 메커니즘에서 사용되는 <a href="http://www.informit.com/articles/article.aspx?p=1357182&amp;seqNum=3">레퍼런스 카운팅</a> 기법에서 사용되며, <code>ob_type</code>은 정수 타입을 나타내는 <a href="https://docs.python.org/2/c-api/typeobj.html">구조체</a>에 대한 포인터이다.</p>
 <p>일반적으로, C/C++과 같은 언어에서는 정수의 정밀도가 64비트로 제한되나, 파이썬은 <a href="https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">임의 정밀도 정수</a>를 언어 차원에서 지원한다. 파이썬 3부터는 더 이상 단순 정수 타입을 지원하지 않기 때문에, 모든 정수가 큰 숫자 (bignum)로 표현된다.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h1 id="임의의-큰-정수를-저장하는-방법">임의의 큰 정수를 저장하는 방법</h1>
-
 <p>한 가지 방법은 정수를 숫자들의 배열로 표현하는 것이다. 이를 효율적으로 구현하기 위해선 숫자를 <a href="https://en.wikipedia.org/wiki/Decimal">10진법</a>에서 각 자릿수가 0부터 2^30-1까지의 단일 숫자를 나타내는 2^30 진법으로 변환해야한다. 플랫폼에 따라, 파이썬은 30 비트의 자릿수를 가진 32 비트의 부호 없는 정수 배열 또는 15 비트의 자릿수를 가진 16 비트의 부호 없는 정수 배열을 사용한다. 이러한 접근법을 사용하면 <a href="https://github.com/python/cpython/blob/865e4b4f630e2ae91e61239258abb58b488f1d65/Include/longintrepr.h#L9">추가적인 요구사항</a>이 생기기 때문에 정수의 모든 비트를 사용할 수 없다. 위 구조체에서 <code>ob_digit</code> 필드는 이러한 배열을 담당한다.</p>
-
 <p>불필요한 연산을 배제하기 위해 CPython은 -2^30 부터 2^30까지의 범위에 있는 정수들에 대해서는 &ldquo;빠른 경로 (fast path)&ldquo;를 구현하고 있다. 이 정수값들은 원소가 하나인 배열에 저장되며 고정 32 비트 정수처럼 다뤄진다.</p>
-
 <p>전통적인 접근법과는 다르게, 정수의 부호는 <code>ob_size</code> 필드에 별도로 저장된다. 이 필드는 <code>ob_digit</code> 배열의 크기를 저장한다.  크기가 2인 배열의 부호를 바꾸기 위해선 <code>ob_size</code>를 -2로 변경하면 된다.</p>
-
 <p>CPython 소스 코드의 <a href="https://github.com/python/cpython/blob/c5bace2bf7874cf47ef56e1d8d19f79ad892eef5/Include/longintrepr.h#L70">주석</a>에서 다음과 같이 설명하고 있다:</p>
-
-<pre><code class="language-c">/* 큰 정수 표현법.
-   절댓값은 다음과 같이 구할 수 있다.
-     SUM(for i=0 through abs(ob_size)-1) ob_digit[i] * 2**(SHIFT*i)
-   ob_size &lt; 0이면 음수를 나타낸다.
-   ob_size == 0이면 0을 나타낸다.
-   정규화된 수의 경우, ob_digit[abs(ob_size)-1] (최상위 숫자)은 0이 될 수 없다. 또한, 모든 유효한 i 값에 대해 다음이 성립한다. (MASK는 1 &lt;&lt; 30 - 1 또는 1 &lt;&lt; 15 - 1)
-     0 &lt;= ob_digit[i] &lt;= MASK
-   할당 함수는 ob_digit[0] ... ob_digit[abs(ob_size)-1]을 실제로 사용할 수 있도록 추가 메모리를 할당한다.
-   
-   주의: PyVarObject의 서브타입을 생성하는 제네릭 코드는 정수가 ob_size의 부호 비트를 남용한다는 걸 인지해야함
-*/
-</code></pre>
-
-<p>123456789101112131415의 표현식은 다음과 같다:</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/* 큰 정수 표현법.
+</span><span style="color:#75715e">   절댓값은 다음과 같이 구할 수 있다.
+</span><span style="color:#75715e">     SUM(for i=0 through abs(ob_size)-1) ob_digit[i] * 2**(SHIFT*i)
+</span><span style="color:#75715e">   ob_size &lt; 0이면 음수를 나타낸다.
+</span><span style="color:#75715e">   ob_size == 0이면 0을 나타낸다.
+</span><span style="color:#75715e">   정규화된 수의 경우, ob_digit[abs(ob_size)-1] (최상위 숫자)은 0이 될 수 없다. 또한, 모든 유효한 i 값에 대해 다음이 성립한다. (MASK는 1 &lt;&lt; 30 - 1 또는 1 &lt;&lt; 15 - 1)
+</span><span style="color:#75715e">     0 &lt;= ob_digit[i] &lt;= MASK
+</span><span style="color:#75715e">   할당 함수는 ob_digit[0] ... ob_digit[abs(ob_size)-1]을 실제로 사용할 수 있도록 추가 메모리를 할당한다.
+</span><span style="color:#75715e">   
+</span><span style="color:#75715e">   주의: PyVarObject의 서브타입을 생성하는 제네릭 코드는 정수가 ob_size의 부호 비트를 남용한다는 걸 인지해야함
+</span><span style="color:#75715e">*/</span>
+</code></pre></div><p>123456789101112131415의 표현식은 다음과 같다:</p>
 <table>
 <thead>
 <tr>
@@ -161,7 +132,6 @@
 <th></th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ob_size</td>
@@ -169,7 +139,6 @@
 <td></td>
 <td></td>
 </tr>
-
 <tr>
 <td>ob_digit</td>
 <td>437976919</td>
@@ -178,85 +147,62 @@
 </tr>
 </tbody>
 </table>
-
 <p>위 표현식을 좀 전에 설명한 알고리즘을 통해 변환하면 다음과 같다:</p>
-
-<pre><code class="language-latex">(437976919 * 2^(30*0)) + (87719511 * 2^(30*1)) + (107 * 2^(30*2))
-</code></pre>
-
-<p><br></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-latex" data-lang="latex">(437976919 * 2^(30*0)) + (87719511 * 2^(30*1)) + (107 * 2^(30*2))
+</code></pre></div><!-- raw HTML omitted -->
 <h1 id="자주-사용되는-정수들의-최적화">자주 사용되는 정수들의 최적화</h1>
-
 <p>-5부터 256 사이의 작은 정수 객체들은 항상 초기화 도중에 미리 할당된다. 파이썬에서 정수는 불변 (immutable)이기 때문에, 이를 싱글턴으로 사용할 수 있다. 작은 정수가 필요한 경우 파이썬은 새로운 객체를 생성하는 대신 미리 할당된 객체를 가리킨다. 이로 인해 자주 사용되는 정수들에 대한 메모리 공간과 연산 비용을 상당히 많이 아낄 수 있다.</p>
-
 <p>흥미롭게도, <code>PyLongObject</code> 구조체는 할당된 모든 정수들에 대해 최소 28 바이트를 할당하기 때문에 64 비트의 C 정수보다 약 3배나 많은 메모리를 사용한다.</p>
-
-<p><br></p>
-
+<!-- raw HTML omitted -->
 <h1 id="수-체계-변환">수 체계 변환</h1>
-
 <p>그럼 이제 파이썬이 정수를 어떻게 배열로 변환하는지에 대해 살펴보자.</p>
-
 <p>부호 없는 64 비트 정수를 파이썬의 정수 표현법으로 변환하는 간단한 예제를 살펴보자. 참고로 다음 코드에서 나오는 bignum은 <code>PyLongObject</code>로 직접 변환이 가능한 표준 C 타입에서 지원하는 가장 큰 숫자다. 더 큰 숫자는 문자열이나 바이트 배열에서 변환할 수 있다.</p>
-
 <p>수 체계 변환이 익숙하지 않다면, 이 <a href="https://www.tutorialspoint.com/computer_logical_organization/number_system_conversion.htm">튜토리얼</a>을 읽어볼 수 있다.</p>
-
 <p>다음은 C 정수를 파이썬 정수로 변환하는 간단한 알고리즘이다:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">SHIFT <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>  <span style="color:#75715e"># 각 자릿수를 나타낼 비트 갯수</span>
+MASK <span style="color:#f92672">=</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> SHIFT)
+bignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">18446744073709551615</span>
 
-<pre><code class="language-python">SHIFT = 30  # 각 자릿수를 나타낼 비트 갯수
-MASK = (2 ** SHIFT)
-bignum = 18446744073709551615
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">split_number</span>(bignum):
+    t <span style="color:#f92672">=</span> abs(bignum)
 
-def split_number(bignum):
-    t = abs(bignum)
+    num_list <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">while</span> t <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#75715e"># 나머지를 얻는다</span>
+        small_int <span style="color:#f92672">=</span> t <span style="color:#f92672">%</span> MASK  <span style="color:#75715e"># 좀 더 효율적인 비트 연산: (t &amp; (MASK-1))</span>
+        num_list<span style="color:#f92672">.</span>append(small_int)
 
-    num_list = []
-    while t != 0:
-        # 나머지를 얻는다
-        small_int = t % MASK  # 좀 더 효율적인 비트 연산: (t &amp; (MASK-1))
-        num_list.append(small_int)
+        <span style="color:#75715e"># 나눗셈의 정수부를 얻는다 (나눗셈 내림)</span>
+        t <span style="color:#f92672">=</span> t <span style="color:#f92672">//</span> MASK  <span style="color:#75715e"># 좀 더 효율적인 비트 연산: t &gt;&gt;= SHIFT</span>
 
-        # 나눗셈의 정수부를 얻는다 (나눗셈 내림)
-        t = t // MASK  # 좀 더 효율적인 비트 연산: t &gt;&gt;= SHIFT
+    <span style="color:#66d9ef">return</span> num_list
 
-    return num_list
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">restore_number</span>(num_list):
+    bignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> i, n <span style="color:#f92672">in</span> enumerate(num_list):
+        bignum <span style="color:#f92672">+=</span> n <span style="color:#f92672">*</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">**</span> (SHIFT <span style="color:#f92672">*</span> i))
+    <span style="color:#66d9ef">return</span> bignum
 
-def restore_number(num_list):
-    bignum = 0
-    for i, n in enumerate(num_list):
-        bignum += n * (2 ** (SHIFT * i))
-    return bignum
+num_list <span style="color:#f92672">=</span> split_number(bignum)
+<span style="color:#66d9ef">assert</span> bignum <span style="color:#f92672">==</span> restore_number(num_list)
+</code></pre></div><p>위 알고리즘을 검증하기 위해 파이썬의 내부 표현을 살펴볼 수도 있다:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> ctypes
 
-num_list = split_number(bignum)
-assert bignum == restore_number(num_list)
-</code></pre>
-
-<p>위 알고리즘을 검증하기 위해 파이썬의 내부 표현을 살펴볼 수도 있다:</p>
-
-<pre><code class="language-python">import ctypes
-
-class PyLongObject(ctypes.Structure):
-    _fields_ = [(&quot;ob_refcnt&quot;, ctypes.c_long),
-                (&quot;ob_type&quot;, ctypes.c_void_p),
-                (&quot;ob_size&quot;, ctypes.c_ulong),
-                (&quot;ob_digit&quot;, ctypes.c_uint * 3)]
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PyLongObject</span>(ctypes<span style="color:#f92672">.</span>Structure):
+    _fields_ <span style="color:#f92672">=</span> [(<span style="color:#e6db74">&#34;ob_refcnt&#34;</span>, ctypes<span style="color:#f92672">.</span>c_long),
+                (<span style="color:#e6db74">&#34;ob_type&#34;</span>, ctypes<span style="color:#f92672">.</span>c_void_p),
+                (<span style="color:#e6db74">&#34;ob_size&#34;</span>, ctypes<span style="color:#f92672">.</span>c_ulong),
+                (<span style="color:#e6db74">&#34;ob_digit&#34;</span>, ctypes<span style="color:#f92672">.</span>c_uint <span style="color:#f92672">*</span> <span style="color:#ae81ff">3</span>)]
 
 
-bignum = 18446744073709551615
+bignum <span style="color:#f92672">=</span> <span style="color:#ae81ff">18446744073709551615</span>
 
-for d in PyLongObject.from_address(id(bignum)).ob_digit:
-    print(d)
-</code></pre>
-
-<p><br></p>
-
+<span style="color:#66d9ef">for</span> d <span style="color:#f92672">in</span> PyLongObject<span style="color:#f92672">.</span>from_address(id(bignum))<span style="color:#f92672">.</span>ob_digit:
+    <span style="color:#66d9ef">print</span>(d)
+</code></pre></div><!-- raw HTML omitted -->
 <h1 id="산술-연산">산술 연산</h1>
-
-<p>기본 산술 연산은 우리가 이미 알고 있는 기초적인 수학을 사용하여 구현되어 있으나 딱 한 가지 차이점은 배열의 모든 원소를 하나의 &lsquo;자릿수&rsquo;로 다룬다는 점이다.</p>
-
+<p>기본 산술 연산은 우리가 이미 알고 있는 기초적인 수학을 사용하여 구현되어 있으나 딱 한 가지 차이점은 배열의 모든 원소를 하나의 &lsquo;자릿수'로 다룬다는 점이다.</p>
 <p>모든 연산은 최소 하나의 객체을 생성해낸다. 가령, <code>c += 10</code>을 실행하면 다음과 같은 단계들이 수행된다:</p>
-
 <ul>
 <li><code>10</code>을 나타내는 미리 할당된 객체의 주소를 가져온다. (10은 작은 정수이므로 새로운 객체를 생성할 필요가 없다.)</li>
 <li>덧셈의 결과값을 저장할 새로운 정수 객체를 생성한다.</li>
@@ -264,48 +210,42 @@ for d in PyLongObject.from_address(id(bignum)).ob_digit:
 <li>변수 <code>c</code>를 새 객체의 레퍼런스로 바꾼다.</li>
 <li>가비지 컬렉터가 나중에 이 객체를 파기할 수 있도록, 이전 <code>c</code> 변수의 레퍼런스 카운트를 차감한다.</li>
 </ul>
-
 <p>예시로, <a href="https://en.wikipedia.org/wiki/Carry_(arithmetic)">캐리 (carrying)</a>가 사용되는 덧셈 코드를 살펴보자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_bignum</span>(a, b):
+    z <span style="color:#f92672">=</span> []
 
-<pre><code class="language-python">def add_bignum(a, b):
-    z = []
+    <span style="color:#66d9ef">if</span> len(a) <span style="color:#f92672">&lt;</span> len(b):
+        <span style="color:#75715e"># a가 항상 b보다 크도록 만든다</span>
+        a, b <span style="color:#f92672">=</span> b, a
 
-    if len(a) &lt; len(b):
-        # a가 항상 b보다 크도록 만든다
-        a, b = b, a
+    carry <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 
-    carry = 0
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(b)):
+        carry <span style="color:#f92672">+=</span> a[i] <span style="color:#f92672">+</span> b[i]
+        z<span style="color:#f92672">.</span>append(carry <span style="color:#f92672">%</span> MASK)
+        carry <span style="color:#f92672">=</span> carry <span style="color:#f92672">//</span> MASK
 
-    for i in range(0, len(b)):
-        carry += a[i] + b[i]
-        z.append(carry % MASK)
-        carry = carry // MASK
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, len(a)):
+        carry <span style="color:#f92672">+=</span> a[i]
+        z<span style="color:#f92672">.</span>append(carry <span style="color:#f92672">%</span> MASK)
+        carry <span style="color:#f92672">=</span> carry <span style="color:#f92672">//</span> MASK
 
-    for i in range(i + 1, len(a)):
-        carry += a[i]
-        z.append(carry % MASK)
-        carry = carry // MASK
+    z<span style="color:#f92672">.</span>append(carry)
 
-    z.append(carry)
+    <span style="color:#75715e"># trailing zeros를 제거한다</span>
+    i <span style="color:#f92672">=</span> len(z)
+    <span style="color:#66d9ef">while</span> i <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> z[i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        i <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+    z <span style="color:#f92672">=</span> z[<span style="color:#ae81ff">0</span>:i]
 
-    # trailing zeros를 제거한다
-    i = len(z)
-    while i &gt; 0 and z[i-1] == 0:
-        i -= 1
-    z = z[0:i]
-
-    return z
+    <span style="color:#66d9ef">return</span> z
 
 
-a = 8223372036854775807
-b = 100037203685477
-assert restore_number(add_bignum(split_number(a), split_number(b))) == a + b
-</code></pre>
-
-<p><br></p>
-
+a <span style="color:#f92672">=</span> <span style="color:#ae81ff">8223372036854775807</span>
+b <span style="color:#f92672">=</span> <span style="color:#ae81ff">100037203685477</span>
+<span style="color:#66d9ef">assert</span> restore_number(add_bignum(split_number(a), split_number(b))) <span style="color:#f92672">==</span> a <span style="color:#f92672">+</span> b
+</code></pre></div><!-- raw HTML omitted -->
 <h1 id="더-깊이-살펴보기">더 깊이 살펴보기</h1>
-
 <p>이 포스트에서 다루지 못한 많은 세부사항들이 더 있다. 정수에 대한 상세한 내용은 CPython (<a href="https://github.com/python/cpython/blob/master/Objects/longobject.c">1</a>, <a href="https://github.com/python/cpython/blob/master/Include/longobject.h">2</a>, <a href="https://github.com/python/cpython/blob/master/Include/longintrepr.h">3</a>) 소스 코드를 참조하라.</p>
 
                 </section>
@@ -351,6 +291,10 @@ assert restore_number(add_bignum(split_number(a), split_number(b))) == a + b
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -384,10 +328,6 @@ assert restore_number(add_bignum(split_number(a), split_number(b))) == a + b
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>

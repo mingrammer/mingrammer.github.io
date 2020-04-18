@@ -13,12 +13,12 @@
 <meta property="og:description" content="최근에 Go 프로젝트를 macOS에서 CentOS로 크로스 컴파일 해야하는 일이 생겼다. Go는 일반적으로 컴파일에 관여하는 환경 변수 설정만으로 매우 쉽게 크로" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mingrammer.com/cgo-cross-compile-for-mac-for-linux/" />
-<meta property="article:published_time" content="2017-12-11T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-12-11T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2017-12-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-12-11T00:00:00+00:00" />
 
 		
 
-		<meta name="generator" content="Hugo 0.55.6" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>맥에서 리눅스로 CGO 라이브러리 크로스 컴파일하기 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -81,105 +81,85 @@
                 </header>
                 
                   
+                    <div id="toc">
+                      <nav id="TableOfContents"></nav>
+                    </div>
+                  
                 
                 <section id="post-body">
                     <p>최근에 Go 프로젝트를 macOS에서 CentOS로 크로스 컴파일 해야하는 일이 생겼다.</p>
-
 <p>Go는 일반적으로 컴파일에 관여하는 환경 변수 설정만으로 매우 쉽게 크로스 컴파일이 가능하지만 <code>cgo</code> 기반으로 개발된 라이브러리를 사용한 애플리케이션을 크로스 컴파일 하는 경우에는 조금 다르다. <code>cgo</code> 기반의 라이브러리의 경우 별도의 C 컴파일러를 요구하는 경우가 있기 때문에 기존의 방법으로는 크로스 컴파일이 불가능하다.</p>
-
 <p>따라서, <code>cgo</code> 기반의 라이브러리를 사용하는 Go 애플리케이션을 다른 OS로 컴파일 해야하는 경우 별도의 크로스 컴파일러를 사용해 빌드를 진행해야한다. 내가 최근에 사용하기도 했던 대표적인 <code>cgo</code> 기반의 Go 라이브러리로는 mattn이 만든 <code>go-sqlite3</code> 라이브러리가 있다. <code>go-sqlite3</code>의 경우 Github에도 빌드 관련 <a href="https://github.com/mattn/go-sqlite3/issues/491">이슈</a>가 자주 올라온다.</p>
-
 <p>다음과 같이 <code>go-sqlite3</code> 패키지를 호스트 OS (macOS) 용으로 빌드하는 경우에는 아무런 문제가 없다.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
+</span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">// main.go
-package main
-
-import (
-    &quot;database/sql&quot;
-    &quot;fmt&quot;
-    _ &quot;github.com/mattn/go-sqlite3&quot;
-    &quot;log&quot;
-    &quot;os&quot;
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;database/sql&#34;</span>
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/mattn/go-sqlite3&#34;</span>
+    <span style="color:#e6db74">&#34;log&#34;</span>
+    <span style="color:#e6db74">&#34;os&#34;</span>
 )
 
-func main() {
-    os.Remove(&quot;log.db&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Remove</span>(<span style="color:#e6db74">&#34;log.db&#34;</span>)
 
-    db, err := sql.Open(&quot;sqlite3&quot;, &quot;./foo.db&quot;)
-    if err != nil {
-        log.Fatal(err)
+    <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;sqlite3&#34;</span>, <span style="color:#e6db74">&#34;./foo.db&#34;</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
     }
-    defer db.Close()
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Close</span>()
 
-    fmt.Println(db)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">db</span>)
 }
-</code></pre>
-
-<pre><code class="language-bash">$ go build
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ go build
 $ file cross-compile-example
 cross-compile-example: Mach-O 64-bit executable x86_64
-</code></pre>
-
-<p>아무 문제없이 macOS용 바이너리가 생성되었다.</p>
-
+</code></pre></div><p>아무 문제없이 macOS용 바이너리가 생성되었다.</p>
 <p>이제 위 코드를 <code>linux/amd64</code>용으로 크로스 컴파일 해보자.</p>
-
-<pre><code class="language-bash">$ GOOS=linux GOARCH=amd64 go build
-# github.com/mattn/go-sqlite3
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span>amd64 go build
+<span style="color:#75715e"># github.com/mattn/go-sqlite3</span>
 ../../mattn/go-sqlite3/sqlite3_go18.go:18:10: undefined: SQLiteConn
-</code></pre>
-
-<p>SQLiteConn이 정의되지 않았다는 에러가 발생하였다. 실제로 SQLiteConn가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/master/sqlite3.go">소스 코드</a>와 cgo 플래그가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/b8d537f91a262b86fc5dfae4fd5a5c282d2b95fd/sqlite3_libsqlite3.go">소스 코드</a>를 보면 C 코드가 포함되어 있는데 이 부분에서 에러가 발생한걸로 보인다. 따라서 이를 리눅스용으로 컴파일 하기 위해선 macOS에서 사용할 수 있는 리눅스용 컴파일러를 <code>CC</code> 환경 변수로 지정해야 한다.</p>
-
+</code></pre></div><p>SQLiteConn이 정의되지 않았다는 에러가 발생하였다. 실제로 SQLiteConn가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/master/sqlite3.go">소스 코드</a>와 cgo 플래그가 정의된 <a href="https://github.com/mattn/go-sqlite3/blob/b8d537f91a262b86fc5dfae4fd5a5c282d2b95fd/sqlite3_libsqlite3.go">소스 코드</a>를 보면 C 코드가 포함되어 있는데 이 부분에서 에러가 발생한걸로 보인다. 따라서 이를 리눅스용으로 컴파일 하기 위해선 macOS에서 사용할 수 있는 리눅스용 컴파일러를 <code>CC</code> 환경 변수로 지정해야 한다.</p>
 <p>나의 경우 macOS에서 사용할 수 있는 리눅스용 C/C++ 크로스 컴파일러로 <a href="http://crossgcc.rts-software.org/doku.php?id=compiling_for_linux">CrossGCC</a>를 사용하였다. <a href="http://crossgcc.rts-software.org/doku.php?id=compiling_for_linux">이 사이트</a>에 접속하여 타겟 리눅스의 아키텍쳐 비트수에 맞는 크로스 컴파일러를 macOS에 설치하고 설치된 크로스 컴파일러 바이너리 경로를 <code>$PATH</code>에 등록하기만 하면 된다. (설치 경로: <code>/usr/local/gcc-4.8.1-for-linux[32/64]/</code>)</p>
-
-<pre><code class="language-bash">$ ls /usr/local/gcc-4.8.1-for-linux64 -la
--rwxr-xr-x   1 root  wheel  1072832 10 13  2013 x86_64-pc-linux-addr2line
--rwxr-xr-x   2 root  wheel  1115744 10 13  2013 x86_64-pc-linux-ar
--rwxr-xr-x   2 root  wheel  1723952 10 13  2013 x86_64-pc-linux-as
--rwxr-xr-x   2 root  wheel   870360 10 13  2013 x86_64-pc-linux-c++
--rwxr-xr-x   1 root  wheel  1071740 10 13  2013 x86_64-pc-linux-c++filt
--rwxr-xr-x   1 root  wheel   866192 10 13  2013 x86_64-pc-linux-cpp
--rwxr-xr-x   1 root  wheel    41068 10 13  2013 x86_64-pc-linux-elfedit
--rwxr-xr-x   2 root  wheel   870360 10 13  2013 x86_64-pc-linux-g++
--rwxr-xr-x   2 root  wheel   866104 10 13  2013 x86_64-pc-linux-gcc
--rwxr-xr-x   2 root  wheel   866104 10 13  2013 x86_64-pc-linux-gcc-4.8.1
--rwxr-xr-x   1 root  wheel    39288 10 13  2013 x86_64-pc-linux-gcc-ar
--rwxr-xr-x   1 root  wheel    39384 10 13  2013 x86_64-pc-linux-gcc-nm
--rwxr-xr-x   1 root  wheel    39392 10 13  2013 x86_64-pc-linux-gcc-ranlib
--rwxr-xr-x   1 root  wheel   421340 10 13  2013 x86_64-pc-linux-gcov
--rwxr-xr-x   1 root  wheel  1161332 10 13  2013 x86_64-pc-linux-gprof
--rwxr-xr-x   4 root  wheel  1929396 10 13  2013 x86_64-pc-linux-ld
--rwxr-xr-x   4 root  wheel  1929396 10 13  2013 x86_64-pc-linux-ld.bfd
--rwxr-xr-x   2 root  wheel  1089744 10 13  2013 x86_64-pc-linux-nm
--rwxr-xr-x   2 root  wheel  1306216 10 13  2013 x86_64-pc-linux-objcopy
--rwxr-xr-x   2 root  wheel  2014804 10 13  2013 x86_64-pc-linux-objdump
--rwxr-xr-x   2 root  wheel  1115736 10 13  2013 x86_64-pc-linux-ranlib
--rwxr-xr-x   1 root  wheel   431520 10 13  2013 x86_64-pc-linux-readelf
--rwxr-xr-x   1 root  wheel  1079092 10 13  2013 x86_64-pc-linux-size
--rwxr-xr-x   1 root  wheel  1072808 10 13  2013 x86_64-pc-linux-strings
--rwxr-xr-x   2 root  wheel  1306216 10 13  2013 x86_64-pc-linux-strip
-</code></pre>
-
-<pre><code class="language-bash">export PATH=&quot;${PATH}:/usr/local/gcc-4.8.1-for-linux64/bin&quot;
-</code></pre>
-
-<p>이제 이 크로스 컴파일러를 사용해 <code>linux/amd64</code>용으로 다시 컴파일을 해보자.</p>
-
-<pre><code class="language-bash"># CC로 gcc 크로스 컴파일러를 지정한다
-# CGO_ENABLED를 1로 설정해 CGO 사용을 명시한다
-$ CC=x86_64-pc-linux-gcc GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls /usr/local/gcc-4.8.1-for-linux64 -la
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel  <span style="color:#ae81ff">1072832</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-addr2line
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1115744</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-ar
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1723952</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-as
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel   <span style="color:#ae81ff">870360</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-c++
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel  <span style="color:#ae81ff">1071740</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-c++filt
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel   <span style="color:#ae81ff">866192</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-cpp
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel    <span style="color:#ae81ff">41068</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-elfedit
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel   <span style="color:#ae81ff">870360</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-g++
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel   <span style="color:#ae81ff">866104</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcc
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel   <span style="color:#ae81ff">866104</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcc-4.8.1
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel    <span style="color:#ae81ff">39288</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcc-ar
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel    <span style="color:#ae81ff">39384</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcc-nm
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel    <span style="color:#ae81ff">39392</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcc-ranlib
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel   <span style="color:#ae81ff">421340</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gcov
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel  <span style="color:#ae81ff">1161332</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-gprof
+-rwxr-xr-x   <span style="color:#ae81ff">4</span> root  wheel  <span style="color:#ae81ff">1929396</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-ld
+-rwxr-xr-x   <span style="color:#ae81ff">4</span> root  wheel  <span style="color:#ae81ff">1929396</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-ld.bfd
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1089744</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-nm
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1306216</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-objcopy
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">2014804</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-objdump
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1115736</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-ranlib
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel   <span style="color:#ae81ff">431520</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-readelf
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel  <span style="color:#ae81ff">1079092</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-size
+-rwxr-xr-x   <span style="color:#ae81ff">1</span> root  wheel  <span style="color:#ae81ff">1072808</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-strings
+-rwxr-xr-x   <span style="color:#ae81ff">2</span> root  wheel  <span style="color:#ae81ff">1306216</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">13</span>  <span style="color:#ae81ff">2013</span> x86_64-pc-linux-strip
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>PATH<span style="color:#e6db74">}</span><span style="color:#e6db74">:/usr/local/gcc-4.8.1-for-linux64/bin&#34;</span>
+</code></pre></div><p>이제 이 크로스 컴파일러를 사용해 <code>linux/amd64</code>용으로 다시 컴파일을 해보자.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># CC로 gcc 크로스 컴파일러를 지정한다</span>
+<span style="color:#75715e"># CGO_ENABLED를 1로 설정해 CGO 사용을 명시한다</span>
+$ CC<span style="color:#f92672">=</span>x86_64-pc-linux-gcc GOOS<span style="color:#f92672">=</span>linux GOARCH<span style="color:#f92672">=</span>amd64 CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go build
 $ file cross-compile-example
-cross-compile-example: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.4.0, not stripped
-</code></pre>
-
-<p>드디어 macOS에서 cgo 기반의 라이브러리를 사용하는 애플리케이션을 <code>linux/amd64</code> 바이너리로 크로스 컴파일 하는데에 성공하였다. 실제로 CentOS 7기반의 머신에서 애플리케이션을 구동하면 잘 동작한다.</p>
-
+cross-compile-example: ELF 64-bit LSB executable, x86-64, version <span style="color:#ae81ff">1</span> <span style="color:#f92672">(</span>SYSV<span style="color:#f92672">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span style="color:#66d9ef">for</span> GNU/Linux 2.4.0, not stripped
+</code></pre></div><p>드디어 macOS에서 cgo 기반의 라이브러리를 사용하는 애플리케이션을 <code>linux/amd64</code> 바이너리로 크로스 컴파일 하는데에 성공하였다. 실제로 CentOS 7기반의 머신에서 애플리케이션을 구동하면 잘 동작한다.</p>
 <p>단, OS에 따라 다르지만 생성된 바이너리가 동적 링킹을 사용하고 있어 사용하고 있는 타겟 OS에 라이브러리에서 요구하는 특정 C 라이브러리가 없거나 버전이 맞지 않는 경우에는 별도의 작업이 더 필요할 수도 있다.</p>
-
 <p>사실 이 문제는 크로스 컴파일러만 설치하면 해결되는 문제라 내용은 크게 별건 없지만 누군가에게는 도움이 되었으면 한다.</p>
-
-<p><br></p>
+<!-- raw HTML omitted -->
 
                 </section>
             </article>
@@ -224,6 +204,10 @@ cross-compile-example: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dyna
     
     
         <li>
+            <a href="/go-modules-private-repo">Go 프라이빗 모듈 가져오기<aside class="dates">Apr 18 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/debugging-containerized-go-app">컨테이너 내부 Go 애플리케이션 디버깅하기<aside class="dates">Feb 13 2020</aside></a>
         </li>
     
@@ -257,10 +241,6 @@ cross-compile-example: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dyna
     
         <li>
             <a href="/building-blockchain-in-go-part-4">[Go로 구현하는 블록체인] Part 4: 트랜잭션 1<aside class="dates">May 26 2018</aside></a>
-        </li>
-    
-        <li>
-            <a href="/building-blockchain-in-go-part-3">[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI<aside class="dates">May 22 2018</aside></a>
         </li>
     
 </ul>
