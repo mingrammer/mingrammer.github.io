@@ -76,11 +76,14 @@ GOSUMDB="sum.golang.org"
 ```shell
 $ GOPRIVATE=github.com/orgname go get -v github.com/orgname/app
 $ GONOSUMDB=github.com/orgname go get -v github.com/orgname/app
+
+# 다음 명령어로 Go 환경 변수를 영구 적용할 수 있다.
+$ go env -w GOPRIVATE=github.com/orgname
 ```
 
-이렇게 하면 `github.com/orgname`경로에 포함된 모든 모듈에 대해서는 프록시 접근과 체크섬 검증 또는 체크섬 검증을 무시한다. **GOPRIVATE** 같은 경우는 프록시조차 접근하지 않기 때문에 좀 더 강력한 옵션이며, 프라이빗 저장소이면 퍼블릭 프록시를 접근할 이유가 없기 때문에 이 옵션을 사용하길 추천한다. (이름 그대로 프라이빗 모듈을 위한 옵션임)
+이렇게 하면 `github.com/orgname`경로에 포함된 모든 모듈에 대해서는 프록시 접근과 체크섬 검증 또는 체크섬 검증을 무시한다. **GOPRIVATE** 같은 경우는 **GONOPROXY**와 **GONOSUMDB**를 함께 사용한 것과 동일한 효과를 내며, 프록시조차 접근하지 않기 때문에 좀 더 강력한 옵션이다. 프라이빗 저장소이면 퍼블릭 프록시를 접근할 이유가 없기 때문에 이 옵션을 사용하길 추천한다. (이름 그대로 프라이빗 모듈을 위한 옵션임)
 
-> 당연한 얘기지만, 프록시와 체크섬을 제외한 direct로 가져오는 방식은 기존과 동일하기 때문에 기본적으로 ssh 접근은 가능해야한다.
+> 당연한 얘기지만, 프록시와 체크섬을 제외한 direct로 가져오는 방식은 기존과 동일하기 때문에 기본적으로 ssh 접근 가능해야한다.
 
 ## GOSUMDB
 
