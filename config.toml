@@ -67,6 +67,12 @@ googleAnalytics = "UA-84081627-1"
 	enableAd = false
 	googleAdsense = "ca-pub-9436560391944255"
 
+[markup]
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 4
+    ordered = false
+
 [social]
 	facebook-square = "https://www.facebook.com/mingrammer"
 	twitter-square = "https://www.twitter.com/mingrammer"
