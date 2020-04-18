@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Apr 18, 2020 00:00
-                    · 2061 words
+                    · 2123 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -174,9 +174,12 @@ GOSUMDB=&quot;sum.golang.org&quot;
 <p>위에서 이미 설명했듯이, 이 두 환경 변수를 사용하면 체크섬 검증 또는 프록시 접근과 체크섬 검증 모두를 우회할 수 있다. 방법은 간단하며, 검증을 제외할 경로만 설정해주면 된다.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
 $ GONOSUMDB<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
-</code></pre></div><p>이렇게 하면 <code>github.com/orgname</code>경로에 포함된 모든 모듈에 대해서는 프록시 접근과 체크섬 검증 또는 체크섬 검증을 무시한다. <strong>GOPRIVATE</strong> 같은 경우는 프록시조차 접근하지 않기 때문에 좀 더 강력한 옵션이며, 프라이빗 저장소이면 퍼블릭 프록시를 접근할 이유가 없기 때문에 이 옵션을 사용하길 추천한다. (이름 그대로 프라이빗 모듈을 위한 옵션임)</p>
+
+<span style="color:#75715e"># 다음 명령어로 Go 환경 변수를 영구 적용할 수 있다.</span>
+$ go env -w GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname
+</code></pre></div><p>이렇게 하면 <code>github.com/orgname</code>경로에 포함된 모든 모듈에 대해서는 프록시 접근과 체크섬 검증 또는 체크섬 검증을 무시한다. <strong>GOPRIVATE</strong> 같은 경우는 <strong>GONOPROXY</strong>와 <strong>GONOSUMDB</strong>를 함께 사용한 것과 동일한 효과를 내며, 프록시조차 접근하지 않기 때문에 좀 더 강력한 옵션이다. 프라이빗 저장소이면 퍼블릭 프록시를 접근할 이유가 없기 때문에 이 옵션을 사용하길 추천한다. (이름 그대로 프라이빗 모듈을 위한 옵션임)</p>
 <blockquote>
-<p>당연한 얘기지만, 프록시와 체크섬을 제외한 direct로 가져오는 방식은 기존과 동일하기 때문에 기본적으로 ssh 접근은 가능해야한다.</p>
+<p>당연한 얘기지만, 프록시와 체크섬을 제외한 direct로 가져오는 방식은 기존과 동일하기 때문에 기본적으로 ssh 접근 가능해야한다.</p>
 </blockquote>
 <h2 id="gosumdb">GOSUMDB</h2>
 <p>특정 경로를 제외하는 대신 GOSUMDB 옵션 자체를 off하여 모든 모듈에 대해 체크섬 검증을 무시하는 방법이다.</p>
