@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Apr 18, 2020 00:00
-                    · 2125 words
+                    · 2135 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -172,6 +172,9 @@ GOSUMDB=&quot;sum.golang.org&quot;
 <h1 id="프라이빗-모듈-접근">프라이빗 모듈 접근</h1>
 <h2 id="goprivate-gonosumdb">GOPRIVATE, GONOSUMDB</h2>
 <p>위에서 이미 설명했듯이, 이 두 환경 변수를 사용하면 체크섬 검증 또는 프록시 접근과 체크섬 검증 모두를 우회할 수 있다. 방법은 간단하며, 검증을 제외할 경로만 설정해주면 된다.</p>
+<blockquote>
+<p>둘 중 하나만 하면 된다.</p>
+</blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
 $ GONOSUMDB<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
 
