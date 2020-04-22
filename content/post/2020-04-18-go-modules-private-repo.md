@@ -73,6 +73,8 @@ GOSUMDB="sum.golang.org"
 
 위에서 이미 설명했듯이, 이 두 환경 변수를 사용하면 체크섬 검증 또는 프록시 접근과 체크섬 검증 모두를 우회할 수 있다. 방법은 간단하며, 검증을 제외할 경로만 설정해주면 된다.
 
+> 둘 중 하나만 하면 된다.
+
 ```shell
 $ GOPRIVATE=github.com/orgname go get -v github.com/orgname/app
 $ GONOSUMDB=github.com/orgname go get -v github.com/orgname/app
