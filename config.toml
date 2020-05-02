@@ -2,6 +2,7 @@
 baseurl = "https://mingrammer.com/"
 title = "mingrammer's note"
 theme = "hugo-theme-cactus-plus"
+pygmentsUseClasses = true
 archetypeDir = "archetypes"
 publishDir = "public"
 
