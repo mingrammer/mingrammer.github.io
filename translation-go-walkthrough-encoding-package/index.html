@@ -132,26 +132,26 @@
 <h1 id="4가지-인코딩-인터페이스">4가지 인코딩 인터페이스</h1>
 <p>만약 여러분이 <a href="https://golang.org/pkg/encoding/">encoding</a> 패키지를 들여다본 몇 안되는 사람들 중 한 명이라면, 조금 실망했을 것이다. 이는 <a href="https://golang.org/pkg/errors/">errors</a> 패키지 다음으로 두번째로 가장 작은 패키지이며 단 4개의 인터페이스만 가지고있다.</p>
 <p>처음에 살펴볼 두 개의 인터페이스는 <a href="https://golang.org/pkg/encoding/#BinaryMarshaler">BinaryMarshaler</a>와 <a href="https://golang.org/pkg/encoding/#BinaryUnmarshaler">BinaryUnmashaler</a>이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">BinaryMarshaler</span> <span style="color:#66d9ef">interface</span> {
-        <span style="color:#a6e22e">MarshalBinary</span>() (<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)   
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">BinaryMarshaler</span> <span class="kd">interface</span> <span class="p">{</span>
+        <span class="nf">MarshalBinary</span><span class="p">()</span> <span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>   
+<span class="p">}</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">BinaryUnmashaler</span> <span style="color:#66d9ef">interface</span> {
-        <span style="color:#a6e22e">UnmarshalBinary</span> (<span style="color:#a6e22e">data</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">error</span>
-}
+<span class="kd">type</span> <span class="nx">BinaryUnmashaler</span> <span class="kd">interface</span> <span class="p">{</span>
+        <span class="nf">UnmarshalBinary</span> <span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">error</span>
+<span class="p">}</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, error : <a href="https://golang.org/pkg/errors/">error</a></p>
 </blockquote>
 <p>이들은 객체를 바이너리 포맷으로 변환하거나 역변환하는 방법을 제공한다. 이는 time.<a href="https://golang.org/pkg/time/#Time">Time</a>.<a href="https://golang.org/pkg/time/#Time.MarshalBinary">MarshalBinary</a>와 같은 표준 라이브러리에서 몇군데 사용된다. 여러분은 이를 많이 보진 못할텐데 보통 객체를 바이너리 포맷으로 마샬링하는 방법이 단일하게 정의되어 있지 않기 때문이다. 보다시피, 수많은 serialization 포맷이 있다.</p>
 <p>그러나, 애플리케이션 레벨에서 여러분은 아마 마샬링을 위해 하나의 포맷만 선택할 것이다. 예를 들면, 여러분은 여러분의 모든 데이터에 대해 프로토콜 버퍼를 선택 했을 수 있다. 일반적으로 애플리케이션 데이터를 위해 여러개의 바이너리 포맷을 지원할 이유가 없으므로 <a href="https://golang.org/pkg/encoding/#BinaryMarshaler">BinaryMarshaler</a>를 구현하는건 의미가 있다.</p>
 <p>다음으로 살펴볼 두 인터페이스는 <a href="https://golang.org/pkg/encoding/#TextMarshaler">TextMarshaler</a>와 <a href="https://golang.org/pkg/encoding/#TextUnmarshaler">TextUnmarshaler</a>이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextMarshaler</span> <span style="color:#66d9ef">interface</span> {
-        <span style="color:#a6e22e">MarshalText</span>() (<span style="color:#a6e22e">text</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">TextMarshaler</span> <span class="kd">interface</span> <span class="p">{</span>
+        <span class="nf">MarshalText</span><span class="p">()</span> <span class="p">(</span><span class="nx">text</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextUnmarshaler</span> <span style="color:#66d9ef">interface</span> {
-        <span style="color:#a6e22e">UnmarshalText</span>(<span style="color:#a6e22e">text</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">error</span>
-}
+<span class="kd">type</span> <span class="nx">TextUnmarshaler</span> <span class="kd">interface</span> <span class="p">{</span>
+        <span class="nf">UnmarshalText</span><span class="p">(</span><span class="nx">text</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">error</span>
+<span class="p">}</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, error : <a href="https://golang.org/pkg/errors/">error</a></p>
 </blockquote>

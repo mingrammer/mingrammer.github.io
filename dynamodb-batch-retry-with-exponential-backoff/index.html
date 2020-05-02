@@ -114,59 +114,59 @@
 <p>일반적으로 <strong>n=2</strong> (Binary Exponential Backoff)를 사용하며 내 경우도 같은 값을 사용했다. 그럼 간단한 지수 백오프를 사용한 DynamoDB 재시도 로직을 구현해보자. 이 포스팅에서는 Go를 기준으로 설명한다.</p>
 <h1 id="세션-및-dynamodb-구조체-생성">세션 및 DynamoDB 구조체 생성</h1>
 <p>우선 AWS 자격 인증을 통해 세션을 생성하고 DynamoDB 서비스 객체를 초기화한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;errors&#34;</span>
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;math&#34;</span>
-    <span style="color:#e6db74">&#34;sync&#34;</span>
-    <span style="color:#e6db74">&#34;time&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;errors&#34;</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;math&#34;</span>
+    <span class="s">&#34;sync&#34;</span>
+    <span class="s">&#34;time&#34;</span>
 
-    <span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws&#34;</span>
-    <span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws/credentials&#34;</span>
-    <span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws/session&#34;</span>
-    <span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/service/dynamodb&#34;</span>
-    <span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute&#34;</span>
-)
+    <span class="s">&#34;github.com/aws/aws-sdk-go/aws&#34;</span>
+    <span class="s">&#34;github.com/aws/aws-sdk-go/aws/credentials&#34;</span>
+    <span class="s">&#34;github.com/aws/aws-sdk-go/aws/session&#34;</span>
+    <span class="s">&#34;github.com/aws/aws-sdk-go/service/dynamodb&#34;</span>
+    <span class="s">&#34;github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#75715e">// DynamoDB 구조체는 테이블명, 키 리스트, 서비스 객체 (service/dynamodb)를 관리
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DynamoDB</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">table</span> <span style="color:#66d9ef">string</span>
-    <span style="color:#a6e22e">conn</span>  <span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">DynamoDB</span>
-}
+<span class="c1">// DynamoDB 구조체는 테이블명, 키 리스트, 서비스 객체 (service/dynamodb)를 관리
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">DynamoDB</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">table</span> <span class="kt">string</span>
+    <span class="nx">conn</span>  <span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">DynamoDB</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// AWS 인증키 및 설정값 (실사용시 인증키는 하드코딩하지 않는다)
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> (
-    <span style="color:#a6e22e">awsAccessKeyID</span>     = <span style="color:#e6db74">&#34;AKXXXXXXXXXXXXXXXXXX&#34;</span>
-    <span style="color:#a6e22e">awsSecretAccessKey</span> = <span style="color:#e6db74">&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span>
-    <span style="color:#a6e22e">awsRegion</span>          = <span style="color:#e6db74">&#34;ap-northeast-2&#34;</span>
-)
+<span class="c1">// AWS 인증키 및 설정값 (실사용시 인증키는 하드코딩하지 않는다)
+</span><span class="c1"></span><span class="kd">const</span> <span class="p">(</span>
+    <span class="nx">awsAccessKeyID</span>     <span class="p">=</span> <span class="s">&#34;AKXXXXXXXXXXXXXXXXXX&#34;</span>
+    <span class="nx">awsSecretAccessKey</span> <span class="p">=</span> <span class="s">&#34;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&#34;</span>
+    <span class="nx">awsRegion</span>          <span class="p">=</span> <span class="s">&#34;ap-northeast-2&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#75715e">// 자격 인증 및 세션 생성
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewSession</span>() (<span style="color:#f92672">*</span><span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Session</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">sess</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">NewSession</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">Config</span>{
-        <span style="color:#a6e22e">Region</span>:      <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">awsRegion</span>),
-        <span style="color:#a6e22e">Credentials</span>: <span style="color:#a6e22e">credentials</span>.<span style="color:#a6e22e">NewStaticCredentials</span>(<span style="color:#a6e22e">awsAccessKeyID</span>, <span style="color:#a6e22e">awsSecretAccessKey</span>, <span style="color:#e6db74">&#34;&#34;</span>),
-    })
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;failed to create an aws session&#34;</span>)
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sess</span>, <span style="color:#66d9ef">nil</span>
-}
+<span class="c1">// 자격 인증 및 세션 생성
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">NewSession</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="nx">session</span><span class="p">.</span><span class="nx">Session</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">sess</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nf">NewSession</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">aws</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+        <span class="nx">Region</span><span class="p">:</span>      <span class="nx">aws</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">awsRegion</span><span class="p">),</span>
+        <span class="nx">Credentials</span><span class="p">:</span> <span class="nx">credentials</span><span class="p">.</span><span class="nf">NewStaticCredentials</span><span class="p">(</span><span class="nx">awsAccessKeyID</span><span class="p">,</span> <span class="nx">awsSecretAccessKey</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">),</span>
+    <span class="p">})</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;failed to create an aws session&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">sess</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// 서비스 객체 생성 및 DynamoDB 구조체 초기화
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewDynamoDB</span>(<span style="color:#a6e22e">table</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">DynamoDB</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">sess</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewSession</span>()
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-    }
-    <span style="color:#a6e22e">ddb</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">DynamoDB</span>{
-        <span style="color:#a6e22e">table</span>: <span style="color:#a6e22e">table</span>,
-        <span style="color:#a6e22e">conn</span>: <span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">sess</span>, <span style="color:#66d9ef">nil</span>),
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ddb</span>, <span style="color:#66d9ef">nil</span>
-}
+<span class="c1">// 서비스 객체 생성 및 DynamoDB 구조체 초기화
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">NewDynamoDB</span><span class="p">(</span><span class="nx">table</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">DynamoDB</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">sess</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">NewSession</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="nx">ddb</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">DynamoDB</span><span class="p">{</span>
+        <span class="nx">table</span><span class="p">:</span> <span class="nx">table</span><span class="p">,</span>
+        <span class="nx">conn</span><span class="p">:</span> <span class="nx">dynamodb</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">sess</span><span class="p">,</span> <span class="kc">nil</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">ddb</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
 </code></pre></div><p>그럼 이제 DynamoDB 구조체에 부분 실패시 재시도를 수행해주는 배치 작업 메서드를 작성해보자.</p>
 <h1 id="재시도-가능한-쓰기-배치-메서드-작성">재시도 가능한 쓰기 배치 메서드 작성</h1>
 <p>재시도 가능한 쓰기 배치 작업은 다음과 같은 플로우로 진행된다.</p>
@@ -178,131 +178,131 @@
 <li>모든 요청이 성공하면 종료</li>
 </ul>
 <p><code>RetryableBatchWrite</code>는 쓰기 배치 메서드로 <strong>키-값</strong> 리스트를 인자로 받고 에러를 반환한다. DynamoDB가 지원하는 쓰기 배치는 한 번에 요청할 수 있는 아이템의 개수를 최대 25개로 제한하기 때문에 길이부터 검증한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// items = [
-</span><span style="color:#75715e">//     {
-</span><span style="color:#75715e">//         &#34;k1&#34;: &#34;v1&#34;,
-</span><span style="color:#75715e">//         &#34;k2&#34;: &#34;v2&#34;,
-</span><span style="color:#75715e">//     },
-</span><span style="color:#75715e">//     {
-</span><span style="color:#75715e">//         &#34;k3&#34;: &#34;v3&#34;,
-</span><span style="color:#75715e">//         &#34;k4&#34;: &#34;v4&#34;,
-</span><span style="color:#75715e">//     },
-</span><span style="color:#75715e">// ]
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ddb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DynamoDB</span>) <span style="color:#a6e22e">RetryableBatchWrite</span>(<span style="color:#a6e22e">items</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
-    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">items</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;you must pass at least one item&#34;</span>)
-    }
-    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">items</span>) &gt; <span style="color:#ae81ff">25</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;you must pass items less than or equal to number of 25&#34;</span>)
-    }
-    <span style="color:#f92672">...</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// items = [
+</span><span class="c1">//     {
+</span><span class="c1">//         &#34;k1&#34;: &#34;v1&#34;,
+</span><span class="c1">//         &#34;k2&#34;: &#34;v2&#34;,
+</span><span class="c1">//     },
+</span><span class="c1">//     {
+</span><span class="c1">//         &#34;k3&#34;: &#34;v3&#34;,
+</span><span class="c1">//         &#34;k4&#34;: &#34;v4&#34;,
+</span><span class="c1">//     },
+</span><span class="c1">// ]
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">ddb</span> <span class="o">*</span><span class="nx">DynamoDB</span><span class="p">)</span> <span class="nf">RetryableBatchWrite</span><span class="p">(</span><span class="nx">items</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;you must pass at least one item&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">items</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">25</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;you must pass items less than or equal to number of 25&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>인자로 받은 <code>키-값</code>의 <code>값</code>을 DynamoDB 속성값으로 인코딩 (마샬링)한 뒤, DynamoDB API로 넘길 쓰기 요청을 만든다. (<code>dynamodb.WriteRequest</code>)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ddb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DynamoDB</span>) <span style="color:#a6e22e">RetryableBatchWrite</span>(<span style="color:#a6e22e">items</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
-    <span style="color:#f92672">...</span>
-    <span style="color:#75715e">// 쓰기 요청용 구조체
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">req</span> <span style="color:#f92672">:=</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">WriteRequest</span>{}
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">item</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">items</span> {
-        <span style="color:#a6e22e">putItem</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">AttributeValue</span>)
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">item</span> {
-            <span style="color:#75715e">// 값을 DynamoDB 속성값으로 인코딩
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">attr</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dynamodbattribute</span>.<span style="color:#a6e22e">Marshal</span>(<span style="color:#a6e22e">v</span>)
-            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-            }
-            <span style="color:#a6e22e">putItem</span>[<span style="color:#a6e22e">k</span>] = <span style="color:#a6e22e">attr</span>
-        }
-        <span style="color:#75715e">// 쓰기 요청 목록에 &#34;키-값&#34;을 PutRequest로 추가 (쓰기에는 Put/Delete 두 종류의 타입이 있음)
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">req</span> = append(<span style="color:#a6e22e">req</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">WriteRequest</span>{
-            <span style="color:#a6e22e">PutRequest</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">PutRequest</span>{
-                <span style="color:#a6e22e">Item</span>: <span style="color:#a6e22e">putItem</span>,
-            },
-        })
-    }
-    <span style="color:#75715e">// 인코딩이 완료되면 {테이블명: 쓰기 요청 객체} 맵을 만든다
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 배치 작업 실패시 반환되는 값과 동일한 포맷이다
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">unprocessed</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">WriteRequest</span>{
-        <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">table</span>: <span style="color:#a6e22e">req</span>,
-    }
-    <span style="color:#f92672">...</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">ddb</span> <span class="o">*</span><span class="nx">DynamoDB</span><span class="p">)</span> <span class="nf">RetryableBatchWrite</span><span class="p">(</span><span class="nx">items</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="c1">// 쓰기 요청용 구조체
+</span><span class="c1"></span>    <span class="nx">req</span> <span class="o">:=</span> <span class="p">[]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">WriteRequest</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">items</span> <span class="p">{</span>
+        <span class="nx">putItem</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">AttributeValue</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">item</span> <span class="p">{</span>
+            <span class="c1">// 값을 DynamoDB 속성값으로 인코딩
+</span><span class="c1"></span>            <span class="nx">attr</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">dynamodbattribute</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">err</span>
+            <span class="p">}</span>
+            <span class="nx">putItem</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">attr</span>
+        <span class="p">}</span>
+        <span class="c1">// 쓰기 요청 목록에 &#34;키-값&#34;을 PutRequest로 추가 (쓰기에는 Put/Delete 두 종류의 타입이 있음)
+</span><span class="c1"></span>        <span class="nx">req</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">WriteRequest</span><span class="p">{</span>
+            <span class="nx">PutRequest</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">PutRequest</span><span class="p">{</span>
+                <span class="nx">Item</span><span class="p">:</span> <span class="nx">putItem</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+    <span class="c1">// 인코딩이 완료되면 {테이블명: 쓰기 요청 객체} 맵을 만든다
+</span><span class="c1"></span>    <span class="c1">// 배치 작업 실패시 반환되는 값과 동일한 포맷이다
+</span><span class="c1"></span>    <span class="nx">unprocessed</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">WriteRequest</span><span class="p">{</span>
+        <span class="nx">ddb</span><span class="p">.</span><span class="nx">table</span><span class="p">:</span> <span class="nx">req</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>다음으로, 위에서 만든 쓰기 요청으로 실제 배치 작업을 수행한다. 배치 작업을 요청하기 전에 재시도 횟수 카운터 변수인 <code>attempts</code>를 선언한다. <code>attempts</code>가 0보다 커지면 재시도를 수행하고 최대 재시도 횟수 안에 모든 요청을 처리하지 못하면 에러를 반환하도록 한다.</p>
 <p>재시도 관련 상수값은 애플리케이션에 맞게 적절한 값으로 설정하면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">const</span> (
-    <span style="color:#a6e22e">maxRetries</span>      = <span style="color:#ae81ff">10</span>
-    <span style="color:#a6e22e">minRetryBackoff</span> = <span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Millisecond</span>
-    <span style="color:#a6e22e">maxRetryBackoff</span> = <span style="color:#ae81ff">1</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>
-)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="p">(</span>
+    <span class="nx">maxRetries</span>      <span class="p">=</span> <span class="mi">10</span>
+    <span class="nx">minRetryBackoff</span> <span class="p">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span>
+    <span class="nx">maxRetryBackoff</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ddb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DynamoDB</span>) <span style="color:#a6e22e">RetryableBatchWrite</span>(<span style="color:#a6e22e">items</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
-    <span style="color:#f92672">...</span>
-    <span style="color:#a6e22e">attempts</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">for</span> {
-        <span style="color:#75715e">// 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attempts</span> &gt; <span style="color:#ae81ff">0</span> {
-            <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">RetryBackoff</span>(<span style="color:#a6e22e">attempts</span>))
-        }
-        <span style="color:#a6e22e">attempts</span><span style="color:#f92672">++</span>
-        <span style="color:#75715e">// 배치 작업 수행
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">output</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">BatchWriteItem</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">BatchWriteItemInput</span>{
-            <span style="color:#a6e22e">RequestItems</span>: <span style="color:#a6e22e">unprocessed</span>,
-        })
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-        }
-        <span style="color:#75715e">// 일부 요청이 실패한 경우 unprocessed의 테이블키에 쓰기 요청을 담아서 반환해준다
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 모든 요청이 성공하면 empty map을 반환한다
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">unprocessed</span> = <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">UnprocessedItems</span>
-        <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">unprocessed</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-            <span style="color:#66d9ef">break</span>
-        }
-        <span style="color:#75715e">// 최대 재시도 횟수를 넘기면 에러 반환
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attempts</span> &gt; <span style="color:#a6e22e">maxRetries</span> {
-            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;reached maximum retry attempts&#34;</span>)
-        }
-        <span style="color:#75715e">// 재시도 수행
-</span><span style="color:#75715e"></span>    }
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">ddb</span> <span class="o">*</span><span class="nx">DynamoDB</span><span class="p">)</span> <span class="nf">RetryableBatchWrite</span><span class="p">(</span><span class="nx">items</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="nx">attempts</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">{</span>
+        <span class="c1">// 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">attempts</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nf">RetryBackoff</span><span class="p">(</span><span class="nx">attempts</span><span class="p">))</span>
+        <span class="p">}</span>
+        <span class="nx">attempts</span><span class="o">++</span>
+        <span class="c1">// 배치 작업 수행
+</span><span class="c1"></span>        <span class="nx">output</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ddb</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">BatchWriteItem</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">BatchWriteItemInput</span><span class="p">{</span>
+            <span class="nx">RequestItems</span><span class="p">:</span> <span class="nx">unprocessed</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">err</span>
+        <span class="p">}</span>
+        <span class="c1">// 일부 요청이 실패한 경우 unprocessed의 테이블키에 쓰기 요청을 담아서 반환해준다
+</span><span class="c1"></span>        <span class="c1">// 모든 요청이 성공하면 empty map을 반환한다
+</span><span class="c1"></span>        <span class="c1">// if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
+</span><span class="c1"></span>        <span class="nx">unprocessed</span> <span class="p">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">UnprocessedItems</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">unprocessed</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        <span class="c1">// 최대 재시도 횟수를 넘기면 에러 반환
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">attempts</span> <span class="p">&gt;</span> <span class="nx">maxRetries</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;reached maximum retry attempts&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="c1">// 재시도 수행
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
 </code></pre></div><p><code>RetryBackoff</code> 함수는 다음과 같이 구현할 수 있다. 재시도 횟수만큼 최대 시간에 도달할 때까지 2배씩 늘린다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RetryBackoff</span>(<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Duration</span> {
-    <span style="color:#a6e22e">rb</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Duration</span>(<span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Pow</span>(<span style="color:#ae81ff">2</span>, float64(<span style="color:#a6e22e">n</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>))) <span style="color:#f92672">*</span> <span style="color:#a6e22e">minRetryBackoff</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">rb</span> &gt; <span style="color:#a6e22e">maxRetryBackoff</span> {
-        <span style="color:#a6e22e">rb</span> = <span style="color:#a6e22e">maxRetryBackoff</span>
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rb</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">RetryBackoff</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span> <span class="p">{</span>
+    <span class="nx">rb</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nf">Pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span> <span class="o">*</span> <span class="nx">minRetryBackoff</span>
+    <span class="k">if</span> <span class="nx">rb</span> <span class="p">&gt;</span> <span class="nx">maxRetryBackoff</span> <span class="p">{</span>
+        <span class="nx">rb</span> <span class="p">=</span> <span class="nx">maxRetryBackoff</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">rb</span>
+<span class="p">}</span>
 </code></pre></div><p>이제 위에서 구현한 재시도 가능한 쓰기 배치 메서드가 잘 동작하는지 확인해보기 위해 테스트용 테이블로 <code>id</code>와 <code>stage</code>를 각각 파티션키, 정렬키로 갖는 <code>user</code> 테이블을 만들고 <strong>2,500</strong>개의 데이터를 배치로 넣는 코드를 작성해보자. 테스트는 <code>50 RCU / 50 WCU</code> 환경에서 진행되었다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">// DynamoDB 초기화
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">ddb</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewDynamoDB</span>(<span style="color:#e6db74">&#34;user&#34;</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        panic(<span style="color:#a6e22e">err</span>)
-    }
-    <span style="color:#a6e22e">wg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>{}
-    <span style="color:#a6e22e">vals</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-    <span style="color:#75715e">// 2,500개 데이터 생성
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">2501</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-        <span style="color:#a6e22e">vals</span> = append(<span style="color:#a6e22e">vals</span>, <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{
-            <span style="color:#e6db74">&#34;id&#34;</span>:    <span style="color:#ae81ff">1</span>,
-            <span style="color:#e6db74">&#34;stage&#34;</span>: <span style="color:#a6e22e">i</span>,
-        })
-        <span style="color:#75715e">// 25개씩 배치 처리
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">%</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-            <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
-            <span style="color:#75715e">// 배치 고루틴 생성
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">v</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) {
-                <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
-                <span style="color:#75715e">// 배치 작업 수행
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 테스트 코드에서는 에러를 무시하고 있지만 실사용시에는 적절한 에러처리가 필요하다
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">RetryableBatchWrite</span>(<span style="color:#a6e22e">vals</span>)
-            }(<span style="color:#a6e22e">vals</span>)
-            <span style="color:#a6e22e">vals</span> = []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-        }
-    }
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// DynamoDB 초기화
+</span><span class="c1"></span>    <span class="nx">ddb</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">NewDynamoDB</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">wg</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">{}</span>
+    <span class="nx">vals</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+    <span class="c1">// 2,500개 데이터 생성
+</span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">2501</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">vals</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">vals</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+            <span class="s">&#34;id&#34;</span><span class="p">:</span>    <span class="mi">1</span><span class="p">,</span>
+            <span class="s">&#34;stage&#34;</span><span class="p">:</span> <span class="nx">i</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="c1">// 25개씩 배치 처리
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">i</span><span class="o">%</span><span class="mi">25</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1">// 배치 고루틴 생성
+</span><span class="c1"></span>            <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">v</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+                <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+                <span class="c1">// 배치 작업 수행
+</span><span class="c1"></span>                <span class="c1">// 테스트 코드에서는 에러를 무시하고 있지만 실사용시에는 적절한 에러처리가 필요하다
+</span><span class="c1"></span>                <span class="nx">_</span> <span class="p">=</span> <span class="nx">ddb</span><span class="p">.</span><span class="nf">RetryableBatchWrite</span><span class="p">(</span><span class="nx">vals</span><span class="p">)</span>
+            <span class="p">}(</span><span class="nx">vals</span><span class="p">)</span>
+            <span class="nx">vals</span> <span class="p">=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+<span class="p">}</span>
 </code></pre></div><p>재시도가 정상적으로 동작하는지 확인하기 위해 요청 간격을 지연시키는 부분에 간단한 로깅을 추가하자.</p>
 <pre><code>if attempts &gt; 0 {
     time.Sleep(RetryBackoff(attempts))
@@ -332,118 +332,118 @@ attempts: 6, left: 5
 <li><code>UnprocessedItems</code> 대신 <code>UnprocessedKeys</code>로 실패값(키) 처리</li>
 <li><code>unprocessed[ddb.table]</code> 대신 <code>unprocessed[ddb.table].Keys</code>에 실패값(키)가 담겨져 있음</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// keys = [
-</span><span style="color:#75715e">//     {
-</span><span style="color:#75715e">//         &#34;k1&#34;: &#34;v1&#34;,
-</span><span style="color:#75715e">//         &#34;k2&#34;: &#34;v2&#34;,
-</span><span style="color:#75715e">//     },
-</span><span style="color:#75715e">//     {
-</span><span style="color:#75715e">//         &#34;k3&#34;: &#34;v3&#34;,
-</span><span style="color:#75715e">//         &#34;k4&#34;: &#34;v4&#34;,
-</span><span style="color:#75715e">//     },
-</span><span style="color:#75715e">// ]
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ddb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DynamoDB</span>) <span style="color:#a6e22e">RetryableBatchGet</span>(<span style="color:#a6e22e">keys</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) ([]<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">keys</span>) &lt; <span style="color:#ae81ff">1</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;you must pass at least one key&#34;</span>)
-    }
-    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">keys</span>) &gt; <span style="color:#ae81ff">100</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;you must pass keys less than or equal to number of 100&#34;</span>)
-    }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// keys = [
+</span><span class="c1">//     {
+</span><span class="c1">//         &#34;k1&#34;: &#34;v1&#34;,
+</span><span class="c1">//         &#34;k2&#34;: &#34;v2&#34;,
+</span><span class="c1">//     },
+</span><span class="c1">//     {
+</span><span class="c1">//         &#34;k3&#34;: &#34;v3&#34;,
+</span><span class="c1">//         &#34;k4&#34;: &#34;v4&#34;,
+</span><span class="c1">//     },
+</span><span class="c1">// ]
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">ddb</span> <span class="o">*</span><span class="nx">DynamoDB</span><span class="p">)</span> <span class="nf">RetryableBatchGet</span><span class="p">(</span><span class="nx">keys</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">([]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">keys</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">1</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;you must pass at least one key&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">keys</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">100</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;you must pass keys less than or equal to number of 100&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
 
-    <span style="color:#75715e">// 키 저장용 구조체
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">attrKeys</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">AttributeValue</span>{}
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">keys</span> {
-        <span style="color:#a6e22e">attrKey</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">AttributeValue</span>{}
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">key</span> {
-            <span style="color:#75715e">// 값을 DynamoDB 속성값으로 인코딩
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">marshaled</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dynamodbattribute</span>.<span style="color:#a6e22e">Marshal</span>(<span style="color:#a6e22e">v</span>)
-            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-            }
-            <span style="color:#a6e22e">attrKey</span>[<span style="color:#a6e22e">k</span>] = <span style="color:#a6e22e">marshaled</span>
-        }
-        <span style="color:#a6e22e">attrKeys</span> = append(<span style="color:#a6e22e">attrKeys</span>, <span style="color:#a6e22e">attrKey</span>)
-    }
-    <span style="color:#75715e">// 키 목록 추가
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">unprocessed</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">KeysAndAttributes</span>{
-        <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">table</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">KeysAndAttributes</span>{
-            <span style="color:#a6e22e">Keys</span>: <span style="color:#a6e22e">attrKeys</span>,
-        },
-    }
+    <span class="c1">// 키 저장용 구조체
+</span><span class="c1"></span>    <span class="nx">attrKeys</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">AttributeValue</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">key</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">keys</span> <span class="p">{</span>
+        <span class="nx">attrKey</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">AttributeValue</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">key</span> <span class="p">{</span>
+            <span class="c1">// 값을 DynamoDB 속성값으로 인코딩
+</span><span class="c1"></span>            <span class="nx">marshaled</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">dynamodbattribute</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+            <span class="p">}</span>
+            <span class="nx">attrKey</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">marshaled</span>
+        <span class="p">}</span>
+        <span class="nx">attrKeys</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">attrKeys</span><span class="p">,</span> <span class="nx">attrKey</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// 키 목록 추가
+</span><span class="c1"></span>    <span class="nx">unprocessed</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">KeysAndAttributes</span><span class="p">{</span>
+        <span class="nx">ddb</span><span class="p">.</span><span class="nx">table</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">KeysAndAttributes</span><span class="p">{</span>
+            <span class="nx">Keys</span><span class="p">:</span> <span class="nx">attrKeys</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
 
-    <span style="color:#75715e">// 받아온 데이터 저장용 변수
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">items</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-    <span style="color:#a6e22e">attempts</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">for</span> {
-         <span style="color:#75715e">// 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attempts</span> &gt; <span style="color:#ae81ff">0</span> {
-            <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">RetryBackoff</span>(<span style="color:#a6e22e">attempts</span>))
-        }
-        <span style="color:#a6e22e">attempts</span><span style="color:#f92672">++</span>
-        <span style="color:#75715e">// 배치 작업 수행
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">output</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">BatchGetItem</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">dynamodb</span>.<span style="color:#a6e22e">BatchGetItemInput</span>{
-            <span style="color:#a6e22e">RequestItems</span>: <span style="color:#a6e22e">unprocessed</span>,
-        })
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-        }
-        <span style="color:#75715e">// 받아온 데이터 디코딩
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">Responses</span>[<span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">table</span>] {
-            <span style="color:#a6e22e">item</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">r</span> {
-                <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">val</span> <span style="color:#66d9ef">interface</span>{}
-                <span style="color:#75715e">// DynamoDB 속성값 디코딩
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">dynamodbattribute</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">v</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">val</span>)
-                <span style="color:#a6e22e">item</span>[<span style="color:#a6e22e">k</span>] = <span style="color:#a6e22e">val</span>
-            }
-            <span style="color:#a6e22e">items</span> = append(<span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">item</span>)
-        }
-        <span style="color:#75715e">// 일부 요청이 실패한 경우 unprocessed의 테이블키에 실패한 키를 담아서 반환해준다
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 모든 요청이 성공하면 empty map을 반환한다
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">unprocessed</span> = <span style="color:#a6e22e">output</span>.<span style="color:#a6e22e">UnprocessedKeys</span>
-        <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">unprocessed</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-            <span style="color:#66d9ef">break</span>
-        }
-        <span style="color:#75715e">// 최대 재시도 횟수를 넘기면 에러 반환
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attempts</span> &gt; <span style="color:#a6e22e">maxRetries</span> {
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;reached maximum retry attempts&#34;</span>)
-        }
-         <span style="color:#75715e">// 재시도 수행
-</span><span style="color:#75715e"></span>    }
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">items</span>, <span style="color:#66d9ef">nil</span>
-}
+    <span class="c1">// 받아온 데이터 저장용 변수
+</span><span class="c1"></span>    <span class="nx">items</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+    <span class="nx">attempts</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">{</span>
+         <span class="c1">// 재시도 수행시 재시도 횟수만큼 대기시간을 늘리면서 요청을 지연시킨다
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">attempts</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nf">RetryBackoff</span><span class="p">(</span><span class="nx">attempts</span><span class="p">))</span>
+        <span class="p">}</span>
+        <span class="nx">attempts</span><span class="o">++</span>
+        <span class="c1">// 배치 작업 수행
+</span><span class="c1"></span>        <span class="nx">output</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ddb</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nf">BatchGetItem</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">dynamodb</span><span class="p">.</span><span class="nx">BatchGetItemInput</span><span class="p">{</span>
+            <span class="nx">RequestItems</span><span class="p">:</span> <span class="nx">unprocessed</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+        <span class="p">}</span>
+        <span class="c1">// 받아온 데이터 디코딩
+</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">output</span><span class="p">.</span><span class="nx">Responses</span><span class="p">[</span><span class="nx">ddb</span><span class="p">.</span><span class="nx">table</span><span class="p">]</span> <span class="p">{</span>
+            <span class="nx">item</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+            <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">r</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">val</span> <span class="kd">interface</span><span class="p">{}</span>
+                <span class="c1">// DynamoDB 속성값 디코딩
+</span><span class="c1"></span>                <span class="nx">dynamodbattribute</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">val</span><span class="p">)</span>
+                <span class="nx">item</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">=</span> <span class="nx">val</span>
+            <span class="p">}</span>
+            <span class="nx">items</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="c1">// 일부 요청이 실패한 경우 unprocessed의 테이블키에 실패한 키를 담아서 반환해준다
+</span><span class="c1"></span>        <span class="c1">// 모든 요청이 성공하면 empty map을 반환한다
+</span><span class="c1"></span>        <span class="c1">// if _, ok := unprocessed[ddb.table]; !ok를 사용해도 된다
+</span><span class="c1"></span>        <span class="nx">unprocessed</span> <span class="p">=</span> <span class="nx">output</span><span class="p">.</span><span class="nx">UnprocessedKeys</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">unprocessed</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        <span class="c1">// 최대 재시도 횟수를 넘기면 에러 반환
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">attempts</span> <span class="p">&gt;</span> <span class="nx">maxRetries</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;reached maximum retry attempts&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+         <span class="c1">// 재시도 수행
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">items</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
 </code></pre></div><p>읽기 배치의 재시도 테스트도 해보자. 읽기의 경우 쓰기보다 빠르게 처리되므로 스로틀링이 잘 걸리도록 <strong>RCU</strong>와 <strong>WCU</strong>를 의도적으로 <code>10</code>으로 낮췄다. 실제 상황에서 데이터 요청이 매우 많은 경우에는 <strong>RCU</strong>, <strong>WCU</strong>가 충분히 높아도 스로틀링이 걸릴 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">// DynamoDB 초기화
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">ddb</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewDynamoDB</span>(<span style="color:#e6db74">&#34;user&#34;</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        panic(<span style="color:#a6e22e">err</span>)
-    }
-    <span style="color:#a6e22e">wg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>{}
-    <span style="color:#a6e22e">keys</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">2501</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-        <span style="color:#a6e22e">keys</span> = append(<span style="color:#a6e22e">keys</span>, <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{
-            <span style="color:#e6db74">&#34;id&#34;</span>:    <span style="color:#ae81ff">1</span>,
-            <span style="color:#e6db74">&#34;stage&#34;</span>: <span style="color:#a6e22e">i</span>,
-        })
-        <span style="color:#75715e">// 100개씩 배치 처리
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span><span style="color:#f92672">%</span><span style="color:#ae81ff">100</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-            <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
-            <span style="color:#75715e">// 배치 고루틴 생성
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">k</span> []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}) {
-                <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
-                <span style="color:#75715e">// 배치 작업 수행
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 배치 데이터를 한 번에 처리하려면 items를 고루틴 밖에서 취합하는 별도의 작업이 필요하다
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">items</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ddb</span>.<span style="color:#a6e22e">RetryableBatchGet</span>(<span style="color:#a6e22e">k</span>)
-                <span style="color:#75715e">// 테스트 로깅
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(len(<span style="color:#a6e22e">items</span>))
-            }(<span style="color:#a6e22e">keys</span>)
-            <span style="color:#a6e22e">keys</span> = []<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{}
-        }
-    }
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// DynamoDB 초기화
+</span><span class="c1"></span>    <span class="nx">ddb</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">NewDynamoDB</span><span class="p">(</span><span class="s">&#34;user&#34;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">wg</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">{}</span>
+    <span class="nx">keys</span> <span class="o">:=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">2501</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">keys</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">keys</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+            <span class="s">&#34;id&#34;</span><span class="p">:</span>    <span class="mi">1</span><span class="p">,</span>
+            <span class="s">&#34;stage&#34;</span><span class="p">:</span> <span class="nx">i</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="c1">// 100개씩 배치 처리
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nx">i</span><span class="o">%</span><span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c1">// 배치 고루틴 생성
+</span><span class="c1"></span>            <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">k</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+                <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+                <span class="c1">// 배치 작업 수행
+</span><span class="c1"></span>                <span class="c1">// 배치 데이터를 한 번에 처리하려면 items를 고루틴 밖에서 취합하는 별도의 작업이 필요하다
+</span><span class="c1"></span>                <span class="nx">items</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">ddb</span><span class="p">.</span><span class="nf">RetryableBatchGet</span><span class="p">(</span><span class="nx">k</span><span class="p">)</span>
+                <span class="c1">// 테스트 로깅
+</span><span class="c1"></span>                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">items</span><span class="p">))</span>
+            <span class="p">}(</span><span class="nx">keys</span><span class="p">)</span>
+            <span class="nx">keys</span> <span class="p">=</span> <span class="p">[]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+<span class="p">}</span>
 </code></pre></div><p>쓰기 배치에서와 동일하게 로깅을 심어보면 다음과 같은 재시도 요청들을 볼 수 있다. 받아온 데이터는 위의 쓰기 배치 테스트시 넣어둔 데이터이다.</p>
 <pre><code class="language-console" data-lang="console">...
 100

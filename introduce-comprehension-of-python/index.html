@@ -106,95 +106,95 @@
 <h1 id="list-comprehension-lc">List Comprehension (LC)</h1>
 <p><strong>List comprehension</strong>은 리스트를 쉽게 생성하기 위한 방법이다. 이는 파이썬에서 보편적으로 사용되는 기능으로 조금만 응용하면 다양한 조건으로 리스트를 생성할 수 있는 강력한 기능중 하나이다.</p>
 <p>우선 간단한 예제를 하나 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 20까지의 짝수를 출력하기 위해 다음과 같은 LC를 사용할 수 있다</span>
-evens <span style="color:#f92672">=</span> [x <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">11</span>)]
-<span style="color:#75715e"># [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 20까지의 짝수를 출력하기 위해 다음과 같은 LC를 사용할 수 있다</span>
+<span class="n">evens</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
+<span class="c1"># [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</span>
 
-<span style="color:#75715e"># 리스트의 모든 원소값을 정규화 시킨 후 상수값을 더하는 LC</span>
-vals <span style="color:#f92672">=</span> [<span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">96</span>, <span style="color:#ae81ff">42</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">93</span>, <span style="color:#ae81ff">31</span>, <span style="color:#ae81ff">23</span>, <span style="color:#ae81ff">65</span>, <span style="color:#ae81ff">43</span>, <span style="color:#ae81ff">76</span>]
-amount <span style="color:#f92672">=</span> sum(vals)
-norm_and_move <span style="color:#f92672">=</span> [(x <span style="color:#f92672">/</span> amount) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> vals]
-<span style="color:#75715e"># [1.0587155963302752, 1.0220183486238532, 1.1761467889908257, 1.0770642201834861, 1.0587155963302752, 1.1706422018348623, 1.0568807339449542, 1.0422018348623854, 1.1192660550458715, 1.0788990825688074, 1.1394495412844037]</span>
+<span class="c1"># 리스트의 모든 원소값을 정규화 시킨 후 상수값을 더하는 LC</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">93</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">76</span><span class="p">]</span>
+<span class="n">amount</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+<span class="n">norm_and_move</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">/</span> <span class="n">amount</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+<span class="c1"># [1.0587155963302752, 1.0220183486238532, 1.1761467889908257, 1.0770642201834861, 1.0587155963302752, 1.1706422018348623, 1.0568807339449542, 1.0422018348623854, 1.1192660550458715, 1.0788990825688074, 1.1394495412844037]</span>
 </code></pre></div><p>조금 더 복잡한 예제를 살펴보자. (조건을 지닌 LC와 Nested LC)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 100 이하의 제곱수가 아닌 수를 찾는 LC</span>
-<span style="color:#f92672">from</span> math <span style="color:#f92672">import</span> sqrt
-non_squars <span style="color:#f92672">=</span> [x <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">101</span>) <span style="color:#66d9ef">if</span> sqrt(x)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">!=</span> x]
-<span style="color:#75715e"># [2, 3, 5, 6, 7, 8, 10, 12, 13, 15, 18, 19, 20, 23, 24, 26, 28, 29, 31, 32, 37, 38, 40, 43, 45, 48, 50, 51, 52, 58, 59, 60, 61, 63, 65, 66, 72, 73, 75, 76, 77, 78, 80, 82, 87, 89, 92, 94, 95, 96, 97]</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 100 이하의 제곱수가 아닌 수를 찾는 LC</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="n">non_squars</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span> <span class="k">if</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">!=</span> <span class="n">x</span><span class="p">]</span>
+<span class="c1"># [2, 3, 5, 6, 7, 8, 10, 12, 13, 15, 18, 19, 20, 23, 24, 26, 28, 29, 31, 32, 37, 38, 40, 43, 45, 48, 50, 51, 52, 58, 59, 60, 61, 63, 65, 66, 72, 73, 75, 76, 77, 78, 80, 82, 87, 89, 92, 94, 95, 96, 97]</span>
 
-<span style="color:#75715e"># 두 리스트의 원소들의 모든 조합을 찾는 LC</span>
-epithets <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;sweet&#39;</span>, <span style="color:#e6db74">&#39;annoying&#39;</span>, <span style="color:#e6db74">&#39;cool&#39;</span>, <span style="color:#e6db74">&#39;grey-eyed&#39;</span>]
-names <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;john&#39;</span>, <span style="color:#e6db74">&#39;alice&#39;</span>, <span style="color:#e6db74">&#39;james&#39;</span>]
-epithet_names <span style="color:#f92672">=</span> [(e, n) <span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> epithets <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> names]
-<span style="color:#75715e"># [(&#39;sweet&#39;, &#39;john&#39;), (&#39;sweet&#39;, &#39;alice&#39;), (&#39;sweet&#39;, &#39;james&#39;), (&#39;annoying&#39;, &#39;john&#39;), (&#39;annoying&#39;, &#39;alice&#39;), (&#39;annoying&#39;, &#39;james&#39;), (&#39;cool&#39;, &#39;john&#39;), (&#39;cool&#39;, &#39;alice&#39;), (&#39;cool&#39;, &#39;james&#39;), (&#39;grey-eyed&#39;, &#39;john&#39;), (&#39;grey-eyed&#39;, &#39;alice&#39;), (&#39;grey-eyed&#39;, &#39;james&#39;)]</span>
+<span class="c1"># 두 리스트의 원소들의 모든 조합을 찾는 LC</span>
+<span class="n">epithets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sweet&#39;</span><span class="p">,</span> <span class="s1">&#39;annoying&#39;</span><span class="p">,</span> <span class="s1">&#39;cool&#39;</span><span class="p">,</span> <span class="s1">&#39;grey-eyed&#39;</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;john&#39;</span><span class="p">,</span> <span class="s1">&#39;alice&#39;</span><span class="p">,</span> <span class="s1">&#39;james&#39;</span><span class="p">]</span>
+<span class="n">epithet_names</span> <span class="o">=</span> <span class="p">[(</span><span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">epithets</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
+<span class="c1"># [(&#39;sweet&#39;, &#39;john&#39;), (&#39;sweet&#39;, &#39;alice&#39;), (&#39;sweet&#39;, &#39;james&#39;), (&#39;annoying&#39;, &#39;john&#39;), (&#39;annoying&#39;, &#39;alice&#39;), (&#39;annoying&#39;, &#39;james&#39;), (&#39;cool&#39;, &#39;john&#39;), (&#39;cool&#39;, &#39;alice&#39;), (&#39;cool&#39;, &#39;james&#39;), (&#39;grey-eyed&#39;, &#39;john&#39;), (&#39;grey-eyed&#39;, &#39;alice&#39;), (&#39;grey-eyed&#39;, &#39;james&#39;)]</span>
 </code></pre></div><p>조금 더 Practical한 예제를 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># a^2 + b^2 = c^2 (a &lt; b &lt; c)를 만족하는 피타고라스 방정식의 해를 찾는 LC</span>
-solutions <span style="color:#f92672">=</span> [(x, y, z) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">for</span> y <span style="color:#f92672">in</span> range(x, <span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">for</span> z <span style="color:#f92672">in</span> range(y, <span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">if</span> x<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> y<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> z<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>]
-<span style="color:#75715e"># [(3, 4, 5), (5, 12, 13), (6, 8, 10), (7, 24, 25), (8, 15, 17), (9, 12, 15), (10, 24, 26), (12, 16, 20), (15, 20, 25), (20, 21, 29)]</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># a^2 + b^2 = c^2 (a &lt; b &lt; c)를 만족하는 피타고라스 방정식의 해를 찾는 LC</span>
+<span class="n">solutions</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">==</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># [(3, 4, 5), (5, 12, 13), (6, 8, 10), (7, 24, 25), (8, 15, 17), (9, 12, 15), (10, 24, 26), (12, 16, 20), (15, 20, 25), (20, 21, 29)]</span>
 
-<span style="color:#75715e"># 단어에서 모음을 제거하는 LC</span>
-word <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;mathematics&#39;</span>
-without_vowels <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join([c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> word <span style="color:#66d9ef">if</span> c <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;e&#39;</span>, <span style="color:#e6db74">&#39;i&#39;</span>, <span style="color:#e6db74">&#39;o&#39;</span>, <span style="color:#e6db74">&#39;u&#39;</span>]])
-<span style="color:#75715e"># &#39;mthmtcs&#39;</span>
+<span class="c1"># 단어에서 모음을 제거하는 LC</span>
+<span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;mathematics&#39;</span>
+<span class="n">without_vowels</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">word</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">]])</span>
+<span class="c1"># &#39;mthmtcs&#39;</span>
 
-<span style="color:#75715e"># 행렬을 일차원화 시키는 LC</span>
-matrix <span style="color:#f92672">=</span> [
-  [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>],
-  [<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>],
-  [<span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">12</span>],
-]
-flatten <span style="color:#f92672">=</span> [e <span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> matrix <span style="color:#66d9ef">for</span> e <span style="color:#f92672">in</span> r]
-<span style="color:#75715e"># [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]</span>
+<span class="c1"># 행렬을 일차원화 시키는 LC</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+<span class="p">]</span>
+<span class="n">flatten</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">matrix</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+<span class="c1"># [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="set-comprehension-sc">Set Comprehension (SC)</h1>
 <p><strong>Set comprehension</strong>은 LC와 정확히 동일하며 단지 list가 아닌 set을 생성한다는 것만 다르다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 다음의 LC는 중복된 값들을 포함한다</span>
-no_primes <span style="color:#f92672">=</span> [j <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9</span>) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">50</span>, i)]
-<span style="color:#75715e"># [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 10, 15, 20, 25, 30, 35, 40, 45, 12, 18, 24, 30, 36, 42, 48, 14, 21, 28, 35, 42, 49, 16, 24, 32, 40, 48]</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 다음의 LC는 중복된 값들을 포함한다</span>
+<span class="n">no_primes</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span>
+<span class="c1"># [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 10, 15, 20, 25, 30, 35, 40, 45, 12, 18, 24, 30, 36, 42, 48, 14, 21, 28, 35, 42, 49, 16, 24, 32, 40, 48]</span>
 
-<span style="color:#75715e"># SC를 사용하면 중복값이 없는 집합을 얻을 수 있다</span>
-no_primes <span style="color:#f92672">=</span> {j <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">9</span>) <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(i <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">50</span>, i)}
-<span style="color:#75715e"># {4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30, 32, 33, 34, 35, 36, 38, 39, 40, 42, 44, 45, 46, 48, 49}</span>
+<span class="c1"># SC를 사용하면 중복값이 없는 집합을 얻을 수 있다</span>
+<span class="n">no_primes</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">i</span><span class="p">)}</span>
+<span class="c1"># {4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30, 32, 33, 34, 35, 36, 38, 39, 40, 42, 44, 45, 46, 48, 49}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="dict-comprehension-dc">Dict Comprehension (DC)</h1>
 <p><strong>Dict comprehension</strong> 또한 LC와 동일하며 dict를 생성한다.</p>
 <p>기본 예제.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 두 리스트를 하나의 dict로 합치는 DC. 하나는 key, 또 다른 하나는 value로 사용한다</span>
-subjects <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;math&#39;</span>, <span style="color:#e6db74">&#39;history&#39;</span>, <span style="color:#e6db74">&#39;english&#39;</span>, <span style="color:#e6db74">&#39;computer engineering&#39;</span>]
-scores <span style="color:#f92672">=</span> [<span style="color:#ae81ff">90</span>, <span style="color:#ae81ff">80</span>, <span style="color:#ae81ff">95</span>, <span style="color:#ae81ff">100</span>]
-score_dict <span style="color:#f92672">=</span> {key: value <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> zip(subjects, scores)}
-<span style="color:#75715e"># {&#39;math&#39;: 90, &#39;history&#39;: 80, &#39;english&#39;: 95, &#39;computer engineering&#39;: 100}</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 두 리스트를 하나의 dict로 합치는 DC. 하나는 key, 또 다른 하나는 value로 사용한다</span>
+<span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;math&#39;</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">,</span> <span class="s1">&#39;english&#39;</span><span class="p">,</span> <span class="s1">&#39;computer engineering&#39;</span><span class="p">]</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">score_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">subjects</span><span class="p">,</span> <span class="n">scores</span><span class="p">)}</span>
+<span class="c1"># {&#39;math&#39;: 90, &#39;history&#39;: 80, &#39;english&#39;: 95, &#39;computer engineering&#39;: 100}</span>
 
-<span style="color:#75715e"># 튜플 리스트를 dict 형태로 변환하는 DC</span>
-score_tuples <span style="color:#f92672">=</span> [(<span style="color:#e6db74">&#39;math&#39;</span>, <span style="color:#ae81ff">90</span>), (<span style="color:#e6db74">&#39;history&#39;</span>, <span style="color:#ae81ff">80</span>), (<span style="color:#e6db74">&#39;english&#39;</span>, <span style="color:#ae81ff">95</span>), (<span style="color:#e6db74">&#39;computer engineering&#39;</span>, <span style="color:#ae81ff">100</span>)]
-score_dict <span style="color:#f92672">=</span> {t[<span style="color:#ae81ff">0</span>]: t[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> score_tuples}
-<span style="color:#75715e"># {&#39;math&#39;: 90, &#39;history&#39;: 80, &#39;english&#39;: 95, &#39;computer engineering&#39;: 100}</span>
+<span class="c1"># 튜플 리스트를 dict 형태로 변환하는 DC</span>
+<span class="n">score_tuples</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;math&#39;</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">,</span> <span class="mi">95</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;computer engineering&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
+<span class="n">score_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">score_tuples</span><span class="p">}</span>
+<span class="c1"># {&#39;math&#39;: 90, &#39;history&#39;: 80, &#39;english&#39;: 95, &#39;computer engineering&#39;: 100}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="generator-expression-ge">Generator Expression (GE)</h1>
 <p><strong>Generator expression</strong>은 특별한 형태의 comprehension이다. 이는 한 번에 모든 원소를 반환하지 않고 한 번에 하나의 원소만 반환하는 <strong>generator</strong>를 생성한다.</p>
 <p>GE 또한 다른 Comprehension과 동일한 형태로 쉽게 사용할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 다음 Generator는 제곱수를 만들어낸다</span>
-gen <span style="color:#f92672">=</span> (x<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>))
-<span style="color:#66d9ef">print</span>(gen)
-<span style="color:#75715e"># &lt;generator object &lt;genexpr&gt; at 0x105bde5c8&gt;</span>
-<span style="color:#66d9ef">print</span>(next(gen)) <span style="color:#75715e"># call 1</span>
-<span style="color:#75715e"># 0</span>
-<span style="color:#66d9ef">print</span>(next(gen)) <span style="color:#75715e"># call 2</span>
-<span style="color:#75715e"># 1</span>
-<span style="color:#75715e"># &#39;next&#39; 함수 호출을 10번 반복</span>
-<span style="color:#66d9ef">print</span>(next(gen)) <span style="color:#75715e"># call 10</span>
-<span style="color:#75715e"># 81</span>
-<span style="color:#66d9ef">print</span>(next(gen)) <span style="color:#75715e"># call 11</span>
-<span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">Traceback (most recent call last):
-</span><span style="color:#e6db74">  File &#34;&lt;stdin&gt;&#34;, line 1, in &lt;module&gt;
-</span><span style="color:#e6db74">StopIteration
-</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 다음 Generator는 제곱수를 만들어낸다</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="c1"># &lt;generator object &lt;genexpr&gt; at 0x105bde5c8&gt;</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span> <span class="c1"># call 1</span>
+<span class="c1"># 0</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span> <span class="c1"># call 2</span>
+<span class="c1"># 1</span>
+<span class="c1"># &#39;next&#39; 함수 호출을 10번 반복</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span> <span class="c1"># call 10</span>
+<span class="c1"># 81</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span> <span class="c1"># call 11</span>
+<span class="s2">&#34;&#34;&#34;
+</span><span class="s2">Traceback (most recent call last):
+</span><span class="s2">  File &#34;&lt;stdin&gt;&#34;, line 1, in &lt;module&gt;
+</span><span class="s2">StopIteration
+</span><span class="s2">&#34;&#34;&#34;</span>
 
-<span style="color:#75715e"># Yes, it is an just generator. You can sum the yielding values.</span>
-<span style="color:#75715e"># GE로 생성한 Generator도 yield를 가진 함수로 생성한 것과 동일한 Generator이기 때문에, 똑같이 sum을 사용할 수 있다. (iterable 객체)</span>
-gen <span style="color:#f92672">=</span> (x<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>))
-sum_of_squares <span style="color:#f92672">=</span> sum(gen)
-<span style="color:#75715e"># 285</span>
+<span class="c1"># Yes, it is an just generator. You can sum the yielding values.</span>
+<span class="c1"># GE로 생성한 Generator도 yield를 가진 함수로 생성한 것과 동일한 Generator이기 때문에, 똑같이 sum을 사용할 수 있다. (iterable 객체)</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sum_of_squares</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+<span class="c1"># 285</span>
 </code></pre></div><!-- raw HTML omitted -->
 <p>이상으로 Comprehension과 Expression에 대해 간단히 살펴보았다. 이는 매우 강력한 기능중 하나로 잘만 활용하면 높은 생산성을 낼 수 있다.</p>
 

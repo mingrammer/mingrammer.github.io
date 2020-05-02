@@ -151,36 +151,36 @@
 <p>즉, 가장 바닥의 바로 위 라인에서 시작하여 각 숫자를 아래 라인의 양 옆의 인접한 숫자중 더 큰 숫자와 합하면서 위로 올라가다보면 합이 가장 큰 경로를 구할 수 있게 된다.</p>
 <p>아래에서부터 각 라인간 인접한 숫자의 합을 계산하면서 올라가기 때문에 한 연산당 계산은 2번씩 이루어지며 연산은 삼각형에 존재하는 숫자들의 개수만큼 수행된다. 따라서  <code>n</code>을 삼각형의 높이라고 할 때 총 연산수는 <code>n(n-1)</code>가 되며 알고리즘의 복잡도는 <code>O(n^2)</code>이 된다.</p>
 <h2 id="18번-솔루션">18번 솔루션</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">triangle <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">75
-</span><span style="color:#e6db74">95 64
-</span><span style="color:#e6db74">17 47 82
-</span><span style="color:#e6db74">18 35 87 10
-</span><span style="color:#e6db74">20 04 82 47 65
-</span><span style="color:#e6db74">19 01 23 75 03 34
-</span><span style="color:#e6db74">88 02 77 73 07 63 67
-</span><span style="color:#e6db74">99 65 04 28 06 16 70 92
-</span><span style="color:#e6db74">41 41 26 56 83 40 80 70 33
-</span><span style="color:#e6db74">41 48 72 33 47 32 37 16 94 29
-</span><span style="color:#e6db74">53 71 44 65 25 43 91 52 97 51 14
-</span><span style="color:#e6db74">70 11 33 28 77 73 17 78 39 68 17 57
-</span><span style="color:#e6db74">91 71 52 38 17 14 91 43 58 50 27 29 48
-</span><span style="color:#e6db74">63 66 04 68 89 53 67 30 73 16 69 87 40 31
-</span><span style="color:#e6db74">04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
-</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">triangle</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span><span class="s2">75
+</span><span class="s2">95 64
+</span><span class="s2">17 47 82
+</span><span class="s2">18 35 87 10
+</span><span class="s2">20 04 82 47 65
+</span><span class="s2">19 01 23 75 03 34
+</span><span class="s2">88 02 77 73 07 63 67
+</span><span class="s2">99 65 04 28 06 16 70 92
+</span><span class="s2">41 41 26 56 83 40 80 70 33
+</span><span class="s2">41 48 72 33 47 32 37 16 94 29
+</span><span class="s2">53 71 44 65 25 43 91 52 97 51 14
+</span><span class="s2">70 11 33 28 77 73 17 78 39 68 17 57
+</span><span class="s2">91 71 52 38 17 14 91 43 58 50 27 29 48
+</span><span class="s2">63 66 04 68 89 53 67 30 73 16 69 87 40 31
+</span><span class="s2">04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
+</span><span class="s2">&#34;&#34;&#34;</span>
 
-triangle_leaves <span style="color:#f92672">=</span> []
-<span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> triangle<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>splitlines():
-    triangle_leaves<span style="color:#f92672">.</span>append([int(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> line<span style="color:#f92672">.</span>split()])
+<span class="n">triangle_leaves</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">triangle</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+    <span class="n">triangle_leaves</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
 
-n <span style="color:#f92672">=</span> len(triangle_leaves)
-<span style="color:#66d9ef">for</span> i, leaves <span style="color:#f92672">in</span> enumerate(triangle_leaves[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]):
-    <span style="color:#66d9ef">for</span> j, leaf <span style="color:#f92672">in</span> enumerate(leaves):
-        left <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j]
-        right <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
-        triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>][j] <span style="color:#f92672">+=</span> max(left, right)
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">leaves</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">leaves</span><span class="p">):</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
 
-<span style="color:#66d9ef">print</span>(triangle_leaves[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>])
+<span class="k">print</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </code></pre></div><blockquote>
 <p>최대 경로합 = 1074</p>
 </blockquote>
@@ -188,21 +188,21 @@ n <span style="color:#f92672">=</span> len(triangle_leaves)
 <blockquote>
 <p>코드는 동일하며 삼각형 데이터를 파일에서 가져옴</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;data/p067_triangle.txt&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
-    triangle <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/p067_triangle.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">triangle</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-    triangle_leaves <span style="color:#f92672">=</span> []
-    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> triangle<span style="color:#f92672">.</span>strip()<span style="color:#f92672">.</span>splitlines():
-        triangle_leaves<span style="color:#f92672">.</span>append([int(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> line<span style="color:#f92672">.</span>split()])
+    <span class="n">triangle_leaves</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">triangle</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">triangle_leaves</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
 
-    n <span style="color:#f92672">=</span> len(triangle_leaves)
-    <span style="color:#66d9ef">for</span> i, leaves <span style="color:#f92672">in</span> enumerate(triangle_leaves[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]):
-        <span style="color:#66d9ef">for</span> j, leaf <span style="color:#f92672">in</span> enumerate(leaves):
-            left <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j]
-            right <span style="color:#f92672">=</span> triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]
-            triangle_leaves[n<span style="color:#f92672">-</span>i<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>][j] <span style="color:#f92672">+=</span> max(left, right)
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">leaves</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">leaf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">leaves</span><span class="p">):</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">triangle_leaves</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">print</span>(triangle_leaves[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>])
+    <span class="k">print</span><span class="p">(</span><span class="n">triangle_leaves</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </code></pre></div><blockquote>
 <p>최대 경로합 = 7273</p>
 </blockquote>

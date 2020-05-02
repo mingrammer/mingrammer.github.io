@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Mar 5, 2017 00:00
-                    · 3320 words
+                    · 3291 words
                     · 7 minute read
                       <span class="tags">
                       
@@ -109,222 +109,222 @@
 <!-- raw HTML omitted -->
 <h1 id="1-빌트인-데이터-구조를-사용한-설정">1. 빌트인 데이터 구조를 사용한 설정</h1>
 <p>가장 쉽고 직관적인 방법이다. 제목 그대로 빌트인 데이터 구조를 사용해 설정값을 관리하는 방법인데, 가장 기본적으로는 다음과 같이 사용할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># config.py</span>
-DATABASE_CONFIG <span style="color:#f92672">=</span> {
-    <span style="color:#e6db74">&#39;host&#39;</span>: <span style="color:#e6db74">&#39;localhost&#39;</span>,
-    <span style="color:#e6db74">&#39;dbname&#39;</span>: <span style="color:#e6db74">&#39;company&#39;</span>,
-    <span style="color:#e6db74">&#39;user&#39;</span>: <span style="color:#e6db74">&#39;user&#39;</span>,
-    <span style="color:#e6db74">&#39;password&#39;</span>: <span style="color:#e6db74">&#39;password&#39;</span>,
-    <span style="color:#e6db74">&#39;port&#39;</span>: <span style="color:#ae81ff">3306</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># config.py</span>
+<span class="n">DATABASE_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">3306</span>
+<span class="p">}</span>
 
-<span style="color:#75715e"># main.py</span>
-<span style="color:#f92672">import</span> pymysql
-<span style="color:#f92672">import</span> config
+<span class="c1"># main.py</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
+<span class="kn">import</span> <span class="nn">config</span>
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">connect_db</span>(dbname):
-    <span style="color:#66d9ef">if</span> dbname <span style="color:#f92672">!=</span> config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;dbname&#39;</span>]:
-        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Could not find DB with given name&#34;</span>)
-    conn <span style="color:#f92672">=</span> pymysql<span style="color:#f92672">.</span>connect(host<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;host&#39;</span>],
-                           user<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;user&#39;</span>],
-                           password<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;password&#39;</span>],
-                           db<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;dbname&#39;</span>])
-    <span style="color:#66d9ef">return</span> conn
+<span class="k">def</span> <span class="nf">connect_db</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dbname</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&#34;Could not find DB with given name&#34;</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span>
+                           <span class="n">user</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span>
+                           <span class="n">password</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span>
+                           <span class="n">db</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">conn</span>
 
-connect_db(<span style="color:#e6db74">&#39;company&#39;</span>)
+<span class="n">connect_db</span><span class="p">(</span><span class="s1">&#39;company&#39;</span><span class="p">)</span>
 </code></pre></div><p>조금 더 복잡한 경우를 들어보자. 예를 들어, 웹 애플리케이션을 개발한다고 하면 보통 개발 환경, 테스트 환경, 프로덕션 환경등에 대한 설정이 각기 다르기 때문에 여러 설정들을 다음과 같이 관리하는것이 좀 더 효율적이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># config.py</span>
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Config</span>:
-    APP_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;myapp&#39;</span>
-    SECRET_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;secret-key-of-myapp&#39;</span>
-    ADMIN_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;administrator&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># config.py</span>
+<span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="n">APP_NAME</span> <span class="o">=</span> <span class="s1">&#39;myapp&#39;</span>
+    <span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;secret-key-of-myapp&#39;</span>
+    <span class="n">ADMIN_NAME</span> <span class="o">=</span> <span class="s1">&#39;administrator&#39;</span>
 
-    AWS_DEFAULT_REGION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ap-northeast-2&#39;</span>
+    <span class="n">AWS_DEFAULT_REGION</span> <span class="o">=</span> <span class="s1">&#39;ap-northeast-2&#39;</span>
     
-    STATIC_PREFIX_PATH <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;static&#39;</span>
-    ALLOWED_IMAGE_FORMATS <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;jpg&#39;</span>, <span style="color:#e6db74">&#39;jpeg&#39;</span>, <span style="color:#e6db74">&#39;png&#39;</span>, <span style="color:#e6db74">&#39;gif&#39;</span>]
-    MAX_IMAGE_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">5242880</span> <span style="color:#75715e"># 5MB</span>
+    <span class="n">STATIC_PREFIX_PATH</span> <span class="o">=</span> <span class="s1">&#39;static&#39;</span>
+    <span class="n">ALLOWED_IMAGE_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;gif&#39;</span><span class="p">]</span>
+    <span class="n">MAX_IMAGE_SIZE</span> <span class="o">=</span> <span class="mi">5242880</span> <span class="c1"># 5MB</span>
 
     
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DevelopmentConfig</span>(Config):
-    DEBUG <span style="color:#f92672">=</span> True
+<span class="k">class</span> <span class="nc">DevelopmentConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
     
-    AWS_ACCESS_KEY_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-access-key-for-dev&#39;</span>
-    AWS_SECERT_ACCESS_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-secret-access-key-for-dev&#39;</span>
-    AWS_S3_BUCKET_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-s3-bucket-name-for-dev&#39;</span>
+    <span class="n">AWS_ACCESS_KEY_ID</span> <span class="o">=</span> <span class="s1">&#39;aws-access-key-for-dev&#39;</span>
+    <span class="n">AWS_SECERT_ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;aws-secret-access-key-for-dev&#39;</span>
+    <span class="n">AWS_S3_BUCKET_NAME</span> <span class="o">=</span> <span class="s1">&#39;aws-s3-bucket-name-for-dev&#39;</span>
 
-    DATABASE_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;database-uri-for-dev&#39;</span>
+    <span class="n">DATABASE_URI</span> <span class="o">=</span> <span class="s1">&#39;database-uri-for-dev&#39;</span>
 
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestConfig</span>(Config):
-    DEBUG <span style="color:#f92672">=</span> True
-    TESTING <span style="color:#f92672">=</span> True
+<span class="k">class</span> <span class="nc">TestConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">TESTING</span> <span class="o">=</span> <span class="bp">True</span>
     
-    AWS_ACCESS_KEY_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-access-key-for-test&#39;</span>
-    AWS_SECERT_ACCESS_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-secret-access-key-for-test&#39;</span>
-    AWS_S3_BUCKET_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-s3-bucket-name-for-test&#39;</span>
+    <span class="n">AWS_ACCESS_KEY_ID</span> <span class="o">=</span> <span class="s1">&#39;aws-access-key-for-test&#39;</span>
+    <span class="n">AWS_SECERT_ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;aws-secret-access-key-for-test&#39;</span>
+    <span class="n">AWS_S3_BUCKET_NAME</span> <span class="o">=</span> <span class="s1">&#39;aws-s3-bucket-name-for-test&#39;</span>
     
-    DATABASE_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;database-uri-for-test&#39;</span>
+    <span class="n">DATABASE_URI</span> <span class="o">=</span> <span class="s1">&#39;database-uri-for-test&#39;</span>
   
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProductionConfig</span>(Config):
-    DEBUG <span style="color:#f92672">=</span> False
+<span class="k">class</span> <span class="nc">ProductionConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
 
-    AWS_ACCESS_KEY_ID <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-access-key-for-prod&#39;</span>
-    AWS_SECERT_ACCESS_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-secret-access-key-for-prod&#39;</span>
-    AWS_S3_BUCKET_NAME <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;aws-s3-bucket-name-for-prod&#39;</span>
+    <span class="n">AWS_ACCESS_KEY_ID</span> <span class="o">=</span> <span class="s1">&#39;aws-access-key-for-prod&#39;</span>
+    <span class="n">AWS_SECERT_ACCESS_KEY</span> <span class="o">=</span> <span class="s1">&#39;aws-secret-access-key-for-prod&#39;</span>
+    <span class="n">AWS_S3_BUCKET_NAME</span> <span class="o">=</span> <span class="s1">&#39;aws-s3-bucket-name-for-prod&#39;</span>
 
-    DATABASE_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;database-uri-for-prod&#39;</span>
+    <span class="n">DATABASE_URI</span> <span class="o">=</span> <span class="s1">&#39;database-uri-for-prod&#39;</span>
 
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CIConfig</span>:
-    SERVICE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;travis-ci&#39;</span>
-    HOOK_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;web-hooking-url-from-ci-service&#39;</span>
+<span class="k">class</span> <span class="nc">CIConfig</span><span class="p">:</span>
+    <span class="n">SERVICE</span> <span class="o">=</span> <span class="s1">&#39;travis-ci&#39;</span>
+    <span class="n">HOOK_URL</span> <span class="o">=</span> <span class="s1">&#39;web-hooking-url-from-ci-service&#39;</span>
    
-<span style="color:#75715e"># main.py</span>
-<span style="color:#f92672">import</span> sys
-<span style="color:#f92672">import</span> config
+<span class="c1"># main.py</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">config</span>
 
-<span style="color:#f92672">...</span>
+<span class="o">...</span>
 
-<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
-    env <span style="color:#f92672">=</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#39;dev&#39;</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="s1">&#39;dev&#39;</span>
     
-    <span style="color:#66d9ef">if</span> env <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;dev&#39;</span>:
-        app<span style="color:#f92672">.</span>config <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>DevelopmentConfig
-    <span style="color:#66d9ef">elif</span> env <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;test&#39;</span>:
-        app<span style="color:#f92672">.</span>config <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>TestConfig
-    <span style="color:#66d9ef">elif</span> env <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;prod&#39;</span>:
-        app<span style="color:#f92672">.</span>config <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>ProductionConfig
-    <span style="color:#66d9ef">else</span>:
-        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#39;Invalid environment name&#39;</span>)
+    <span class="k">if</span> <span class="n">env</span> <span class="o">==</span> <span class="s1">&#39;dev&#39;</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">DevelopmentConfig</span>
+    <span class="k">elif</span> <span class="n">env</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">TestConfig</span>
+    <span class="k">elif</span> <span class="n">env</span> <span class="o">==</span> <span class="s1">&#39;prod&#39;</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ProductionConfig</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid environment name&#39;</span><span class="p">)</span>
    
-    app<span style="color:#f92672">.</span>ci <span style="color:#f92672">=</span> config<span style="color:#f92672">.</span>CIConfig
+    <span class="n">app</span><span class="o">.</span><span class="n">ci</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">CIConfig</span>
 </code></pre></div><p>같은 프로젝트 내에서 바로 임포트가 가능하며, 빌트인 데이터 구조를 그대로 활용할 수 있기 때문에 사용하기가 편리하다. 단, 만약 버전 관리 시스템을 사용하고 있는 경우 같은 코드베이스에 설정값들이 노출되어 있기 때문에 어떤 설정값이 시크릿값이라면 보안상 이슈가 생길 수가 있다. 따라서, 실제 설정값들 대신 더미 설정값들을 버전 관리 시스템에 올려놓고, 실제 프로덕션 서버에서 직접 설정값을 변경하는 방법으로 해당 이슈를 피할 수 있긴 하지만 조금 번거롭다. 여기서 조금 더 진보된 방법이 <strong>동적 로딩을 통한 설정</strong>인데 이는 뒤에서 살펴보도록 하자.</p>
 <p>따라서 이 방법은 설정값에 시크릿값이 없는 경우에 사용하는걸 추천한다.</p>
 <!-- raw HTML omitted -->
 <h1 id="2-외부-파일을-통한-설정">2. 외부 파일을 통한 설정</h1>
 <p>이 방법은 위와 다르게 빌트인 데이터 구조가 아닌 외부 파일에 정의된 설정값들을 로드하여 사용하는 방법이다. 설정값을 코드가 아닌 설정값 그 자체로 바라보기 때문에 조금 더 일반적인 접근 방법이다. 간단하게 <strong>ini</strong>와 <strong>json</strong> 포맷의 설정파일을 다루는 방법을 살펴보자.  (참고로 <code>configparser</code>는 Python 3.x 버전용이며 Python 2.x 버전에서는 <code>ConfigParser</code>를 사용한다)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">; config.ini
-[DEFAULT]
-SECRET_KEY = secret-key-of-myapp
-ADMIN_NAME = administrator
-AWS_DEFAULT_REGION = ap-northeast<span style="color:#ae81ff">-2</span>
-MAX_IMAGE_SIZE = <span style="color:#ae81ff">5242880</span>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">;<span class="w"> </span>config.ini<span class="w">
+</span><span class="w"></span><span class="p">[</span>DEFAULT<span class="p">]</span><span class="w">
+</span><span class="w"></span>SECRET_KEY<span class="w"> </span>=<span class="w"> </span>secret-key-of-myapp<span class="w">
+</span><span class="w"></span>ADMIN_NAME<span class="w"> </span>=<span class="w"> </span>administrator<span class="w">
+</span><span class="w"></span>AWS_DEFAULT_REGION<span class="w"> </span>=<span class="w"> </span>ap-northeast<span class="m">-2</span><span class="w">
+</span><span class="w"></span>MAX_IMAGE_SIZE<span class="w"> </span>=<span class="w"> </span><span class="m">5242880</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="p">[</span>TEST<span class="p">]</span><span class="w">
+</span><span class="w"></span>TEST_TMP_DIR<span class="w"> </span>=<span class="w"> </span>tests<span class="w">
+</span><span class="w"></span>TEST_TIMEOUT<span class="w"> </span>=<span class="w"> </span><span class="m">20</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="p">[</span>CI<span class="p">]</span><span class="w">
+</span><span class="w"></span>SERVICE<span class="w"> </span>=<span class="w"> </span>travis-ci<span class="w">
+</span><span class="w"></span>HOOK_URL<span class="w"> </span>=<span class="w"> </span>web-hooking-url-from-ci-service<span class="w">
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">config.json</span>
+<span class="p">{</span>
+  <span class="nt">&#34;DEFAULT&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;SECRET_KEY&#34;</span><span class="p">:</span> <span class="s2">&#34;secret-key-of-myapp&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;ADMIN_NAME&#34;</span><span class="p">:</span> <span class="s2">&#34;administrator&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;AWS_DEFAULT_REGION&#34;</span><span class="p">:</span> <span class="s2">&#34;ap-northeast-2&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;MAX_IMAGE_SIZE&#34;</span><span class="p">:</span> <span class="mi">5242880</span>
+  <span class="p">},</span>
+  <span class="nt">&#34;TEST&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;TEST_TMP_DIR&#34;</span><span class="p">:</span> <span class="s2">&#34;tests&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;TEST_TIMEOUT&#34;</span><span class="p">:</span> <span class="mi">20</span>
+  <span class="p">},</span>
+  <span class="nt">&#34;CI&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;SERVICE&#34;</span><span class="p">:</span> <span class="s2">&#34;travis-ci&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;HOOK_URL&#34;</span><span class="p">:</span> <span class="s2">&#34;web-hooking-url-from-ci-service&#34;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># main_with_ini.py</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
 
-[TEST]
-TEST_TMP_DIR = tests
-TEST_TIMEOUT = <span style="color:#ae81ff">20</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;config.ini&#39;</span><span class="p">)</span>
 
-[CI]
-SERVICE = travis-ci
-HOOK_URL = web-hooking-url-from-ci-service
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">config.json</span>
-{
-  <span style="color:#f92672">&#34;DEFAULT&#34;</span>: {
-    <span style="color:#f92672">&#34;SECRET_KEY&#34;</span>: <span style="color:#e6db74">&#34;secret-key-of-myapp&#34;</span>,
-    <span style="color:#f92672">&#34;ADMIN_NAME&#34;</span>: <span style="color:#e6db74">&#34;administrator&#34;</span>,
-    <span style="color:#f92672">&#34;AWS_DEFAULT_REGION&#34;</span>: <span style="color:#e6db74">&#34;ap-northeast-2&#34;</span>,
-    <span style="color:#f92672">&#34;MAX_IMAGE_SIZE&#34;</span>: <span style="color:#ae81ff">5242880</span>
-  },
-  <span style="color:#f92672">&#34;TEST&#34;</span>: {
-    <span style="color:#f92672">&#34;TEST_TMP_DIR&#34;</span>: <span style="color:#e6db74">&#34;tests&#34;</span>,
-    <span style="color:#f92672">&#34;TEST_TIMEOUT&#34;</span>: <span style="color:#ae81ff">20</span>
-  },
-  <span style="color:#f92672">&#34;CI&#34;</span>: {
-    <span style="color:#f92672">&#34;SERVICE&#34;</span>: <span style="color:#e6db74">&#34;travis-ci&#34;</span>,
-    <span style="color:#f92672">&#34;HOOK_URL&#34;</span>: <span style="color:#e6db74">&#34;web-hooking-url-from-ci-service&#34;</span>
-  }
-}
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># main_with_ini.py</span>
-<span style="color:#f92672">import</span> configparser
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">][</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="c1"># &#39;secret-key-of-myapp&#39;</span>
+<span class="n">ci_hook_url</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;CI&#39;</span><span class="p">][</span><span class="s1">&#39;HOOK_URL&#39;</span><span class="p">]</span> <span class="c1"># &#39;web-hooking-url-from-ci-service&#39;</span>
 
-config <span style="color:#f92672">=</span> configparser<span style="color:#f92672">.</span>ConfigParser()
-config<span style="color:#f92672">.</span>read(<span style="color:#e6db74">&#39;config.ini&#39;</span>)
+<span class="c1"># main_with_json.py</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
-secret_key <span style="color:#f92672">=</span> config[<span style="color:#e6db74">&#39;DEFAULT&#39;</span>][<span style="color:#e6db74">&#39;SECRET_KEY&#39;</span>] <span style="color:#75715e"># &#39;secret-key-of-myapp&#39;</span>
-ci_hook_url <span style="color:#f92672">=</span> config[<span style="color:#e6db74">&#39;CI&#39;</span>][<span style="color:#e6db74">&#39;HOOK_URL&#39;</span>] <span style="color:#75715e"># &#39;web-hooking-url-from-ci-service&#39;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-<span style="color:#75715e"># main_with_json.py</span>
-<span style="color:#f92672">import</span> json
-
-<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;config.json&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
-    config <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>load(f)
-
-secret_key <span style="color:#f92672">=</span> config[<span style="color:#e6db74">&#39;DEFAULT&#39;</span>][<span style="color:#e6db74">&#39;SECRET_KEY&#39;</span>] <span style="color:#75715e"># &#39;secret-key-of-myapp&#39;</span>
-ci_hook_url <span style="color:#f92672">=</span> config[<span style="color:#e6db74">&#39;CI&#39;</span>][<span style="color:#e6db74">&#39;HOOK_URL&#39;</span>] <span style="color:#75715e"># &#39;web-hooking-url-from-ci-service&#39;</span>
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">][</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="c1"># &#39;secret-key-of-myapp&#39;</span>
+<span class="n">ci_hook_url</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;CI&#39;</span><span class="p">][</span><span class="s1">&#39;HOOK_URL&#39;</span><span class="p">]</span> <span class="c1"># &#39;web-hooking-url-from-ci-service&#39;</span>
 </code></pre></div><p>이 외에도 <strong>xml</strong>, <strong>yaml</strong> 등의 다른 포맷을 사용할 수도 있다. 기본적인 접근 방법은 동일하기 때문에 해당 포맷을 파싱만 할 수 있으면 된다.</p>
 <p>이 방법의 경우 설정을 코드로부터 분리할 수 있기 때문에, Git의 경우 <strong>.gitignore</strong>에 해당 설정 파일만 명시해두면 버전 관리 시스템으로부터 독립적으로 관리할 수 있다. 물론 이렇게 설정 파일을 버전 관리 시스템에서 무시하는 경우, 설정 변수들이 모두 감춰지기 때문에 다른 개발자가 설정 변수를 조작하기가 어려울 수 있다. 따라서 이런 경우는 다음과 같이 해결을 할 수가 있다.</p>
 <p>시크릿값을 포함한 실제 설정 변수들을 가진 파일을 <strong>config.json</strong>이라고 할 때, 이 설정 파일의 포맷만을 명시한 파일을 <strong>config.json.example</strong>와 같은 형태로 두어, 버전 관리 시스템에서는 <strong>config.json</strong> 대신 <strong>config.json.example</strong>만을 관리한다. 이렇게하면 다른 개발자도 포맷을 알 수 있어 설정값들을 조작할 수 있게된다. 단, 다른 개발자의 경우 로컬에서 이를 사용할때에는 <strong>config.json.example</strong>을 <strong>config.json</strong>로 변경 후 설정값들을 채워 넣은 뒤 사용하면된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">config.json.example</span>
-{
-  <span style="color:#f92672">&#34;DEFAULT&#34;</span>: {
-    <span style="color:#f92672">&#34;SECRET_KEY&#34;</span>: <span style="color:#e6db74">&#34;...&#34;</span>,
-    <span style="color:#f92672">&#34;ADMIN_NAME&#34;</span>: <span style="color:#e6db74">&#34;...&#34;</span>,
-    <span style="color:#f92672">&#34;AWS_DEFAULT_REGION&#34;</span>: <span style="color:#e6db74">&#34;...&#34;</span>,
-    <span style="color:#f92672">&#34;MAX_IMAGE_SIZE&#34;</span>: <span style="color:#ae81ff">5242880</span>
-  },
-  <span style="color:#f92672">&#34;TEST&#34;</span>: {
-    <span style="color:#f92672">&#34;TEST_TMP_DIR&#34;</span>: <span style="color:#e6db74">&#34;tests&#34;</span>,
-    <span style="color:#f92672">&#34;TEST_TIMEOUT&#34;</span>: <span style="color:#ae81ff">20</span>
-  },
-  <span style="color:#f92672">&#34;CI&#34;</span>: {
-    <span style="color:#f92672">&#34;SERVICE&#34;</span>: <span style="color:#e6db74">&#34;travis-ci&#34;</span>,
-    <span style="color:#f92672">&#34;HOOK_URL&#34;</span>: <span style="color:#e6db74">&#34;...&#34;</span>
-  }
-}
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">config.json.example</span>
+<span class="p">{</span>
+  <span class="nt">&#34;DEFAULT&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;SECRET_KEY&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;ADMIN_NAME&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;AWS_DEFAULT_REGION&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;MAX_IMAGE_SIZE&#34;</span><span class="p">:</span> <span class="mi">5242880</span>
+  <span class="p">},</span>
+  <span class="nt">&#34;TEST&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;TEST_TMP_DIR&#34;</span><span class="p">:</span> <span class="s2">&#34;tests&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;TEST_TIMEOUT&#34;</span><span class="p">:</span> <span class="mi">20</span>
+  <span class="p">},</span>
+  <span class="nt">&#34;CI&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;SERVICE&#34;</span><span class="p">:</span> <span class="s2">&#34;travis-ci&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;HOOK_URL&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="3-환경-변수를-사용한-설정">3. 환경 변수를 사용한 설정</h1>
 <p>이 방법은 파이썬 소스 파일이나 설정 파일과 같은 파일이 아닌 시스템의 환경 변수를 사용해 설정값들을 관리하는 방법이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> os
-<span style="color:#f92672">from</span> myapp <span style="color:#f92672">import</span> app
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">myapp</span> <span class="kn">import</span> <span class="n">app</span>
 
-secret_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>environ<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;SECRET_KEY&#39;</span>, None)
+<span class="n">secret_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> secret_key:
-    <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#39;You must have &#34;SECRET_KEY&#34; variable&#39;</span>)
+<span class="k">if</span> <span class="ow">not</span> <span class="n">secret_key</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must have &#34;SECRET_KEY&#34; variable&#39;</span><span class="p">)</span>
 
-app<span style="color:#f92672">.</span>config[<span style="color:#e6db74">&#39;SECRET_KEY&#39;</span>] <span style="color:#f92672">=</span> secert_key
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">secert_key</span>
 </code></pre></div><p>별도의 파일로 관리되지 않으므로 시크릿값 등이 노출될 위험이 적으며, 환경 변수만 받아오면 되기 때문에 사용하기가 매우 편리하며 소스 코드 어디에서도 가져다 쓸 수 있다.</p>
 <p>물론 이 경우도 모든 환경 변수들을 체계적으로 관리하려면 셸 스크립트 등으로 관리를 해야 하지만, 셸 스크립트와 시스템에 익숙한 개발자라면 이 방법도 좋은 방법일 수 있다. 다만, Apache나 Nginx등의 웹서버와 같이 환경 변수를 사용할 수 없는 환경이라면 다른 방법을 사용해야한다.</p>
 <!-- raw HTML omitted -->
 <h1 id="4-동적-로딩을-통한-설정">4. 동적 로딩을 통한 설정</h1>
 <p>위에서도 언급했듯이 이는 1번의 <strong>빌트인 데이터 구조를 사용한 설정</strong>의 조금 더 진보된 방법이다. 1번의 경우 프로젝트의 어떤 파일에서 특정 설정 파일을 임포트 해야하는 구조이며, 따라서 설정 파일이 임포트 가능한 위치에 존재해야한다. 그러나 이 방법의 경우, 특정 설정 파일이 어떤 프로젝트 디렉토리에 임포트 가능한 형태로 존재하지 않아도 되며, 심지어는 같은 레포지토리가 아닌 다른 레포지토리로 설정 파일을 관리할 수도 있다.</p>
 <p>원리는 단순한데, 설정값이 필요한 소스 파일에서 설정값을 가지고 있는 파이썬 소스 파일의 경로를 동적으로 등록하여 사용하는 방법이다. 즉, 다음과 같다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># /opt/settings/config.py</span>
-DATABASE_CONFIG <span style="color:#f92672">=</span> {
-    <span style="color:#e6db74">&#39;host&#39;</span>: <span style="color:#e6db74">&#39;localhost&#39;</span>,
-    <span style="color:#e6db74">&#39;dbname&#39;</span>: <span style="color:#e6db74">&#39;company&#39;</span>,
-    <span style="color:#e6db74">&#39;user&#39;</span>: <span style="color:#e6db74">&#39;user&#39;</span>,
-    <span style="color:#e6db74">&#39;password&#39;</span>: <span style="color:#e6db74">&#39;password&#39;</span>,
-    <span style="color:#e6db74">&#39;port&#39;</span>: <span style="color:#ae81ff">3306</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># /opt/settings/config.py</span>
+<span class="n">DATABASE_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;host&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s1">&#39;company&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">3306</span>
+<span class="p">}</span>
 
-<span style="color:#75715e"># main.py</span>
-<span style="color:#f92672">import</span> sys
-<span style="color:#f92672">import</span> pymysql
+<span class="c1"># main.py</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
 
-sys<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;/opt/settings&#39;</span>)
-<span style="color:#f92672">import</span> config
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;/opt/settings&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">config</span>
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">connect_db</span>(dbname):
-    <span style="color:#66d9ef">if</span> dbname <span style="color:#f92672">!=</span> config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;dbname&#39;</span>]:
-        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">&#34;Couldn&#39;t not find DB with given name&#34;</span>)
-    conn <span style="color:#f92672">=</span> pymysql<span style="color:#f92672">.</span>connect(host<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;host&#39;</span>],
-                           user<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;user&#39;</span>],
-                           password<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;password&#39;</span>],
-                           db<span style="color:#f92672">=</span>config<span style="color:#f92672">.</span>DATABASE_CONFIG[<span style="color:#e6db74">&#39;dbname&#39;</span>])
-    <span style="color:#66d9ef">return</span> conn
+<span class="k">def</span> <span class="nf">connect_db</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dbname</span> <span class="o">!=</span> <span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&#34;Couldn&#39;t not find DB with given name&#34;</span><span class="p">)</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span>
+                           <span class="n">user</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span>
+                           <span class="n">password</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span>
+                           <span class="n">db</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">DATABASE_CONFIG</span><span class="p">[</span><span class="s1">&#39;dbname&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">conn</span>
 
-connect_db(<span style="color:#e6db74">&#39;company&#39;</span>)
+<span class="n">connect_db</span><span class="p">(</span><span class="s1">&#39;company&#39;</span><span class="p">)</span>
 </code></pre></div><p>얼핏보면 1번과 다를바가 없어 보이지만, 이 방법의 장점은 파이썬 소스 파일 자체를 파이썬 프로젝트와 분리할 수 있다는 것이다. 즉, 1번과 2번의 장점을 모두 가져오는데, 파이썬 소스 파일을 프로젝트 코드베이스와 분리하여 관리하고 싶을때 적합하다.</p>
 <p>나의 경우, 이전에 설정만을 관리하는 레포지토리와 API 서버 레포지토리를 따로 관리했을때 이 방법을 사용했었다. API 서버 레포지토리는 설정을 임포트해서 사용하기만 하되, 실제 설정값들은 독립적인 다른 레포지토리에서 관리했었다. 그리고 서버 프로비저닝시 설정 레포지토리와 API 서버 레포지토리를 모두 클론해 API 서버에서 설정 소스 파일을 임포트 할 수 있도록 구성하였다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 프로비저닝 스크립트</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 프로비저닝 스크립트</span>
 ...
-cd /opt/settings
+<span class="nb">cd</span> /opt/settings
 git clone git@github.com/company/config.git
 
-cd /opt/app
+<span class="nb">cd</span> /opt/app
 git clone git@github.com/company/api-server.git
 ...
 </code></pre></div><p>이렇게 할 경우, 1번의 장점을 살리면서 설정을 완전히 분리해서 관리할 수 있기 때문에 보안 위험도 최소화 시킬 수 있으며 관리가 한결 수월해진다. 또한 설정 환경의 크기가 커질 경우 설정 레포지토리를 따로 관리하게 되면 설정값들 또한 버전 관리 시스템에서 독립적으로 관리할 수 있게 되어 유지보수 또한 용이해진다.</p>

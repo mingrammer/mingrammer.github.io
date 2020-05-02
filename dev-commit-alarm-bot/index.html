@@ -108,54 +108,54 @@ $ apex invoke function_name // Lambda function 실행. 테스트 용도로 사�
 <pre><code>$ apex deploy
 </code></pre><p>이게 끝이다. 물론 Deploy전에 AWS 계정과 Lambda ARN 설정이 필요하다.</p>
 <p>다음으로 Commit 조회에 대한 이슈이다. 나는 PyGithub라는 Python용 Github API 라이브러리를 사용했다. 처음엔 그냥 로그인 후 보유한 Repository를 모두 순회하며, 각 Repository의 Commit을 가져와 날짜를 비교한 뒤 오늘자 Commit만 저장하는 리스트를 만들었었다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">today <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>today()
-today_date <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime(today<span style="color:#f92672">.</span>year, today<span style="color:#f92672">.</span>month, today<span style="color:#f92672">.</span>day)
-time_delta <span style="color:#f92672">=</span> today_date <span style="color:#f92672">-</span> timedelta(days<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="n">today_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+<span class="n">time_delta</span> <span class="o">=</span> <span class="n">today_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;username&#39;</span>
-password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;password&#39;</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;username&#39;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;password&#39;</span>
 
-client <span style="color:#f92672">=</span> Github(username, password)
+<span class="n">client</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 
-commits <span style="color:#f92672">=</span> []
+<span class="n">commits</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span style="color:#66d9ef">for</span> repo <span style="color:#f92672">in</span> client<span style="color:#f92672">.</span>get_user(username)<span style="color:#f92672">.</span>get_repos():
-    commits<span style="color:#f92672">.</span>extend(repo<span style="color:#f92672">.</span>get_commits(since<span style="color:#f92672">=</span>time_delta, author<span style="color:#f92672">=</span>g<span style="color:#f92672">.</span>get_user()<span style="color:#f92672">.</span>login)<span style="color:#f92672">.</span>get_page(<span style="color:#ae81ff">0</span>))
+<span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">get_repos</span><span class="p">():</span>
+    <span class="n">commits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">get_commits</span><span class="p">(</span><span class="n">since</span><span class="o">=</span><span class="n">time_delta</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">get_user</span><span class="p">()</span><span class="o">.</span><span class="n">login</span><span class="p">)</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 
-<span style="color:#66d9ef">if</span> len(commits) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-    <span style="color:#75715e"># push message to slack</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># push message to slack</span>
 </code></pre></div><p>그러나 위처럼 모든 Repo를 가져오고 그 안에서 Commit들을 가져오게 되면 그 숫자 만큼의  API call이 발생하기 때문에 많은 레포를 가졌을 경우, 매우 심각한 성능 저하 현상이 일어난다. 그래서 이 스크립트는 그대로 쓸 수가 없었다.</p>
 <p>그럼 어떻게 해야 이를 해결할 수 있을까 고민하며 Github API 사이트를 둘러보다 Activity 데이터의 <code>Events</code> API에 주목했다. 이 API를 사용하면 어떤 특정 사용자의 이벤트 리스트를 가져올 수 있는데 여기서 이벤트란, 사용자의 거의 모든 활동 내역을 포함한다. 예를 들면, 푸시를 했다는 <code>PushEvent</code>, 이슈를 남겼다는 <code>IssueEvent</code>, 풀 리퀘스트를 날렸다는 <code>PullRequestEvent</code>등등이 있다. 아! 그럼 이벤트 리스트에서 <code>PushEvent</code>와 <code>PullRequestEvent</code>를 받아오면 되겠구나!하며 바로 수정 작업에 들어갔다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">today <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>today()
-today_date <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime(today<span style="color:#f92672">.</span>year, today<span style="color:#f92672">.</span>month, today<span style="color:#f92672">.</span>day)
-today_date_ko <span style="color:#f92672">=</span> today_date <span style="color:#f92672">-</span> datetime<span style="color:#f92672">.</span>timedelta(hours<span style="color:#f92672">=</span><span style="color:#ae81ff">9</span>)
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+<span class="n">today_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">today</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">today</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+<span class="n">today_date_ko</span> <span class="o">=</span> <span class="n">today_date</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 
-username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;username&#39;</span>
-password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;password&#39;</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;username&#39;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;password&#39;</span>
 
-client <span style="color:#f92672">=</span> Github(username, password)
+<span class="n">client</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 
-commit_events <span style="color:#f92672">=</span> []
+<span class="n">commit_events</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span style="color:#66d9ef">for</span> event <span style="color:#f92672">in</span> client<span style="color:#f92672">.</span>get_user(username)<span style="color:#f92672">.</span>get_events():
-    <span style="color:#66d9ef">if</span> event<span style="color:#f92672">.</span>created_at <span style="color:#f92672">&gt;</span> today_date_ko <span style="color:#f92672">and</span> event<span style="color:#f92672">.</span>type <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;PushEvent&#39;</span>, <span style="color:#e6db74">&#39;PullRequestEvent&#39;</span>]:
-        commit_evnts<span style="color:#f92672">.</span>append(event)
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">created_at</span> <span class="o">&gt;</span> <span class="n">today_date_ko</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PushEvent&#39;</span><span class="p">,</span> <span class="s1">&#39;PullRequestEvent&#39;</span><span class="p">]:</span>
+        <span class="n">commit_evnts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-<span style="color:#66d9ef">if</span> len(commit_events) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-    <span style="color:#75715e"># push message to slack</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">commit_events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># push message to slack</span>
 </code></pre></div><p>이처럼 Repo가 아닌 Event들을 가져오게되면, 모든 Repo를 순회할 필요가 없어 API call을 아낄 수 있으며 그에 따라 아까 발생하던 심각한 성능 저하 문제를 해결할 수 있다. 그러나 이 스크립트도 아직 완벽하진않다. 왜냐하면 Events API는 호출 시 모든 이벤트를 가져오지 않고, 한번에 최근 30개의 이벤트만을 가져오기 때문에 위의 루프는 최대 10번(Events API는 최근 300개 까지의 이벤트만 가져옴)의 Events API call을 발생시킬 수도 있다.
 그런데 조금 전에 말했듯이  Events API는 이벤트를 시간 순서대로 가져온다. 즉, 루프를 순회하며 어떤 특정 이벤트가 오늘 날짜가 아닐 경우 그 뒤의 이벤트는 검사할 필요가 없다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="o">...</span>
 
-<span style="color:#66d9ef">for</span> event <span style="color:#f92672">in</span> client<span style="color:#f92672">.</span>get_user(username)<span style="color:#f92672">.</span>get_events():
-    <span style="color:#66d9ef">if</span> event<span style="color:#f92672">.</span>created_at <span style="color:#f92672">&gt;</span> today_date_ko:
-        <span style="color:#66d9ef">if</span> event<span style="color:#f92672">.</span>type <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;PushEvent&#39;</span>, <span style="color:#e6db74">&#39;PullRequestEvent&#39;</span>]:
-            commit_events<span style="color:#f92672">.</span>append(event)
-    <span style="color:#66d9ef">else</span>:
-        <span style="color:#66d9ef">break</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">created_at</span> <span class="o">&gt;</span> <span class="n">today_date_ko</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;PushEvent&#39;</span><span class="p">,</span> <span class="s1">&#39;PullRequestEvent&#39;</span><span class="p">]:</span>
+            <span class="n">commit_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span>
 
-<span style="color:#66d9ef">if</span> len(commit_events) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-    <span style="color:#75715e"># push message to slack</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">commit_events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># push message to slack</span>
 </code></pre></div><p>최종 스크립트가 완성되었다. 이제 이를 Slack webhook과 연동하고 배포를 하면 원하던 기능이 완성된다!</p>
 <blockquote>
 <p>&ldquo;그렇다면 굳이 Commit 리스트를 만들지않고, 발견될 시 바로 break하면 되지 않느냐&quot;고 할 수도 있다. 맞다. 바로 break를 하면 성능이 좀 더 올라간다. 그러나 오늘자 Commit 리스트를 만든건 추후 커밋 알림뿐 아니라 오늘의 커밋에 대한 Stats도 제공하고자 해서이다</p>

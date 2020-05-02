@@ -137,21 +137,21 @@
 <p><strong>ca07ca</strong>는 10진수로 13240266인 카운터의 16진수값이다.</p>
 <h1 id="구현">구현</h1>
 <p>이론은 다 살펴보았으니 이제 코드를 작성해보자! 먼저 채굴 난이도를 정의하자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">targetBits</span> = <span style="color:#ae81ff">24</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="nx">targetBits</span> <span class="p">=</span> <span class="mi">24</span>
 </code></pre></div><p>비트코인에서 &ldquo;목표 비트 (target bits)&ldquo;란 블록이 채굴되는 난이도를 저장하고 있는 블록 헤더이다. 현재는 목표 조정 알고리즘을 구현하진 않을 것이므로 난이도를 전역 상수로 정의할 수 있다.</p>
 <p>24는 임의의 숫자이고, 우리의 목표은 256비트 이하의 메모리를 차지하는 타겟을 갖는 것이다. 그리고 차이가 커질수록 적절한 해시를 찾는 것이 어려워지기 때문에 차이가 충분히 크지만 너무 크지는 않길 바란다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ProofOfWork</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">block</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span>
-        <span style="color:#a6e22e">target</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ProofOfWork</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">block</span> <span class="o">*</span><span class="nx">Block</span>
+        <span class="nx">target</span> <span class="o">*</span><span class="nx">big</span><span class="p">.</span><span class="nx">Int</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewProofOfWork</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">ProofOfWork</span> {
-        <span style="color:#a6e22e">target</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">NewInt</span>(<span style="color:#ae81ff">1</span>)
-        <span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">Lsh</span>(<span style="color:#a6e22e">target</span>, uint(<span style="color:#ae81ff">256</span><span style="color:#f92672">-</span><span style="color:#a6e22e">targetBits</span>))
+<span class="kd">func</span> <span class="nf">NewProofOfWork</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="o">*</span><span class="nx">ProofOfWork</span> <span class="p">{</span>
+        <span class="nx">target</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nf">NewInt</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nf">Lsh</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nb">uint</span><span class="p">(</span><span class="mi">256</span><span class="o">-</span><span class="nx">targetBits</span><span class="p">))</span>
 
-        <span style="color:#a6e22e">pow</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ProofOfWork</span>{<span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">target</span>}
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">pow</span>
-}
+        <span class="nx">pow</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ProofOfWork</span><span class="p">{</span><span class="nx">b</span><span class="p">,</span> <span class="nx">target</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nx">pow</span>
+<span class="p">}</span>
 </code></pre></div><p>블록 포인터와 타겟 포인터를 가진 <strong>ProofOfWork</strong> 구조체를 만들었다. &ldquo;타겟 (target)&ldquo;이란 이전절에서 언급했던 요구사항의 또 다른 말이다. 해시와 타겟을 비교할 수 있도록 <a href="https://golang.org/pkg/math/big/">큰 (Big)</a> 정수를 사용했다. 우리는 해시를 큰 정수로 변환하여 이 값이 타겟보다 작은지 검사할 것이다.</p>
 <p><strong>NewProofOfWork</strong> 함수에서 <strong>bit.Int</strong>을 1로 초기화하고 <strong>256 - targetBits</strong> 비트만큼 좌측 시프트 연산을 취했다. 256은 SHA-256 해시의 비트 길이로 SHA-256이 우리가 사용할 해시 알고리즘이다. <strong>target</strong>의 16진수값은 다음과 같다.</p>
 <pre><code>0x10000000000000000000000000000000000000000000000000000000000
@@ -162,44 +162,44 @@
 </code></pre><p>첫 번째 해시값 (&ldquo;I like donuts&quot;의 해시)은 타겟보다 크기 때문에 유효한 작업 증명이 아니다. 두번째 해시값 (&ldquo;I like donutsca07ca&rdquo;)은 타겟보다 작기 때문에 유효한 증명이다.</p>
 <p>그렇다면 이 타겟값을 유효 범위의 상한선으로 생각할 수 있다. 해시가 이 경계값보다 작으면 유효하고 그 역도 마찬가지이다. 경계값을 낮추면 유효한 해시값의 범위가 줄어들어 이 값을 찾는 작업이 더욱 어려워진다.</p>
 <p>이제 해시 계산을 위한 데이터가 필요하므로 데이터를 준비하도록 하자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pow</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ProofOfWork</span>) <span style="color:#a6e22e">prepareData</span>(<span style="color:#a6e22e">nonce</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Join</span>(
-                [][]<span style="color:#66d9ef">byte</span>{
-                        <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">PrevBlockHash</span>,
-                        <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Data</span>,
-                        <span style="color:#a6e22e">IntToHex</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Timestamp</span>),
-                        <span style="color:#a6e22e">IntToHex</span>(int64(<span style="color:#a6e22e">targetBits</span>)),
-                        <span style="color:#a6e22e">IntToHex</span>(int64(<span style="color:#a6e22e">nonce</span>)),
-                },
-                []<span style="color:#66d9ef">byte</span>{},
-        )
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">data</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">pow</span> <span class="o">*</span><span class="nx">ProofOfWork</span><span class="p">)</span> <span class="nf">prepareData</span><span class="p">(</span><span class="nx">nonce</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="nx">data</span> <span class="o">:=</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span>
+                <span class="p">[][]</span><span class="kt">byte</span><span class="p">{</span>
+                        <span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">PrevBlockHash</span><span class="p">,</span>
+                        <span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">Data</span><span class="p">,</span>
+                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">Timestamp</span><span class="p">),</span>
+                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">targetBits</span><span class="p">)),</span>
+                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">nonce</span><span class="p">)),</span>
+                <span class="p">},</span>
+                <span class="p">[]</span><span class="kt">byte</span><span class="p">{},</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nx">data</span>
+<span class="p">}</span>
 </code></pre></div><p>단순히 블록의 필드값들과 타겟 및 논스값을 병합하는 직관적인 코드다. **논스 (nonce)**란 해시캐시에서의 카운터와 동일한 역할을 하는 암호학 용어이다.</p>
 <p>모든 준비는 끝났다. 이제 PoW 알고리즘의 핵심 코드를 구현해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pow</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ProofOfWork</span>) <span style="color:#a6e22e">Run</span>() (<span style="color:#66d9ef">int</span>, []<span style="color:#66d9ef">byte</span>) {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">hashInt</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">hash</span> [<span style="color:#ae81ff">32</span>]<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">nonce</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">pow</span> <span class="o">*</span><span class="nx">ProofOfWork</span><span class="p">)</span> <span class="nf">Run</span><span class="p">()</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">hashInt</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span>
+        <span class="kd">var</span> <span class="nx">hash</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="kt">byte</span>
+        <span class="nx">nonce</span> <span class="o">:=</span> <span class="mi">0</span>
 
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Mining the block containing \&#34;%s\&#34;\n&#34;</span>, <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Data</span>)
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Mining the block containing \&#34;%s\&#34;\n&#34;</span><span class="p">,</span> <span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">nonce</span> &lt; <span style="color:#a6e22e">maxNonce</span> {
-                <span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">prepareData</span>(<span style="color:#a6e22e">nonce</span>)
-                <span style="color:#a6e22e">hash</span> = <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">data</span>)
-                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;\r%x&#34;</span>, <span style="color:#a6e22e">hash</span>)
+        <span class="k">for</span> <span class="nx">nonce</span> <span class="p">&lt;</span> <span class="nx">maxNonce</span> <span class="p">{</span>
+                <span class="nx">data</span> <span class="o">:=</span> <span class="nx">pow</span><span class="p">.</span><span class="nf">prepareData</span><span class="p">(</span><span class="nx">nonce</span><span class="p">)</span>
+                <span class="nx">hash</span> <span class="p">=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;\r%x&#34;</span><span class="p">,</span> <span class="nx">hash</span><span class="p">)</span>
 
-                <span style="color:#a6e22e">hashInt</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">hash</span>[:])
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">hashInt</span>.<span style="color:#a6e22e">Cmp</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">target</span>) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> {
-                        <span style="color:#66d9ef">break</span>
-                } <span style="color:#66d9ef">else</span> {
-                        <span style="color:#a6e22e">nonce</span><span style="color:#f92672">++</span>
-                }
-        }
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#e6db74">&#34;\n\n&#34;</span>)
+                <span class="nx">hashInt</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">hash</span><span class="p">[:])</span>
+                <span class="k">if</span> <span class="nx">hashInt</span><span class="p">.</span><span class="nf">Cmp</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">{</span>
+                        <span class="k">break</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">nonce</span><span class="o">++</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="s">&#34;\n\n&#34;</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nonce</span>, <span style="color:#a6e22e">hash</span>[:]
-}
+        <span class="k">return</span> <span class="nx">nonce</span><span class="p">,</span> <span class="nx">hash</span><span class="p">[:]</span>
+<span class="p">}</span>
 </code></pre></div><p>먼저 변수들을 초기화한다. <strong>hashInt</strong>는 <strong>hash</strong>의 정수 표현값이며 <strong>nonce</strong>는 카운터이다. 다음으로 &ldquo;무한&rdquo; 루프를 실행한다. 이는 최대 <strong>maxNonce</strong>만큼만 실행되며 이 값은 <strong>math.MaxInt64</strong>와 같다. 루프 횟수를 제한하는 이유는 <strong>nonce</strong>의 오버플로우를 막기 위해서이다. 물론 우리의 PoW 구현체의 난이도는 카운터가 오버플로우 나기에는 아주 낮지만 경우에 따라서는 오버플로우 검사를 하는게 더 좋다.</p>
 <p>루프에서는 다음의 작업들이 수행된다.</p>
 <ol>
@@ -209,23 +209,23 @@
 <li>정수값과 타겟값 비교</li>
 </ol>
 <p>이전에 설명된것처럼 쉽다. 우리는 이제 <strong>Block</strong>의 <strong>SetHash</strong> 메서드를 제거하고 <strong>NewBlock</strong> 함수를 수정할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewBlock</span>(<span style="color:#a6e22e">data</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">prevBlockHash</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span> {
-        <span style="color:#a6e22e">block</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Block</span>{<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>(), []byte(<span style="color:#a6e22e">data</span>), <span style="color:#a6e22e">prevBlockHash</span>, []<span style="color:#66d9ef">byte</span>{}, <span style="color:#ae81ff">0</span>}
-        <span style="color:#a6e22e">pow</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewProofOfWork</span>(<span style="color:#a6e22e">block</span>)
-        <span style="color:#a6e22e">nonce</span>, <span style="color:#a6e22e">hash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">Run</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewBlock</span><span class="p">(</span><span class="nx">data</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">prevBlockHash</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">Block</span> <span class="p">{</span>
+        <span class="nx">block</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Block</span><span class="p">{</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Unix</span><span class="p">(),</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">data</span><span class="p">),</span> <span class="nx">prevBlockHash</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{},</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="nx">pow</span> <span class="o">:=</span> <span class="nf">NewProofOfWork</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span>
+        <span class="nx">nonce</span><span class="p">,</span> <span class="nx">hash</span> <span class="o">:=</span> <span class="nx">pow</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
 
-        <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Hash</span> = <span style="color:#a6e22e">hash</span>[:]
-        <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Nonce</span> = <span style="color:#a6e22e">nonce</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">block</span>
-}
+        <span class="nx">block</span><span class="p">.</span><span class="nx">Hash</span> <span class="p">=</span> <span class="nx">hash</span><span class="p">[:]</span>
+        <span class="nx">block</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">=</span> <span class="nx">nonce</span>
+        <span class="k">return</span> <span class="nx">block</span>
+<span class="p">}</span>
 </code></pre></div><p><strong>nonce</strong>가 <strong>Block</strong>의 프로퍼티로 저장되고 있음을 볼 수 있다. 증명 검증에 <strong>nonce</strong>가 필요하기 때문에 이는 필수적이다. <strong>Block</strong> 구조체는 이제 다음과 같이 작성할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Block</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Timestamp</span>     <span style="color:#66d9ef">int64</span>
-        <span style="color:#a6e22e">Data</span>          []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">PrevBlockHash</span> []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Hash</span>          []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Nonce</span>         <span style="color:#66d9ef">int</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Block</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Timestamp</span>     <span class="kt">int64</span>
+        <span class="nx">Data</span>          <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">PrevBlockHash</span> <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Hash</span>          <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Nonce</span>         <span class="kt">int</span>
+<span class="p">}</span>
 </code></pre></div><p>완성되었다! 잘 동작하는지 확인하기 위해 한 번 실행해보자.</p>
 <pre><code>Mining the block containing &quot;Genesis Block&quot;
 00000041662c5fc2883535dc19ba8a33ac993b535da9899e593ff98e1eda56a1
@@ -249,27 +249,27 @@ Data: Send 2 more BTC to Ivan
 Hash: 000000b33185e927c9a989cc7d5aaaed739c56dad9fd9361dea558b9bfaf5fbe
 </code></pre><p>와우! 모든 해시가 3개의 제로 바이트로 시작하고 있음을 볼 수 있다. 또한 해시값들을 얻는데 일정 시간이 소요되었음을 확인할 수 있다.</p>
 <p>마지막으로 할 일이 하나 남았다. 작업 증명을 검증할 수 있는 기능을 만들어보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pow</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ProofOfWork</span>) <span style="color:#a6e22e">Validate</span>() <span style="color:#66d9ef">bool</span> {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">hashInt</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">pow</span> <span class="o">*</span><span class="nx">ProofOfWork</span><span class="p">)</span> <span class="nf">Validate</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">hashInt</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span>
 
-        <span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">prepareData</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Nonce</span>)
-        <span style="color:#a6e22e">hash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">data</span>)
-        <span style="color:#a6e22e">hashInt</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">hash</span>[:])
+        <span class="nx">data</span> <span class="o">:=</span> <span class="nx">pow</span><span class="p">.</span><span class="nf">prepareData</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">Nonce</span><span class="p">)</span>
+        <span class="nx">hash</span> <span class="o">:=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+        <span class="nx">hashInt</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">hash</span><span class="p">[:])</span>
 
-        <span style="color:#a6e22e">isValid</span> = <span style="color:#a6e22e">hashInt</span>.<span style="color:#a6e22e">Cmp</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">target</span>) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">isValid</span>
-}
+        <span class="nx">isValid</span> <span class="p">=</span> <span class="nx">hashInt</span><span class="p">.</span><span class="nf">Cmp</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="nx">isValid</span>
+<span class="p">}</span>
 </code></pre></div><p>위에서 저장한 논스는 바로 이 검증 로직에서 필요하다.</p>
 <p>잘 동작하는지 한 번 더 확인해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-        <span style="color:#f92672">...</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">block</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">blocks</span> {
-                <span style="color:#f92672">...</span>
-                <span style="color:#a6e22e">pow</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewProofOfWork</span>(<span style="color:#a6e22e">block</span>)
-                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;PoW: %s\n&#34;</span>, <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">FormatBool</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">Validate</span>()))
-                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>()
-        }
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">block</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">bc</span><span class="p">.</span><span class="nx">blocks</span> <span class="p">{</span>
+                <span class="o">...</span>
+                <span class="nx">pow</span> <span class="o">:=</span> <span class="nf">NewProofOfWork</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span>
+                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;PoW: %s\n&#34;</span><span class="p">,</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatBool</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nf">Validate</span><span class="p">()))</span>
+                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">()</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>출력:</p>
 <pre><code>...
 

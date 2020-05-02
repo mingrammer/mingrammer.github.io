@@ -130,9 +130,9 @@
 <h1 id="준비사항">준비사항</h1>
 <p>코드를 작성하기 전에 두 가지 준비해야할 사항이 있다. 그 중 하나는 인증 처리를 위한 의존 라이브러리 설치이며 나머지 하나는 사용할 프로바이더의 OAuth2 API를 사용하기 위한 키값 발급 및 콜백 URL 지정이다.</p>
 <h2 id="의존성-설치">의존성 설치</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get golang.org/x/oauth2
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go get golang.org/x/oauth2
 
-<span style="color:#75715e"># (선택사항) 세션 관리는 원하는 형태로 해도 되며, 여기선 gorilla의 sessions를 사용하여 세션을 관리</span>
+<span class="c1"># (선택사항) 세션 관리는 원하는 형태로 해도 되며, 여기선 gorilla의 sessions를 사용하여 세션을 관리</span>
 go get github.com/gorilla/sessions
 </code></pre></div><h2 id="키값-발급">키값 발급</h2>
 <p>OAuth2 API를 사용하기 위해선 API를 제공하는 프로바이더에 애플리케이션을 등록한 뒤 OAuth2 API 사용 권한 인증을 위한 키값들을 발급받아야한다. 구글의 경우 <a href="https://console.developers.google.com">Google API Console</a>에서 애플리케이션을 등록할 수 있다. 등록 후, <strong>사용자 인증 정보</strong> 페이지에 접속하면 <strong>사용자 인증 정보 만들기</strong>의 <strong>OAuth 클라이언트 ID</strong> 메뉴를 통해 클라이언트 ID와 시크릿 키값을 발급 받을 수 있다.</p>
@@ -155,82 +155,82 @@ go get github.com/gorilla/sessions
 <li><strong>main.html</strong> : 메인 페이지</li>
 </ul>
 <p>구조는 매우 단순하며 상세한 인증 플로우는 잠시 후 살펴보도록 하겠다. <strong>main.html</strong>과 <strong>auth.html</strong>는 단순히 인증 링크 접속을 위한 페이지라 아주 단순하다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- main.html --&gt;</span>
-&lt;<span style="color:#f92672">html</span>&gt;
-&lt;<span style="color:#f92672">head</span>&gt;&lt;/<span style="color:#f92672">head</span>&gt;
-&lt;<span style="color:#f92672">body</span>&gt;
-    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/auth&#34;</span>&gt;Sign In&lt;/<span style="color:#f92672">a</span>&gt;
-&lt;/<span style="color:#f92672">body</span>&gt;
-&lt;/<span style="color:#f92672">html</span>&gt;
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- auth.html --&gt;</span>
-&lt;<span style="color:#f92672">html</span>&gt;
-&lt;<span style="color:#f92672">head</span>&gt;&lt;/<span style="color:#f92672">head</span>&gt;
-&lt;<span style="color:#f92672">body</span>&gt;
-    <span style="color:#75715e">&lt;!-- href는 로그인 핸들러로부터 반환 받은 Google 로그인 링크가 담긴다 --&gt;</span>
-    &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ . }}&#34;</span>&gt;Google Login&lt;/<span style="color:#f92672">a</span>&gt; 
-&lt;/<span style="color:#f92672">body</span>&gt;
-&lt;/<span style="color:#f92672">html</span>&gt;
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- main.html --&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;/auth&#34;</span><span class="p">&gt;</span>Sign In<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- auth.html --&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="c">&lt;!-- href는 로그인 핸들러로부터 반환 받은 Google 로그인 링크가 담긴다 --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{{ . }}&#34;</span><span class="p">&gt;</span>Google Login<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> 
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div><p><strong>main.go</strong>는 페이지 렌더링과 인증을 처리하는 핸들러를 관리한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">RenderMainView</span>)
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/auth&#34;</span>, <span style="color:#a6e22e">RenderAuthView</span>)
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/auth/callback&#34;</span>, <span style="color:#a6e22e">Authenticate</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">RenderMainView</span><span class="p">)</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/auth&#34;</span><span class="p">,</span> <span class="nx">RenderAuthView</span><span class="p">)</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/auth/callback&#34;</span><span class="p">,</span> <span class="nx">Authenticate</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:1333&#34;</span>, <span style="color:#66d9ef">nil</span>))
-}
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:1333&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// 메인 뷰 핸들러
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderMainView</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-}
+<span class="c1">// 메인 뷰 핸들러
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RenderMainView</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// 랜덤 state 값을 가진 구글 로그인 링크를 렌더링 해주는 뷰 핸들러
-</span><span style="color:#75715e">// 랜덤 state는 유저를 식별하는 용도로 사용된다
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderAuthView</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-}
+<span class="c1">// 랜덤 state 값을 가진 구글 로그인 링크를 렌더링 해주는 뷰 핸들러
+</span><span class="c1">// 랜덤 state는 유저를 식별하는 용도로 사용된다
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RenderAuthView</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Google OAuth 인증 콜백 핸들러
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-}
+<span class="c1">// Google OAuth 인증 콜백 핸들러
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="인증-정보-설정">인증 정보 설정</h1>
 <p><code>auth.go</code>는 위에서 살펴봤던 OAuth2 인증을 위한 설정값과 인증에 필요한 데이터들을 독립적으로 관리하기위한 용도이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// auth.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> (
-    <span style="color:#a6e22e">CallBackURL</span> = <span style="color:#e6db74">&#34;http://localhost:1333/auth/callback&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// auth.go
+</span><span class="c1"></span><span class="kd">const</span> <span class="p">(</span>
+    <span class="nx">CallBackURL</span> <span class="p">=</span> <span class="s">&#34;http://localhost:1333/auth/callback&#34;</span>
   
-    <span style="color:#75715e">// 인증 후 유저 정보를 가져오기 위한 API
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">UserInfoAPIEndpoint</span> = <span style="color:#e6db74">&#34;https://www.googleapis.com/oauth2/v3/userinfo&#34;</span>
+    <span class="c1">// 인증 후 유저 정보를 가져오기 위한 API
+</span><span class="c1"></span>    <span class="nx">UserInfoAPIEndpoint</span> <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/oauth2/v3/userinfo&#34;</span>
   
-    <span style="color:#75715e">// 인증 권한 범위. 여기에서는 프로필 정보 권한만 사용
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">ScopeEmail</span>          = <span style="color:#e6db74">&#34;https://www.googleapis.com/auth/userinfo.email&#34;</span>
-    <span style="color:#a6e22e">ScopeProfile</span>        = <span style="color:#e6db74">&#34;https://www.googleapis.com/auth/userinfo.profile&#34;</span>
-)
+    <span class="c1">// 인증 권한 범위. 여기에서는 프로필 정보 권한만 사용
+</span><span class="c1"></span>    <span class="nx">ScopeEmail</span>          <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/auth/userinfo.email&#34;</span>
+    <span class="nx">ScopeProfile</span>        <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/auth/userinfo.profile&#34;</span>
+<span class="p">)</span>
 </code></pre></div><p><code>CallBackURL</code>은 인증 서버가 권한 요청을 받은 후 리다이렉트할 URL이며, 프로바이더에 등록한 애플리케이션에서 지정한 콜백 URL과 일치해야한다.</p>
 <p>아래 나머지 URL들은 인증 후 발급된 토큰으로 리소스를 요청할 때 사용하는 URL들이다. (여기선, 인증 후 유저 정보를 가져오기 위함)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// auth.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">OAuthConf</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">Config</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// auth.go
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">OAuthConf</span> <span class="o">*</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Config</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
-    <span style="color:#a6e22e">OAuthConf</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">Config</span>{
-        <span style="color:#a6e22e">ClientID</span>:     <span style="color:#e6db74">&#34;google client id&#34;</span>,
-        <span style="color:#a6e22e">ClientSecret</span>: <span style="color:#e6db74">&#34;google client secret&#34;</span>,
-        <span style="color:#a6e22e">RedirectURL</span>:  <span style="color:#a6e22e">CallBackURL</span>,
-        <span style="color:#a6e22e">Scopes</span>:       []<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">ScopeEmail</span>, <span style="color:#a6e22e">ScopeProfile</span>},
-        <span style="color:#a6e22e">Endpoint</span>:     <span style="color:#a6e22e">google</span>.<span style="color:#a6e22e">Endpoint</span>,
-    }
-}
+<span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">OAuthConf</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+        <span class="nx">ClientID</span><span class="p">:</span>     <span class="s">&#34;google client id&#34;</span><span class="p">,</span>
+        <span class="nx">ClientSecret</span><span class="p">:</span> <span class="s">&#34;google client secret&#34;</span><span class="p">,</span>
+        <span class="nx">RedirectURL</span><span class="p">:</span>  <span class="nx">CallBackURL</span><span class="p">,</span>
+        <span class="nx">Scopes</span><span class="p">:</span>       <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">ScopeEmail</span><span class="p">,</span> <span class="nx">ScopeProfile</span><span class="p">},</span>
+        <span class="nx">Endpoint</span><span class="p">:</span>     <span class="nx">google</span><span class="p">.</span><span class="nx">Endpoint</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// state 값과 함께 Google 로그인 링크 생성
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetLoginURL</span>(<span style="color:#a6e22e">state</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">AuthCodeURL</span>(<span style="color:#a6e22e">state</span>)
-}
+<span class="c1">// state 값과 함께 Google 로그인 링크 생성
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">GetLoginURL</span><span class="p">(</span><span class="nx">state</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">AuthCodeURL</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// 랜덤 state 생성기
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RandToken</span>() <span style="color:#66d9ef">string</span> {
-    <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">32</span>)
-    <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">b</span>)
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">base64</span>.<span style="color:#a6e22e">StdEncoding</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">b</span>)
-}
+<span class="c1">// 랜덤 state 생성기
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RandToken</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="nx">b</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="nx">rand</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">base64</span><span class="p">.</span><span class="nx">StdEncoding</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p><strong>oauth2.Config</strong>는 인증 처리를 위한 설정값들을 관리하는 구조체이다. 클라이언트 ID, 시크릿 키값 그리고 콜백 URL등을  지정할 수 있다. 위에서 발급받은 키값들로 설정하면된다. 더 좋은 방법은 키값을 코드에 바로 넣지 않고 환경 변수로 설정해 <code>os.GetEnv()</code>로 가져오는 방법이 있다. 실제 프로덕션에서 사용한다면 이 방법을 추천한다.</p>
 <p>인증 처리에 필요한 설정값들을 모두 가지고 있어, 사실상 OAuth2 인증 처리를 위한 URL 생성, 토큰 교환과 같은 대부분의 기능들이 이 구조체의 메서드들로 이루어진다.</p>
 <p><strong>GetLoginURL</strong>은 <code>state</code> 값을 사용하여 생성한 구글 로그인 링크를 반환한다. 이 때, 이 로그인 링크에는 <code>OAuthConf</code>에서 설정한 <code>RedirectURL</code>이 따라 붙는다.</p>
@@ -238,225 +238,225 @@ go get github.com/gorilla/sessions
 <h1 id="인증-처리">인증 처리</h1>
 <p>인증에 필요한 정보들을 다 설정했으니 이제 실제 인증 처리 과정을 살펴보자.</p>
 <p>우선 Google 인증을 하기 전에 로그인 페이지에 접속하는 과정부터 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderAuthView</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">session</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;session&#34;</span>)
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Options</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sessions</span>.<span style="color:#a6e22e">Options</span>{
-        <span style="color:#a6e22e">Path</span>:   <span style="color:#e6db74">&#34;/auth&#34;</span>,
-        <span style="color:#a6e22e">MaxAge</span>: <span style="color:#ae81ff">300</span>,
-     }
-    <span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">RandToken</span>()
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;state&#34;</span>] = <span style="color:#a6e22e">state</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
-    <span style="color:#a6e22e">RenderTemplate</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;auth.html&#34;</span>, <span style="color:#a6e22e">GetLoginURL</span>(<span style="color:#a6e22e">state</span>))
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// main.go
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">RenderAuthView</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">session</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">store</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="s">&#34;session&#34;</span><span class="p">)</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Options</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+        <span class="nx">Path</span><span class="p">:</span>   <span class="s">&#34;/auth&#34;</span><span class="p">,</span>
+        <span class="nx">MaxAge</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+     <span class="p">}</span>
+    <span class="nx">state</span> <span class="o">:=</span> <span class="nf">RandToken</span><span class="p">()</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;state&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">state</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
+    <span class="nf">RenderTemplate</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;auth.html&#34;</span><span class="p">,</span> <span class="nf">GetLoginURL</span><span class="p">(</span><span class="nx">state</span><span class="p">))</span>
+<span class="p">}</span>
 </code></pre></div><p>로그인 페이지에 접속하는 순간 <code>state</code> 값을 생성해 세션에 저장한 후, 이를 사용해 생성한 구글 로그인 링크를 반환한다. 세션에 저장한 <code>state</code> 값은 추후 콜백 인증 핸들러에서 <code>state</code> 값을 비교하기 위해 사용된다.</p>
 <p>이후 유저는 <strong>auth.html</strong>에 렌더링된 구글 로그인 링크를 통해 구글 로그인을 시도할 것이다. 구글 로그인을 시도하면 위에서 생성된 <code>state</code> 값 및 <code>RedirectURL </code>과 함께 인증 서버에 권한 요청을 하게 된다. 인증 서버는 요청을 받고 <code>code</code> 값을 생성한 뒤 이 값을 <code>RedirectURL</code>에 붙여 리다이렉트를 한다.</p>
 <p><code>RedirectURL</code>인 <code>http://127.0.0.1:1333/auth/callback</code>로 리다이렉트가 되면 <code>Authenticate</code> 핸들러가 호출되고 토큰 인증 작업이 시작된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">session</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;session&#34;</span>)
-    <span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;state&#34;</span>]
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// main.go
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">session</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">store</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="s">&#34;session&#34;</span><span class="p">)</span>
+    <span class="nx">state</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;state&#34;</span><span class="p">]</span>
 
-    delete(<span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>, <span style="color:#e6db74">&#34;state&#34;</span>)
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
+    <span class="nb">delete</span><span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">,</span> <span class="s">&#34;state&#34;</span><span class="p">)</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">FormValue</span>(<span style="color:#e6db74">&#34;state&#34;</span>) {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;Invalid session state&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusUnauthorized</span>)
-        <span style="color:#66d9ef">return</span>
-    }
+    <span class="k">if</span> <span class="nx">state</span> <span class="o">!=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;state&#34;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;Invalid session state&#34;</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusUnauthorized</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
   
-    <span style="color:#f92672">...</span>
-}
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>콜백 핸들러가 호출되면 제일 먼저 <code>state</code> 값이 유효한지 체크한다. 세션에 저장되어 있는 <code>state</code> 값과 비교를 진행하며 한 번 사용된 <code>state</code>는 세션에서 삭제한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#f92672">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// main.go
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
   
-    <span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">Exchange</span>(<span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">NoContext</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">FormValue</span>(<span style="color:#e6db74">&#34;code&#34;</span>))
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
+    <span class="nx">token</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">Exchange</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">NoContext</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;code&#34;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
   
-    <span style="color:#f92672">...</span>
-}
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p><code>state</code> 값이 유효하면 이제 전달받은 <code>code</code>를 사용해 인증 서버에 <strong>엑세스 토큰</strong>을 요청한다. <code>code</code> 값이 유효하다면 토큰을 정상적으로 받을 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#f92672">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// main.go
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
   
-    <span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">Client</span>(<span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">NoContext</span>, <span style="color:#a6e22e">token</span>)
-    <span style="color:#75715e">// UserInfoAPIEndpoint는 유저 정보 API URL을 담고 있음
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">userInfoResp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">UserInfoAPIEndpoint</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
-    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">userInfoResp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
-    <span style="color:#a6e22e">userInfo</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">userInfoResp</span>.<span style="color:#a6e22e">Body</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">authUser</span> <span style="color:#a6e22e">User</span>
-    <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">userInfo</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">authUser</span>)
+    <span class="nx">client</span> <span class="o">:=</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">Client</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">NoContext</span><span class="p">,</span> <span class="nx">token</span><span class="p">)</span>
+    <span class="c1">// UserInfoAPIEndpoint는 유저 정보 API URL을 담고 있음
+</span><span class="c1"></span>    <span class="nx">userInfoResp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">UserInfoAPIEndpoint</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">userInfoResp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+    <span class="nx">userInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">userInfoResp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">authUser</span> <span class="nx">User</span>
+    <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">authUser</span><span class="p">)</span>
   
-    <span style="color:#f92672">...</span>
-}
+    <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>토큰을 받은 클라이언트는 이제 이 토큰을 가지고 유저 정보 리소스를 요청할 수 있다. 이 때, 요청 가능 데이터에 대한 범위는 아까 <strong>인증 정보 설정</strong>에서 살펴본 <code>OAuthConf</code>의 <code>Scopes</code>에서 지정한 권한 범위와 일치한다.</p>
 <p>요청 데이터가 권한 범위 안에 속한다면 요청 데이터를 정상적으로 받아올 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// main.go
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#f92672">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// main.go
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">...</span>
 
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Options</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sessions</span>.<span style="color:#a6e22e">Options</span>{
-        <span style="color:#a6e22e">Path</span>:   <span style="color:#e6db74">&#34;/&#34;</span>,
-        <span style="color:#a6e22e">MaxAge</span>: <span style="color:#ae81ff">86400</span>,
-    }
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;user&#34;</span>] = <span style="color:#a6e22e">authUser</span>.<span style="color:#a6e22e">Email</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;username&#34;</span>] = <span style="color:#a6e22e">authUser</span>.<span style="color:#a6e22e">Name</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Options</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+        <span class="nx">Path</span><span class="p">:</span>   <span class="s">&#34;/&#34;</span><span class="p">,</span>
+        <span class="nx">MaxAge</span><span class="p">:</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;user&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">authUser</span><span class="p">.</span><span class="nx">Email</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;username&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">authUser</span><span class="p">.</span><span class="nx">Name</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Redirect</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusFound</span>)
-}
+    <span class="nx">http</span><span class="p">.</span><span class="nf">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusFound</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>마지막으로 필수는 아니지만 받아온 데이터를 로그인 유지등의 목적으로 계속 사용하고자 한다면 세션에 넣어 관리할 수도 있다.</p>
 <!-- raw HTML omitted -->
 <h1 id="전체-코드">전체 코드</h1>
 <p>예제 테스트를 해볼 수 있도록 전체 코드를 공개하겠다. <strong>auth.html</strong>과 <strong>main.html</strong> 코드는 위에서 볼 수 있다.</p>
 <h2 id="authgo">auth.go</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;crypto/rand&#34;</span>
-    <span style="color:#e6db74">&#34;encoding/base64&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;crypto/rand&#34;</span>
+    <span class="s">&#34;encoding/base64&#34;</span>
 
-    <span style="color:#e6db74">&#34;golang.org/x/oauth2&#34;</span>
-    <span style="color:#e6db74">&#34;golang.org/x/oauth2/google&#34;</span>
-)
+    <span class="s">&#34;golang.org/x/oauth2&#34;</span>
+    <span class="s">&#34;golang.org/x/oauth2/google&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Name</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34;`</span>
-    <span style="color:#a6e22e">Email</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;email&#34;`</span>
-}
+<span class="kd">type</span> <span class="nx">User</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Name</span>  <span class="kt">string</span> <span class="s">`json:&#34;name&#34;`</span>
+    <span class="nx">Email</span> <span class="kt">string</span> <span class="s">`json:&#34;email&#34;`</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">const</span> (
-    <span style="color:#a6e22e">CallBackURL</span> = <span style="color:#e6db74">&#34;http://localhost:1333/auth/callback&#34;</span>
+<span class="kd">const</span> <span class="p">(</span>
+    <span class="nx">CallBackURL</span> <span class="p">=</span> <span class="s">&#34;http://localhost:1333/auth/callback&#34;</span>
   
-    <span style="color:#a6e22e">UserInfoAPIEndpoint</span> = <span style="color:#e6db74">&#34;https://www.googleapis.com/oauth2/v3/userinfo&#34;</span>
-    <span style="color:#a6e22e">ScopeEmail</span>          = <span style="color:#e6db74">&#34;https://www.googleapis.com/auth/userinfo.email&#34;</span>
-    <span style="color:#a6e22e">ScopeProfile</span>        = <span style="color:#e6db74">&#34;https://www.googleapis.com/auth/userinfo.profile&#34;</span>
-)
+    <span class="nx">UserInfoAPIEndpoint</span> <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/oauth2/v3/userinfo&#34;</span>
+    <span class="nx">ScopeEmail</span>          <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/auth/userinfo.email&#34;</span>
+    <span class="nx">ScopeProfile</span>        <span class="p">=</span> <span class="s">&#34;https://www.googleapis.com/auth/userinfo.profile&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">OAuthConf</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">Config</span>
+<span class="kd">var</span> <span class="nx">OAuthConf</span> <span class="o">*</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Config</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
-    <span style="color:#a6e22e">OAuthConf</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">Config</span>{
-        <span style="color:#a6e22e">ClientID</span>:     <span style="color:#e6db74">&#34;google client id&#34;</span>,
-        <span style="color:#a6e22e">ClientSecret</span>: <span style="color:#e6db74">&#34;google client secret&#34;</span>,
-        <span style="color:#a6e22e">RedirectURL</span>:  <span style="color:#a6e22e">CallBackURL</span>,
-        <span style="color:#a6e22e">Scopes</span>:       []<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">ScopeEmail</span>, <span style="color:#a6e22e">ScopeProfile</span>},
-        <span style="color:#a6e22e">Endpoint</span>:     <span style="color:#a6e22e">google</span>.<span style="color:#a6e22e">Endpoint</span>,
-    }
-}
+<span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">OAuthConf</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span>
+        <span class="nx">ClientID</span><span class="p">:</span>     <span class="s">&#34;google client id&#34;</span><span class="p">,</span>
+        <span class="nx">ClientSecret</span><span class="p">:</span> <span class="s">&#34;google client secret&#34;</span><span class="p">,</span>
+        <span class="nx">RedirectURL</span><span class="p">:</span>  <span class="nx">CallBackURL</span><span class="p">,</span>
+        <span class="nx">Scopes</span><span class="p">:</span>       <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="nx">ScopeEmail</span><span class="p">,</span> <span class="nx">ScopeProfile</span><span class="p">},</span>
+        <span class="nx">Endpoint</span><span class="p">:</span>     <span class="nx">google</span><span class="p">.</span><span class="nx">Endpoint</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetLoginURL</span>(<span style="color:#a6e22e">state</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">AuthCodeURL</span>(<span style="color:#a6e22e">state</span>)
-}
+<span class="kd">func</span> <span class="nf">GetLoginURL</span><span class="p">(</span><span class="nx">state</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">AuthCodeURL</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RandToken</span>() <span style="color:#66d9ef">string</span> {
-    <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">32</span>)
-    <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">b</span>)
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">base64</span>.<span style="color:#a6e22e">StdEncoding</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">b</span>)
-}
+<span class="kd">func</span> <span class="nf">RandToken</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="nx">b</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="nx">rand</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">base64</span><span class="p">.</span><span class="nx">StdEncoding</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><h2 id="maingo">main.go</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
-    <span style="color:#e6db74">&#34;html/template&#34;</span>
-    <span style="color:#e6db74">&#34;io/ioutil&#34;</span>
-    <span style="color:#e6db74">&#34;log&#34;</span>
-    <span style="color:#e6db74">&#34;net/http&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;encoding/json&#34;</span>
+    <span class="s">&#34;html/template&#34;</span>
+    <span class="s">&#34;io/ioutil&#34;</span>
+    <span class="s">&#34;log&#34;</span>
+    <span class="s">&#34;net/http&#34;</span>
 
-    <span style="color:#e6db74">&#34;github.com/gorilla/sessions&#34;</span>
-    <span style="color:#e6db74">&#34;golang.org/x/oauth2&#34;</span>
-)
+    <span class="s">&#34;github.com/gorilla/sessions&#34;</span>
+    <span class="s">&#34;golang.org/x/oauth2&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">store</span> = <span style="color:#a6e22e">sessions</span>.<span style="color:#a6e22e">NewCookieStore</span>([]byte(<span style="color:#e6db74">&#34;secret&#34;</span>))
+<span class="kd">var</span> <span class="nx">store</span> <span class="p">=</span> <span class="nx">sessions</span><span class="p">.</span><span class="nf">NewCookieStore</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;secret&#34;</span><span class="p">))</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">RenderMainView</span>)
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/auth&#34;</span>, <span style="color:#a6e22e">RenderAuthView</span>)
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/auth/callback&#34;</span>, <span style="color:#a6e22e">Authenticate</span>)
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">RenderMainView</span><span class="p">)</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/auth&#34;</span><span class="p">,</span> <span class="nx">RenderAuthView</span><span class="p">)</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/auth/callback&#34;</span><span class="p">,</span> <span class="nx">Authenticate</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:1333&#34;</span>, <span style="color:#66d9ef">nil</span>))
-}
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:1333&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderTemplate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) {
-    <span style="color:#a6e22e">tmpl</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">ParseFiles</span>(<span style="color:#a6e22e">name</span>)
-    <span style="color:#a6e22e">tmpl</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">data</span>)
-}
+<span class="kd">func</span> <span class="nf">RenderTemplate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">data</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+    <span class="nx">tmpl</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">template</span><span class="p">.</span><span class="nf">ParseFiles</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span>
+    <span class="nx">tmpl</span><span class="p">.</span><span class="nf">Execute</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderMainView</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">RenderTemplate</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;main.html&#34;</span>, <span style="color:#66d9ef">nil</span>)
-}
+<span class="kd">func</span> <span class="nf">RenderMainView</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">RenderTemplate</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;main.html&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RenderAuthView</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">session</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;session&#34;</span>)
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Options</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sessions</span>.<span style="color:#a6e22e">Options</span>{
-        <span style="color:#a6e22e">Path</span>:   <span style="color:#e6db74">&#34;/auth&#34;</span>,
-        <span style="color:#a6e22e">MaxAge</span>: <span style="color:#ae81ff">300</span>,
-	}
-    <span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">RandToken</span>()
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;state&#34;</span>] = <span style="color:#a6e22e">state</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
-    <span style="color:#a6e22e">RenderTemplate</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;auth.html&#34;</span>, <span style="color:#a6e22e">GetLoginURL</span>(<span style="color:#a6e22e">state</span>))
-}
+<span class="kd">func</span> <span class="nf">RenderAuthView</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">session</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">store</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="s">&#34;session&#34;</span><span class="p">)</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Options</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+        <span class="nx">Path</span><span class="p">:</span>   <span class="s">&#34;/auth&#34;</span><span class="p">,</span>
+        <span class="nx">MaxAge</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+	<span class="p">}</span>
+    <span class="nx">state</span> <span class="o">:=</span> <span class="nf">RandToken</span><span class="p">()</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;state&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">state</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
+    <span class="nf">RenderTemplate</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;auth.html&#34;</span><span class="p">,</span> <span class="nf">GetLoginURL</span><span class="p">(</span><span class="nx">state</span><span class="p">))</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Authenticate</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">session</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;session&#34;</span>)
-    <span style="color:#a6e22e">state</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;state&#34;</span>]
+<span class="kd">func</span> <span class="nf">Authenticate</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">session</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">store</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="s">&#34;session&#34;</span><span class="p">)</span>
+    <span class="nx">state</span> <span class="o">:=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;state&#34;</span><span class="p">]</span>
 
-    delete(<span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>, <span style="color:#e6db74">&#34;state&#34;</span>)
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
+    <span class="nb">delete</span><span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">,</span> <span class="s">&#34;state&#34;</span><span class="p">)</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">FormValue</span>(<span style="color:#e6db74">&#34;state&#34;</span>) {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;Invalid session state&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusUnauthorized</span>)
-        <span style="color:#66d9ef">return</span>
-    }
+    <span class="k">if</span> <span class="nx">state</span> <span class="o">!=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;state&#34;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;Invalid session state&#34;</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusUnauthorized</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
 
-    <span style="color:#a6e22e">token</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">Exchange</span>(<span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">NoContext</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">FormValue</span>(<span style="color:#e6db74">&#34;code&#34;</span>))
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
+    <span class="nx">token</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">Exchange</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">NoContext</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nf">FormValue</span><span class="p">(</span><span class="s">&#34;code&#34;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
 
-    <span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">OAuthConf</span>.<span style="color:#a6e22e">Client</span>(<span style="color:#a6e22e">oauth2</span>.<span style="color:#a6e22e">NoContext</span>, <span style="color:#a6e22e">token</span>)
-    <span style="color:#a6e22e">userInfoResp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#a6e22e">UserInfoAPIEndpoint</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
-    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">userInfoResp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
-    <span style="color:#a6e22e">userInfo</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">userInfoResp</span>.<span style="color:#a6e22e">Body</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
-        <span style="color:#66d9ef">return</span>
-    }
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">authUser</span> <span style="color:#a6e22e">User</span>
-    <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>(<span style="color:#a6e22e">userInfo</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">authUser</span>)
+    <span class="nx">client</span> <span class="o">:=</span> <span class="nx">OAuthConf</span><span class="p">.</span><span class="nf">Client</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">NoContext</span><span class="p">,</span> <span class="nx">token</span><span class="p">)</span>
+    <span class="nx">userInfoResp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">UserInfoAPIEndpoint</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">userInfoResp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+    <span class="nx">userInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">userInfoResp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusBadRequest</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">authUser</span> <span class="nx">User</span>
+    <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">authUser</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Options</span> = <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sessions</span>.<span style="color:#a6e22e">Options</span>{
-        <span style="color:#a6e22e">Path</span>:   <span style="color:#e6db74">&#34;/&#34;</span>,
-        <span style="color:#a6e22e">MaxAge</span>: <span style="color:#ae81ff">86400</span>,
-    }
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;user&#34;</span>] = <span style="color:#a6e22e">authUser</span>.<span style="color:#a6e22e">Email</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Values</span>[<span style="color:#e6db74">&#34;username&#34;</span>] = <span style="color:#a6e22e">authUser</span>.<span style="color:#a6e22e">Name</span>
-    <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">w</span>)
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Options</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">sessions</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+        <span class="nx">Path</span><span class="p">:</span>   <span class="s">&#34;/&#34;</span><span class="p">,</span>
+        <span class="nx">MaxAge</span><span class="p">:</span> <span class="mi">86400</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;user&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">authUser</span><span class="p">.</span><span class="nx">Email</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="s">&#34;username&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="nx">authUser</span><span class="p">.</span><span class="nx">Name</span>
+    <span class="nx">session</span><span class="p">.</span><span class="nf">Save</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Redirect</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusFound</span>)
-}
+    <span class="nx">http</span><span class="p">.</span><span class="nf">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusFound</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="마무리">마무리</h1>
 <p>이제까지 아주 보편적으로 널리 사용되고 있는 OAuth2 인증을 Go로 구현하는 방법을 살펴보았다. OAuth2에 친숙하지 않은 사람이라면 다소 복잡해 보일 수 있지만 OAuth2 플로우만 잘 이해한다면 코드 또한 쉽게 이해할 수 있을 것이다.</p>

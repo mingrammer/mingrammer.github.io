@@ -115,64 +115,64 @@
 <h1 id="br"><!-- raw HTML omitted --></h1>
 <h1 id="1-전역-변수를-사용하지-말라">1. 전역 변수를 사용하지 말라</h1>
 <p>내가 읽었던 Go의 net/http 예시들은 다음과 같이 항상 함수들을 <a href="https://golang.org/pkg/net/http/#HandleFunc">http.HandleFunc</a>를 사용하여 등록한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-    <span style="color:#e6db74">&#34;net/http&#34;</span>
-)
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+    <span class="s">&#34;net/http&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/hello&#34;</span>, <span style="color:#a6e22e">hello</span>)
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8080&#34;</span>, <span style="color:#66d9ef">nil</span>)
-}
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="nx">hello</span><span class="p">)</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">hello</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;hi!&#34;</span>)
-}
+<span class="kd">func</span> <span class="nf">hello</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprintf</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;hi!&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>이 예제는 net/http를 사용하기 위한 쉬운 방법을 제공하지만 이는 나쁜 습관을 가르친다. 함수 핸들러를 사용하게되면, 애플리케이션 상태에 접근하는 유일한 방법은 전역 변수를 사용하는 것이다. 이 때문에, 우리는 전역 데이터베이스 커넥션 또는 전역 설정 변수를 추가할수도 있다. 그러나  유닛 테스트를 작성할 때 이 전역 변수들을 사용한다는건 악몽이다.</p>
 <p>더 나은 방법은 핸들러에 대해 특정한 타입을 만들어 필요한 변수들을 가질 수 있게 만드는 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HelloHandler</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">DB</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">HelloHandler</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">db</span> <span class="o">*</span><span class="nx">sql</span><span class="p">.</span><span class="nx">DB</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">HelloHandler</span>) <span style="color:#a6e22e">ServeHTTP</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">HelloHandler</span><span class="p">)</span> <span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">name</span> <span class="kt">string</span>
     
-    <span style="color:#75715e">// 쿼리 실행.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">row</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">QueryRow</span>(<span style="color:#e6db74">&#34;SELECT myname FROM mytable&#34;</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">name</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>(), <span style="color:#ae81ff">500</span>)
-        <span style="color:#66d9ef">return</span>
-    }
+    <span class="c1">// 쿼리 실행.
+</span><span class="c1"></span>    <span class="nx">row</span> <span class="o">:=</span> <span class="nx">h</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">QueryRow</span><span class="p">(</span><span class="s">&#34;SELECT myname FROM mytable&#34;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">row</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">name</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">(),</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
     
-    <span style="color:#75715e">// 클라이언트에 전송.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintf</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;hi %s\n&#34;</span>, <span style="color:#a6e22e">name</span>)
-}
+    <span class="c1">// 클라이언트에 전송.
+</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Fprintf</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="s">&#34;hi %s\n&#34;</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>이제 우리는 데이터베이스를 초기화할 수 있으며 전역 변수 없이 핸들러를 등록할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#75715e">// 데이터베이스 커넥션을 연다.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;postgres&#34;</span>, <span style="color:#e6db74">&#34;...&#34;</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
-    }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 데이터베이스 커넥션을 연다.
+</span><span class="c1"></span>    <span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;postgres&#34;</span><span class="p">,</span> <span class="s">&#34;...&#34;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
     
-    <span style="color:#75715e">// 핸들러 등록.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Handle</span>(<span style="color:#e6db74">&#34;/hello&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">HelloHandler</span>{<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>}
-    <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8080&#34;</span>, <span style="color:#66d9ef">nil</span>)
-}
+    <span class="c1">// 핸들러 등록.
+</span><span class="c1"></span>    <span class="nx">http</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">HelloHandler</span><span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">}</span>
+    <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8080&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>이 접근법은 또한 핸들러 유닛 테스팅을 자체적으로 할 수 있다는 이점을 가지며 심지어 HTTP 서버도 필요하지않다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestHelloHandler_ServeHTTP</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
-    <span style="color:#75715e">// 커넥션을 열고 핸들러를 설정한다.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;postgres&#34;</span>, <span style="color:#e6db74">&#34;...&#34;</span>)
-    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Close</span>()
-    <span style="color:#a6e22e">h</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">HelloHandler</span>{<span style="color:#a6e22e">db</span>: <span style="color:#a6e22e">db</span>}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">TestHelloHandler_ServeHTTP</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 커넥션을 열고 핸들러를 설정한다.
+</span><span class="c1"></span>    <span class="nx">db</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;postgres&#34;</span><span class="p">,</span> <span class="s">&#34;...&#34;</span><span class="p">)</span>
+    <span class="k">defer</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+    <span class="nx">h</span> <span class="o">:=</span> <span class="nx">HelloHandler</span><span class="p">{</span><span class="nx">db</span><span class="p">:</span> <span class="nx">db</span><span class="p">}</span>
     
-    <span style="color:#75715e">// 간단한 버퍼를 가지고 핸들러를 실행.
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rec</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">NewRecorder</span>()
-    <span style="color:#a6e22e">rec</span>.<span style="color:#a6e22e">Body</span> = <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">NewBuffer</span>()
+    <span class="c1">// 간단한 버퍼를 가지고 핸들러를 실행.
+</span><span class="c1"></span>    <span class="nx">rec</span> <span class="o">:=</span> <span class="nx">httptest</span><span class="p">.</span><span class="nf">NewRecorder</span><span class="p">()</span>
+    <span class="nx">rec</span><span class="p">.</span><span class="nx">Body</span> <span class="p">=</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">NewBuffer</span><span class="p">()</span>
     
-}
+<span class="p">}</span>
 </code></pre></div><p><em><strong>UPDATE:</strong></em> Tomás Senart와 Peter Bourgon의 <a href="https://twitter.com/tsenart/status/485920561391239168">트위터 멘션</a>에서 언급된 <a href="https://gist.github.com/tsenart/5fc18c659814c078378d">클로저를 사용한 핸들러 래핑</a>으로 이를 좀 더 간단히 할 수 있다. 이는 핸들러를 쉽게 구성할 수 있게 해준다.</p>
 <!-- raw HTML omitted -->
 <h1 id="2-애플리케이션에서-바이너리를-분리하라">2. 애플리케이션에서 바이너리를 분리하라</h1>
@@ -211,44 +211,44 @@
 <h1 id="3-애플리케이션별-컨텍스트를-위한-타입-래핑">3. 애플리케이션별 컨텍스트를 위한 타입 래핑</h1>
 <p>내가 발견한 특히 유용한 한 트릭은 애플리케이션 수준의 컨텍스트를 제공하기위해 몇가지 제너릭 타입을 래핑하는 것이다. 한 가지 훌륭한 예는 DB와 Tx (transaction) 타입을 래핑하는것이다. 이 타입들은 database/sql 패키지나 <a href="https://github.com/boltdb/bolt">Bolt</a>같은 다른 데이터베이스 라이브러리에서 찾을  수 있다.</p>
 <p>우리는 이 타입들을 다음과 같이 래핑하면서 시작할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">myapp</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">myapp</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;database/sql&#34;</span>
-)
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;database/sql&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DB</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#f92672">*</span><span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">DB</span>
-}
+<span class="kd">type</span> <span class="nx">DB</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="o">*</span><span class="nx">sql</span><span class="p">.</span><span class="nx">DB</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Tx</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#f92672">*</span><span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Tx</span>
-}
+<span class="kd">type</span> <span class="nx">Tx</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="o">*</span><span class="nx">sql</span><span class="p">.</span><span class="nx">Tx</span>
+<span class="p">}</span>
 </code></pre></div><p>이제 우리의 데이터베이스와 트랜젝션을 위해 초기화 함수를 래핑하자:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Open은 데이터 소스를 위한 DB 레퍼런스를 반환한다.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">dataSourceName</span> <span style="color:#66d9ef">string</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;postgres&#34;</span>, <span style="color:#a6e22e">dataSourceName</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">DB</span>{<span style="color:#a6e22e">db</span>}, <span style="color:#66d9ef">nil</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Open은 데이터 소스를 위한 DB 레퍼런스를 반환한다.
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Open</span><span class="p">(</span><span class="nx">dataSourceName</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">DB</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">db</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">sql</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;postgres&#34;</span><span class="p">,</span> <span class="nx">dataSourceName</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">DB</span><span class="p">{</span><span class="nx">db</span><span class="p">},</span> <span class="kc">nil</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Begin은 새로운 트랜젝션을 반환하기 시작한다.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">Begin</span>() (<span style="color:#f92672">*</span><span style="color:#a6e22e">Tx</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">Begin</span>()
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">reutnr</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-    }
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Tx</span>{<span style="color:#a6e22e">tx</span>}, <span style="color:#66d9ef">nil</span>
-}
+<span class="c1">// Begin은 새로운 트랜젝션을 반환하기 시작한다.
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">db</span> <span class="o">*</span><span class="nx">DB</span><span class="p">)</span> <span class="nf">Begin</span><span class="p">()</span> <span class="p">(</span><span class="o">*</span><span class="nx">Tx</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">tx</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">DB</span><span class="p">.</span><span class="nf">Begin</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">reutnr</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">Tx</span><span class="p">{</span><span class="nx">tx</span><span class="p">},</span> <span class="kc">nil</span>
+<span class="p">}</span>
 </code></pre></div><p>예를 들어, 만약  사용자가 생성하기 전에 다른 시스템에 대한 검증이 필요하다거나 다른 테이블들의 업데이트가 필요할 때 이 함수는 더 복잡한 일을 할 수 있다.</p>
 <!-- raw HTML omitted -->
 <h2 id="트랜잭션-구성">트랜잭션 구성</h2>
 <p>이 함수들을 <em>Tx</em> 에 추가하는 것의 또 다른 이점은 하나의 트랜잭션에서 여러개의 액션을 구성할 수있다는 것이다. 사용자를 추가해야 하는가? 그냥 <em>Tx.CreateUser()</em> 를 한 번 호출하면 된다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Begin</span>()
-<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">CreateUser</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>:<span style="color:#e6db74">&#34;susy&#34;</span>})
-<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Commit</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">tx</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Begin</span><span class="p">()</span>
+<span class="nx">tx</span><span class="p">.</span><span class="nf">CreateUser</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">User</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span><span class="s">&#34;susy&#34;</span><span class="p">})</span>
+<span class="nx">tx</span><span class="p">.</span><span class="nf">Commit</span><span class="p">()</span>
 </code></pre></div><p>기본 데이터 스토어를 추상화 하는것은 새 데이터베이스로 교환하거나 다수의 데이터베이스의 사용을 쉽게 만들어준다. 그들은 애플리케이션의 <em>DB &amp; Tx</em> 타입을 호출하는 코드로부터 모두 감춰져있다.</p>
 <!-- raw HTML omitted -->
 <h1 id="4-서브패키지로-골머리를-앓지-말라">4. 서브패키지로 골머리를 앓지 말라</h1>

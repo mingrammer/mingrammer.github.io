@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Feb 13, 2020 00:00
-                    · 2356 words
+                    · 2338 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -118,45 +118,45 @@
 <h1 id="예제-코드-작성">예제 코드 작성</h1>
 <p>예제로 사용할 코드는 다음과 같은 n번째 피보나치수를 계산해주는 간단한 서버 애플리케이션이다.</p>
 <p><strong>./main.go</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;log&#34;</span>
-	<span style="color:#e6db74">&#34;net/http&#34;</span>
-	<span style="color:#e6db74">&#34;strconv&#34;</span>
-)
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+	<span class="s">&#34;net/http&#34;</span>
+	<span class="s">&#34;strconv&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">port</span> = <span style="color:#e6db74">&#34;8000&#34;</span>
+<span class="kd">const</span> <span class="nx">port</span> <span class="p">=</span> <span class="s">&#34;8000&#34;</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/fib&#34;</span>, <span style="color:#a6e22e">fibHandler</span>)
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/fib&#34;</span><span class="p">,</span> <span class="nx">fibHandler</span><span class="p">)</span>
 
-	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;listening on port %s&#34;</span>, <span style="color:#a6e22e">port</span>)
-	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalln</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span><span style="color:#a6e22e">port</span>, <span style="color:#66d9ef">nil</span>))
-}
+	<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;listening on port %s&#34;</span><span class="p">,</span> <span class="nx">port</span><span class="p">)</span>
+	<span class="nx">log</span><span class="p">.</span><span class="nf">Fatalln</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:&#34;</span><span class="o">+</span><span class="nx">port</span><span class="p">,</span> <span class="kc">nil</span><span class="p">))</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fibHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-	<span style="color:#a6e22e">ns</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">URL</span>.<span style="color:#a6e22e">Query</span>()[<span style="color:#e6db74">&#34;num&#34;</span>]
-	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> <span style="color:#f92672">||</span> len(<span style="color:#a6e22e">ns</span>) &lt; <span style="color:#ae81ff">0</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;param &#39;num&#39; is missing&#34;</span>)
-		<span style="color:#66d9ef">return</span>
-	}
-	<span style="color:#a6e22e">n0</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">ns</span>[<span style="color:#ae81ff">0</span>])
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;invalid number: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
-		<span style="color:#66d9ef">return</span>
-	}
-	<span style="color:#a6e22e">fb</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Itoa</span>(<span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">n0</span>))
-	<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Write</span>([]byte(<span style="color:#a6e22e">fb</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\n&#34;</span>))
-}
+<span class="kd">func</span> <span class="nf">fibHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">ns</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nf">Query</span><span class="p">()[</span><span class="s">&#34;num&#34;</span><span class="p">]</span>
+	<span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="nx">ns</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;param &#39;num&#39; is missing&#34;</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	<span class="nx">n0</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nx">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;invalid number: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	<span class="nx">fb</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nf">fib</span><span class="p">(</span><span class="nx">n0</span><span class="p">))</span>
+	<span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">fb</span> <span class="o">+</span> <span class="s">&#34;\n&#34;</span><span class="p">))</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">fib</span>(<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
-	<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>
-	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">n</span><span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
-		<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> = <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>
-	}
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>
-}
+<span class="kd">func</span> <span class="nf">fib</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">n</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">=</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">a</span><span class="o">+</span><span class="nx">b</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">b</span>
+<span class="p">}</span>
 </code></pre></div><p>위 코드를 <code>main.go</code>로 저장한 다음 같은 디렉토리에서 <code>go mod init calc</code>로 모듈을 초기화 해준다. 예제 코드 준비는 모두 끝났으니 이제 이 애플리케이션을 컨테이너로 띄워보자.</p>
 <h1 id="도커-파일-작성">도커 파일 작성</h1>
 <p>Go 디버깅에는 <a href="https://github.com/go-delve/delve"><code>delve</code></a>라는 디버거를 사용하며 원격 디버깅을 위해서는 컨테이너 내부에서 디버깅 요청을 받을 수 있는 delve 디버거 서버를 띄워줘야 한다. 또한 디버깅의 정확성을 위해 보통 디버깅용 빌드에서는 컴파일러 최적화 옵션을 끄기 때문에 디버깅 환경으로 구성된 이미지는 프로덕션 환경에서 사용할 수 없다. 따라서 나 같은 경우는 실제 배포용 이미지와 디버깅용 이미지를 분리하여 사용하고 있다.</p>
@@ -165,54 +165,54 @@
 </blockquote>
 <h2 id="배포용-이미지">배포용 이미지</h2>
 <p><strong>./Dockerfile</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># Build binary</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.13 AS builder</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /build</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+<div class="highlight"><pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># Build binary</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:1.13 AS builder</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">ENV</span> <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span>
 
-<span style="color:#66d9ef">COPY</span> go.mod ./<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go mod download<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . ./<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go build .<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Run on scratch</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> alpine:3.10</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /bin</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /build/calc /bin/<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 8000</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;/bin/calc&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+<span class="k">COPY</span> go.mod ./<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go mod download<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . ./<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go build .<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># Run on scratch</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> alpine:3.10</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /bin</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /build/calc /bin/<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 8000</span><span class="err">
+</span><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&#34;/bin/calc&#34;</span><span class="p">]</span><span class="err">
 </span></code></pre></div><p>기본적인 Go 바이너리 배포용 이미지이며 이 이미지를 기반으로 디버깅 환경을 갖춘 도커 파일을 작성해보자.</p>
 <h2 id="디버깅-이미지">디버깅 이미지</h2>
 <p><strong>./debug/Dockerfile</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#75715e"># Build binary</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.13 AS builder</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /build</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENV</span> CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+<div class="highlight"><pre class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># Build binary</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:1.13 AS builder</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /build</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">ENV</span> <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span>
 
-<span style="color:#66d9ef">COPY</span> go.mod ./<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go mod download<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . ./<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go build -gcflags <span style="color:#e6db74">&#34;all=-N -l&#34;</span> . <span style="color:#75715e"># -gcflags &#34;all=-N -l&#34;로 컴파일러 최적화 옵션을 끈다.</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install delve</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go get -u github.com/go-delve/delve/cmd/dlv <span style="color:#75715e"># delve 설치</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Run on scratch</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> alpine:3.10</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /bin</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /build/calc /bin/<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder /go/bin/dlv /bin/ <span style="color:#75715e"># delve 가져오기</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 8000</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 2345 # 디버거 서버 포트</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;/bin/dlv&#34;</span>, <span style="color:#e6db74">&#34;--listen=:2345&#34;</span>, <span style="color:#e6db74">&#34;--headless=true&#34;</span>, <span style="color:#e6db74">&#34;--api-version=2&#34;</span>, <span style="color:#e6db74">&#34;--accept-multiclient&#34;</span>, <span style="color:#e6db74">&#34;exec&#34;</span>, <span style="color:#e6db74">&#34;/bin/calc&#34;</span>, <span style="color:#e6db74">&#34;--continue&#34;</span>] <span style="color:#75715e"># 디버깅 시작</span><span style="color:#960050;background-color:#1e0010">
+<span class="k">COPY</span> go.mod ./<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go mod download<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> . ./<span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go build -gcflags <span class="s2">&#34;all=-N -l&#34;</span> . <span class="c1"># -gcflags &#34;all=-N -l&#34;로 컴파일러 최적화 옵션을 끈다.</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># Install delve</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> go get -u github.com/go-delve/delve/cmd/dlv <span class="c1"># delve 설치</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># Run on scratch</span><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> alpine:3.10</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /bin</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /build/calc /bin/<span class="err">
+</span><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /go/bin/dlv /bin/ <span class="c1"># delve 가져오기</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 8000</span><span class="err">
+</span><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 2345 # 디버거 서버 포트</span><span class="err">
+</span><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&#34;/bin/dlv&#34;</span><span class="p">,</span> <span class="s2">&#34;--listen=:2345&#34;</span><span class="p">,</span> <span class="s2">&#34;--headless=true&#34;</span><span class="p">,</span> <span class="s2">&#34;--api-version=2&#34;</span><span class="p">,</span> <span class="s2">&#34;--accept-multiclient&#34;</span><span class="p">,</span> <span class="s2">&#34;exec&#34;</span><span class="p">,</span> <span class="s2">&#34;/bin/calc&#34;</span><span class="p">,</span> <span class="s2">&#34;--continue&#34;</span><span class="p">]</span> <span class="c1"># 디버깅 시작</span><span class="err">
 </span></code></pre></div><p>디버깅 이미지에서는 <code>delve</code> 디버거를 설치한 후 바이너리를 직접 실행하는 대신 헤드리스 디버거 서버가 실행하도록 변경 해주면 된다. 다음 명령어는 2345번 포트에서 디버거 서버를 헤드리스 모드로 실행한 뒤 <code>/bin/calc</code> 바이너리를 실행하여 디버깅 세션을 시작하라는 의미이다.</p>
 <p><code>ENTRYPOINT [&quot;/bin/dlv&quot;, &quot;--listen=:2345&quot;, &quot;--headless=true&quot;, &quot;--api-version=2&quot;, &quot;--accept-multiclient&quot;, &quot;exec&quot;, &quot;/bin/calc&quot;, &quot;--continue&quot;]</code></p>
 <p><code>--continue</code> 옵션은 디버깅 프로세스를 곧바로 시작하라는 의미이다. 이 옵션을 주지 않으면 디버깅 요청을 보내줘야만 디버깅 프로세스가 시작된다. 즉, 이 옵션이 없으면 컨테이너가 띄워져도 웹 서버는 실행되지 않으며 2345 포트로 디버깅 요청을 보내줘야만 디버깅 프로세스와 함께 웹 서버가 시작된다.</p>
@@ -222,21 +222,21 @@
 </blockquote>
 <h2 id="컨테이너-실행">컨테이너 실행</h2>
 <p><strong>./docker-compose.yml</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;3&#34;</span>
-<span style="color:#66d9ef">services</span>:
-  <span style="color:#66d9ef">calc</span>:
-    <span style="color:#66d9ef">build</span>:
-      <span style="color:#66d9ef">context</span>: .
-    <span style="color:#66d9ef">ports</span>:
-      - <span style="color:#e6db74">&#34;8000:8000&#34;</span>
-  <span style="color:#66d9ef">calc-debug</span>:
-    <span style="color:#66d9ef">build</span>:
-      <span style="color:#66d9ef">context</span>: .
-      <span style="color:#66d9ef">dockerfile</span>: ./debug/Dockerfile
-    <span style="color:#66d9ef">ports</span>:
-      - <span style="color:#e6db74">&#34;8001:8000&#34;</span>
-      - <span style="color:#e6db74">&#34;2345:2345&#34;</span>
-</code></pre></div><p><code>docker-compose up --build -d</code> 명령어로 컨테이너를 띄우고 나면 모든 준비가 끝나며, 최종 디렉토리는 구조는 다음과 같다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">services</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="k">calc</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>.<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;8000:8000&#34;</span><span class="w">
+</span><span class="w">  </span><span class="k">calc-debug</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="k">build</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="k">context</span><span class="p">:</span><span class="w"> </span>.<span class="w">
+</span><span class="w">      </span><span class="k">dockerfile</span><span class="p">:</span><span class="w"> </span>./debug/Dockerfile<span class="w">
+</span><span class="w">    </span><span class="k">ports</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;8001:8000&#34;</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;2345:2345&#34;</span><span class="w">
+</span></code></pre></div><p><code>docker-compose up --build -d</code> 명령어로 컨테이너를 띄우고 나면 모든 준비가 끝나며, 최종 디렉토리는 구조는 다음과 같다.</p>
 <pre><code>├── Dockerfile
 ├── debug
 │   └── Dockerfile
@@ -253,37 +253,37 @@
 <p>그 다음 <code>Rnu &gt; Debug 'Docker'</code>를 선택하여 디버깅 창을 연 다음 원하는 라인에 브레이크 포인트를 찍는다.</p>
 <p><img src="../images/2020-02-13-debug-window.png" alt="debug window"></p>
 <p>이제 <code>curl</code>을 사용하여 웹 서버에 요청을 날려보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl <span style="color:#e6db74">&#39;localhost:8001/fib?num=1000&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl <span class="s1">&#39;localhost:8001/fib?num=1000&#39;</span>
 </code></pre></div><p>요청을 날리면 디버깅이 시작되며 디버깅 창에서 각 변수의 값을 확인할 수 있다. 다음은 두 번째 브레이크 포인트까지 진행한 결과이다. (<code>n0</code>: 1000, <code>fib</code>: 817770325994397771)</p>
 <p><img src="../images/2020-02-13-go-debugging.png" alt="go debugging"></p>
 <p>디버깅 프로세스를 끝내면 요청이 잘 처리되었음을 확인할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl <span style="color:#e6db74">&#39;localhost:8001/fib?num=1000&#39;</span>
-<span style="color:#ae81ff">817770325994397771</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl <span class="s1">&#39;localhost:8001/fib?num=1000&#39;</span>
+<span class="m">817770325994397771</span>
 </code></pre></div><p>웹 서버가 띄워져 있기 때문에 원할 때마다 같은 방법으로 디버깅을 반복해서 진행할 수 있다.</p>
 <h2 id="vscode">Vscode</h2>
 <p>Vscode에서는 설정이 좀 더 간단하다. 좌측에서 디버깅 메뉴로 들어가면 좌측 상단에 톱니바퀴 모양이 보이는데 해당 버튼을 누르면 <code>launch.json</code>이라는 설정 파일이 열리며 설정값은 다음과 같이 작성해주면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;0.2.0&#34;</span>,
-    <span style="color:#f92672">&#34;configurations&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Launch remote&#34;</span>,
-            <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;go&#34;</span>,
-            <span style="color:#f92672">&#34;request&#34;</span>: <span style="color:#e6db74">&#34;launch&#34;</span>,
-            <span style="color:#f92672">&#34;mode&#34;</span>: <span style="color:#e6db74">&#34;remote&#34;</span>,
-            <span style="color:#f92672">&#34;program&#34;</span>: <span style="color:#e6db74">&#34;${workspaceFolder}&#34;</span>,
-            <span style="color:#f92672">&#34;remotePath&#34;</span>: <span style="color:#e6db74">&#34;/build&#34;</span>,
-            <span style="color:#f92672">&#34;host&#34;</span>: <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>,
-            <span style="color:#f92672">&#34;port&#34;</span>: <span style="color:#ae81ff">2345</span>,
-            <span style="color:#f92672">&#34;env&#34;</span>: {},
-            <span style="color:#f92672">&#34;args&#34;</span>: [],
-            <span style="color:#f92672">&#34;showLog&#34;</span>: <span style="color:#66d9ef">true</span>,
-            <span style="color:#f92672">&#34;trace&#34;</span>: <span style="color:#e6db74">&#34;verbose&#34;</span>
-        }
-    ]
-}
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;0.2.0&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;configurations&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Launch remote&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;go&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;request&#34;</span><span class="p">:</span> <span class="s2">&#34;launch&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;remote&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;program&#34;</span><span class="p">:</span> <span class="s2">&#34;${workspaceFolder}&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;remotePath&#34;</span><span class="p">:</span> <span class="s2">&#34;/build&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;host&#34;</span><span class="p">:</span> <span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;port&#34;</span><span class="p">:</span> <span class="mi">2345</span><span class="p">,</span>
+            <span class="nt">&#34;env&#34;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="nt">&#34;showLog&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;trace&#34;</span><span class="p">:</span> <span class="s2">&#34;verbose&#34;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div><p><img src="../images/2020-02-13-vscode-remote-debug-config.png" alt="vscode remote debug config"></p>
 <p>설정이 끝났으면 에디터 창으로 돌아가 브레이크 포인트를 찍은 뒤 <code>Debug &gt; Start Debugging</code>으로 디버깅을 시작한다. 마찬가지로 <code>curl</code>로 요청을 날려보면 다음과 같은 창이 열리며 디버깅이 시작된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ curl <span style="color:#e6db74">&#39;localhost:8001/fib?num=1000&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ curl <span class="s1">&#39;localhost:8001/fib?num=1000&#39;</span>
 </code></pre></div><p><img src="../images/2020-02-13-vscode-go-debugging.png" alt="vscode go debugging"></p>
 <h1 id="마무리">마무리</h1>
 <p>이상으로 컨테이너 내부의 Go 애플리케이션을 디버깅하는 방법을 살펴보았다. 물론 아직 로컬 디버깅 대비 단점이 하나 있는데, 그건 바로 코드 변경시 도커 이미지를 다시 컴파일 해줘야 한다는 것이다. 이 부분은 live reload 테크닉을 통해 개선할 수 있으며 이에 대해서는 다음에 소개해보려고 한다.</p>

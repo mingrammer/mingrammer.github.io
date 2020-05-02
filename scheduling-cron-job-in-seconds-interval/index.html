@@ -97,42 +97,42 @@
 <p>위 방법을 사용하려면 스크립트를 약간 수정해줘야 하는데, 수정하고 싶지 않거나 수정할 수 없는 경우 또는 스크립트가 아닌 명령어 실행이라면 스케줄을 등록할때 여러개의 같은 잡을 등록하고 스크립트나 명령어 앞에 sleep만 넣어주면 된다.</p>
 <h1 id="스크립트에서-스케줄링하기">스크립트에서 스케줄링하기</h1>
 <p>셸 스크립트의 경우 기존 태스크를 루프로 감싸고 안에서 sleep만 걸어주면 된다. 다른 언어를 사용중이라면 각 언어별로 내장된 sleep 함수를 사용하면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># original.</span>
-task;
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># original.</span>
+task<span class="p">;</span>
 
-<span style="color:#75715e"># 2 seconds interval.</span>
-<span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>1..30<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span>
-    task;
-    sleep 2;
-<span style="color:#66d9ef">done</span>
+<span class="c1"># 2 seconds interval.</span>
+<span class="k">for</span> i in <span class="o">{</span>1..30<span class="o">}</span><span class="p">;</span> <span class="k">do</span>
+    task<span class="p">;</span>
+    sleep 2<span class="p">;</span>
+<span class="k">done</span>
 </code></pre></div><p>그 다음 crontab에 1분 스케줄링을 걸어준다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># crontab</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># crontab</span>
 * * * * * /bin/sh /path/to/script.sh
 </code></pre></div><p>sleep 시간을 동적으로 설정하려면 sleep 시간을 받을 수 있도록 할 수도 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">n<span style="color:#f92672">=</span>$1
-<span style="color:#75715e"># n seconds interval.</span>
-<span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#66d9ef">$((</span><span style="color:#ae81ff">60</span><span style="color:#f92672">/</span>$n<span style="color:#66d9ef">)))</span>; <span style="color:#66d9ef">do</span>
-    task;
-    sleep $n;
-<span style="color:#66d9ef">done</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># crontab</span>
-* * * * * /bin/sh /path/to/script.sh <span style="color:#ae81ff">2</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">n</span><span class="o">=</span><span class="nv">$1</span>
+<span class="c1"># n seconds interval.</span>
+<span class="k">for</span> i in <span class="k">$(</span>seq <span class="k">$((</span><span class="m">60</span><span class="o">/</span><span class="nv">$n</span><span class="k">)))</span><span class="p">;</span> <span class="k">do</span>
+    task<span class="p">;</span>
+    sleep <span class="nv">$n</span><span class="p">;</span>
+<span class="k">done</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># crontab</span>
+* * * * * /bin/sh /path/to/script.sh <span class="m">2</span>
 </code></pre></div><p>그런데 만약 task 실행 시간이 충분히 짧지 않다면 실질적인 sleep 시간은 task 실행시간 + sleep 시간이 되기 때문에 스케줄링에 오차가 생길 수 있다. 이 경우는 task를 백그라운드로 실행하면된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">n<span style="color:#f92672">=</span>$1
-<span style="color:#75715e"># n seconds interval.</span>
-<span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#66d9ef">$((</span><span style="color:#ae81ff">60</span><span style="color:#f92672">/</span>$n<span style="color:#66d9ef">)))</span>; <span style="color:#66d9ef">do</span>
-    task &amp;;
-    sleep $n;
-<span style="color:#66d9ef">done</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nv">n</span><span class="o">=</span><span class="nv">$1</span>
+<span class="c1"># n seconds interval.</span>
+<span class="k">for</span> i in <span class="k">$(</span>seq <span class="k">$((</span><span class="m">60</span><span class="o">/</span><span class="nv">$n</span><span class="k">)))</span><span class="p">;</span> <span class="k">do</span>
+    task <span class="p">&amp;;</span>
+    sleep <span class="nv">$n</span><span class="p">;</span>
+<span class="k">done</span>
 </code></pre></div><h1 id="crontab에서-스케줄링하기">Crontab에서 스케줄링하기</h1>
 <p>crontab 등록시 스크립트 실행 이전에 sleep을 걸어주면 된다. 단, 첫 스케줄잡은 제외한다. 스크립트를 수정하지 않아도 되기 때문에 가장 편하게 사용할 수 있는 방법이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># crontab</span>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1"># crontab</span>
 * * * * * /bin/sh /path/to/script.sh
-* * * * * sleep 10; /bin/sh /path/to/script.sh
-* * * * * sleep 20; /bin/sh /path/to/script.sh
-* * * * * sleep 30; /bin/sh /path/to/script.sh
-* * * * * sleep 40; /bin/sh /path/to/script.sh
-* * * * * sleep 50; /bin/sh /path/to/script.sh
+* * * * * sleep 10<span class="p">;</span> /bin/sh /path/to/script.sh
+* * * * * sleep 20<span class="p">;</span> /bin/sh /path/to/script.sh
+* * * * * sleep 30<span class="p">;</span> /bin/sh /path/to/script.sh
+* * * * * sleep 40<span class="p">;</span> /bin/sh /path/to/script.sh
+* * * * * sleep 50<span class="p">;</span> /bin/sh /path/to/script.sh
 </code></pre></div><p>1분마다 모두 동시에 실행되지만 sleep이 있어 작업이 지연되므로 10초 간격으로 스케줄링된 것처럼 동작한다.</p>
 
                 </section>

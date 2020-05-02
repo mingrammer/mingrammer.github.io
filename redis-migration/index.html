@@ -147,54 +147,54 @@
 <p>프로세스 수를 8개로 제한한건 데스크탑에서는 가용 램 용량에 한계가 있기 때문에 동시에 많은 수의 로컬 Redis 서버를 띄워서 레플리케이션을 구성하면 램이 고갈되는 문제가 발생할 수 있다. 실제로 테스트시 프로세스 수를 좀 더 큰 값으로 올렸을 때 램이 고갈되어 프리징 직전까지 간 적이 있다.</p>
 </blockquote>
 <p>코드로 보면 다음과 같다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run</span>(port, server):
-    local_server <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;localhost:{}&#39;</span><span style="color:#f92672">.</span>format(port)
-    fetch(server, local_server)
-    migrate_all(local_server, <span style="color:#e6db74">&#39;ec2 server ip&#39;</span>)
-    shutdown(local_server)
-    clear_dump(port)
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">server</span><span class="p">):</span>
+    <span class="n">local_server</span> <span class="o">=</span> <span class="s1">&#39;localhost:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+    <span class="n">fetch</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">local_server</span><span class="p">)</span>
+    <span class="n">migrate_all</span><span class="p">(</span><span class="n">local_server</span><span class="p">,</span> <span class="s1">&#39;ec2 server ip&#39;</span><span class="p">)</span>
+    <span class="n">shutdown</span><span class="p">(</span><span class="n">local_server</span><span class="p">)</span>
+    <span class="n">clear_dump</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
     
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>(start, end):
-    <span style="color:#f92672">...</span>
-    pool <span style="color:#f92672">=</span> Pool(processes<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>)
-    pool<span style="color:#f92672">.</span>starmap(run, zip(local_ports, legacy_servers))
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="n">local_ports</span><span class="p">,</span> <span class="n">legacy_servers</span><span class="p">))</span>
 </code></pre></div><p>스크립트를 실행하고 중간에 작업 디렉터리를 확인해 보면 다음과 같이 <strong>temp rdb</strong>와 <strong>dump rdb</strong>가 동시에 최대 8개까지 존재하는걸 볼 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ls -l
-... dump6400.rdb <span style="color:#75715e"># 동기화 완료된 로컬 서버 포트. EC2 이전까지 완료되면 rdb 삭제</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ ls -l
+... dump6400.rdb <span class="c1"># 동기화 완료된 로컬 서버 포트. EC2 이전까지 완료되면 rdb 삭제</span>
 ... dump6409.rdb
 ... dump6405.rdb
 ... dump6406.rdb
-... temp_6401.rdb <span style="color:#75715e"># 동기화 진행중인 로컬 서버 포트.</span>
+... temp_6401.rdb <span class="c1"># 동기화 진행중인 로컬 서버 포트.</span>
 ... temp_6408.rdb
 ... temp_6403.rdb
 ... temp_6402.rdb
 </code></pre></div><h2 id="레플리케이션을-통한-데이터-동기화">레플리케이션을 통한 데이터 동기화</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># src: IDC 서버</span>
-<span style="color:#75715e"># dst: 로컬 서버</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch</span>(src, dst):
-    <span style="color:#f92672">...</span>
-    r <span style="color:#f92672">=</span> redis<span style="color:#f92672">.</span>StrictRedis(host<span style="color:#f92672">=</span>dsthost, port<span style="color:#f92672">=</span>dstport, charset<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf8&#39;</span>)
-    <span style="color:#66d9ef">try</span>:
-        r<span style="color:#f92672">.</span>ping()
-    <span style="color:#66d9ef">except</span> redis<span style="color:#f92672">.</span>exceptions<span style="color:#f92672">.</span>ConnectionError:
-        subprocess<span style="color:#f92672">.</span>call([
-            <span style="color:#e6db74">&#39;redis-server&#39;</span>,
-            <span style="color:#e6db74">&#39;--port&#39;</span>, dstport,
-            <span style="color:#e6db74">&#39;--dbfilename&#39;</span>, <span style="color:#e6db74">&#39;dump{}.rdb&#39;</span><span style="color:#f92672">.</span>format(dstport),
-            <span style="color:#e6db74">&#39;--daemonize&#39;</span>, <span style="color:#e6db74">&#39;yes&#39;</span>,
-        ], stdout<span style="color:#f92672">=</span>subprocess<span style="color:#f92672">.</span>DEVNULL)
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;[{}] [{}|{}] Slave status: {}&#39;</span><span style="color:#f92672">.</span>format(now(), src, dst, r<span style="color:#f92672">.</span>slaveof(srchost, srcport)))
-    <span style="color:#f92672">...</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># src: IDC 서버</span>
+<span class="c1"># dst: 로컬 서버</span>
+<span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">dsthost</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">dstport</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">redis</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">:</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span>
+            <span class="s1">&#39;redis-server&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;--port&#39;</span><span class="p">,</span> <span class="n">dstport</span><span class="p">,</span>
+            <span class="s1">&#39;--dbfilename&#39;</span><span class="p">,</span> <span class="s1">&#39;dump{}.rdb&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dstport</span><span class="p">),</span>
+            <span class="s1">&#39;--daemonize&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span>
+        <span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[{}] [{}|{}] Slave status: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">slaveof</span><span class="p">(</span><span class="n">srchost</span><span class="p">,</span> <span class="n">srcport</span><span class="p">)))</span>
+    <span class="o">...</span>
 </code></pre></div><p>특정 로컬 포트로 ping 테스트를 해보고 실패하면 해당 로컬 포트로 Redis 서버를 띄운 다음 IDC의 Redis 서버와 레플리케이션을 맺는다. (<code>r.slaveof(srchost, srcport)</code>)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fetch</span>(src, dst):
-    <span style="color:#f92672">...</span>
-    <span style="color:#66d9ef">while</span> True:
-        master_link_status <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;replication&#39;</span>)[<span style="color:#e6db74">&#39;master_link_status&#39;</span>]
-        master_sync_in_progress <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;replication&#39;</span>)[<span style="color:#e6db74">&#39;master_sync_in_progress&#39;</span>]
-        <span style="color:#66d9ef">if</span> master_link_status <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;up&#39;</span> <span style="color:#f92672">and</span> master_sync_in_progress <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-            r<span style="color:#f92672">.</span>slaveof()
-            <span style="color:#66d9ef">break</span>
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;[{}] [{}|{}] All keys is fetched.&#39;</span><span style="color:#f92672">.</span>format(now(), src, dst))
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">master_link_status</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;replication&#39;</span><span class="p">)[</span><span class="s1">&#39;master_link_status&#39;</span><span class="p">]</span>
+        <span class="n">master_sync_in_progress</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;replication&#39;</span><span class="p">)[</span><span class="s1">&#39;master_sync_in_progress&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">master_link_status</span> <span class="o">==</span> <span class="s1">&#39;up&#39;</span> <span class="ow">and</span> <span class="n">master_sync_in_progress</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">slaveof</span><span class="p">()</span>
+            <span class="k">break</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[{}] [{}|{}] All keys is fetched.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
 </code></pre></div><p>레플리케이션을 맺으면 slave는 master와 데이터 동기화를 시작한다. 데이터 정확성을 보장하기 위해선 모든 데이터의 동기화가 잘 이루어졌는지를 반드시 체크해야한다. 그렇다면 레플리케이션 도중 데이터 동기화가 완료되는 시점은 어떻게 알아낼 수 있을까?</p>
 <p>Redis slave 서버의 레플리케이션 정보에는 master와의 연결 상태를 알 수 있는 <code>master_link_status</code>라는 플래그가 있다. 연결이 비정상적이거나 최초로 master와 full sync를 하는 동안에는 <code>down</code>으로 설정되며, full sync가 완료되고 정상적인 레플리케이션 연결이 수립되면 <code>up</code>으로 설정된다. 또한, 현재 master와의 동기화 진행 여부를 알려주는 <code>master_sync_in_progress</code>라는 플래그가 있는데, 동기화가 진행중이면  <code>1</code>, 완료되면 <code>0</code>으로 설정된다.</p>
 <p>따라서 <code>master_link_status</code>와 <code>master_sync_in_progress</code>의 값이 각각 <code>up</code>과 <code>0</code>이 되는 시점을 동기화 완료 시점이라고 판단할 수 있으며, 이 때 레플리케이션을 끊으면 된다. (<code>r.slaveof()</code> = <code>slaveof no one</code>)</p>
@@ -204,41 +204,41 @@
 </blockquote>
 <h2 id="데이터-이전">데이터 이전</h2>
 <p>데이터 이전은 단순한 <code>dump</code>와 <code>restore</code>의 조합이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">migrate_all</span>(src, dst):
-    <span style="color:#f92672">...</span>
-    r <span style="color:#f92672">=</span> redis<span style="color:#f92672">.</span>StrictRedis(host<span style="color:#f92672">=</span>srchost, port<span style="color:#f92672">=</span>srcport, charset<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf8&#39;</span>)
-    keyspace <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;keyspace&#39;</span>)
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">migrate_all</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">srchost</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">srcport</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+    <span class="n">keyspace</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;keyspace&#39;</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;[{}] [{}|{}] Started migrating.&#39;</span><span style="color:#f92672">.</span>format(now(), src, dst))
-    jobs <span style="color:#f92672">=</span> [gevent<span style="color:#f92672">.</span>spawn(migrate, src, dst, int(k[<span style="color:#ae81ff">2</span>:])) <span style="color:#66d9ef">for</span> k <span style="color:#f92672">in</span> keyspace<span style="color:#f92672">.</span>keys()]
-    gevent<span style="color:#f92672">.</span>joinall(jobs)
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;[{}] [{}|{}] Migration was done.&#39;</span><span style="color:#f92672">.</span>format(now(), src, dst))
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[{}] [{}|{}] Started migrating.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
+    <span class="n">jobs</span> <span class="o">=</span> <span class="p">[</span><span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">migrate</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keyspace</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+    <span class="n">gevent</span><span class="o">.</span><span class="n">joinall</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[{}] [{}|{}] Migration was done.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
 </code></pre></div><p>데이터 이전 또한 병렬로 처리하기 위해 각 keyspace 별로 gevent job을 만들어 동시에 키 이전을 수행했다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">migrate</span>(src, dst, db):
-    count <span style="color:#f92672">=</span> <span style="color:#ae81ff">2500</span>
-    cursor <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-    <span style="color:#f92672">...</span>
-    <span style="color:#66d9ef">while</span> True:
-        <span style="color:#75715e"># 2,500개 키 순회</span>
-        cursor, keys <span style="color:#f92672">=</span> srcr<span style="color:#f92672">.</span>scan(cursor, count<span style="color:#f92672">=</span>count)
-        pipeline <span style="color:#f92672">=</span> srcr<span style="color:#f92672">.</span>pipeline(transaction<span style="color:#f92672">=</span>False)
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">2500</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="o">...</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1"># 2,500개 키 순회</span>
+        <span class="n">cursor</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">srcr</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">srcr</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-        <span style="color:#75715e"># dump</span>
-        <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> keys:
-            pipeline<span style="color:#f92672">.</span>pttl(key)
-            pipeline<span style="color:#f92672">.</span>dump(key)
-        result <span style="color:#f92672">=</span> pipeline<span style="color:#f92672">.</span>execute()
+        <span class="c1"># dump</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">pipeline</span><span class="o">.</span><span class="n">pttl</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">pipeline</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
 
-        <span style="color:#75715e"># restore</span>
-        pipeline <span style="color:#f92672">=</span> dstr<span style="color:#f92672">.</span>pipeline(transaction<span style="color:#f92672">=</span>False)
-        <span style="color:#66d9ef">for</span> key, ttl, data <span style="color:#f92672">in</span> zip(keys, result[::<span style="color:#ae81ff">2</span>], result[<span style="color:#ae81ff">1</span>::<span style="color:#ae81ff">2</span>]):
-            <span style="color:#66d9ef">if</span> data <span style="color:#f92672">!=</span> None:
-                pipeline<span style="color:#f92672">.</span>restore(key, ttl <span style="color:#f92672">+</span> <span style="color:#ae81ff">10800000</span> <span style="color:#66d9ef">if</span> ttl <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>, data)
-        pipeline<span style="color:#f92672">.</span>execute(False)
-        <span style="color:#f92672">...</span>
+        <span class="c1"># restore</span>
+        <span class="n">pipeline</span> <span class="o">=</span> <span class="n">dstr</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span><span class="n">transaction</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">ttl</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">result</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">data</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">pipeline</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ttl</span> <span class="o">+</span> <span class="mi">10800000</span> <span class="k">if</span> <span class="n">ttl</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="o">...</span>
 
-        <span style="color:#66d9ef">if</span> cursor <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
-            <span style="color:#66d9ef">break</span>
+        <span class="k">if</span> <span class="n">cursor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
 </code></pre></div><p>각 단일 키에 대해서 하나씩 <code>pttl</code>, <code>dump</code> 및 <code>restore</code>를 실행하면 Redis 서버로의 네트워크 I/O가 매번 발생하기 때문에 속도가 극도로 느려진다. 그래서 파이프라이닝을 통해 여러개의 커맨드를 동시에 전송함으로써 네트워크 I/O를 대폭 줄이고 이전 속도를 향상시켰다. (여기서는 요청당 2,500개)</p>
 <p>또한 ttl 값에는 약 3시간 정도의 시간을 더하고 있는데 이는 ttl이 걸린 모든 키에 대해 서버 점검 시간만큼의 시간을 더해 expire time을 지연시키려고 한 것이다.</p>
 <h1 id="결과">결과</h1>

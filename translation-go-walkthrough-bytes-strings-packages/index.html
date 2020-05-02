@@ -145,14 +145,14 @@
 <p>Rob Pike는 <a href="https://blog.golang.org/strings">strings, bytes, runes, and characters</a>에 대한 훌륭한 포스트를 가지고 있지만 이 포스트에서는 애플리케이션 개발자의 관점에서 좀 더 간결한 정의를 제공하려고 한다.</p>
 <p>바이트 슬라이스는 변형 가능하고, 크기 조절이 가능한 연속적인 바이트 리스트를 나타낸다. 그럼 이제 이게 무슨 뜻인지를 알아보자.</p>
 <p>바이트 슬라이스가 하나 주어졌다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">buf</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">byte</span>{<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">buf</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">}</span>
 </code></pre></div><p>이는 변형 가능하므로 원소 갱신이 가능하다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">buf</span>[<span style="color:#ae81ff">3</span>] = <span style="color:#ae81ff">5</span>  <span style="color:#75715e">// []byte{1,2,3,5}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">=</span> <span class="mi">5</span>  <span class="c1">// []byte{1,2,3,5}
 </span></code></pre></div><p>이는 크기 조절이 가능하므로 축소 또는 확장이 가능하다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">buf</span> = <span style="color:#a6e22e">buf</span>[:<span style="color:#ae81ff">2</span>]           <span style="color:#75715e">// []byte{1,2}           
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">buf</span> = append(<span style="color:#a6e22e">buf</span>, <span style="color:#ae81ff">100</span>)  <span style="color:#75715e">// []byte{1,2,100}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">buf</span> <span class="p">=</span> <span class="nx">buf</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>           <span class="c1">// []byte{1,2}           
+</span><span class="c1"></span><span class="nx">buf</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">buf</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1">// []byte{1,2,100}
 </span></code></pre></div><p>그리고 이는 연속적이므로 메모리상에서 각 바이트는 다른 바이트의 바로 뒤에 위치한다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#ae81ff">1</span>|<span style="color:#ae81ff">2</span>|<span style="color:#ae81ff">3</span>|<span style="color:#ae81ff">4</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="mi">1</span><span class="p">|</span><span class="mi">2</span><span class="p">|</span><span class="mi">3</span><span class="p">|</span><span class="mi">4</span>
 </code></pre></div><p>반면에, 문자열은 변형 불가능하고, 고정된 크기의 연속적인 바이트 리스트를 나타낸다. 이는 문자열은 갱신이 불가능함을 의미한다 - 새로운 문자열을 생성하는 수 밖에 없다. 이는 성능 관점에서 중요하다. 고성능 코드에서, 계속해서 새로운 문자열을 생성하면 가비지 컬렉터에 많은 부하가 추가된다.</p>
 <p>애플리케이션 개발 관점에서, 문자열은 UTF-8 데이터로 작업 할 때 사용하기 쉬우며 바이트 슬라이스를 사용할 수 없는 맵(map)의 키값으로도 쓰일 수 있다. 그리고 대다수의 API는 문자 데이터를 포함하는 인자에 문자열을 사용한다. 반면에, 바이트 슬라이스는 바이트 스트림을 처리하는 등의 로우(raw) 바이트를 다룰 때 사용하기 좋다. 이는 또한 새로 할당을 하지 않고 데이터를 재사용 해야할 경우에 유용하다.</p>
 <!-- raw HTML omitted -->
@@ -161,37 +161,37 @@
 <!-- raw HTML omitted -->
 <h2 id="인메모리-reader">인메모리 Reader</h2>
 <p>Go 표준 라이브러리에서 가장 많이 사용되는 툴 두 가지는 bytes.<a href="https://golang.org/pkg/bytes/#NewReader">NewReader</a>와 strings.<a href="https://golang.org/pkg/strings/#NewReader">NewReader</a> 함수이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewReader</span>(<span style="color:#a6e22e">b</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Reader</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewREader</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Reader</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewReader</span><span class="p">(</span><span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">Reader</span>
+<span class="kd">func</span> <span class="nf">NewREader</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Reader</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, (byte)Reader : <a href="https://golang.org/pkg/bytes/#Reader">Reader</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, (string)Reader : <a href="https://golang.org/pkg/strings/#Reader">Reader</a></p>
 </blockquote>
 <p>이 함수들은 인메모리 바이트 슬라이스 또는 문자열을 래핑하는 io.<a href="https://golang.org/pkg/io/#Reader">Reader</a> 구현체를 반환한다. 그러나 이들은 단순한 Reader가 아니다. 이들은 <a href="https://golang.org/pkg/io/">io</a>의 io.<a href="https://golang.org/pkg/io/#ReaderAt">ReaderAt</a>, io.<a href="https://golang.org/pkg/io/#WriterTo">WriterTo</a>, io.<a href="https://golang.org/pkg/io/#ByteReader">ByteReader</a>, io.<a href="https://golang.org/pkg/io/#ByteScanner">ByteScanner</a>, io.<a href="https://golang.org/pkg/io/#RuneReader">RuneReader</a>, io.<a href="https://golang.org/pkg/io/#RuneScanner">RuneScanner</a>, &amp; io.<a href="https://golang.org/pkg/io/#Seeker">Seeker</a>를 포함하는 읽기와 관련된 모든 인터페이스를 구현하고 있다.</p>
 <p>나는 바이트 슬라이스 또는 문자열이 bytes.<a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>에 쓰여지고 이 버퍼가 Reader로써 사용되는 코드를 자주 본다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">buf</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>
-<span style="color:#a6e22e">buf</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;foo&#34;</span>)
-<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Post</span>(<span style="color:#e6db74">&#34;http://example.com/&#34;</span>, <span style="color:#e6db74">&#34;text/plain&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">buf</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">buf</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+<span class="nx">buf</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34;foo&#34;</span><span class="p">)</span>
+<span class="nx">http</span><span class="p">.</span><span class="nf">Post</span><span class="p">(</span><span class="s">&#34;http://example.com/&#34;</span><span class="p">,</span> <span class="s">&#34;text/plain&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">buf</span><span class="p">)</span>
 </code></pre></div><p>그러나, 이 방법은 힙 메모리 할당을 발생시켜 느려지고 추가적인 메모리를 사용하게 된다. 더 좋은 방안은 strings.<a href="https://golang.org/pkg/strings/#Reader">Reader</a>을 사용하는 것이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#e6db74">&#34;foobar&#34;</span>)
-<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Post</span>(<span style="color:#e6db74">&#34;http://example.com&#34;</span>, <span style="color:#e6db74">&#34;text/plain&#34;</span>, <span style="color:#a6e22e">r</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="s">&#34;foobar&#34;</span><span class="p">)</span>
+<span class="nx">http</span><span class="p">.</span><span class="nf">Post</span><span class="p">(</span><span class="s">&#34;http://example.com&#34;</span><span class="p">,</span> <span class="s">&#34;text/plain&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
 </code></pre></div><p>이 방법은 io.MultiReader를 사용함으로써 여러개의 문자열 또는 바이트 슬라이스를 가지고 있을 때에도 잘 동작한다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">MultiReader</span>(
-        <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#e6db74">&#34;HEADER&#34;</span>),
-        <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">NewReader</span>([]<span style="color:#66d9ef">byte</span>{<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">4</span>}),
-        <span style="color:#a6e22e">myFile</span>,
-        <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#e6db74">&#34;FOOBAR&#34;</span>),
-)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">MultiReader</span><span class="p">(</span>
+        <span class="nx">strings</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="s">&#34;HEADER&#34;</span><span class="p">),</span>
+        <span class="nx">bytes</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">([]</span><span class="kt">byte</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">}),</span>
+        <span class="nx">myFile</span><span class="p">,</span>
+        <span class="nx">strings</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="s">&#34;FOOBAR&#34;</span><span class="p">),</span>
+<span class="p">)</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h2 id="인메모리-writer">인메모리 Writer</h2>
 <p>바이트 패키지는 <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>라고 부르는 io.<a href="https://golang.org/pkg/io/#Writer">Writer</a>의 인메모리 구현체를 포함하고 있다. 이는 io.<a href="https://golang.org/pkg/io/#Closer">Closer</a>와 io.<a href="https://golang.org/pkg/io/#Seeker">Seeker</a>를 제외한 <a href="https://golang.org/pkg/io/">io</a> 인터페이스의 거의 모든 것을 구현하고 있다. 여기엔 버퍼의 끝에 문자열을 쓰기위한 <a href="https://golang.org/pkg/bytes/#Buffer.WriteString">WriteString</a>()이라는 헬퍼 메서드도 있다.</p>
 <p>나는 유닛 테스트에서 서비스에서 나오는 로그들을 캡쳐하기위해 <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>를 광범위하게 사용한다. 여러분은 이를 log.<a href="https://golang.org/pkg/log/#New">New</a>()의 인자로써 전달할 수 있으며 나중에 출력값들을 검증할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">buf</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>
-<span style="color:#a6e22e">myService</span>.<span style="color:#a6e22e">Logger</span> = <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">New</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">buf</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">LstdFlags</span>)
-<span style="color:#a6e22e">myService</span>.<span style="color:#a6e22e">Run</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">buf</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Buffer</span>
+<span class="nx">myService</span><span class="p">.</span><span class="nx">Logger</span> <span class="p">=</span> <span class="nx">log</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">buf</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">log</span><span class="p">.</span><span class="nx">LstdFlags</span><span class="p">)</span>
+<span class="nx">myService</span><span class="p">.</span><span class="nf">Run</span><span class="p">()</span>
 
-<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">buf</span>.<span style="color:#a6e22e">String</span>(), <span style="color:#e6db74">&#34;service failed&#34;</span>) {
-        <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#e6db74">&#34;expected log message&#34;</span>)
-}
+<span class="k">if</span> <span class="p">!</span><span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nx">buf</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span> <span class="s">&#34;service failed&#34;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;expected log message&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><blockquote>
 <p>Buffer : <a href="https://golang.org/pkg/bytes/#Buffer">Buffer</a>, LstdFlags : <a href="https://golang.org/pkg/log/#LstdFlags">LstdFlags</a>, Contains : <a href="https://golang.org/pkg/strings/#Contains">Contains</a>, String : <a href="https://golang.org/pkg/bytes/#Buffer.String">String</a>, Fatal : <a href="https://golang.org/pkg/testing/#T.Fatal">Fatal</a></p>
 </blockquote>
@@ -213,18 +213,18 @@
 <!-- raw HTML omitted -->
 <h2 id="동일성">동일성</h2>
 <p><a href="https://golang.org/pkg/bytes/#Equal">Equal</a>() 함수는 첫번째 질문에 대한 답을 준다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Equal</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Equal</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
 </blockquote>
 <p>이 함수는 바이트 패키지에만 존재하는데 문자열은 == 연산자로 비교가 가능하기 때문이다.</p>
 <p>동일함을 확인하는건 쉬워 보일 수 있지만, 한 가지 일반적으로 나타나는 실수는 대소문자에 무관하게 동일함을 확인하기 위해 strings.<a href="https://golang.org/pkg/strings/#ToUpper">ToUpper</a>()를 사용하는 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToUpper</span>(<span style="color:#a6e22e">a</span>) <span style="color:#f92672">==</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToUpper</span>(<span style="color:#a6e22e">b</span>) {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">True</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToUpper</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="o">==</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToUpper</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">True</span>
+<span class="p">}</span>
 </code></pre></div><p>이는 새로운 문자열에 대한 2번의 할당이 필요하기 때문에 결점이 있다. 좀 더 나은 방법은 <a href="https://golang.org/pkg/bytes/#EqualFold">EqualFold</a>()를 사용하는 것이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">EqualFold</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">t</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">EqualFold</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">t</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">EqualFold</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">t</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">EqualFold</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">t</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
 </blockquote>
@@ -232,58 +232,58 @@
 <!-- raw HTML omitted -->
 <h1 id="비교">비교</h1>
 <p>우리는 두 개의 바이트 슬라이스 또는 문자열의 정렬 순서를 결정하기 위해 <a href="https://golang.org/pkg/bytes/#Compare">Compare</a>()를 사용할 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Compare</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Compare</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, int : <a href="https://golang.org/pkg/builtin/#int">int</a></p>
 </blockquote>
 <p>이 함수는 <em>a</em> 가 <em>b</em> 보다 작을 땐 -1, <em>a</em> 가 <em>b</em> 보다 클 땐 1, 그리고 <em>a</em> 와 <em>b</em> 가 같을 땐 0을 반환한다. 이 함수는 <a href="https://golang.org/pkg/strings/">strings</a> 패키지에도 존재하는데 이는 단지 바이트 패키지와의 대칭을 이루기 위해서이다. Russ Cox도 함수의 주석에 써있는 &ldquo;<a href="https://golang.org/src/strings/compare.go?s=697:741">기본적으로 그 누구도 strings.Compare를 사용해선 안된다</a>&ldquo;라는 말을 언급하며, 내장 연산자인 &lt; 와 &gt;를 대신 사용한다.</p>
 <!-- raw HTML omitted -->
 <p>일반적으로, 정렬을 하기 위해 바이트 슬라이스가 다른 바이트 슬라이스보다 작은지에 대한 여부를 알고 싶을 것이다. sort.<a href="https://golang.org/pkg/sort/#Interface">Interface</a>는 Less() 함수를 위해 이를 필요로한다. Less()는 <a href="https://golang.org/pkg/bytes/#Compare">Compare</a>()의 세 가지 값을 갖는 반환값의 부울값으로의 변환을 필요로한다. 우리는 단순히 이 값이 -1과 같은지를 확인한다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ByteSlices</span> [][]<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ByteSlices</span> <span class="p">[][]</span><span class="kt">byte</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> <span style="color:#a6e22e">ByteSlices</span>) <span style="color:#a6e22e">Less</span>(<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">p</span>[<span style="color:#a6e22e">j</span>]) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="nx">ByteSlices</span><span class="p">)</span> <span class="nf">Less</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">j</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Compare</span><span class="p">(</span><span class="nx">p</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">p</span><span class="p">[</span><span class="nx">j</span><span class="p">])</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="검사inspection-함수">검사(Inspection) 함수</h1>
 <p>바이트와 문자열 패키지는 바이트 슬라이스와 문자열내에서 데이터를 찾기 위한 몇 가지 방법들을 제공한다.</p>
 <!-- raw HTML omitted -->
 <h2 id="카운팅">카운팅</h2>
 <p>만약 여러분이 유저의 입력의 유효성을 검증하고 있다면, 특정 바이트가 존재하는지 (또는 존재하지 않는지)를 검증하는건 중요하다. 하나 이상의 부분 슬라이스 또는 부분 문자열의 존재를 확인하기 위해 <a href="https://golang.org/pkg/bytes/#Contains">Contains</a>() 함수를 사용할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">subslice</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">substr</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Contains</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="nx">subslice</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">Contains</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">substr</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
 </blockquote>
 <p>예를 들면, 여러분이 부적절한 특정 단어들을 가진 입력을 허용하지 않을 수도 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">input</span>, <span style="color:#e6db74">&#34;darn&#34;</span>) {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;inappropriate input&#34;</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="s">&#34;darn&#34;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;inappropriate input&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>부분 슬라이스나 부분 문자열이 정확히 몇 번 사용되었는지를 알기 위해선, <a href="https://golang.org/pkg/bytes/#Count">Count</a>()를 사용할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Count</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Count</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Count</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="kd">func</span> <span class="nf">Count</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, int : <a href="https://golang.org/pkg/builtin/#int">int</a></p>
 </blockquote>
 <p><a href="https://golang.org/pkg/bytes/#Count">Count</a>()의 또 다른 사용은 문자열에 있는 룬의 갯수를 반환하는 것이다. <em>sep</em> 인자에 빈 슬라이스나 빈 문자열을 전달하면 <a href="https://golang.org/pkg/bytes/#Count">Count</a>()는 룬의 갯수 + 1을 반환할 것이다. 이는 바이트 수를 반환하는 <a href="https://golang.org/pkg/builtin/#len">len</a>()과는 다르다. 이 차이점은 멀티바이트 유니코드 문자들을 다룰 때 중요하다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Count</span>(<span style="color:#e6db74">&#34;I ❤ ☃&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)  <span style="color:#75715e">// 6
-</span><span style="color:#75715e"></span>len(<span style="color:#e6db74">&#34;I ❤ ☃&#34;</span>)                <span style="color:#75715e">// 9
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">strings</span><span class="p">.</span><span class="nf">Count</span><span class="p">(</span><span class="s">&#34;I ❤ ☃&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>  <span class="c1">// 6
+</span><span class="c1"></span><span class="nb">len</span><span class="p">(</span><span class="s">&#34;I ❤ ☃&#34;</span><span class="p">)</span>                <span class="c1">// 9
 </span></code></pre></div><p>첫번째 줄은 룬이 5개만 있기 때문에 이상하게 보일 수 있지만 <a href="https://golang.org/pkg/bytes/#Count">Count</a>()는 룬 갯수 + 1을 반환한다는 걸 기억하라.</p>
 <!-- raw HTML omitted -->
 <h2 id="인덱싱">인덱싱</h2>
 <p>내용을 단언하는건 중요하지만 가끔은 부분 슬라이스나 부분 문자열의 정확한 위치를 찾아낼 필요가 있다. 인덱스 함수를 사용하면 가능하다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">Index</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">IndexAny</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">chars</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">IndexByte</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">c</span> <span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">IndexFunc</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">IndexRune</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">int</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nf">Index</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">IndexAny</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">chars</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">IndexByte</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">c</span> <span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">IndexFunc</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="nx">r</span> <span class="kt">rune</span><span class="p">)</span> <span class="kt">bool</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">IndexRune</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">r</span> <span class="kt">rune</span><span class="p">)</span> <span class="kt">int</span>
 </code></pre></div><p>각기 다른 상황을 위한 여러개의 인덱스 함수들이 있다. <a href="https://golang.org/pkg/bytes/#Index">Index</a>()는 멀티바이트 부분 슬라이스를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexByte">IndexByte</a>()는 슬라이스에서 단일 바이트를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexRune">IndexRune</a>()은 UTF-8로 해석된 바이트 슬라이스 내에서 유니코드 코드 포인트를 찾는다. <a href="https://golang.org/pkg/bytes/#IndexAny">IndexAny</a>()는 <a href="https://golang.org/pkg/bytes/#IndexRune">IndexRune</a>()처럼 동작하지만 한 번에 여러 개의 코드 포인트를 검색한다. 마지막으로, <a href="https://golang.org/pkg/bytes/#IndexFunc">IndexFunc</a>()는 바이트 슬라이스에서 매칭될 때까지 각각의 룬을 검사하는 커스텀 함수를 전달할 수 있도록 해준다.</p>
 <p>또한 바이트 슬라이스 또는 문자열의 끝의 첫번째 인스턴스를 검색하기 위한 함수의 매칭 세트도 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">LastIndex</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">LastIndexAny</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">chars</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">LastIndexByte</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">c</span> <span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">int</span>
-<span style="color:#a6e22e">LastIndexFunc</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span>) <span style="color:#66d9ef">int</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nf">LastIndex</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">LastIndexAny</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">chars</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">LastIndexByte</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">c</span> <span class="kt">byte</span><span class="p">)</span> <span class="kt">int</span>
+<span class="nf">LastIndexFunc</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="nx">r</span> <span class="kt">rune</span><span class="p">)</span> <span class="kt">bool</span><span class="p">)</span> <span class="kt">int</span>
 </code></pre></div><p>나는 인덱스 함수를 많이 사용하지 않는다, 왜냐하면 나는 보통 파서와 같은 좀 더 복잡한 것을 만들어야 하기 때문이다.</p>
 <!-- raw HTML omitted -->
 <h1 id="접두사-접미사--트리밍trimming">접두사, 접미사 &amp; 트리밍(Trimming)</h1>
@@ -292,18 +292,18 @@
 <h2 id="접두사--접미사-확인하기">접두사 &amp; 접미사 확인하기</h2>
 <p>접두사는 프로그래밍에서 자주 등장한다. 예를 들면, HTTP 경로는 보통 공통 접두사를 갖는 기능별로 그룹핑된다. 또 다른 예는 유저를 멘션하기 위한 &ldquo;@&ldquo;와 같은 문자열 첫부분의 특수 문자들이다.</p>
 <p><a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#HasSuffix">HasSuffix</a>() 함수로 이러한 상황을 확인할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">prefix</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">prefix</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">HasSuffix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">prefix</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">HasSuffix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">suffix</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span>
+<span class="kd">func</span> <span class="nf">HasSuffix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">HasSuffix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">suffix</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a>, bool : <a href="https://golang.org/pkg/builtin/#bool">bool</a></p>
 </blockquote>
 <p>이 함수들은 너무 간단해 보일 수 있지만 내가 본 한가지 흔한 실수는 개발자들이 길이가 0인 값을 확인하는 것을 잊어버릴 때이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">str</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;@&#39;</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;@&#39;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
 </code></pre></div><p>이 코드는 간단해 보이지만 만약 <em>str</em>이 빈 문자열이라면 프로그램은 패닉을 발생 시킬 것이다. <a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>() 함수는 여러분을 위해 이 유효성 검증을 포함하고 있다:</p>
 <pre><code>if strings.HasPrefix(str, &quot;@&quot;) {
         return true
@@ -314,8 +314,8 @@
 <!-- raw HTML omitted -->
 <h2 id="트리밍trimming">트리밍(Trimming)</h2>
 <p><a href="https://golang.org/pkg/builtin/#byte">bytes</a>와 <a href="https://golang.org/pkg/builtin/#string">strings</a> 패키지에서의 &ldquo;trimming&quot;이라는 용어는 바이트 슬라스나 문자열의 첫부분 그리고/또는 끝부분에 있는 바이트 또는 룬들을 제거한다는 의미이다. 이를 위한 가장 일반적인 함수는 <a href="https://golang.org/pkg/bytes/#Trim">Trim</a>()이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Trim</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">cutset</span> <span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Trim</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">cutset</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Trim</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">cutset</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">Trim</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">cutset</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
@@ -328,57 +328,57 @@ func TrimSpace(s string) string
 </blockquote>
 <p>&ldquo;\n\t&rdquo; cutset을 가지고 트리밍을 하는걸로도 충분하다고 생각할 수 있지만 <a href="https://golang.org/pkg/bytes/#TrimSpace">TrimSpace</a>()는 모든 유니코드로 정의된 공백을 트리밍 한다. 이는 스페이스, 개행, 그리고 탭 문자 뿐만 아니라 <a href="https://en.wikipedia.org/wiki/Thin_space">thin space</a> 또는 <a href="http://www.fileformat.info/info/unicode/char/200a/index.htm">hair space</a>와 같은 특이한 공백도 포함한다,</p>
 <p><a href="https://golang.org/pkg/bytes/#TrimSpace">TrimSpace</a>()는 그냥 트리밍을 위해 전행(leading)과 후행(trailing) 룬들을 평가하는 함수인 <a href="https://golang.org/pkg/bytes/#TrimFunc">TrimFunc</a>()의 <a href="https://golang.org/src/strings/strings.go#L614">씬 래퍼</a>이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TrimSpace</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">TrimFunc</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsSpace</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">TrimSpace</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">TrimFunc</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">unicode</span><span class="p">.</span><span class="nx">IsSpace</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>이는 여러분이 자체적으로 후행 문자만을 위한 공백 트리머를 생성하는걸 쉽게 만들어준다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">TrimRightFunc</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">IsSpace</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nf">TrimRightFunc</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">unicode</span><span class="p">.</span><span class="nx">IsSpace</span><span class="p">)</span>
 </code></pre></div><blockquote>
 <p>TrimRightFunc : <a href="https://golang.org/pkg/bytes/#TrimRightFunc">TrimRightFunc</a></p>
 </blockquote>
 <p>마지막으로, 문자셋 대신 접두사나 접미사만을 트리밍 하고싶은 경우엔 <a href="https://golang.org/pkg/bytes/#TrimPrefix">TrimPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#TrimSuffix">TrimSuffix</a>() 함수를 사용하면 된다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TrimPrefix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">prefix</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TrimPrefix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">prefix</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">TrimPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">TrimPrefix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">prefix</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TrimSuffix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">suffix</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TrimSuffix</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">suffix</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<span class="kd">func</span> <span class="nf">TrimSuffix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">suffix</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">TrimSuffix</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">suffix</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>이들은 만약 여러분이 접두사나 접미어를 교체하고 싶은 경우 <a href="https://golang.org/pkg/bytes/#HasPrefix">HasPrefix</a>()와 <a href="https://golang.org/pkg/bytes/#HasSuffix">HasSuffix</a>() 함수와 함께 사용할 수 있다. 예를 들면, 나는 나의 설정 파일 경로에 대한 배쉬 스타일의 홈 디렉토리 완성을 구현하기 위해 이를 사용한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 유저의 홈 디렉토리를 찾는다.
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">u</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Current</span>()
-<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-} <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">HomeDir</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;hoem directory does not exist&#34;</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 유저의 홈 디렉토리를 찾는다.
+</span><span class="c1"></span><span class="nx">u</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">user</span><span class="p">.</span><span class="nf">Current</span><span class="p">()</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">u</span><span class="p">.</span><span class="nx">HomeDir</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;hoem directory does not exist&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// 물결표 대시 접두사를 홈 디렉토리로 교체.
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">path</span>, <span style="color:#e6db74">&#34;~/&#34;</span>) {
-    <span style="color:#a6e22e">path</span> = <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">HomeDir</span>, <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">TrimPrefix</span>(<span style="color:#a6e22e">path</span>, <span style="color:#e6db74">&#34;~/&#34;</span>))
-}
+<span class="c1">// 물결표 대시 접두사를 홈 디렉토리로 교체.
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="s">&#34;~/&#34;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">path</span> <span class="p">=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">HomeDir</span><span class="p">,</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">TrimPrefix</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="s">&#34;~/&#34;</span><span class="p">))</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="교체-함수">교체 함수</h1>
 <!-- raw HTML omitted -->
 <h2 id="기본-교체">기본 교체</h2>
 <p>부분 슬라이스나 부분 문자열을 교체하는건 때때로 필수적이다. 대부분의 단순한 경우엔, <a href="https://golang.org/pkg/bytes/#Replace">Replace</a>() 함수면 다 된다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Replace</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">old</span>, <span style="color:#a6e22e">new</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Replace</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">old</span>, <span style="color:#a6e22e">new</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Replace</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">Replace</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>이는 문자열에서 <em>old</em> 에 해당하는 모든 인스턴스를 <em>new</em> 로 바꿀 것이다. 교체의 횟수를 제한하려면 <em>n</em> 을 음이 아닌 정수로 지정하면 된다. 이 함수는 사용자 정의 템플릿에서 간단한 플레이스홀더를 가지고 있을 때 유용하다. 예를 들면, 유저가 &ldquo;$NOW&quot;를 지정하면 이를 현재 시각으로 교체하도록 할 수 있다;</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">now</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Format</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Kitchen</span>)
-println(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Replace</span>(<span style="color:#a6e22e">data</span>, <span style="color:#e6db74">&#34;$NOW&#34;</span>, <span style="color:#a6e22e">now</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>))
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Format</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Kitchen</span><span class="p">)</span>
+<span class="nb">println</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nf">Replace</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="s">&#34;$NOW&#34;</span><span class="p">,</span> <span class="nx">now</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </code></pre></div><blockquote>
 <p>Now : <a href="https://golang.org/pkg/time/#Now">Now</a>, Format : <a href="https://golang.org/pkg/time/#Time.Format">Format</a>, Kitchen : <a href="https://golang.org/pkg/time/#Kitchen">Kitchen</a>, Replace : <a href="https://golang.org/pkg/strings/#Replace">Replace</a></p>
 </blockquote>
 <p>만약 다중 매핑을 가지고 있다면 strings.<a href="https://golang.org/pkg/strings/#Replacer">Replacer</a>를 사용해야 할 것이다. 이는 strings.<a href="https://golang.org/pkg/strings/#NewReplacer">NewReplacer</a>()에 old/new 쌍을 지정하여 사용한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReplacer</span>(<span style="color:#e6db74">&#34;$NOW&#34;</span>, <span style="color:#a6e22e">now</span>, <span style="color:#e6db74">&#34;$USER&#34;</span>, <span style="color:#e6db74">&#34;mary&#34;</span>)
-println(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replace</span>(<span style="color:#e6db74">&#34;Hello $USER, it is $NOW&#34;</span>))
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">r</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">NewReplacer</span><span class="p">(</span><span class="s">&#34;$NOW&#34;</span><span class="p">,</span> <span class="nx">now</span><span class="p">,</span> <span class="s">&#34;$USER&#34;</span><span class="p">,</span> <span class="s">&#34;mary&#34;</span><span class="p">)</span>
+<span class="nb">println</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nf">Replace</span><span class="p">(</span><span class="s">&#34;Hello $USER, it is $NOW&#34;</span><span class="p">))</span>
 
-<span style="color:#75715e">// 출력값: Hello mary, it is 3:04PM
+<span class="c1">// 출력값: Hello mary, it is 3:04PM
 </span></code></pre></div><blockquote>
 <p>NewReplacer : <a href="https://golang.org/pkg/strings/#NewReplacer">NewReplacer</a>, Replace : <a href="https://golang.org/pkg/bytes/#Replace">Replace</a></p>
 </blockquote>
@@ -386,51 +386,51 @@ println(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replace
 <h2 id="대소문자-교체">대소문자 교체</h2>
 <p>여러분은 대소문자 케이싱(casing: 문자 케이스 캐스팅)이 간단하다고 생각할 수도 있다. 그러나 Go는 유니코드를 가지고 동작하며 유니코드는 결코 간단하지 않다. 문자 케이싱은 3가지 타입이 있다: 대문자(upper case), 소문자(lower case) 그리고 타이틀 케이스(title case).</p>
 <p>대문자와 소문자는 대다수의 언어에서 간단하며 여러분은 <a href="https://golang.org/pkg/bytes/#ToUpper">ToUpper</a>()와 <a href="https://golang.org/pkg/bytes/#ToLower">ToLower</a>() 함수를 사용할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToUpper</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToUpper</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ToUpper</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">ToUpper</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToLower</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToLower</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<span class="kd">func</span> <span class="nf">ToLower</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">ToLower</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>그러나 몇몇 언어에서는 케이싱의 룰이 다르다. 예를 들면, 터키어는 <strong>i</strong>의 대문자가 <strong>İ</strong>이다. 이러한 특수한 언어들을 위한 함수들의 특수한 버전이 존재한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToUpperSpecial</span>(<span style="color:#a6e22e">unicode</span>.<span style="color:#a6e22e">TurkishCase</span>, <span style="color:#e6db74">&#34;i&#34;</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">strings</span><span class="p">.</span><span class="nf">ToUpperSpecial</span><span class="p">(</span><span class="nx">unicode</span><span class="p">.</span><span class="nx">TurkishCase</span><span class="p">,</span> <span class="s">&#34;i&#34;</span><span class="p">)</span>
 </code></pre></div><blockquote>
 <p>ToUpperSpecial : <a href="https://golang.org/pkg/strings/#ToUpperSpecial">ToUpperSpecial</a></p>
 </blockquote>
 <p>다음으로 타이틀 케이스는 <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a>() 함수가 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToTitle</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">ToTitle</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ToTitle</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">ToTitle</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>그러나, 여러분이 <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a>()를 사용하게 되면 놀랄 것이다. 모든 문자열이 대문자가 되어버렸다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">println(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToTitle</span>(<span style="color:#e6db74">&#34;the count of monte cristo&#34;</span>))
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nb">println</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nf">ToTitle</span><span class="p">(</span><span class="s">&#34;the count of monte cristo&#34;</span><span class="p">))</span>
 
-<span style="color:#75715e">// 출력값 : THE COUNT OF MONTE CRISTO
+<span class="c1">// 출력값 : THE COUNT OF MONTE CRISTO
 </span></code></pre></div><blockquote>
 <p>ToTitle : <a href="https://golang.org/pkg/bytes/#ToTitle">ToTitle</a></p>
 </blockquote>
 <p>왜냐하면 유니코드에서, 타이틀 케이스는 케이싱의 특정한 유형이며 각 단어의 첫번째 문자를 대문자화 시키는 방법이 아니다. 대부분의 경우, 타이틀 케이스와 대문자화는 동일하지만 차이점을 갖는 몇 개의 코드 포인트들이 존재한다. 예를 들면, <strong><a href="https://www.compart.com/en/unicode/U+01C9">lj</a></strong> 코드 포인트 (맞다, 이는 하나의 코드 포인트이다)는 대문자화가 되면 <strong>LJ</strong>가 되지만 타이틀 케이스는 <strong>Lj</strong>이다.</p>
 <p>여러분이 아마 찾고 있는 것은 <a href="https://golang.org/pkg/bytes/#Title">Title</a>()이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Title</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Title</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Title</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">Title</span><span class="p">(</span><span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>이 함수의 출력값은 예상했던 결과값이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">println(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Title</span>(<span style="color:#e6db74">&#34;the count of monte cristo&#34;</span>))
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nb">println</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nf">Title</span><span class="p">(</span><span class="s">&#34;the count of monte cristo&#34;</span><span class="p">))</span>
 
-<span style="color:#75715e">// 출력값 : The Count Of Monte Cristo
+<span class="c1">// 출력값 : The Count Of Monte Cristo
 </span></code></pre></div><blockquote>
 <p>Title : <a href="https://golang.org/pkg/strings/#Title">Title</a></p>
 </blockquote>
 <!-- raw HTML omitted -->
 <h2 id="룬-매핑하기">룬 매핑하기</h2>
 <p>바이트 슬라이스 또는 문자열에서 데이터를 교체하기 위한 또 다른 함수는 <a href="https://golang.org/pkg/bytes/#Map">Map</a>()이다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">mapping</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">rune</span>, <span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Map</span>(<span style="color:#a6e22e">mapping</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">r</span> <span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">rune</span>, <span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Map</span><span class="p">(</span><span class="nx">mapping</span> <span class="kd">func</span><span class="p">(</span><span class="nx">r</span> <span class="kt">rune</span><span class="p">)</span> <span class="kt">rune</span><span class="p">,</span> <span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">Map</span><span class="p">(</span><span class="nx">mapping</span> <span class="kd">func</span><span class="p">(</span><span class="nx">r</span> <span class="kt">rune</span><span class="p">)</span> <span class="kt">rune</span><span class="p">,</span> <span class="nx">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>rune : <a href="https://golang.org/pkg/builtin/#rune">rune</a>, byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
@@ -441,57 +441,57 @@ println(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Replace
 <!-- raw HTML omitted -->
 <h2 id="부분-문자열-분할">부분 문자열 분할</h2>
 <p>간단한 부분 슬라이스와 부분 문자열 분할을 위해, 우리는 Split() 함수를 사용한다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Split</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) [][]<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitAfter</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) [][]<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitAfterN</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) [][]<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitN</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) [][]<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Split</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">SplitAfter</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">SplitAfterN</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">SplitN</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Split</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">string</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitAfter</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>) []<span style="color:#66d9ef">string</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitAfterN</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">string</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SplitN</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">string</span>
+<span class="kd">func</span> <span class="nf">Split</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">SplitAfter</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">SplitAfterN</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">SplitN</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>이렇게 구분자로 바이트 슬라이스와 문자열을 쪼개면 부분 슬라이스들과 문자열들이 반환된다. &ldquo;After&rdquo; 함수는 서브 문자열의 끝에 구분자를 포함한다. &ldquo;N&rdquo; 함수는 발생할 수 있는 분할 횟수를 제한한다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Split</span>(<span style="color:#e6db74">&#34;a:b:c&#34;</span>, <span style="color:#e6db74">&#34;:&#34;</span>)       <span style="color:#75715e">// [&#34;a&#34;, &#34;b&#34;, &#34;c&#34;]
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">SplitAfter</span>(<span style="color:#e6db74">&#34;a:b:c&#34;</span>, <span style="color:#e6db74">&#34;:&#34;</span>)  <span style="color:#75715e">// [&#34;a:&#34;, &#34;b:&#34;, &#34;c&#34;]
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">SplitN</span>(<span style="color:#e6db74">&#34;a:b:c&#34;</span>, <span style="color:#e6db74">&#34;:&#34;</span>, <span style="color:#ae81ff">2</span>)   <span style="color:#75715e">// [&#34;a&#34;, &#34;b:c&#34;]
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">strings</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="s">&#34;a:b:c&#34;</span><span class="p">,</span> <span class="s">&#34;:&#34;</span><span class="p">)</span>       <span class="c1">// [&#34;a&#34;, &#34;b&#34;, &#34;c&#34;]
+</span><span class="c1"></span><span class="nx">strings</span><span class="p">.</span><span class="nf">SplitAfter</span><span class="p">(</span><span class="s">&#34;a:b:c&#34;</span><span class="p">,</span> <span class="s">&#34;:&#34;</span><span class="p">)</span>  <span class="c1">// [&#34;a:&#34;, &#34;b:&#34;, &#34;c&#34;]
+</span><span class="c1"></span><span class="nx">strings</span><span class="p">.</span><span class="nf">SplitN</span><span class="p">(</span><span class="s">&#34;a:b:c&#34;</span><span class="p">,</span> <span class="s">&#34;:&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1">// [&#34;a&#34;, &#34;b:c&#34;]
 </span></code></pre></div><p>데이터를 분할하는 것은 매우 일반적인 작업이다. 하지만, 이는 보통 CSV와 같은 파일 포맷에서의 컨텍스트나 경로 분할의 컨텍스트에서 수행된다. 이 작업들을 위해, 나는 <a href="https://golang.org/pkg/encoding/csv/">encoding/csv</a> 또는 <a href="https://golang.org/pkg/path/">path</a> 패키지를 대신 사용한다.</p>
 <!-- raw HTML omitted -->
 <h2 id="카테고리성-분할">카테고리성 분할</h2>
 <p>가끔 구분자로 룬의 열 대신 룬의 집합을 지정하고 싶을 때가 있다. 이 상황의 가장 좋은 예시는 가변적인 공백이 있는 상태에서 단어들을 쪼개는 것이다. 공백 구분 함수로 단순히 <a href="https://golang.org/pkg/bytes/#Split">Split</a>()을 사용하게되면 연속적인 다중 공백이 있을 경우 빈 부분 문자열도 반환할 것이다. 대신 Fields() 함수를 사용할 수 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Fields</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>) [][]<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Fields</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a></p>
 </blockquote>
 <p>이는 연속된 공백 문자들을 하나의 구분자로 여긴다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">FieldsFunc</span>(<span style="color:#a6e22e">s</span> []<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>(<span style="color:#66d9ef">rune</span>) <span style="color:#66d9ef">bool</span>) [][]<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">FieldsFunc</span><span class="p">(</span><span class="nx">s</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">f</span> <span class="kd">func</span><span class="p">(</span><span class="kt">rune</span><span class="p">)</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">[][]</span><span class="kt">byte</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, rune : <a href="https://golang.org/pkg/builtin/#rune">rune</a></p>
 </blockquote>
 <!-- raw HTML omitted -->
 <h2 id="문자열-결합">문자열 결합</h2>
 <p>구분된 데이터를 쪼개는 대신, Join() 함수를 이용해 이를 하나로 합칠 수도 있다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">s</span> [][]<span style="color:#66d9ef">byte</span>, <span style="color:#a6e22e">sep</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span>
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">a</span> []<span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Join</span><span class="p">(</span><span class="nx">s</span> <span class="p">[][]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">sep</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="kd">func</span> <span class="nf">Join</span><span class="p">(</span><span class="nx">a</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="nx">sep</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span>
 </code></pre></div><blockquote>
 <p>byte : <a href="https://golang.org/pkg/builtin/#byte">byte</a>, string : <a href="https://golang.org/pkg/builtin/#string">string</a></p>
 </blockquote>
 <p>개발자들이 join 함수를 직접 구현할 때 내가 봤던 한가지 일반적인 실수가 있는데 이는 다음과 같다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">output</span> <span style="color:#66d9ef">string</span>
-<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">a</span> {
-        <span style="color:#a6e22e">output</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">s</span>
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">a</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> {
-            <span style="color:#a6e22e">output</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;,&#34;</span>
-        }
-}
-<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">output</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">output</span> <span class="kt">string</span>
+<span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">s</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">a</span> <span class="p">{</span>
+        <span class="nx">output</span> <span class="o">+=</span> <span class="nx">s</span>
+        <span class="k">if</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">{</span>
+            <span class="nx">output</span> <span class="o">+=</span> <span class="s">&#34;,&#34;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">output</span>
 </code></pre></div><p>이 코드의 결점은 많은 수의 할당을 생성하고 있다는 것이다. 문자열은 변형 불가능하기 때문에, 각 반복은 각 문자열 추가를 위해 새로운 문자열을 생성하고 있다. 반면에, strings.<a href="https://golang.org/pkg/strings/#Join">Join</a>() 함수는 생성시에는 바이트 슬라이스 버퍼를 사용하며 이를 반환할 때 문자열로 변환한다. 이는 힙 메모리 할당을 최소화한다.</p>
 <!-- raw HTML omitted -->
 <h1 id="이외-함수들">이외 함수들</h1>
 <p>카테고리를 찾지 못한 두 개의 함수가 있는 이는 여기서 다룬다. 첫째, <a href="https://golang.org/pkg/bytes/#Repeat">Repeat</a>() 함수는 반복된 바이트 슬라이스 또는 문자열을 생성할 수 있도록 해준다. 솔직히, 나는 이를 터미널에서 내용을 구분하기 위해 라인을 만들때 사용했던것만 기억난다:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">println(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Repeat</span>(<span style="color:#e6db74">&#34;-&#34;</span>, <span style="color:#ae81ff">80</span>))
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nb">println</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nf">Repeat</span><span class="p">(</span><span class="s">&#34;-&#34;</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
 </code></pre></div><p>또 다른 함수는 UTF-8으로 해석된 바이트 슬라이스 또는 문자열에 있는 모든 룬들의 슬라이스를 반환하는 <a href="https://golang.org/pkg/bytes/#Runes">Runes</a>()이다. 나는 이 함수의 필요성을 전혀 느낀적이  없는데 이는 새로운 할당 없이 <em>string</em> 위에서 <em>for loop</em> 를 돌려 같은 일을 할 수 있기 때문이다.</p>
 <!-- raw HTML omitted -->
 <h1 id="결론">결론</h1>

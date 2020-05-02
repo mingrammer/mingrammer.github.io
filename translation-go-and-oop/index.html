@@ -112,65 +112,65 @@
 <!-- raw HTML omitted -->
 <h2 id="객체-vs-값">객체 vs. 값</h2>
 <p><strong>객체</strong>는 클래스의 인터스턴스이다. 객체는 명명된 참조를 통해 접근된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SomeObject</span> {
-    <span style="color:#66d9ef">public</span> $classVar;
+<span class="k">class</span> <span class="nc">SomeObject</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$classVar</span><span class="p">;</span>
   
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct( $classVar ) {
-      	$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span> <span style="color:#f92672">=</span> $classVar;
-    }
-}
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(</span> <span class="nv">$classVar</span> <span class="p">)</span> <span class="p">{</span>
+      	<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">classVar</span> <span class="o">=</span> <span class="nv">$classVar</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 
-$object    <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SomeObject</span>( <span style="color:#e6db74">&#34;Hello, World.&#34;</span> );
-$reference <span style="color:#f92672">=</span> $object;
+<span class="nv">$object</span>    <span class="o">=</span> <span class="k">new</span> <span class="nx">SomeObject</span><span class="p">(</span> <span class="s2">&#34;Hello, World.&#34;</span> <span class="p">);</span>
+<span class="nv">$reference</span> <span class="o">=</span> <span class="nv">$object</span><span class="p">;</span>
 
-$reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Look! I can access object!&#34;</span>;
+<span class="nv">$reference</span><span class="o">-&gt;</span><span class="na">classVar</span> <span class="o">=</span> <span class="s2">&#34;Look! I can access object!&#34;</span><span class="p">;</span>
 
-<span style="color:#66d9ef">echo</span> $object<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span>;    <span style="color:#75715e">// &#34;Look! I can access object!&#34;
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">echo</span> $reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">classVar</span>; <span style="color:#75715e">// &#34;Look! I can access object!&#34;
+<span class="k">echo</span> <span class="nv">$object</span><span class="o">-&gt;</span><span class="na">classVar</span><span class="p">;</span>    <span class="c1">// &#34;Look! I can access object!&#34;
+</span><span class="c1"></span><span class="k">echo</span> <span class="nv">$reference</span><span class="o">-&gt;</span><span class="na">classVar</span><span class="p">;</span> <span class="c1">// &#34;Look! I can access object!&#34;
 </span></code></pre></div><p>이 PHP 코드는 <strong>$object</strong>와 <strong>$reference</strong>가 모두 같은 <strong>SomeObject</strong>의 인스턴스를 가리키고 있음을 보여준다.</p>
 <p>다양한 명명된 참조로부터 접근할 수 있는 것 외에도, 객체는 Go에서는 불가능한 상속과 서브클래스와 같은 중요한 개념 또한 포함한다. 따라서, Go를 배울 때에는, 객체에 대한 생각을 버리고, 올바른 용어를 사용하는데 집중을 하는게 가장 좋다.</p>
 <p><strong>값</strong>은 정확히 바로 그 값이다. 예를 들어, 구조체는 값이다. 구조체의 각 인스턴스는 전달될 때 복사된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> (<span style="color:#e6db74">&#34;fmt&#34;</span>)
+<span class="kn">import</span> <span class="p">(</span><span class="s">&#34;fmt&#34;</span><span class="p">)</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SomeStruct</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Field</span> <span style="color:#66d9ef">string</span>
-}
+<span class="kd">type</span> <span class="nx">SomeStruct</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Field</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">value</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">SomeStruct</span>{<span style="color:#a6e22e">Field</span>: <span style="color:#e6db74">&#34;Structs are values&#34;</span>}
-    <span style="color:#a6e22e">copy</span>  <span style="color:#f92672">:=</span> <span style="color:#a6e22e">value</span>
-    <span style="color:#a6e22e">copy</span>.<span style="color:#a6e22e">Field</span> = <span style="color:#e6db74">&#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;</span>
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">Field</span>) <span style="color:#75715e">// &#34;Structs are values&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">copy</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;
-</span><span style="color:#75715e"></span>}
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">value</span> <span class="o">:=</span> <span class="nx">SomeStruct</span><span class="p">{</span><span class="nx">Field</span><span class="p">:</span> <span class="s">&#34;Structs are values&#34;</span><span class="p">}</span>
+    <span class="nx">copy</span>  <span class="o">:=</span> <span class="nx">value</span>
+    <span class="nx">copy</span><span class="p">.</span><span class="nx">Field</span> <span class="p">=</span> <span class="s">&#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">Field</span><span class="p">)</span> <span class="c1">// &#34;Structs are values&#34;
+</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">copy</span><span class="p">.</span><span class="nx">Field</span><span class="p">)</span>  <span class="c1">// &#34;This is a Copy &amp; doesn&#39;t change the variable value&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>위 예제에서, <em>copy.Field</em>에 값을 할당할 때, <em>value.Field</em>는 값을 변경하지 않는다는걸 볼 수 있다. 같은 인스턴스를 참조하고 싶을 땐, C와 유사하게, <strong>명시적으로 그렇게 할 수 있는 포인터</strong>를 사용한다.</p>
 <!-- raw HTML omitted -->
 <h2 id="타입과-메서드-집합">타입과 메서드 집합</h2>
 <p>이제 Go에 객체가 없는 이유를 알았으므로, <strong>타입</strong>의 인스턴스, 특히 구조체 타입을 어떻게 조작하는지 살펴보자.</p>
 <p><strong>타입</strong>은 <strong>메서드 집합</strong>과 관련이 있다. 메서드 집합의 각 메서드는 주어진 <strong>리시버 (receiver)</strong> 위에서 동작한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SomeStruct</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Field</span> <span style="color:#66d9ef">string</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">SomeStruct</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Field</span> <span class="kt">string</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// foo는 SomeStruct의 메서드 집합에 속함
-</span><span style="color:#75715e">// (s *SomeStruct)는 SomeStruct 포인터에 대한 리시버이다
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SomeStruct</span>) <span style="color:#a6e22e">foo</span>(<span style="color:#a6e22e">field</span> <span style="color:#66d9ef">string</span>) {    
-    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Field</span> = <span style="color:#a6e22e">field</span>
-}
+<span class="c1">// foo는 SomeStruct의 메서드 집합에 속함
+</span><span class="c1">// (s *SomeStruct)는 SomeStruct 포인터에 대한 리시버이다
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">SomeStruct</span><span class="p">)</span> <span class="nf">foo</span><span class="p">(</span><span class="nx">field</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>    
+    <span class="nx">s</span><span class="p">.</span><span class="nx">Field</span> <span class="p">=</span> <span class="nx">field</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">someStruct</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">SomeStruct</span>)
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">someStruct</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">SomeStruct</span><span class="p">)</span>
     
-    <span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">foo</span>(<span style="color:#e6db74">&#34;a&#34;</span>)
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;a&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">foo</span>(<span style="color:#e6db74">&#34;b&#34;</span>)
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">someStruct</span>.<span style="color:#a6e22e">Field</span>)  <span style="color:#75715e">// &#34;b&#34;
-</span><span style="color:#75715e"></span>}
+    <span class="nx">someStruct</span><span class="p">.</span><span class="nf">foo</span><span class="p">(</span><span class="s">&#34;a&#34;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">someStruct</span><span class="p">.</span><span class="nx">Field</span><span class="p">)</span>  <span class="c1">// &#34;a&#34;
+</span><span class="c1"></span>    <span class="nx">someStruct</span><span class="p">.</span><span class="nf">foo</span><span class="p">(</span><span class="s">&#34;b&#34;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">someStruct</span><span class="p">.</span><span class="nx">Field</span><span class="p">)</span>  <span class="c1">// &#34;b&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>여기서 우리는 <em>foo</em> 메서드가 <strong>someStruct</strong>의 동일한 인스턴스에서 동작하고 이의 <em>Field</em> 값을 변경한다는 것을 알 수 있다.</p>
 <!-- raw HTML omitted -->
 <p>이제 용어를 알아봤으므로, 마침내 우리는 Go 코드를 해석하는데 사용할 수 있는 OOP 패턴들을 살펴볼 수 있다.</p>
@@ -180,46 +180,46 @@ $reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">cl
 <p>전통적으로, 클래스 기반 OOP에서는 캡슐화가 private과 public 변수/메서드를 통해 이루어졌다. Go에서는 <em>패키지 (package)</em> 수준에서 캡슐화가 이루어진다.</p>
 <p>&ldquo;Public&rdquo; 요소는 패키지 밖으로 노출될 수 있으며 첫 문자를 대문자로 표시한다. <strong>노출 (exported)</strong> vs. <strong>비노출 (unexported)</strong> 요소가 더 정확한 용어이기 때문에 public을 따옴표 안에 적었다. 비노출 요소는 첫 문자로 소문자를 사용해 표시하며, 해당 패키지 내에서만 접근이 가능하다.</p>
 <!-- raw HTML omitted -->
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">encapsulation</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">encapsulation</span>
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span style="color:#75715e">// Encapsulation 구조체는 이 패키지 밖으로 노출될 수 있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Encapsulation</span> <span style="color:#66d9ef">struct</span>{}
+<span class="c1">// Encapsulation 구조체는 이 패키지 밖으로 노출될 수 있음
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Encapsulation</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#75715e">// Expose 메서드는 패키지 밖을 노출될 수 있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">Expose</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;AHHHH! I&#39;m exposed!&#34;</span>)
-}
+<span class="c1">// Expose 메서드는 패키지 밖을 노출될 수 있음
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Encapsulation</span><span class="p">)</span> <span class="nf">Expose</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;AHHHH! I&#39;m exposed!&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// hide 메서드는 패키지 내부에서만 사용할 수 있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">hide</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Shhhh... this is super secret&#34;</span>)
-}
+<span class="c1">// hide 메서드는 패키지 내부에서만 사용할 수 있음
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Encapsulation</span><span class="p">)</span> <span class="nf">hide</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Shhhh... this is super secret&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Unhide는 노출되지 않은 hide 메서드를 사용함
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">e</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Encapsulation</span>) <span style="color:#a6e22e">Unhide</span>() {
-    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">hide</span>()
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;...jk&#34;</span>)
-}
+<span class="c1">// Unhide는 노출되지 않은 hide 메서드를 사용함
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Encapsulation</span><span class="p">)</span> <span class="nf">Unhide</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nf">hide</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;...jk&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p><em>encapsulation</em> 패키지에서, <em>Encapsulation (구조체)</em>, Expose (메서드) *Unhide (메서드)*는 모두 노출되어 있으며 타 패키지에서 사용될 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/encapsulation&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;github.com/amy/tech-talk/encapsulation&#34;</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">e</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">encapsulation</span>.<span style="color:#a6e22e">Encapsulation</span>{}
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">e</span> <span class="o">:=</span> <span class="nx">encapsulation</span><span class="p">.</span><span class="nx">Encapsulation</span><span class="p">{}</span>
     
-    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Expose</span>()     <span style="color:#75715e">// &#34;AHHHH! I&#39;m exposed!&#34;
-</span><span style="color:#75715e"></span>    
-    <span style="color:#75715e">// e.hide()    // 주석을 없애면, 다음의 에러가 발생함
-</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// ./main.go:10: e.hide undefined (cannot refer
-</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// to unexported field or method encapsulation.
-</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// (*Encapsulation).&#34;&#34;.hide)         
-</span><span style="color:#75715e"></span>    
-    <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">Unhide</span>()     <span style="color:#75715e">// &#34;Shhhh... this is super secret&#34;
-</span><span style="color:#75715e"></span>                   <span style="color:#75715e">// &#34;...jk&#34;
-</span><span style="color:#75715e"></span>}
+    <span class="nx">e</span><span class="p">.</span><span class="nf">Expose</span><span class="p">()</span>     <span class="c1">// &#34;AHHHH! I&#39;m exposed!&#34;
+</span><span class="c1"></span>    
+    <span class="c1">// e.hide()    // 주석을 없애면, 다음의 에러가 발생함
+</span><span class="c1"></span>                   <span class="c1">// ./main.go:10: e.hide undefined (cannot refer
+</span><span class="c1"></span>                   <span class="c1">// to unexported field or method encapsulation.
+</span><span class="c1"></span>                   <span class="c1">// (*Encapsulation).&#34;&#34;.hide)         
+</span><span class="c1"></span>    
+    <span class="nx">e</span><span class="p">.</span><span class="nf">Unhide</span><span class="p">()</span>     <span class="c1">// &#34;Shhhh... this is super secret&#34;
+</span><span class="c1"></span>                   <span class="c1">// &#34;...jk&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>여기서 우리는 <em>encapsulation</em> 패키지와 노출 가능한 요소들을 <em>main</em> 패키지에서 가져와 사용했다. <em>hide</em> 메서드를 사용하려고하면 컴파일러는 에러를 발생시킨다.</p>
 <!-- raw HTML omitted -->
 <h1 id="2-다형성-polymorphism">2. 다형성 (Polymorphism)</h1>
@@ -227,45 +227,45 @@ $reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">cl
 <p>Go에서는 인터페이스가 암시적으로 충족된다. 인터페이스 또한 타입이다. 이 두 문장은 많은 의미를 담고 있으므로, 이제 이를 자세히 알아보자.</p>
 <p><strong>인터페이스가 암시적으로 충족된다</strong> <strong>→</strong> 인터페이스의 모든 메서드가 어떤 타입의 메서드 집합에 모두 포함되어 있을 경우 해당 타입은 인터페이스를 만족한다. Go에는 <em>implements</em> 키워드가 없다.</p>
 <p><strong>인터페이스는 타입이다</strong> <strong>→</strong> 어떤 타입이 한 인터페이스를 만족하면, 그 타입은 또한 타입이 만족하는 인터페이스에 의해 제한되는 모든 타입을 만족한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">polymorphism</span> 
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">polymorphism</span> 
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SloganSayer</span> <span style="color:#66d9ef">interface</span> {
-    <span style="color:#a6e22e">Slogan</span>()
-}
+<span class="kd">type</span> <span class="nx">SloganSayer</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="nf">Slogan</span><span class="p">()</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// SaySlogan은 SloganSayer 타입을 파라미터로 받음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">sloganSayer</span> <span style="color:#a6e22e">SloganSayer</span>) {
-    <span style="color:#a6e22e">sloganSayer</span>.<span style="color:#a6e22e">Slogan</span>()
-}
+<span class="c1">// SaySlogan은 SloganSayer 타입을 파라미터로 받음
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">sloganSayer</span> <span class="nx">SloganSayer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">sloganSayer</span><span class="p">.</span><span class="nf">Slogan</span><span class="p">()</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Hillary는 Slogan 함수를 구현함으로써 암묵적으로 SloganSayer 인터페이스를 만족
-</span><span style="color:#75715e">// 따라서, Hillary도 SloganSayer 타입이다
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hillary</span> <span style="color:#66d9ef">struct</span>{}
+<span class="c1">// Hillary는 Slogan 함수를 구현함으로써 암묵적으로 SloganSayer 인터페이스를 만족
+</span><span class="c1">// 따라서, Hillary도 SloganSayer 타입이다
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Hillary</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hillary</span>) <span style="color:#a6e22e">Slogan</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Stronger together.&#34;</span>)
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">Hillary</span><span class="p">)</span> <span class="nf">Slogan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Stronger together.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Trump에 대해서도 동일하게 적용됨
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Trump</span> <span style="color:#66d9ef">struct</span>{}
+<span class="c1">// Trump에 대해서도 동일하게 적용됨
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Trump</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Trump</span>) <span style="color:#a6e22e">Slogan</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Make America great again.&#34;</span>)
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Trump</span><span class="p">)</span> <span class="nf">Slogan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Make America great again.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>여기서 주의 깊게 볼건 SaySlogan 함수는 파라미터를 SloganSayer 타입으로 제한할 수 있다는 것이다. 따라서, 해당 인터페이스를 만족하는 모든 타입이 파라미터로 사용될 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span> 
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span> 
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/polymorphism&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;github.com/amy/tech-talk/polymorphism&#34;</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">hillary</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">Hillary</span>)
-    <span style="color:#a6e22e">hillary</span>.<span style="color:#a6e22e">Slogan</span>()                  <span style="color:#75715e">// &#34;Stronger together.&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">hillary</span>)   <span style="color:#75715e">// &#34;Stronger together.&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">trump</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">Trump</span>)
-    <span style="color:#a6e22e">polymorphism</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">trump</span>)     <span style="color:#75715e">// &#34;Make America great again.&#34;
-</span><span style="color:#75715e"></span>}
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">hillary</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">polymorphism</span><span class="p">.</span><span class="nx">Hillary</span><span class="p">)</span>
+    <span class="nx">hillary</span><span class="p">.</span><span class="nf">Slogan</span><span class="p">()</span>                  <span class="c1">// &#34;Stronger together.&#34;
+</span><span class="c1"></span>    <span class="nx">polymorphism</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">hillary</span><span class="p">)</span>   <span class="c1">// &#34;Stronger together.&#34;
+</span><span class="c1"></span>    <span class="nx">trump</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">polymorphism</span><span class="p">.</span><span class="nx">Trump</span><span class="p">)</span>
+    <span class="nx">polymorphism</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">trump</span><span class="p">)</span>     <span class="c1">// &#34;Make America great again.&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>우리는 대통령 후보가 슬로건을 말하는것에 대해 걱정할 필요가 없다. 타입이 SloganSayer 인터페이스를 구현하는 한, 이를 SaySlogan으로 전달할 수 있다.</p>
 <!-- raw HTML omitted -->
 <h1 id="3-컴포지션-composition">3. 컴포지션 (Composition)</h1>
@@ -274,134 +274,134 @@ $reference<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">cl
 <blockquote>
 <p><em><a href="https://golang.org/doc/effective_go.html#embedding">타입을 임베드하면, 해당 타입의 메서드는 외부 타입의 메서드가 되지만, 메서드가 실행될때의 메서드 리시버는 외부 타입이 아니라 내부 타입이다.</a></em></p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">composition</span> 
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">composition</span> 
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Human</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">FirstName</span>   <span style="color:#66d9ef">string</span>
-    <span style="color:#a6e22e">LastName</span>    <span style="color:#66d9ef">string</span>
-    <span style="color:#a6e22e">CanSwim</span>     <span style="color:#66d9ef">bool</span>
-}
+<span class="kd">type</span> <span class="nx">Human</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">FirstName</span>   <span class="kt">string</span>
+    <span class="nx">LastName</span>    <span class="kt">string</span>
+    <span class="nx">CanSwim</span>     <span class="kt">bool</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Amy는 Human 타입으로 임베딩 되어있으며 따라서 Human의 메서드 집합에 속하는 메서드를 실행할 수 있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Amy</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Human</span>
-}
+<span class="c1">// Amy는 Human 타입으로 임베딩 되어있으며 따라서 Human의 메서드 집합에 속하는 메서드를 실행할 수 있음
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Amy</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Human</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Alan 또한 Human 타입으로 임베딩 되어있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Alan</span> <span style="color:#66d9ef">struct</span> {
-    <span style="color:#a6e22e">Human</span>
-}
+<span class="c1">// Alan 또한 Human 타입으로 임베딩 되어있음
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Alan</span> <span class="kd">struct</span> <span class="p">{</span>
+    <span class="nx">Human</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Human</span>) <span style="color:#a6e22e">Name</span>() {
+<span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">Human</span><span class="p">)</span> <span class="nf">Name</span><span class="p">()</span> <span class="p">{</span>
     
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Hello! My name is %v %v&#34;</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">FirstName</span>, <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">LastName</span>)
-}
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Hello! My name is %v %v&#34;</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">FirstName</span><span class="p">,</span> <span class="nx">h</span><span class="p">.</span><span class="nx">LastName</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Human</span>) <span style="color:#a6e22e">Swim</span>() {
+<span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">Human</span><span class="p">)</span> <span class="nf">Swim</span><span class="p">()</span> <span class="p">{</span>
     
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">CanSwim</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;I can swim!&#34;</span>)
-    } <span style="color:#66d9ef">else</span> {
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;I can not swim.&#34;</span>)
-    }
-}
+    <span class="k">if</span> <span class="nx">h</span><span class="p">.</span><span class="nx">CanSwim</span> <span class="o">==</span> <span class="kc">true</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;I can swim!&#34;</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;I can not swim.&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>여러분은 &ldquo;<strong><a href="http://stackoverflow.com/questions/49002/prefer-composition-over-inheritance/891908#891908">상속보단 컴포지션</a></strong>&ldquo;이라는 말을 종종 들어봤을 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/composition&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;github.com/amy/tech-talk/composition&#34;</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     
-    <span style="color:#75715e">// amy는 Human 타입으로 구성됨
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Amy</span>{
-        <span style="color:#a6e22e">Human</span>: <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Human</span>{
-            <span style="color:#a6e22e">FirstName</span>: <span style="color:#e6db74">&#34;Amy&#34;</span>,
-            <span style="color:#a6e22e">LastName</span>:  <span style="color:#e6db74">&#34;Chen&#34;</span>,
-            <span style="color:#a6e22e">CanSwim</span>:   <span style="color:#66d9ef">true</span>,
-        },
-    }
+    <span class="c1">// amy는 Human 타입으로 구성됨
+</span><span class="c1"></span>    <span class="nx">amy</span> <span class="o">:=</span> <span class="nx">composition</span><span class="p">.</span><span class="nx">Amy</span><span class="p">{</span>
+        <span class="nx">Human</span><span class="p">:</span> <span class="nx">composition</span><span class="p">.</span><span class="nx">Human</span><span class="p">{</span>
+            <span class="nx">FirstName</span><span class="p">:</span> <span class="s">&#34;Amy&#34;</span><span class="p">,</span>
+            <span class="nx">LastName</span><span class="p">:</span>  <span class="s">&#34;Chen&#34;</span><span class="p">,</span>
+            <span class="nx">CanSwim</span><span class="p">:</span>   <span class="kc">true</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
 
-    <span style="color:#75715e">// alan은 Human 타입으로 구성됨
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Alan</span>{
-        <span style="color:#a6e22e">Human</span>: <span style="color:#a6e22e">composition</span>.<span style="color:#a6e22e">Human</span>{
-            <span style="color:#a6e22e">FirstName</span>: <span style="color:#e6db74">&#34;Alan&#34;</span>,
-            <span style="color:#a6e22e">LastName</span>:  <span style="color:#e6db74">&#34;Chen&#34;</span>,
-            <span style="color:#a6e22e">CanSwim</span>:   <span style="color:#66d9ef">false</span>,
-        },
-    }
+    <span class="c1">// alan은 Human 타입으로 구성됨
+</span><span class="c1"></span>    <span class="nx">alan</span><span class="o">:=</span> <span class="nx">composition</span><span class="p">.</span><span class="nx">Alan</span><span class="p">{</span>
+        <span class="nx">Human</span><span class="p">:</span> <span class="nx">composition</span><span class="p">.</span><span class="nx">Human</span><span class="p">{</span>
+            <span class="nx">FirstName</span><span class="p">:</span> <span class="s">&#34;Alan&#34;</span><span class="p">,</span>
+            <span class="nx">LastName</span><span class="p">:</span>  <span class="s">&#34;Chen&#34;</span><span class="p">,</span>
+            <span class="nx">CanSwim</span><span class="p">:</span>   <span class="kc">false</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
     
-    <span style="color:#75715e">// Human의 메서드 집합은 Amy 타입으로 전달됨
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span>.<span style="color:#a6e22e">Name</span>()     <span style="color:#75715e">// &#34;Hello! My name is Amy Chen&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">amy</span>.<span style="color:#a6e22e">CanSwim</span>()  <span style="color:#75715e">// &#34;I can swim!&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span>.<span style="color:#a6e22e">Name</span>()    <span style="color:#75715e">// &#34;Hello! My name is Alan Chen&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">alan</span>.<span style="color:#a6e22e">CanSwim</span>() <span style="color:#75715e">// &#34;I can&#39;t swim&#34;
-</span><span style="color:#75715e"></span>}
+    <span class="c1">// Human의 메서드 집합은 Amy 타입으로 전달됨
+</span><span class="c1"></span>    <span class="nx">amy</span><span class="p">.</span><span class="nf">Name</span><span class="p">()</span>     <span class="c1">// &#34;Hello! My name is Amy Chen&#34;
+</span><span class="c1"></span>    <span class="nx">amy</span><span class="p">.</span><span class="nf">CanSwim</span><span class="p">()</span>  <span class="c1">// &#34;I can swim!&#34;
+</span><span class="c1"></span>    <span class="nx">alan</span><span class="p">.</span><span class="nf">Name</span><span class="p">()</span>    <span class="c1">// &#34;Hello! My name is Alan Chen&#34;
+</span><span class="c1"></span>    <span class="nx">alan</span><span class="p">.</span><span class="nf">CanSwim</span><span class="p">()</span> <span class="c1">// &#34;I can&#39;t swim&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="4-추상화-abstraction">4. 추상화 (Abstraction)</h1>
 <!-- raw HTML omitted -->
 <p>구조체 내에 구조체를 임베딩 하는것과 유사하게, 구조체 내에 인터페이스를 임베딩할 수도 있다. 한 인터페이스를 만족하는 모든 타입들은 또한 해당 인터페이스 타입을 갖는다는걸 기억하라.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">abstraction</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">abstraction</span>
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SloganSayer</span> <span style="color:#66d9ef">interface</span> {
-    <span style="color:#a6e22e">Slogan</span>()
-}
+<span class="kd">type</span> <span class="nx">SloganSayer</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="nf">Slogan</span><span class="p">()</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Campaign은 자기 자신의 인스턴스에서 SloganSayer를 받을 수 있음
-</span><span style="color:#75715e">// Campaign은 또한 SloganSayer 인터페이스를 구현하고 있으므로 SloganSayer이기도 함
-</span><span style="color:#75715e">// 이는 체이닝시 유용하다
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Campaign</span> <span style="color:#66d9ef">struct</span>{
-    <span style="color:#a6e22e">SloganSayer</span>
-}
+<span class="c1">// Campaign은 자기 자신의 인스턴스에서 SloganSayer를 받을 수 있음
+</span><span class="c1">// Campaign은 또한 SloganSayer 인터페이스를 구현하고 있으므로 SloganSayer이기도 함
+</span><span class="c1">// 이는 체이닝시 유용하다
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Campaign</span> <span class="kd">struct</span><span class="p">{</span>
+    <span class="nx">SloganSayer</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// SaySlogan은 파라미터로 Campaign 또한 받을 수 있음
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">SloganSayer</span>) {
-    <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Slogan</span>()
-}
+<span class="c1">// SaySlogan은 파라미터로 Campaign 또한 받을 수 있음
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">s</span> <span class="nx">SloganSayer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">s</span><span class="p">.</span><span class="nf">Slogan</span><span class="p">()</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Hillary는 SloganSayer 인터페이스를 구현함
-</span><span style="color:#75715e">// Hillary는 SloganSayer임
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hillary</span> <span style="color:#66d9ef">struct</span>{}
+<span class="c1">// Hillary는 SloganSayer 인터페이스를 구현함
+</span><span class="c1">// Hillary는 SloganSayer임
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Hillary</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hillary</span>) <span style="color:#a6e22e">Slogan</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Stronger together.&#34;</span>)
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span><span class="nx">Hillary</span><span class="p">)</span> <span class="nf">Slogan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Stronger together.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#75715e">// Trump는 SloganSayer 인터페이스를 구현함
-</span><span style="color:#75715e">// Trump는 SloganSayer임
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Trump</span> <span style="color:#66d9ef">struct</span>{}
+<span class="c1">// Trump는 SloganSayer 인터페이스를 구현함
+</span><span class="c1">// Trump는 SloganSayer임
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Trump</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Trump</span>) <span style="color:#a6e22e">Slogan</span>() {
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Make American great again.&#34;</span>)
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">Trump</span><span class="p">)</span> <span class="nf">Slogan</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Make American great again.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>인터페이스 임베딩의 유용함은 이게 사용되는것을 볼 때 더욱 분명해진다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
 
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/amy/tech-talk/abstraction&#34;</span>
+<span class="kn">import</span> <span class="s">&#34;github.com/amy/tech-talk/abstraction&#34;</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#a6e22e">hillary</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Hillary</span>)
-    <span style="color:#a6e22e">trump</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Trump</span>)
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">hillary</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">abstraction</span><span class="p">.</span><span class="nx">Hillary</span><span class="p">)</span>
+    <span class="nx">trump</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">abstraction</span><span class="p">.</span><span class="nx">Trump</span><span class="p">)</span>
   
-    <span style="color:#a6e22e">h</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Campaign</span>{<span style="color:#a6e22e">hillary</span>}
-    <span style="color:#a6e22e">t</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">Campaign</span>{<span style="color:#a6e22e">trump</span>}
+    <span class="nx">h</span> <span class="o">:=</span> <span class="nx">abstraction</span><span class="p">.</span><span class="nx">Campaign</span><span class="p">{</span><span class="nx">hillary</span><span class="p">}</span>
+    <span class="nx">t</span> <span class="o">:=</span> <span class="nx">abstraction</span><span class="p">.</span><span class="nx">Campaign</span><span class="p">{</span><span class="nx">trump</span><span class="p">}</span>
   
-    <span style="color:#75715e">// Slogan의 Hillary와 Trump 구현체는 추상화 되어있다
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 대신, Campaign은 단지 이게 SloganSayer이고 따라서 Slogan을 호출할 수 있음을 알고있음
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">Slogan</span>()  <span style="color:#75715e">// &#34;Stronger together.&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Slogan</span>()  <span style="color:#75715e">// &#34;Make America great again.&#34;
-</span><span style="color:#75715e"></span>  
-    <span style="color:#75715e">// SloganSayer를 SaySlogan의 파라미터로 주입할 수 있음
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">hillary</span>)  <span style="color:#75715e">// &#34;Stronger together.&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">trump</span>)    <span style="color:#75715e">// &#34;Make America great again.&#34;
-</span><span style="color:#75715e"></span>  
-    <span style="color:#75715e">// h와 t는 또한 Campaign 타입이라는걸 기억하라
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">h</span>)  <span style="color:#75715e">// &#34;Stronger together.&#34;
-</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">abstraction</span>.<span style="color:#a6e22e">SaySlogan</span>(<span style="color:#a6e22e">t</span>)  <span style="color:#75715e">// &#34;Make America great again.&#34;
-</span><span style="color:#75715e"></span>}
+    <span class="c1">// Slogan의 Hillary와 Trump 구현체는 추상화 되어있다
+</span><span class="c1"></span>    <span class="c1">// 대신, Campaign은 단지 이게 SloganSayer이고 따라서 Slogan을 호출할 수 있음을 알고있음
+</span><span class="c1"></span>    <span class="nx">h</span><span class="p">.</span><span class="nf">Slogan</span><span class="p">()</span>  <span class="c1">// &#34;Stronger together.&#34;
+</span><span class="c1"></span>    <span class="nx">t</span><span class="p">.</span><span class="nf">Slogan</span><span class="p">()</span>  <span class="c1">// &#34;Make America great again.&#34;
+</span><span class="c1"></span>  
+    <span class="c1">// SloganSayer를 SaySlogan의 파라미터로 주입할 수 있음
+</span><span class="c1"></span>    <span class="nx">abstraction</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">hillary</span><span class="p">)</span>  <span class="c1">// &#34;Stronger together.&#34;
+</span><span class="c1"></span>    <span class="nx">abstraction</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">trump</span><span class="p">)</span>    <span class="c1">// &#34;Make America great again.&#34;
+</span><span class="c1"></span>  
+    <span class="c1">// h와 t는 또한 Campaign 타입이라는걸 기억하라
+</span><span class="c1"></span>    <span class="nx">abstraction</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">h</span><span class="p">)</span>  <span class="c1">// &#34;Stronger together.&#34;
+</span><span class="c1"></span>    <span class="nx">abstraction</span><span class="p">.</span><span class="nf">SaySlogan</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>  <span class="c1">// &#34;Make America great again.&#34;
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <p>이게 끝이다! 이제 여러분은 기존에 익숙했던 OOP 원리들을 어떻게 빌릴 수 있는지 알았으니, 모듈화를 시작해보라. 다음은 OOP 원칙이 Go에서 어떻게 바뀌는지를 요약한 것이다.</p>
 <p><img src="../images/2017-02-28-go-and-oop.png" alt="oop-in-go"></p>

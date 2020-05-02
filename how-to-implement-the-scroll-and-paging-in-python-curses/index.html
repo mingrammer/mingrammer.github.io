@@ -111,76 +111,76 @@
 <p>스크롤 구현의 아이디어는 간단하다. 전체 리스트에서의 현재 보여지는 윈도우의 최상단 위치와 현재 커서 위치를 기준으로 다음 커서의 위치를 계산하여 커서를 이동시키는 것이다. 이해하기 쉽게 실제 구현부 코드를 살펴보자.</p>
 <h2 id="구현">구현</h2>
 <p>다음은 TUI 애플리케이션 실행 후 사용자로부터 키보드 입력을 받는 부분인데 <code>KEY_UP</code>과 <code>KEY_DOWN</code> 입력을 받게 되면 스크롤을 수행하는 <code>scroll</code> 메서드를 실행하게된다. (참고로, <code>UP=1</code>, <code>DOWN=-1</code>)</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">input_stream</span>(self):
-    <span style="color:#e6db74">&#34;&#34;&#34;사용자 입력을 대기하며 입력값에 따라 해당되는 메서드를 실행함&#34;&#34;&#34;</span>
-    <span style="color:#66d9ef">while</span> True:
-        self<span style="color:#f92672">.</span>display()
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">input_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="s2">&#34;&#34;&#34;사용자 입력을 대기하며 입력값에 따라 해당되는 메서드를 실행함&#34;&#34;&#34;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 
-        ch <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>window<span style="color:#f92672">.</span>getch()
-        <span style="color:#66d9ef">if</span> ch <span style="color:#f92672">==</span> curses<span style="color:#f92672">.</span>KEY_UP:
-            self<span style="color:#f92672">.</span>scroll(self<span style="color:#f92672">.</span>UP)
-        <span style="color:#66d9ef">elif</span> ch <span style="color:#f92672">==</span> curses<span style="color:#f92672">.</span>KEY_DOWN:
-            self<span style="color:#f92672">.</span>scroll(self<span style="color:#f92672">.</span>DOWN)
-        <span style="color:#66d9ef">elif</span> ch <span style="color:#f92672">==</span> curses<span style="color:#f92672">.</span>KEY_LEFT:
-            self<span style="color:#f92672">.</span>paging(self<span style="color:#f92672">.</span>UP)
-        <span style="color:#66d9ef">elif</span> ch <span style="color:#f92672">==</span> curses<span style="color:#f92672">.</span>KEY_RIGHT:
-            self<span style="color:#f92672">.</span>paging(self<span style="color:#f92672">.</span>DOWN)
-        <span style="color:#66d9ef">elif</span> ch <span style="color:#f92672">==</span> curses<span style="color:#f92672">.</span>ascii<span style="color:#f92672">.</span>ESC:
-            <span style="color:#66d9ef">break</span>
+        <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">getch</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">curses</span><span class="o">.</span><span class="n">KEY_UP</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">UP</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">curses</span><span class="o">.</span><span class="n">KEY_DOWN</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scroll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DOWN</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">curses</span><span class="o">.</span><span class="n">KEY_LEFT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paging</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">UP</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">curses</span><span class="o">.</span><span class="n">KEY_RIGHT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">paging</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DOWN</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">curses</span><span class="o">.</span><span class="n">ascii</span><span class="o">.</span><span class="n">ESC</span><span class="p">:</span>
+            <span class="k">break</span>
 </code></pre></div><p>스크롤을 구현할 때에는 다음 두 가지를 고려해야한다.</p>
 <ul>
 <li>현재 커서가 현재 윈도우의 최상단 혹은 최하단에 위치하면서 커서와 윈도우가 모두 움직이는 경우</li>
 <li>현재 커서가 현재 윈도우의 중간에 위치해 커서만 움직이는 경우</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># top: 리스트에서의 현재 윈도우의 최상단 라인의 위치</span>
-<span style="color:#75715e"># current: 현재 보여지는 윈도우 기준 현재 커서 위치</span>
-<span style="color:#75715e"># max_lines: 한 번에 볼 수 있는 최대 항목의 갯수</span>
-<span style="color:#75715e"># bottom: 커서가 위치할 수 있는 최하단 라인의 위치</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># ┌--------------------------------------┐</span>
-<span style="color:#75715e"># |1. Item                               |</span>
-<span style="color:#75715e"># |--------------------------------------| &lt;- top = 1</span>
-<span style="color:#75715e"># |2. Item                               |</span>
-<span style="color:#75715e"># |3. Item                               |</span>
-<span style="color:#75715e"># |4./Item///////////////////////////////| &lt;- current = 3</span>
-<span style="color:#75715e"># |5. Item                               |</span>
-<span style="color:#75715e"># |6. Item                               |</span>
-<span style="color:#75715e"># |7. Item                               |</span>
-<span style="color:#75715e"># |8. Item                               | &lt;- max_lines = 7</span>
-<span style="color:#75715e"># |--------------------------------------|</span>
-<span style="color:#75715e"># |9. Item                               |</span>
-<span style="color:#75715e"># |10. Item                              | &lt;- bottom = 10</span>
-<span style="color:#75715e"># |                                      |</span>
-<span style="color:#75715e"># |                                      | &lt;- page = 1 (0 and 1)</span>
-<span style="color:#75715e"># └--------------------------------------┘</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># top: 리스트에서의 현재 윈도우의 최상단 라인의 위치</span>
+<span class="c1"># current: 현재 보여지는 윈도우 기준 현재 커서 위치</span>
+<span class="c1"># max_lines: 한 번에 볼 수 있는 최대 항목의 갯수</span>
+<span class="c1"># bottom: 커서가 위치할 수 있는 최하단 라인의 위치</span>
+<span class="c1">#</span>
+<span class="c1"># ┌--------------------------------------┐</span>
+<span class="c1"># |1. Item                               |</span>
+<span class="c1"># |--------------------------------------| &lt;- top = 1</span>
+<span class="c1"># |2. Item                               |</span>
+<span class="c1"># |3. Item                               |</span>
+<span class="c1"># |4./Item///////////////////////////////| &lt;- current = 3</span>
+<span class="c1"># |5. Item                               |</span>
+<span class="c1"># |6. Item                               |</span>
+<span class="c1"># |7. Item                               |</span>
+<span class="c1"># |8. Item                               | &lt;- max_lines = 7</span>
+<span class="c1"># |--------------------------------------|</span>
+<span class="c1"># |9. Item                               |</span>
+<span class="c1"># |10. Item                              | &lt;- bottom = 10</span>
+<span class="c1"># |                                      |</span>
+<span class="c1"># |                                      | &lt;- page = 1 (0 and 1)</span>
+<span class="c1"># └--------------------------------------┘</span>
 
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">scroll</span>(self, direction):
-    <span style="color:#75715e"># 방향에 따른 다음 라인 커서 위치 계산</span>
-    next_line <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>current <span style="color:#f92672">+</span> direction
+<span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+    <span class="c1"># 방향에 따른 다음 라인 커서 위치 계산</span>
+    <span class="n">next_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+</span> <span class="n">direction</span>
 
-    <span style="color:#75715e"># 윈도우 스크롤 업</span>
-    <span style="color:#75715e"># 현재 커서가 윈도우의 상단에 위치하나, 윈도우의 상단 라인이 최상단에 닿지 않았으므로 윈도우 스크롤 업이 가능하다</span>
-    <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>UP) <span style="color:#f92672">and</span> (self<span style="color:#f92672">.</span>top <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> self<span style="color:#f92672">.</span>current <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>):
-        self<span style="color:#f92672">.</span>top <span style="color:#f92672">+=</span> direction
-        <span style="color:#66d9ef">return</span>
+    <span class="c1"># 윈도우 스크롤 업</span>
+    <span class="c1"># 현재 커서가 윈도우의 상단에 위치하나, 윈도우의 상단 라인이 최상단에 닿지 않았으므로 윈도우 스크롤 업이 가능하다</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">UP</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+=</span> <span class="n">direction</span>
+        <span class="k">return</span>
 
-    <span style="color:#75715e"># 윈도우 스크롤 다운</span>
-    <span style="color:#75715e"># 다음 커서가 현재 윈도우의 하단에 위치하나, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 윈도우 스크롤 다운이 가능하다</span>
-    <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>DOWN) <span style="color:#f92672">and</span> (next_line <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>max_lines) <span style="color:#f92672">and</span> (self<span style="color:#f92672">.</span>top <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>max_lines <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>bottom):
-        self<span style="color:#f92672">.</span>top <span style="color:#f92672">+=</span> direction
-        <span style="color:#66d9ef">return</span>
+    <span class="c1"># 윈도우 스크롤 다운</span>
+    <span class="c1"># 다음 커서가 현재 윈도우의 하단에 위치하나, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 윈도우 스크롤 다운이 가능하다</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DOWN</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">next_line</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+=</span> <span class="n">direction</span>
+        <span class="k">return</span>
 
-    <span style="color:#75715e"># 스크롤 업</span>
-    <span style="color:#75715e"># 현재 커서가 최상단보다 아래에 있으므로 스크롤 업이 가능하다</span>
-    <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>UP) <span style="color:#f92672">and</span> (self<span style="color:#f92672">.</span>top <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">or</span> self<span style="color:#f92672">.</span>current <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>):
-        self<span style="color:#f92672">.</span>current <span style="color:#f92672">=</span> next_line
-        <span style="color:#66d9ef">return</span>
+    <span class="c1"># 스크롤 업</span>
+    <span class="c1"># 현재 커서가 최상단보다 아래에 있으므로 스크롤 업이 가능하다</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">UP</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="n">next_line</span>
+        <span class="k">return</span>
 
-    <span style="color:#75715e"># 스크롤 다운</span>
-    <span style="color:#75715e"># 다음 커서가 현재 윈도우의 하단보다 위에 있으며, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 스크롤 다운이 가능하다</span>
-    <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>DOWN) <span style="color:#f92672">and</span> (next_line <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>max_lines) <span style="color:#f92672">and</span> (self<span style="color:#f92672">.</span>top <span style="color:#f92672">+</span> next_line <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>bottom):
-        self<span style="color:#f92672">.</span>current <span style="color:#f92672">=</span> next_line
+    <span class="c1"># 스크롤 다운</span>
+    <span class="c1"># 다음 커서가 현재 윈도우의 하단보다 위에 있으며, 커서의 절대 위치가 아직 최하단까지 도달하진 않았으므로 스크롤 다운이 가능하다</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DOWN</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">next_line</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">next_line</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="n">next_line</span>
 </code></pre></div><h2 id="스크롤-데모">스크롤 데모</h2>
 <ul>
 <li>스크롤 업 : <strong>↑</strong></li>
@@ -192,28 +192,28 @@
 <p>스크롤은 커서 위치를 조정하면서 동작하는 반면, 페이징은 윈도우의 상단 라인 (<code>top</code> 변수)의 위치를 조정하면서 동작한다. 그렇기 때문에 페이징을 구현할 때에는 한가지 유의 해야할 부분이 있는데, 페이징을 하다가 마지막 페이지에 도달했을 때 현재 커서가 마지막 페이지에 나타나는 항목의 리스트보다 아래에 위치하는 경우, 이 커서 위치를 재조정해줘야 한다는 것이다.</p>
 <h2 id="구현-1">구현</h2>
 <p>마찬가지로 키보드 입력을 받는 부분에서 <code>KEY_LEFT</code>와 <code>KEY_RIGHT</code> 입력을 받게 되면 페이징을 수행하는 <code>paging</code> 메서드를 실행하게된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">paging</span>(self, direction):
-   <span style="color:#75715e"># 윈도우의 상단 위치값과 현재 커서 위치로 현재 페이지와 다음 페이지를 계산</span>
-   current_page <span style="color:#f92672">=</span> (self<span style="color:#f92672">.</span>top <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>current) <span style="color:#f92672">//</span> self<span style="color:#f92672">.</span>max_lines
-   next_page <span style="color:#f92672">=</span> current_page <span style="color:#f92672">+</span> direction
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">paging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+   <span class="c1"># 윈도우의 상단 위치값과 현재 커서 위치로 현재 페이지와 다음 페이지를 계산</span>
+   <span class="n">current_page</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span>
+   <span class="n">next_page</span> <span class="o">=</span> <span class="n">current_page</span> <span class="o">+</span> <span class="n">direction</span>
 
-   <span style="color:#75715e"># 마지막 페이지에 도달 했을 때 현재 커서가 마지막 페이지에 나타나는 항목의 리스트보다 아래에 있는 경우,</span>
-   <span style="color:#75715e"># 현재 커서를 마지막 페이지 리스트의 마지막 항목 위치로 조정</span>
-   <span style="color:#66d9ef">if</span> next_page <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>page:
-       self<span style="color:#f92672">.</span>current <span style="color:#f92672">=</span> min(self<span style="color:#f92672">.</span>current, self<span style="color:#f92672">.</span>bottom <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>max_lines <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+   <span class="c1"># 마지막 페이지에 도달 했을 때 현재 커서가 마지막 페이지에 나타나는 항목의 리스트보다 아래에 있는 경우,</span>
+   <span class="c1"># 현재 커서를 마지막 페이지 리스트의 마지막 항목 위치로 조정</span>
+   <span class="k">if</span> <span class="n">next_page</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">:</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
-   <span style="color:#75715e"># 페이지 업</span>
-   <span style="color:#75715e"># 현재 페이지가 첫 페이지가 아닌 경우, 페이지 업이 가능하다</span>
-   <span style="color:#75715e"># 윈도우 상단의 위치는 음수가 될 수 없으므로, 음수가 될 경우 0으로 조정</span>
-   <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>UP) <span style="color:#f92672">and</span> (current_page <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>):
-       self<span style="color:#f92672">.</span>top <span style="color:#f92672">=</span> max(<span style="color:#ae81ff">0</span>, self<span style="color:#f92672">.</span>top <span style="color:#f92672">-</span> self<span style="color:#f92672">.</span>max_lines)
-       <span style="color:#66d9ef">return</span>
+   <span class="c1"># 페이지 업</span>
+   <span class="c1"># 현재 페이지가 첫 페이지가 아닌 경우, 페이지 업이 가능하다</span>
+   <span class="c1"># 윈도우 상단의 위치는 음수가 될 수 없으므로, 음수가 될 경우 0으로 조정</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">UP</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">current_page</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span><span class="p">)</span>
+       <span class="k">return</span>
 
-   <span style="color:#75715e"># 페이지 다운</span>
-   <span style="color:#75715e"># 현재 페이지가 마지막 페이지가 아닌 경우, 페이지 다운이 가능하다</span>
-   <span style="color:#66d9ef">if</span> (direction <span style="color:#f92672">==</span> self<span style="color:#f92672">.</span>DOWN) <span style="color:#f92672">and</span> (current_page <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>page):
-       self<span style="color:#f92672">.</span>top <span style="color:#f92672">+=</span> self<span style="color:#f92672">.</span>max_lines
-       <span style="color:#66d9ef">return</span>
+   <span class="c1"># 페이지 다운</span>
+   <span class="c1"># 현재 페이지가 마지막 페이지가 아닌 경우, 페이지 다운이 가능하다</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DOWN</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">current_page</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">):</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lines</span>
+       <span class="k">return</span>
 </code></pre></div><h2 id="페이징-데모">페이징 데모</h2>
 <ul>
 <li>페이지 업 : <strong>←</strong></li>

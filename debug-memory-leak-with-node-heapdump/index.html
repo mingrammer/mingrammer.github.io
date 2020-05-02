@@ -114,30 +114,30 @@
 <li>3번 과정의 푸시 발송은 일정 간격마다 재귀 호출되면서 남은 토큰을 계속 발송</li>
 <li>발송할 토큰이 모두 소진되면 푸시 발송을 종료하고 1번으로 돌아감</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// iOS 푸시 예시
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_sendIOS</span>() {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">isGetTokenFinished</span>) {
-        <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">_sendIOS</span>, <span style="color:#ae81ff">1000</span>);
-        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">requestCnt</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-            <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">requestCnt</span><span style="color:#f92672">++</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">REQUEST_COUNT_I</span>) {
-                <span style="color:#a6e22e">sendCntI</span><span style="color:#f92672">++</span>;
-                <span style="color:#75715e">// do something
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">PushIOS</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">sched</span>, <span style="color:#a6e22e">tokens</span>, <span style="color:#a6e22e">msgI</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">result</span> =&gt; {
-                    <span style="color:#75715e">// callback
-</span><span style="color:#75715e"></span>                }).<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">reason</span> =&gt; {
-                    <span style="color:#75715e">// callback
-</span><span style="color:#75715e"></span>                });
-            }
-        }
-    } <span style="color:#66d9ef">else</span> {
-        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sendCntI</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-            <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">_sendIOS</span>, <span style="color:#ae81ff">1000</span>);
-        } <span style="color:#66d9ef">else</span> {
-            <span style="color:#75715e">// complete
-</span><span style="color:#75715e"></span>        }
-    }
-}
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// iOS 푸시 예시
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">_sendIOS</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="o">!</span><span class="nx">isGetTokenFinished</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_sendIOS</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">requestCnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">requestCnt</span><span class="o">++</span> <span class="o">&lt;</span> <span class="nx">REQUEST_COUNT_I</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">sendCntI</span><span class="o">++</span><span class="p">;</span>
+                <span class="c1">// do something
+</span><span class="c1"></span>                <span class="nx">PushIOS</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">sched</span><span class="p">,</span> <span class="nx">tokens</span><span class="p">,</span> <span class="nx">msgI</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// callback
+</span><span class="c1"></span>                <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">reason</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// callback
+</span><span class="c1"></span>                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">sendCntI</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_sendIOS</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// complete
+</span><span class="c1"></span>        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>동작 방식을 파악한 다음에는 힙 메모리 프로파일러를 심어 푸시마다 그리고 주기적으로 힙 메모리 덤프를 떠 메모리가 누수되는 부분을 찾아보기로 했다.</p>
 <h1 id="프로파일링">프로파일링</h1>
 <p>힙 메모리 덤프에는 <a href="https://github.com/bnoordhuis/node-heapdump">node-heapdump</a>를 사용했는데, 사용법이 매우 간단했고 크롬만 있으면 바로 분석할 수 있었기에 큰 고민 없이 선택했다.</p>
@@ -145,34 +145,34 @@
 <blockquote>
 <p><a href="https://github.com/bnoordhuis/node-heapdump#caveats">주의할 점</a>은 프로세스의 힙 메모리 전체를 덤핑하기 때문에 유닉스 기반 OS에서는 스냅샷을 찍는 시점에 메모리를 50% 이상 사용하고 있다면 덤프가 제대로 안될 수도 있다.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">heapdump</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;heapdump&#39;</span>);
-<span style="color:#75715e">//
-</span><span style="color:#75715e">// 푸시 로직
-</span><span style="color:#75715e">//
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">checkNextSched</span>() {
-    <span style="color:#a6e22e">getSched</span>().<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">sched</span> =&gt; {
-        <span style="color:#a6e22e">getTokensQuery</span>(<span style="color:#a6e22e">sched</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">excuteSched</span>).<span style="color:#a6e22e">then</span>(() =&gt; {
-            <span style="color:#75715e">// 푸시 발송 완료시 힙 메모리 덤프
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">heapdump</span>.<span style="color:#a6e22e">writeSnapshot</span>((<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">filename</span>) =&gt; {
-                <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Heap dump written to&#39;</span>, <span style="color:#a6e22e">filename</span>);
-            });
-            <span style="color:#75715e">// do something
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">checkNextSched</span>, <span style="color:#ae81ff">10000</span>);
-        }).<span style="color:#66d9ef">catch</span>((<span style="color:#a6e22e">reason</span>) =&gt; {
-            <span style="color:#75715e">// do something
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">checkNextSched</span>, <span style="color:#ae81ff">10000</span>);
-        });
-    }).<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">reason</span> =&gt; {
-        <span style="color:#75715e">// do something
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">checkNextSched</span>, <span style="color:#ae81ff">1000</span>);
-    });
-}
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">heapdump</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;heapdump&#39;</span><span class="p">);</span>
+<span class="c1">//
+</span><span class="c1">// 푸시 로직
+</span><span class="c1">//
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">checkNextSched</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">getSched</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">sched</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="nx">getTokensQuery</span><span class="p">(</span><span class="nx">sched</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">excuteSched</span><span class="p">).</span><span class="nx">then</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// 푸시 발송 완료시 힙 메모리 덤프
+</span><span class="c1"></span>            <span class="nx">heapdump</span><span class="p">.</span><span class="nx">writeSnapshot</span><span class="p">((</span><span class="nx">err</span><span class="p">,</span> <span class="nx">filename</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Heap dump written to&#39;</span><span class="p">,</span> <span class="nx">filename</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="c1">// do something
+</span><span class="c1"></span>            <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">checkNextSched</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>
+        <span class="p">}).</span><span class="k">catch</span><span class="p">((</span><span class="nx">reason</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// do something
+</span><span class="c1"></span>            <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">checkNextSched</span><span class="p">,</span> <span class="mi">10000</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">reason</span> <span class="p">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// do something
+</span><span class="c1"></span>        <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">checkNextSched</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
 </code></pre></div><p>설정은 완료되었으니 푸시 시간을 피해 데몬을 재시작해주면 준비는 끝난다. 그럼 이제 푸시가 날아갈 때까지 기다리면 되느냐라고 할 수 있지만 그건 아니다. 만약 1번 과정에서 누수가 발생하고 있다면 해당 누수도 발견할 수 있어야 때문에 푸시가 날아가기 전까지 주기적으로 덤프를 떠보는 것도 좋은 생각이었다. 중간 중간 임의의 시간에 스냅샷을 찍기 위해서는 스냅샷 스케줄링 코드를 추가해줘야 했는데 다행히도 <code>node-heapdump</code>가 <code>SIGUSR2</code> 시그널을 <a href="https://github.com/bnoordhuis/node-heapdump/blob/master/src/heapdump-posix.h#L37">받고</a> 있었기에 중간 중간 푸시 데몬 프로세스에 해당 시그널만 날려주면 스냅샷을 남길 수 있었다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kill -USR2 &lt;pid&gt;
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">kill</span> -USR2 &lt;pid&gt;
 </code></pre></div><p>이렇게 해서 우선 푸시가 날아가기 전까지 몇 번 스냅샷을 찍으면서 1번 과정에서 누수가 발생하고 있는지 확인해본 결과 메모리는 거의 그대로 유지되었으며 아무런 이상 신호는 없었다. (이 때 남긴 스냅샷은 당시 삭제했었는지 남아 있지 않아 결과 첨부는 어렵지만 스냅샷 사이즈가 일정하게 유지되었다.)</p>
 <h1 id="메모리-누수-발견">메모리 누수 발견</h1>
 <p>때문에 메모리 누수는 2번 이후로 발생하는 것으로 판단할 수 있었고 실제 푸시가 날아가기 전까지 기다렸다가 푸시가 날아간 이후로 남은 스냅샷을 확인하기로 했다. 푸시가 발송되는 도중인지 푸시가 발송될 때마다인지를 확인하기 위해 1회가 아닌 아침/저녁으로 나가는 수 번의 푸시를 며칠동안 남겨 스냅샷을 비교해보기로 했다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ls -lha *.heapsnapshot | awk <span style="color:#e6db74">&#39;{print $1, $5, $9}&#39;</span> | column -t
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ ls -lha *.heapsnapshot <span class="p">|</span> awk <span class="s1">&#39;{print $1, $5, $9}&#39;</span> <span class="p">|</span> column -t
 -rw-r--r--  12M   heapdump-17104452803.566758.heapsnapshot
 -rw-r--r--  26M   heapdump-17190854639.277342.heapsnapshot
 -rw-r--r--  64M   heapdump-17277254529.214899.heapsnapshot
@@ -224,113 +224,113 @@
 <p>두 스냅샷 간에 <code>Retained Size</code>가 증가하고 있는 (메모리를 실제로 차지하는 &ldquo;값&quot;이 아닌) 참조 객체는 <code>Connection</code> 객체임을 볼 수 있다. (개수는 88개에서 149개로 더 늘어난 상태이며 참조 크기는 <code>4,850,952</code>에서 <code>52,684,184</code>로 늘어났다.)</p>
 <p>또한 아까 세 번째 스냅샷에서 봤던 문자열 및 버퍼 객체는 보이지 않는다. 즉, 이 두 객체는 이미 GC에 의해 해제되었음을 의미하며, <code>Connection</code> 객체만이 여전히 해제되지 않은채로 계속 증가하고 있다.</p>
 <p>즉, TLS를 사용하는 어떤 TCP 커넥션이 계속 열리고 있는게 메모리 누수의 원인임을 짐작할 수 있었고 커넥션이 계속 증가하면서 기존 커넥션이 닫히지 않고 있다는건 (기존 커넥션이 닫히고 있지 않다는건 각 스냅샷마다 커넥션 객체가 증가함과 동시에 동일한 메모리 주소를 사용하는 커넥션이 사라지지 않고 계속 잔존함으로 확인) 현재 어드민 서버에서도 계속 오픈되어 있을거라는 것을 의미했고 <code>netstat</code>으로 간단히 확인해 볼 수 있는 부분이었다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ netstat -ant
-Active Internet connections <span style="color:#f92672">(</span>servers and established<span style="color:#f92672">)</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ netstat -ant
+Active Internet connections <span class="o">(</span>servers and established<span class="o">)</span>
 Proto Recv-Q Send-Q Local Address           Foreign Address         State
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:443             0.0.0.0:*               LISTEN
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:12222           0.0.0.0:*               LISTEN
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58478      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58240      172.20.254.5:3306       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58480      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:52734      52.69.17.201:80         ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:48378      172.20.2.71:6379        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40852      172.20.254.5:3306       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33710      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58430      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:62970     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:63362     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58392      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33346      172.20.2.71:6379        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33596      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40850      172.20.254.5:3306       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54334      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:43536      103.246.56.17:80        CLOSE_WAIT
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33970      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33608      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:51334      17.188.168.15:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54106      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33620      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:58070     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40730      17.188.168.8:443        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:55140      17.188.167.203:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40942      172.20.255.79:3306      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:60113     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33982      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:51034      17.188.168.15:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:52438     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:54726     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54270      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:36142      172.20.2.71:6379        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54322      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>     <span style="color:#ae81ff">27</span> 172.20.57.12:40940      172.20.255.79:3306      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:38322      172.20.254.156:3306     TIME_WAIT
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33670      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:43524      15.164.111.246:80       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:49136      17.188.165.138:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:48236      15.164.111.246:80       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40554      17.188.168.8:443        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:52540      52.69.17.201:80         ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:48882      17.188.165.138:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54042      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54888      17.188.167.203:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54132      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:33824      17.188.168.11:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54188      17.188.167.205:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">1</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:45584      52.69.17.201:80         CLOSE_WAIT
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40848      172.20.254.5:3306       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40846      172.20.254.5:3306       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:12222      116.124.50.42:64423     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:49046      17.188.165.138:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">5412</span> 172.20.57.12:12222      116.124.50.42:63158     ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:51322      17.188.168.15:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:55062      17.188.167.203:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58492      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40718      17.188.168.8:443        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:40754      17.188.168.8:443        ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:51084      17.188.168.15:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:54310      17.188.163.139:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:55226      17.188.167.203:443      ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:58404      17.188.166.96:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:51122      17.188.168.15:443       ESTABLISHED
-tcp        <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> 172.20.57.12:48894      17.188.165.138:443      ESTABLISHED
-tcp6       <span style="color:#ae81ff">0</span>      <span style="color:#ae81ff">0</span> :::12222                :::*                    LISTEN
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:443             0.0.0.0:*               LISTEN
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:12222           0.0.0.0:*               LISTEN
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58478      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58240      172.20.254.5:3306       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58480      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:52734      52.69.17.201:80         ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:48378      172.20.2.71:6379        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40852      172.20.254.5:3306       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33710      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58430      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:62970     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:63362     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58392      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33346      172.20.2.71:6379        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33596      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40850      172.20.254.5:3306       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54334      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">1</span>      <span class="m">0</span> 172.20.57.12:43536      103.246.56.17:80        CLOSE_WAIT
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33970      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33608      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:51334      17.188.168.15:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54106      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33620      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:58070     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40730      17.188.168.8:443        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:55140      17.188.167.203:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40942      172.20.255.79:3306      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:60113     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33982      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:51034      17.188.168.15:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:52438     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:54726     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54270      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:36142      172.20.2.71:6379        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54322      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>     <span class="m">27</span> 172.20.57.12:40940      172.20.255.79:3306      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:38322      172.20.254.156:3306     TIME_WAIT
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33670      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:43524      15.164.111.246:80       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:49136      17.188.165.138:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:48236      15.164.111.246:80       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40554      17.188.168.8:443        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:52540      52.69.17.201:80         ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:48882      17.188.165.138:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54042      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54888      17.188.167.203:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54132      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:33824      17.188.168.11:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54188      17.188.167.205:443      ESTABLISHED
+tcp        <span class="m">1</span>      <span class="m">0</span> 172.20.57.12:45584      52.69.17.201:80         CLOSE_WAIT
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40848      172.20.254.5:3306       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40846      172.20.254.5:3306       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:12222      116.124.50.42:64423     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:49046      17.188.165.138:443      ESTABLISHED
+tcp        <span class="m">0</span>   <span class="m">5412</span> 172.20.57.12:12222      116.124.50.42:63158     ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:51322      17.188.168.15:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:55062      17.188.167.203:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58492      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40718      17.188.168.8:443        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:40754      17.188.168.8:443        ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:51084      17.188.168.15:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:54310      17.188.163.139:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:55226      17.188.167.203:443      ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:58404      17.188.166.96:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:51122      17.188.168.15:443       ESTABLISHED
+tcp        <span class="m">0</span>      <span class="m">0</span> 172.20.57.12:48894      17.188.165.138:443      ESTABLISHED
+tcp6       <span class="m">0</span>      <span class="m">0</span> :::12222                :::*                    LISTEN
 ...
 </code></pre></div><p><code>netstat</code>으로 열려있는 모든 TCP 커넥션을 확인해본 결과 443 포트로 연결되어 있는 <code>17.x</code> 형태의 아이피들을 확인할 수 있었는데 위치가 모두 애플이 위치한 캘리포니아 쿠퍼티노로 확인되었다. 즉, iOS 푸시 발송시 사용한 APNS 푸시 서버로의 커넥션이 오픈된 이후부터 줄곧 닫히지 않고 있었던게 원인이었던 것이다. 실제로 이 때 열려있던 TCP 커넥션 수와 스냅샷에서 발견된 <code>Connection</code>의 개수가 일치했기 때문에 루트 원인임을 최종 확신할 수 있었다. 또한, 사용하고 있던 <code>node-apn</code> 레포를 가봐도 커넥션이 닫히지 않아 메모리 누수가 발생한다는 <a href="https://github.com/node-apn/node-apn/issues/518">이슈</a>가 이미 오픈되어 있었다.</p>
 <h1 id="메모리-누수-해결">메모리 누수 해결</h1>
 <p>이에 대한 해결책은 그냥 커넥션을 매번 닫아주는 것이다. 즉, 푸시 발송이 끝나면 명시적으로 커넥션을 shutdown 하도록 수정해주면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// push.apns.js
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">exports</span>.<span style="color:#a6e22e">shutdown</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">sched</span>) {
-    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">provider</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getProvider</span>(<span style="color:#a6e22e">sched</span>);
-    <span style="color:#a6e22e">provider</span>.<span style="color:#a6e22e">shutdown</span>();
-}
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">// push.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_sendIOS</span>() {
-    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">isGetTokenFinished</span>) {
-        <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">_sendIOS</span>, <span style="color:#ae81ff">1000</span>);
-        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-            <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">requestCnt</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-            <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">targetTokensI</span>.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">requestCnt</span><span style="color:#f92672">++</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">REQUEST_COUNT_I</span>) {
-                <span style="color:#a6e22e">sendCntI</span><span style="color:#f92672">++</span>;
-                <span style="color:#75715e">// do something
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">PushIOS</span>.<span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">sched</span>, <span style="color:#a6e22e">tokens</span>, <span style="color:#a6e22e">msgI</span>).<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">result</span> =&gt; {
-                    <span style="color:#75715e">// callback
-</span><span style="color:#75715e"></span>                }).<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">reason</span> =&gt; {
-                    <span style="color:#75715e">// callback
-</span><span style="color:#75715e"></span>                });
-            }
-        }
-    } <span style="color:#66d9ef">else</span> {
-        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sendCntI</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
-            <span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">_sendIOS</span>, <span style="color:#ae81ff">1000</span>);
-        } <span style="color:#66d9ef">else</span> {
-            <span style="color:#75715e">// 명시적 shutdown
-</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">PushIOS</span>.<span style="color:#a6e22e">shutdown</span>();
-        }
-    }
-}
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// push.apns.js
+</span><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">shutdown</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">sched</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">provider</span> <span class="o">=</span> <span class="nx">getProvider</span><span class="p">(</span><span class="nx">sched</span><span class="p">);</span>
+    <span class="nx">provider</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// push.js
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">_sendIOS</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="o">!</span><span class="nx">isGetTokenFinished</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_sendIOS</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">requestCnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span><span class="nx">targetTokensI</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">requestCnt</span><span class="o">++</span> <span class="o">&lt;</span> <span class="nx">REQUEST_COUNT_I</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">sendCntI</span><span class="o">++</span><span class="p">;</span>
+                <span class="c1">// do something
+</span><span class="c1"></span>                <span class="nx">PushIOS</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">sched</span><span class="p">,</span> <span class="nx">tokens</span><span class="p">,</span> <span class="nx">msgI</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// callback
+</span><span class="c1"></span>                <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="nx">reason</span> <span class="p">=&gt;</span> <span class="p">{</span>
+                    <span class="c1">// callback
+</span><span class="c1"></span>                <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">sendCntI</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">_sendIOS</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// 명시적 shutdown
+</span><span class="c1"></span>            <span class="nx">PushIOS</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>적용 결과 메모리 누수는 완전히 사라졌으며 지금까지도 메모리 누수는 발생하지 않고 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ls -lha *.heapsnapshot | awk <span style="color:#e6db74">&#39;{print $1, $5, $9}&#39;</span> | column -t
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ ls -lha *.heapsnapshot <span class="p">|</span> awk <span class="s1">&#39;{print $1, $5, $9}&#39;</span> <span class="p">|</span> column -t
 -rw-rw-r--  9.3M  heapdump-18831595953.548940.heapsnapshot
 -rw-rw-r--  11M   heapdump-18832610819.917159.heapsnapshot
 -rw-rw-r--  11M   heapdump-18832836995.407819.heapsnapshot

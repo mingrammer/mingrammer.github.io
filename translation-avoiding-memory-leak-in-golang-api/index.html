@@ -125,21 +125,21 @@
 <h1 id="1단계--httpclient-커스터마이징">1단계 : http.Client 커스터마이징</h1>
 <p>서비스를 개발하면서 배운것중 하나는 디폴트 설정은 신뢰할 수 없다는 것이다.</p>
 <p>우리는 http 패키지의 디폴트 설정을 사용하는 대신 직접 커스터마이징한 <code>http.Client</code>를 사용했다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Client</span>{} <span style="color:#75715e">// default
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">client</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Client</span><span class="p">{}</span> <span class="c1">// default
 </span></code></pre></div><p>우리는 몇가지 필요한 설정을 추가했다. 커넥션 재사용을 위해 전송 (Transport) 정보를 설정하고 재사용 가능한 커넥션에 대한 최대 유휴 (Idle) 시간을 조절했다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">keepAliveTimeout</span><span style="color:#f92672">:=</span> <span style="color:#ae81ff">600</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>
-<span style="color:#a6e22e">timeout</span><span style="color:#f92672">:=</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>
-<span style="color:#a6e22e">defaultTransport</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Transport</span>{
-    <span style="color:#a6e22e">Dial</span>: (<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Dialer</span>{
-               <span style="color:#a6e22e">KeepAlive</span>: <span style="color:#a6e22e">keepAliveTimeout</span>,
-          }).<span style="color:#a6e22e">Dial</span>,
-    <span style="color:#a6e22e">MaxIdleConns</span>: <span style="color:#ae81ff">100</span>,
-    <span style="color:#a6e22e">MaxIdleConnsPerHost</span>: <span style="color:#ae81ff">100</span>,
-}
-<span style="color:#a6e22e">client</span><span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Client</span>{
-    <span style="color:#a6e22e">Transport</span>: <span style="color:#a6e22e">defaultTransport</span>,
-    <span style="color:#a6e22e">Timeout</span>:   <span style="color:#a6e22e">timeout</span>,
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">keepAliveTimeout</span><span class="o">:=</span> <span class="mi">600</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
+<span class="nx">timeout</span><span class="o">:=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
+<span class="nx">defaultTransport</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">http</span><span class="p">.</span><span class="nx">Transport</span><span class="p">{</span>
+    <span class="nx">Dial</span><span class="p">:</span> <span class="p">(</span><span class="o">&amp;</span><span class="nx">net</span><span class="p">.</span><span class="nx">Dialer</span><span class="p">{</span>
+               <span class="nx">KeepAlive</span><span class="p">:</span> <span class="nx">keepAliveTimeout</span><span class="p">,</span>
+          <span class="p">}).</span><span class="nx">Dial</span><span class="p">,</span>
+    <span class="nx">MaxIdleConns</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="nx">MaxIdleConnsPerHost</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="nx">client</span><span class="o">:=</span> <span class="o">&amp;</span><span class="nx">http</span><span class="p">.</span><span class="nx">Client</span><span class="p">{</span>
+    <span class="nx">Transport</span><span class="p">:</span> <span class="nx">defaultTransport</span><span class="p">,</span>
+    <span class="nx">Timeout</span><span class="p">:</span>   <span class="nx">timeout</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div><p>이 설정을 통해 다른 서비스를 호출하는데 소요되는 최대 시간을 줄일 수 있었다.</p>
 <!-- raw HTML omitted -->
 <h1 id="2단계--닫히지-않은-응답-바디에서의-메모리-누수-방지">2단계 : 닫히지 않은 응답 바디에서의 메모리 누수 방지</h1>
@@ -147,27 +147,27 @@
 <p><code>메인 API</code>는 단지 다른 서비스들을 호출하고 있었기 때문에, 우리는 치명적인 실수를 저질렀다. <code>메인 API</code>는 <code>http.Client</code>에서 사용가능한 커넥션을 재사용한다고 가정하고 있기 때문에 어떤 일이 생기면 설령 필요없다고 하더라도 반드시 응답 바디를 읽어야한다. 또한 반드시 응답 바디를 닫아야한다. 이 두 가지는 우리 서버에서 메모리 누수를 방지하는데 도움이 되었다.</p>
 <p>우리는 코드에서 응답 바디를 닫는다는걸 잊고 있었다. 그리고 이는 후에 우리의 프로덕션에 큰 재앙을 일으켰다.</p>
 <p>해결책은 응답 바디는 반드시 닫고, 반환되는 데이터가 필요없을지라도 응답 바디를 읽는 것이었다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;http://example.com?q=one&#34;</span>, <span style="color:#66d9ef">nil</span>)
-<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-}
-<span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
-<span style="color:#75715e">//=================================================
-</span><span style="color:#75715e">// 응답 바디를 닫음
-</span><span style="color:#75715e">//=================================================
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resp</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>() <span style="color:#75715e">// 반드시 닫아야함
-</span><span style="color:#75715e"></span>}
-<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-}
-<span style="color:#75715e">//=================================================
-</span><span style="color:#75715e">// HTTP 커넥션을 재사용할때 메모리 누수를 피하기 위해선 데이터가 필요없더라도 응답 바디를 읽어야함
-</span><span style="color:#75715e">//=================================================
-</span><span style="color:#75715e"></span><span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">Discard</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>) <span style="color:#75715e">// 응답 바디를 읽음. (데이터가 필요 없으므로 devnull에 write)
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> { 
-     <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">req</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">NewRequest</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;http://example.com?q=one&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+<span class="c1">//=================================================
+</span><span class="c1">// 응답 바디를 닫음
+</span><span class="c1">//=================================================
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">resp</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span> <span class="c1">// 반드시 닫아야함
+</span><span class="c1"></span><span class="p">}</span>
+<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span>
+<span class="c1">//=================================================
+</span><span class="c1">// HTTP 커넥션을 재사용할때 메모리 누수를 피하기 위해선 데이터가 필요없더라도 응답 바디를 읽어야함
+</span><span class="c1">//=================================================
+</span><span class="c1"></span><span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">ioutil</span><span class="p">.</span><span class="nx">Discard</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span> <span class="c1">// 응답 바디를 읽음. (데이터가 필요 없으므로 devnull에 write)
+</span><span class="c1"></span><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span> 
+     <span class="k">return</span> <span class="nx">err</span>
+<span class="p">}</span>
 </code></pre></div><p>우리는 <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/">이 훌륭한 글</a>을 읽고 위 문제를 해결했다.</p>
 <p>1단계와 2단계 및 오토 스케일링의 도움으로 이 버그를 줄일 수 있었으며, 이는 작년 (2017) 이후 3개월간은 다시 발생하지 않았다.</p>
 <!-- raw HTML omitted -->
@@ -181,95 +181,95 @@
 <blockquote>
 <p>아래 함수는 예시 함수이긴하나, 우리가 마주한 패턴과 유사한 코드이다.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 고치기전 코드
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">sampleChannel</span> <span style="color:#66d9ef">struct</span>{
-    <span style="color:#a6e22e">Data</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>
-    <span style="color:#a6e22e">Err</span> <span style="color:#66d9ef">error</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 고치기전 코드
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">sampleChannel</span> <span class="kd">struct</span><span class="p">{</span>
+    <span class="nx">Data</span> <span class="o">*</span><span class="nx">Sample</span>
+    <span class="nx">Err</span> <span class="kt">error</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
-    <span style="color:#a6e22e">wg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>{}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">u</span> <span class="o">*</span><span class="nx">usecase</span><span class="p">)</span> <span class="nf">GetSample</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">someparam</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">anotherParam</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">Sample</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">chanSample</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">sampleChannel</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="nx">wg</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">{}</span>
 
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
-</span><span style="color:#75715e"></span>    }()
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromGoogle</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span> <span class="c1">// 함수의 예시
+</span><span class="c1"></span>    <span class="p">}()</span>
 
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromFacebook</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
 
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromTwitter</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span><span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
 
-    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
-    close(<span style="color:#a6e22e">chanSample</span>)
+    <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+    <span class="nb">close</span><span class="p">(</span><span class="nx">chanSample</span><span class="p">)</span>
 
-    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#ae81ff">0</span>)
+    <span class="nx">result</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">Sample</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">chanSample</span> {
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Error</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-            <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span>)
-        }
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> { 
-            <span style="color:#66d9ef">continue</span>
-        }
-        <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
-    }
+    <span class="k">for</span> <span class="nx">sampleItem</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">chanSample</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Error</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+            <span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Err</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Data</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span> 
+            <span class="k">continue</span>
+        <span class="p">}</span>
+        <span class="nx">result</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
+    <span class="p">}</span>
   
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>
-}
+    <span class="k">return</span> <span class="nx">result</span>
+<span class="p">}</span>
 </code></pre></div><p>위 코드를 보면 아무 문제가 없어보인다. 그러나 이 함수는 우리의 <code>메인 API</code>에서 가장 많이 접근하는 함수이며, 가장 무거운 호출이다. 왜냐하면 이 함수는 큰 작업을 처리하는 3개의 API를 호출하기 때문이다.</p>
 <p>이를 개선하기 위해선 채널에서 타임아웃을 사용하는 새로운 접근법을 도입해야한다. 위와 같은 형태의 코드에서는 <code>WaitGroup</code>이 모든 프로세스가 끝날 때까지 대기하고 있기 때문에 모든 응답을 처리하고 반환하기 위해서는 모든 API 호출이 끝날때까지 기다려야한다.</p>
 <p>이는 우리가 저지른 큰 실수중 하나이다. 이 코드는 하나의 서비스가 죽었을 때 큰 문제를 일으킬 수 있다. 죽은 서비스가 복구될때까지 계속 기다릴 것이기 때문이다. 물론 초당 5K개의 호출이 들어오면 이는 재앙이 된다.</p>
 <h2 id="첫-시도-해결책">첫 시도 해결책</h2>
 <p>우리는 타임아웃을 추가하여 코드를 수정했다. 따라서 유저는 오랫동안 기다리지 않아도 되며 대신 <code>Internal Server Error</code>를 받게될 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
-    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">chanSample</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">u</span> <span class="o">*</span><span class="nx">usecase</span><span class="p">)</span> <span class="nf">GetSample</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">someparam</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">anotherParam</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">Sample</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">chanSample</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">sampleChannel</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">chanSample</span><span class="p">)</span>
 
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
-</span><span style="color:#75715e"></span>    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromGoogle</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span> <span class="c1">// 함수의 예시
+</span><span class="c1"></span>    <span class="p">}()</span>
 
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromFacebook</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
    
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromTwitter</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span><span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
  
-    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">feed</span>.<span style="color:#a6e22e">Feed</span>, <span style="color:#ae81ff">0</span>)
-    <span style="color:#a6e22e">timeout</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>)
+    <span class="nx">result</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">feed</span><span class="p">.</span><span class="nx">Feed</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">timeout</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
   
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">loop</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">loop</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">loop</span><span style="color:#f92672">++</span> {
-        <span style="color:#66d9ef">select</span> {
-        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">chanSample</span>:
-            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-                <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span>)
-                <span style="color:#66d9ef">continue</span>
-            }
-            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">feedItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
-                <span style="color:#66d9ef">continue</span>
-            }
-            <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>,<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
-        <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">timeout</span>:
-            <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Timeout to get sample id: %d. &#34;</span>, <span style="color:#a6e22e">id</span>)
-            <span style="color:#a6e22e">result</span> = make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">sample</span>, <span style="color:#ae81ff">0</span>)
-            <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span>
-        }
-    }
+    <span class="k">for</span> <span class="nx">loop</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">loop</span> <span class="p">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">loop</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">select</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nx">sampleItem</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">chanSample</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="nx">logrus</span><span class="p">.</span><span class="nf">Error</span><span class="p">(</span><span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Err</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="nx">feedItem</span><span class="p">.</span><span class="nx">Data</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="k">continue</span>
+            <span class="p">}</span>
+            <span class="nx">result</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
+        <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">timeout</span><span class="p">:</span>
+            <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Timeout to get sample id: %d. &#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
+            <span class="nx">result</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">sample</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">err</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#66d9ef">nil</span>;
-}
+    <span class="k">return</span> <span class="nx">result</span><span class="p">,</span> <span class="kc">nil</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="4단계--컨텍스트를-활용한-타임아웃-제어">4단계 : 컨텍스트를 활용한 타임아웃 제어</h1>
 <p>3단계까지 시도 했음에도, 우리의 문제는 여전히 완벽하게 해결되지는 않았다. 우리의 <code>메인 API</code>는 여전히 높은 CPU와 메모리를 점유하고 있었다.</p>
@@ -277,99 +277,99 @@
 <p>나중에 <a href="http://dahernan.github.io/2015/02/04/context-and-cancellation-of-goroutines/">이 글</a>을 읽은 뒤, 우리는 Go에서 알지 못했던 흥미로운 특징을 발견했다. 바로  <code>컨텍스트 (Context)</code>를 활용한 고루틴의 캔슬레이션 (Cancellation)이다.</p>
 <p>타임아웃을 위해 <code>time.After</code>를 사용하는 대신 <code>context.Context</code>를 사용하였다. 이 새로운 접근법으로 우리의 서비스는 보다 더 안정적이게 되었다.</p>
 <p>그 다음 관련 함수에 컨텍스트를 추가하여 코드 구조를 다시 변경하였다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 컨텍스트를 사용한 최종 수정 코드
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">GetSample</span>(<span style="color:#a6e22e">c</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">someparam</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">anotherParam</span> <span style="color:#66d9ef">string</span>) ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Sample</span>, <span style="color:#66d9ef">error</span>) {
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">c</span><span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">c</span>= <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>()
-    }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// 컨텍스트를 사용한 최종 수정 코드
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">u</span> <span class="o">*</span><span class="nx">usecase</span><span class="p">)</span> <span class="nf">GetSample</span><span class="p">(</span><span class="nx">c</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">id</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">someparam</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">anotherParam</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="o">*</span><span class="nx">Sample</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">c</span><span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">c</span><span class="p">=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">()</span>
+    <span class="p">}</span>
   
-    <span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithTimeout</span>(<span style="color:#a6e22e">c</span>, <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>)
-    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">cancel</span>()
+    <span class="nx">ctx</span><span class="p">,</span> <span class="nx">cancel</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">defer</span> <span class="nf">cancel</span><span class="p">()</span>
   
-    <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#a6e22e">sampleChannel</span>, <span style="color:#ae81ff">3</span>)
-    <span style="color:#66d9ef">defer</span> close(<span style="color:#a6e22e">chanSample</span>)
+    <span class="nx">chanSample</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">sampleChannel</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">chanSample</span><span class="p">)</span>
     
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromGoogle</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>) <span style="color:#75715e">// 함수의 예시
-</span><span style="color:#75715e"></span>    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromGoogle</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span> <span class="c1">// 함수의 예시
+</span><span class="c1"></span>    <span class="p">}()</span>
 
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromFacebook</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
 
-    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-        <span style="color:#a6e22e">chanSample</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">getDataFromTwitter</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">anotherParam</span>)
-    }()
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">chanSample</span> <span class="o">&lt;-</span> <span class="nx">u</span><span class="p">.</span><span class="nf">getDataFromTwitter</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span><span class="nx">anotherParam</span><span class="p">)</span>
+    <span class="p">}()</span>
 
-    <span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">feed</span>.<span style="color:#a6e22e">Feed</span>, <span style="color:#ae81ff">0</span>)
+    <span class="nx">result</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">feed</span><span class="p">.</span><span class="nx">Feed</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
   
-    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">loop</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">loop</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">loop</span><span style="color:#f92672">++</span> {
-        <span style="color:#66d9ef">select</span> {
-            <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">sampleItem</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">chanSample</span>:
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-                    <span style="color:#66d9ef">continue</span>
-                }
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">feedItem</span>.<span style="color:#a6e22e">Data</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
-                    <span style="color:#66d9ef">continue</span>
-                }
-                <span style="color:#a6e22e">result</span> = append(<span style="color:#a6e22e">result</span>,<span style="color:#a6e22e">sampleItem</span>.<span style="color:#a6e22e">Data</span>)
-                <span style="color:#75715e">// ============================================================
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 일관성 없는 데이터를 방지하기 위해 컨텍스트가 타임아웃을 초과하는 경우
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// 유저에게 빈 배열과 에러 메시지를 보낸다
-</span><span style="color:#75715e"></span>                <span style="color:#75715e">// ============================================================
-</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>(): <span style="color:#75715e">// 컨텍스트가 타임아웃을 초과했다는 알림 시그널을 받음
-</span><span style="color:#75715e"></span>                <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;Timeout to get sample id: %d. &#34;</span>, <span style="color:#a6e22e">id</span>)
-                <span style="color:#a6e22e">result</span> = make([]<span style="color:#f92672">*</span><span style="color:#a6e22e">sample</span>, <span style="color:#ae81ff">0</span>)
-                <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span>
-        }
-    }
+    <span class="k">for</span> <span class="nx">loop</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">loop</span> <span class="p">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">loop</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">select</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="nx">sampleItem</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">chanSample</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                    <span class="k">continue</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="nx">feedItem</span><span class="p">.</span><span class="nx">Data</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+                    <span class="k">continue</span>
+                <span class="p">}</span>
+                <span class="nx">result</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="nx">sampleItem</span><span class="p">.</span><span class="nx">Data</span><span class="p">)</span>
+                <span class="c1">// ============================================================
+</span><span class="c1"></span>                <span class="c1">// 일관성 없는 데이터를 방지하기 위해 컨텍스트가 타임아웃을 초과하는 경우
+</span><span class="c1"></span>                <span class="c1">// 유저에게 빈 배열과 에러 메시지를 보낸다
+</span><span class="c1"></span>                <span class="c1">// ============================================================
+</span><span class="c1"></span>            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">ctx</span><span class="p">.</span><span class="nf">Done</span><span class="p">():</span> <span class="c1">// 컨텍스트가 타임아웃을 초과했다는 알림 시그널을 받음
+</span><span class="c1"></span>                <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Timeout to get sample id: %d. &#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
+                <span class="nx">result</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">*</span><span class="nx">sample</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">err</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">result</span>, <span style="color:#66d9ef">nil</span>;
-}
+    <span class="k">return</span> <span class="nx">result</span><span class="p">,</span> <span class="kc">nil</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div><p>우리는 코드에서 모든 고루틴 호출에 <code>컨텍스트</code>를 사용한다. 이는 메모리를 해제하고 고루틴 호출을 취소하는데 도움이 된다.</p>
 <p>추가적으로, 보다 더 통제 가능하고 신뢰성 있는 서비스를 위해 HTTP 요청에 컨텍스트를 전달한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> ( <span style="color:#a6e22e">u</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">usecase</span>) <span style="color:#a6e22e">getDataFromFacebook</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">id</span> <span style="color:#66d9ef">int64</span>, <span style="color:#a6e22e">param</span> <span style="color:#66d9ef">string</span>) <span style="color:#a6e22e">sampleChanel</span>{
-    <span style="color:#a6e22e">req</span>,<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;GET&#34;</span>, <span style="color:#e6db74">&#34;https://facebook.com&#34;</span>, <span style="color:#66d9ef">nil</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
-            <span style="color:#a6e22e">Err</span>: <span style="color:#a6e22e">err</span>,
-        }
-    }
-    <span style="color:#75715e">// ============================================================
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 요청에 컨텍스트를 전달한다
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// 이 기능은 Go 1.7부터 사용할 수 있다
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// ============================================================
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ctx</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#a6e22e">req</span> = <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">WithContext</span>(<span style="color:#a6e22e">ctx</span>) <span style="color:#75715e">// HTTP 호출 요청에 컨텍스트를 사용하고있다.
-</span><span style="color:#75715e"></span>    }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span> <span class="nx">u</span> <span class="o">*</span><span class="nx">usecase</span><span class="p">)</span> <span class="nf">getDataFromFacebook</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="nx">id</span> <span class="kt">int64</span><span class="p">,</span> <span class="nx">param</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">sampleChanel</span><span class="p">{</span>
+    <span class="nx">req</span><span class="p">,</span><span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">NewRequest</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;https://facebook.com&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">sampleChannel</span><span class="p">{</span>
+            <span class="nx">Err</span><span class="p">:</span> <span class="nx">err</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// ============================================================
+</span><span class="c1"></span>    <span class="c1">// 요청에 컨텍스트를 전달한다
+</span><span class="c1"></span>    <span class="c1">// 이 기능은 Go 1.7부터 사용할 수 있다
+</span><span class="c1"></span>    <span class="c1">// ============================================================
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">ctx</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">req</span> <span class="p">=</span> <span class="nx">req</span><span class="p">.</span><span class="nf">WithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="c1">// HTTP 호출 요청에 컨텍스트를 사용하고있다.
+</span><span class="c1"></span>    <span class="p">}</span>
   
-    <span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">u</span>.<span style="color:#a6e22e">httpClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
-            <span style="color:#a6e22e">Err</span>: <span style="color:#a6e22e">err</span>,
-        }
-    }
+    <span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span><span class="o">:=</span> <span class="nx">u</span><span class="p">.</span><span class="nx">httpClient</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="nx">req</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">sampleChannel</span><span class="p">{</span>
+            <span class="nx">Err</span><span class="p">:</span> <span class="nx">err</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
   
-    <span style="color:#a6e22e">body</span>,<span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutils</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span><span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
-            <span style="color:#a6e22e">Err</span>:<span style="color:#a6e22e">err</span>,
-        }
-    }
+    <span class="nx">body</span><span class="p">,</span><span class="nx">err</span><span class="o">:=</span> <span class="nx">ioutils</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span><span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">sampleChannel</span><span class="p">{</span>
+            <span class="nx">Err</span><span class="p">:</span><span class="nx">err</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
     
-    <span style="color:#a6e22e">sample</span><span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Sample</span>)
-    <span style="color:#a6e22e">err</span><span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshall</span>(<span style="color:#a6e22e">body</span>,<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">sample</span>)
-    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannle</span>{
-            <span style="color:#a6e22e">Err</span>:<span style="color:#a6e22e">err</span>,
-        }
-    }
+    <span class="nx">sample</span><span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Sample</span><span class="p">)</span>
+    <span class="nx">err</span><span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshall</span><span class="p">(</span><span class="nx">body</span><span class="p">,</span><span class="o">&amp;</span><span class="nx">sample</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">sampleChannle</span><span class="p">{</span>
+            <span class="nx">Err</span><span class="p">:</span><span class="nx">err</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
     
-    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sampleChannel</span>{
-        <span style="color:#a6e22e">Err</span>:<span style="color:#66d9ef">nil</span>,
-        <span style="color:#a6e22e">Data</span>:<span style="color:#a6e22e">sample</span>,
-    }
-}
+    <span class="k">return</span> <span class="nx">sampleChannel</span><span class="p">{</span>
+        <span class="nx">Err</span><span class="p">:</span><span class="kc">nil</span><span class="p">,</span>
+        <span class="nx">Data</span><span class="p">:</span><span class="nx">sample</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
 </code></pre></div><p>이 모든 설정과 타임아웃 제어로 인해, 우리의 시스템은 보다 더 안전하고 통제 가능한 시스템이 되었다.</p>
 <!-- raw HTML omitted -->

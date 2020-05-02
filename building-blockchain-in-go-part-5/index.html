@@ -176,53 +176,53 @@
 <p>이론은 다 살펴보았으니 이제 코드를 작성할 시간이다. 코드를 작성하다보면 개념들을 좀 더 이해하기 쉬울 것이다.</p>
 <h1 id="주소-구현">주소 구현</h1>
 <p><strong>Wallet</strong> 구조체부터 작성해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Wallet</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">PrivateKey</span> <span style="color:#a6e22e">scdsa</span>.<span style="color:#a6e22e">PrivateKey</span>
-        <span style="color:#a6e22e">PublicKey</span>  []<span style="color:#66d9ef">byte</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Wallet</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">PrivateKey</span> <span class="nx">scdsa</span><span class="p">.</span><span class="nx">PrivateKey</span>
+        <span class="nx">PublicKey</span>  <span class="p">[]</span><span class="kt">byte</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Wallets</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Wallets</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">Wallet</span>
-}
+<span class="kd">type</span> <span class="nx">Wallets</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Wallets</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">Wallet</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewWallet</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">Wallet</span> {
-        <span style="color:#a6e22e">private</span>, <span style="color:#a6e22e">public</span> = <span style="color:#a6e22e">newKeyPair</span>()
-        <span style="color:#a6e22e">wallet</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Wallet</span>{<span style="color:#a6e22e">private</span>, <span style="color:#a6e22e">public</span>}
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">wallet</span>
-}
+<span class="kd">func</span> <span class="nf">NewWallet</span><span class="p">()</span> <span class="o">*</span><span class="nx">Wallet</span> <span class="p">{</span>
+        <span class="nx">private</span><span class="p">,</span> <span class="nx">public</span> <span class="p">=</span> <span class="nf">newKeyPair</span><span class="p">()</span>
+        <span class="nx">wallet</span> <span class="o">:=</span> <span class="nx">Wallet</span><span class="p">{</span><span class="nx">private</span><span class="p">,</span> <span class="nx">public</span><span class="p">}</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">wallet</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">newKeyPair</span>() (<span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">PrivateKey</span>, []<span style="color:#66d9ef">byte</span>) {
-        <span style="color:#a6e22e">curve</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">elliptic</span>.<span style="color:#a6e22e">P256</span>()
-        <span style="color:#a6e22e">private</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">GenerateKey</span>(<span style="color:#a6e22e">curve</span>, <span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Reader</span>)
-        <span style="color:#a6e22e">pubKey</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">private</span>.<span style="color:#a6e22e">PublicKey</span>.<span style="color:#a6e22e">X</span>.<span style="color:#a6e22e">Bytes</span>(), <span style="color:#a6e22e">private</span>.<span style="color:#a6e22e">PublicKey</span>.<span style="color:#a6e22e">Y</span>.<span style="color:#a6e22e">Bytes</span>()<span style="color:#f92672">...</span>)
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">private</span>, <span style="color:#a6e22e">pubKey</span>
-}
+<span class="kd">func</span> <span class="nf">newKeyPair</span><span class="p">()</span> <span class="p">(</span><span class="nx">ecdsa</span><span class="p">.</span><span class="nx">PrivateKey</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">curve</span> <span class="o">:=</span> <span class="nx">elliptic</span><span class="p">.</span><span class="nf">P256</span><span class="p">()</span>
+        <span class="nx">private</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nf">GenerateKey</span><span class="p">(</span><span class="nx">curve</span><span class="p">,</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span>
+        <span class="nx">pubKey</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">private</span><span class="p">.</span><span class="nx">PublicKey</span><span class="p">.</span><span class="nx">X</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">(),</span> <span class="nx">private</span><span class="p">.</span><span class="nx">PublicKey</span><span class="p">.</span><span class="nx">Y</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">()</span><span class="o">...</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="nx">private</span><span class="p">,</span> <span class="nx">pubKey</span>
+<span class="p">}</span>
 </code></pre></div><p>지갑은 단순히 키의 쌍이다. 지갑들을 하나의 파일로 저장하고 불러올 수 있도록 <strong>Wallets</strong> 타입을 만든다. <strong>Wallet</strong>의 생성자에서 새로운 키 쌍이 생성된다. <strong>newKeyPair</strong> 함수는 직관적인데 ECDSA는 타원 곡선 기반이기 때문에 타원 곡선이 하나 필요하다. 다음으로, 곡선을 이용해 개인키가 생성되고 개인키로부터 공개키가 생성된다. 여기서 주목해야할 것은 타원 곡선 기반 알고리즘에서 공개키들은 곡선 위의 점들이라는 것이다. 따라서 공개키는 X, Y 좌표의 조합이다. 비트코인에서 이 좌표들은 하나로 연결되어 공개키를 형성한다.</p>
 <p>이제 주소를 생성해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">Wallet</span>) <span style="color:#a6e22e">GetAddress</span>() []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#a6e22e">pubKeyHash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">HashPubKey</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">PublicKey</span>)
-        <span style="color:#a6e22e">versionedPayload</span> <span style="color:#f92672">:=</span> append([]<span style="color:#66d9ef">byte</span>{<span style="color:#a6e22e">version</span>}, <span style="color:#a6e22e">pubKeyHash</span><span style="color:#f92672">...</span>)
-        <span style="color:#a6e22e">checksum</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">checksum</span>(<span style="color:#a6e22e">versionedPayload</span>)
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">w</span> <span class="nx">Wallet</span><span class="p">)</span> <span class="nf">GetAddress</span><span class="p">()</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="nx">pubKeyHash</span> <span class="o">:=</span> <span class="nf">HashPubKey</span><span class="p">(</span><span class="nx">w</span><span class="p">.</span><span class="nx">PublicKey</span><span class="p">)</span>
+        <span class="nx">versionedPayload</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">([]</span><span class="kt">byte</span><span class="p">{</span><span class="nx">version</span><span class="p">},</span> <span class="nx">pubKeyHash</span><span class="o">...</span><span class="p">)</span>
+        <span class="nx">checksum</span> <span class="o">:=</span> <span class="nf">checksum</span><span class="p">(</span><span class="nx">versionedPayload</span><span class="p">)</span>
 
-        <span style="color:#a6e22e">fullPayload</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">versionedPayload</span>, <span style="color:#a6e22e">checksum</span><span style="color:#f92672">...</span>)
-        <span style="color:#a6e22e">address</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Base58Encode</span>(<span style="color:#a6e22e">fullPayload</span>)
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">address</span>
-}
+        <span class="nx">fullPayload</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">versionedPayload</span><span class="p">,</span> <span class="nx">checksum</span><span class="o">...</span><span class="p">)</span>
+        <span class="nx">address</span> <span class="o">:=</span> <span class="nf">Base58Encode</span><span class="p">(</span><span class="nx">fullPayload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">address</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">HashPubKey</span>(<span style="color:#a6e22e">pubKey</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#a6e22e">publicSHA256</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">pubKey</span>)
+<span class="kd">func</span> <span class="nf">HashPubKey</span><span class="p">(</span><span class="nx">pubKey</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="nx">publicSHA256</span> <span class="o">:=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">pubKey</span><span class="p">)</span>
 
-        <span style="color:#a6e22e">RIPEMD160Hasher</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ripemd160</span>.<span style="color:#a6e22e">New</span>()
-        <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">RIPEMD160Hasher</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">publicSHA256</span>[:])
-        <span style="color:#a6e22e">publicRIPEMD160</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">RIPEMD160Hasher</span>.<span style="color:#a6e22e">Sum</span>(<span style="color:#66d9ef">nil</span>)
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">publicRIPEMD160</span>
-}
+        <span class="nx">RIPEMD160Hasher</span> <span class="o">:=</span> <span class="nx">ripemd160</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
+        <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">RIPEMD160Hasher</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">publicSHA256</span><span class="p">[:])</span>
+        <span class="nx">publicRIPEMD160</span> <span class="o">:=</span> <span class="nx">RIPEMD160Hasher</span><span class="p">.</span><span class="nf">Sum</span><span class="p">(</span><span class="kc">nil</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">publicRIPEMD160</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">checksum</span>(<span style="color:#a6e22e">payload</span> []<span style="color:#66d9ef">byte</span>) []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#a6e22e">firstSHA</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">payload</span>)
-        <span style="color:#a6e22e">secondSHA</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">firstSHA</span>[:])
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">secondSHA</span>[:<span style="color:#a6e22e">addressChecksumLen</span>]
-}
+<span class="kd">func</span> <span class="nf">checksum</span><span class="p">(</span><span class="nx">payload</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="nx">firstSHA</span> <span class="o">:=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span>
+        <span class="nx">secondSHA</span> <span class="o">:=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">firstSHA</span><span class="p">[:])</span>
+        <span class="k">return</span> <span class="nx">secondSHA</span><span class="p">[:</span><span class="nx">addressChecksumLen</span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div><p>공개키는 다음 단계들을 통해 Base58 주소로 변환된다.</p>
 <ol>
 <li>공개키를 <strong>RIPEMD(SHA256(PubKey))</strong> 해싱 알고리즘으로 두 번 해싱한다.</li>
@@ -234,32 +234,32 @@
 <p>이 결과로 여러분은 <strong>실제 비트코인 주소</strong>를 얻을 수 있으며 <a href="https://blockchain.info/">blockchain.info</a>에서 잔고도 확인할 수 있다. 하지만 필자는 여러분이 새 주소를 생성하고 잔고를 몇번이고 확인해봐도 잔고가 항상 0임을 확신할 수 있다. 이게 바로 적절한 공개키 암호화 알고리즘의 선택이 중요한 이유이다. 개인키를 임의의 수라고 생각하면 동일한 숫자를 생성할 확률은 가능한한 낮아야하며 이상적으로는 절대 발생해서는 안된다.</p>
 <p>또한 주소를 얻기 위해 비트코인 노드에 연결할 필요는 없다는 점에 유의하라. 주소 생성 알고리즘은 많은 프로그래밍 언어와 라이브러리에 구현되어있는 공개된 알고리즘들을 조합하여 사용하고있다.</p>
 <p>이제 트랜잭션이 주소를 사용할 수 있도록 입력과 출력을 수정해야한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TXIntput</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Txid</span>      []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Vout</span>      <span style="color:#66d9ef">int</span>
-        <span style="color:#a6e22e">Signature</span> []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">PubKey</span>    []<span style="color:#66d9ef">byte</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">TXIntput</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Txid</span>      <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Vout</span>      <span class="kt">int</span>
+        <span class="nx">Signature</span> <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">PubKey</span>    <span class="p">[]</span><span class="kt">byte</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">TXInput</span>) <span style="color:#a6e22e">UsesKey</span>(<span style="color:#a6e22e">pubKeyHash</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span> {
-        <span style="color:#a6e22e">lockingHash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">HashPubKey</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">PubKey</span>)
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">lockingHash</span>, <span style="color:#a6e22e">pubKeyHash</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">in</span> <span class="o">*</span><span class="nx">TXInput</span><span class="p">)</span> <span class="nf">UsesKey</span><span class="p">(</span><span class="nx">pubKeyHash</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="nx">lockingHash</span> <span class="o">:=</span> <span class="nf">HashPubKey</span><span class="p">(</span><span class="nx">in</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Compare</span><span class="p">(</span><span class="nx">lockingHash</span><span class="p">,</span> <span class="nx">pubKeyHash</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TXOutput</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Value</span>      <span style="color:#66d9ef">int</span>
-        <span style="color:#a6e22e">PubKeyHash</span> []<span style="color:#66d9ef">byte</span>
-}
+<span class="kd">type</span> <span class="nx">TXOutput</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Value</span>      <span class="kt">int</span>
+        <span class="nx">PubKeyHash</span> <span class="p">[]</span><span class="kt">byte</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">TXOutput</span>) <span style="color:#a6e22e">Lock</span>(<span style="color:#a6e22e">address</span> []<span style="color:#66d9ef">byte</span>) {
-        <span style="color:#a6e22e">pubKeyHash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Base58Decode</span>(<span style="color:#a6e22e">address</span>)
-        <span style="color:#a6e22e">pubKeyHash</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">pubKeyHash</span>(<span style="color:#ae81ff">1</span> : len(<span style="color:#a6e22e">pubKeyHash</span>)<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>)
-        <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">PubKeyHash</span> = <span style="color:#a6e22e">pubKeyHash</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">out</span> <span class="o">*</span><span class="nx">TXOutput</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">(</span><span class="nx">address</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">pubKeyHash</span> <span class="o">:=</span> <span class="nf">Base58Decode</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span>
+        <span class="nx">pubKeyHash</span> <span class="o">:=</span> <span class="nf">pubKeyHash</span><span class="p">(</span><span class="mi">1</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nx">pubKeyHash</span><span class="p">)</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="nx">out</span><span class="p">.</span><span class="nx">PubKeyHash</span> <span class="p">=</span> <span class="nx">pubKeyHash</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">TXOutput</span>) <span style="color:#a6e22e">IsLockedWithKey</span>(<span style="color:#a6e22e">pubKeyHash</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#66d9ef">bool</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">PubKeyHash</span>, <span style="color:#a6e22e">pubKeyHash</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">out</span> <span class="o">*</span><span class="nx">TXOutput</span><span class="p">)</span> <span class="nf">IsLockedWithKey</span><span class="p">(</span><span class="nx">pubKeyHash</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Compare</span><span class="p">(</span><span class="nx">out</span><span class="p">.</span><span class="nx">PubKeyHash</span><span class="p">,</span> <span class="nx">pubKeyHash</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="p">}</span>
 </code></pre></div><p>스크립팅 언어를 구현하지는 않으므로 더 이상 <strong>ScriptPubKey</strong>와 <strong>ScriptSig</strong> 필드는 사용하지 않을 것이다. 대신 <strong>ScriptSig</strong>는 <strong>Signature</strong>와 <strong>PubKey</strong> 필드로 분할되고 <strong>ScriptPubKey</strong>는 <strong>PubKeyHash</strong>로 바뀐다. 우리는 비트코인과 동일한 출력 잠금/해제 및 입력 서명 로직을 구현할 것이다. 다만 우리는 메서드를 사용할 것이다.</p>
 <p><strong>UsesKey</strong> 메서드는 입력이 출력을 해제할 수 있는 특정한 키를 사용하고 있는지 검사한다. 입력은 해싱되지 않은 공개키를 저장하고 있는데 메서드는 해싱된 값을 받고 있음을 보라. <strong>IsLockedWithKey</strong>는 제공된 공개키 해시가 출력을 잠그는데 사용되었는지를 검사한다. 이는 <strong>UsesKey</strong>와는 대조적이며 이 두 함수 모두 <strong>FindUnspentTransaction</strong>에서 트랜잭션간의 연결을 구성하는데 사용된다.</p>
 <p><strong>Lock</strong>은 출력을 잠그기만 한다. 코인을 다른 사람에게 전송할 때 우리는 주소밖에 모르기 때문에 함수는 인자로 주소만 받는다. 주소가 디코딩되고 공개키 해시가 추출되면 <strong>PubKeyHash</strong> 필드에 저장된다.</p>
@@ -315,183 +315,183 @@ Balance of '1Lhqun1E9zZZhodiTqxfPQBcwr1CVDV2sy': 0
 <p>잘려진 트랜잭션 복사본을 얻는 자세한 과정은 <a href="https://en.bitcoin.it/wiki/File:Bitcoin_OpCheckSig_InDetail.png">여기</a>를 참조하라. 오래된 문서이지만 더 신뢰할 수 있는 정보원을 찾을 수 없었다.</p>
 </blockquote>
 <p>복잡해보이니 코드를 한 번 작성해보자. <strong>Sign</strong> 메서드부터 구현해보겠다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) <span style="color:#a6e22e">Sign</span>(<span style="color:#a6e22e">privKey</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">PrivateKey</span>, <span style="color:#a6e22e">prevTXs</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Transaction</span>) {
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">IsCoinbase</span>() {
-                <span style="color:#66d9ef">return</span>
-        }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="nf">Sign</span><span class="p">(</span><span class="nx">privKey</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nx">PrivateKey</span><span class="p">,</span> <span class="nx">prevTXs</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Transaction</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">IsCoinbase</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span>
+        <span class="p">}</span>
 
-        <span style="color:#a6e22e">txCopy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">TrimmedCopy</span>()
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">inID</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#a6e22e">prevTx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">prevTxs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)]
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#66d9ef">nil</span>
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#a6e22e">prevTx</span>.<span style="color:#a6e22e">Vout</span>[<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Vout</span>].<span style="color:#a6e22e">PubKeyHash</span>
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Hash</span>()
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#66d9ef">nil</span>
+        <span class="nx">txCopy</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">TrimmedCopy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="nx">inID</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="nx">prevTx</span> <span class="o">:=</span> <span class="nx">prevTxs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)]</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="kc">nil</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="nx">prevTx</span><span class="p">.</span><span class="nx">Vout</span><span class="p">[</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Vout</span><span class="p">].</span><span class="nx">PubKeyHash</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="kc">nil</span>
 
-                <span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">Sign</span>(<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Reader</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">privKey</span>, <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span>)
-                <span style="color:#a6e22e">signature</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Bytes</span>(), <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Bytes</span>()<span style="color:#f92672">...</span>)
-                <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#a6e22e">signature</span>
-        }
-}
+                <span class="nx">r</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nf">Sign</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nx">Reader</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">privKey</span><span class="p">,</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span><span class="p">)</span>
+                <span class="nx">signature</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">(),</span> <span class="nx">s</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">()</span><span class="o">...</span><span class="p">)</span>
+                <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="nx">signature</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>이 메서드는 개인키와 이전 트랜잭션들의 집합을 인자로 받는다. 이전에도 언급했듯이 트랜잭션을 서명하기 위해선 트랜잭션 입력이 참조하고 있는 이전 출력의 값들이 필요하기 때문에 이 출력들을 가지고 있는 트랜잭션 집합이 필요하다.</p>
 <p>한 줄씩 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">IsCoinbase</span>() {
-        <span style="color:#66d9ef">return</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">IsCoinbase</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span>
+<span class="p">}</span>
 </code></pre></div><p>코인베이스 트랜잭션에는 실제 입력값이 없기 때문에 서명하지 않는다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">txCopy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">TrimmedCopy</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">txCopy</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">TrimmedCopy</span><span class="p">()</span>
 </code></pre></div><p>전체 트랜잭션이 아닌 잘려진 복사본이 서명된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) <span style="color:#a6e22e">TrimmedCopy</span>() <span style="color:#a6e22e">Transaction</span> {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">inputs</span> []<span style="color:#a6e22e">TXInput</span>
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">outputs</span> []<span style="color:#a6e22e">TXOutput</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="nf">TrimmedCopy</span><span class="p">()</span> <span class="nx">Transaction</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">inputs</span> <span class="p">[]</span><span class="nx">TXInput</span>
+        <span class="kd">var</span> <span class="nx">outputs</span> <span class="p">[]</span><span class="nx">TXOutput</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#a6e22e">inputs</span> = append(<span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">TXInput</span>{<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>, <span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Vout</span>, <span style="color:#66d9ef">nil</span>, <span style="color:#66d9ef">nil</span>})
-        }
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="nx">inputs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">inputs</span><span class="p">,</span> <span class="nx">TXInput</span><span class="p">{</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">,</span> <span class="nx">vin</span><span class="p">.</span><span class="nx">Vout</span><span class="p">,</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span><span class="p">})</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">vout</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vout</span> {
-                <span style="color:#a6e22e">outputs</span> = append(<span style="color:#a6e22e">outputs</span>, <span style="color:#a6e22e">TXOutput</span>{<span style="color:#a6e22e">vout</span>.<span style="color:#a6e22e">Value</span>, <span style="color:#a6e22e">vout</span>.<span style="color:#a6e22e">PubKeyHash</span>})
-        }
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">vout</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vout</span> <span class="p">{</span>
+                <span class="nx">outputs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">outputs</span><span class="p">,</span> <span class="nx">TXOutput</span><span class="p">{</span><span class="nx">vout</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span> <span class="nx">vout</span><span class="p">.</span><span class="nx">PubKeyHash</span><span class="p">})</span>
+        <span class="p">}</span>
 
-        <span style="color:#a6e22e">txCopy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Transaction</span>{<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">outputs</span>}
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">txCopy</span>
-}
+        <span class="nx">txCopy</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span><span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span> <span class="nx">inputs</span><span class="p">,</span> <span class="nx">outputs</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nx">txCopy</span>
+<span class="p">}</span>
 </code></pre></div><p>복사본에는 모든 입력과 출력이 포함되지만 <strong>TXInput.Signature</strong>와 <strong>TXInput.PubKey</strong>는 nil로 설정된다.</p>
 <p>다음으로 복사본의 각 입력을 순회한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">inID</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span> {
-        <span style="color:#a6e22e">prevTx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">prevTXs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)]
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#66d9ef">nil</span>
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#a6e22e">prevTx</span>.<span style="color:#a6e22e">Vout</span>[<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Vout</span>].<span style="color:#a6e22e">PubKeyHash</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">inID</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+        <span class="nx">prevTx</span> <span class="o">:=</span> <span class="nx">prevTXs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)]</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="kc">nil</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="nx">prevTx</span><span class="p">.</span><span class="nx">Vout</span><span class="p">[</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Vout</span><span class="p">].</span><span class="nx">PubKeyHash</span>
 </code></pre></div><p>각 입력을 순회할때마다 <strong>Signature</strong>는 <strong>nil</strong>로 <strong>PubKey</strong>는 참조하고있는 출력의 <strong>PubKeyHash</strong>로 설정된다. 이 순간, 현재 트랜잭션을 제외한 모든 트랜잭션은 <strong>Signature</strong>와 <strong>PubKey</strong> 필드가 nil로 설정된 &ldquo;빈&rdquo; 상태이다. 따라서 <strong>입력은 별도로 서명된다</strong>. 우리가 만들 애플리케이션에서는 필요없지만 비트코인에서는 트랜잭션이 다른 주소를 참조하는 입력을 포함하는 트랜잭션을 허용한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Hash</span>()
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#66d9ef">nil</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="kc">nil</span>
 </code></pre></div><p><strong>Hash</strong> 메서드는 트랜잭션을 직렬화하여 SHA-256 알고리즘으로 해싱한다. 해싱된 값이 우리가 서명할 데이터이다. 해시를 얻고 나면 이후 순회에 영향이 없도록 <strong>PubKey</strong> 필드를 초기화 해야한다.</p>
 <p>이제 핵심 로직을 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">        <span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">Sign</span>(<span style="color:#a6e22e">rand</span>.<span style="color:#a6e22e">Reader</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">privKey</span>, <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span>)
-        <span style="color:#a6e22e">signature</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Bytes</span>(), <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Bytes</span>()<span style="color:#f92672">...</span>)
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#a6e22e">signature</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">        <span class="nx">r</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nf">Sign</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nx">Reader</span><span class="p">,</span> <span class="o">*</span><span class="nx">privKey</span><span class="p">,</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span><span class="p">)</span>
+        <span class="nx">signature</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">(),</span> <span class="nx">s</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">()</span><span class="o">...</span><span class="p">)</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="nx">signature</span>
 </code></pre></div><p><strong>privKey</strong>로 <strong>txCopy.ID</strong>를 서명하고있다. ECDSA 서명은 한 쌍의 숫자로 입력의 <strong>Signature</strong> 필드에 조합하여 저장한다.</p>
 <p>이제 검증 함수를 작성해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) <span style="color:#a6e22e">Verify</span>(<span style="color:#a6e22e">prevTXs</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Transaction</span>) <span style="color:#66d9ef">bool</span> {
-        <span style="color:#a6e22e">txCopy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">TrimmedCopy</span>()
-        <span style="color:#a6e22e">curve</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">elliptic</span>.<span style="color:#a6e22e">P256</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="nf">Verify</span><span class="p">(</span><span class="nx">prevTXs</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Transaction</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="nx">txCopy</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">TrimmedCopy</span><span class="p">()</span>
+        <span class="nx">curve</span> <span class="o">:=</span> <span class="nx">elliptic</span><span class="p">.</span><span class="nf">P256</span><span class="p">()</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">inID</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#a6e22e">prevTx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">prevTXs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)]
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#66d9ef">nil</span>
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#a6e22e">prevTx</span>.<span style="color:#a6e22e">Vout</span>[<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Vout</span>].<span style="color:#a6e22e">PubKeyHash</span>
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Hash</span>()
-                <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#66d9ef">nil</span>
+        <span class="k">for</span> <span class="nx">inID</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="nx">prevTx</span> <span class="o">:=</span> <span class="nx">prevTXs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)]</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="kc">nil</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="nx">prevTx</span><span class="p">.</span><span class="nx">Vout</span><span class="p">[</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Vout</span><span class="p">].</span><span class="nx">PubKeyHash</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+                <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="kc">nil</span>
 
-                <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-                <span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-                <span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>)
-                <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>[:(<span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>)])
-                <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>[(<span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>):])
+                <span class="nx">r</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+                <span class="nx">s</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+                <span class="nx">sigLen</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">)</span>
+                <span class="nx">r</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">[:(</span><span class="nx">sigLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+                <span class="nx">s</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">[(</span><span class="nx">sigLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):])</span>
 
-                <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-                <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-                <span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>)
-                <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">setBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>[:(<span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>)])
-                <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">setBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>[(<span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>):])
+                <span class="nx">x</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+                <span class="nx">y</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+                <span class="nx">keyLen</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">)</span>
+                <span class="nx">x</span><span class="p">.</span><span class="nf">setBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">[:(</span><span class="nx">keyLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+                <span class="nx">y</span><span class="p">.</span><span class="nf">setBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">[(</span><span class="nx">keyLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):])</span>
 
-                <span style="color:#a6e22e">rawPubKey</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">PublicKey</span>{<span style="color:#a6e22e">curve</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">y</span>}
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">Verify</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">rawPubKey</span>, <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">r</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">s</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span> {
-                        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-                }
-        }
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-}
+                <span class="nx">rawPubKey</span> <span class="o">:=</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nx">PublicKey</span><span class="p">{</span><span class="nx">curve</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">y</span><span class="p">}</span>
+                <span class="k">if</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nf">Verify</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">rawPubKey</span><span class="p">,</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">r</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">s</span><span class="p">)</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="kc">false</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
 </code></pre></div><p>메서드는 아주 직관적이다. 우선, 동일한 트랜잭션 복사본이 필요하다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">txCopy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">TrimmedCopy</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">txCopy</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">TrimmedCopy</span><span class="p">()</span>
 </code></pre></div><p>다음으로 키 쌍을 생성할 때 사용된 것과 동일한 곡선이 필요하다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">curse</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">elliptic</span>.<span style="color:#a6e22e">P256</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">curse</span> <span class="o">:=</span> <span class="nx">elliptic</span><span class="p">.</span><span class="nf">P256</span><span class="p">()</span>
 </code></pre></div><p>그 다음 각 입력의 서명을 검사한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">inID</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-        <span style="color:#a6e22e">prevTx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">prevTXs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)]
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">Signature</span> = <span style="color:#66d9ef">nil</span>
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#a6e22e">prevTx</span>.<span style="color:#a6e22e">Vout</span>[<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Vout</span>].<span style="color:#a6e22e">PubKeyHash</span>
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Hash</span>()
-        <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">Vin</span>[<span style="color:#a6e22e">inID</span>].<span style="color:#a6e22e">PubKey</span> = <span style="color:#66d9ef">nil</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">inID</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+        <span class="nx">prevTx</span> <span class="o">:=</span> <span class="nx">prevTXs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)]</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">Signature</span> <span class="p">=</span> <span class="kc">nil</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="nx">prevTx</span><span class="p">.</span><span class="nx">Vout</span><span class="p">[</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Vout</span><span class="p">].</span><span class="nx">PubKeyHash</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+        <span class="nx">txCopy</span><span class="p">.</span><span class="nx">Vin</span><span class="p">[</span><span class="nx">inID</span><span class="p">].</span><span class="nx">PubKey</span> <span class="p">=</span> <span class="kc">nil</span>
 </code></pre></div><p>이 부분은 <strong>Sign</strong> 메서드와 동일한데 검증을 위해선 동일하게 서명된 데이터가 필요하기 때문이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">        <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-        <span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-        <span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>)
-        <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>[:(<span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>)])
-        <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Signature</span>[(<span style="color:#a6e22e">sigLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>):])
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">        <span class="nx">r</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+        <span class="nx">s</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+        <span class="nx">sigLen</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">)</span>
+        <span class="nx">r</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">[:(</span><span class="nx">sigLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+        <span class="nx">s</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Signature</span><span class="p">[(</span><span class="nx">sigLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):])</span>
 
-        <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-        <span style="color:#a6e22e">y</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>{}
-        <span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>)
-        <span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>[:(<span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>)])
-        <span style="color:#a6e22e">y</span>.<span style="color:#a6e22e">SetBytes</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">PubKey</span>[(<span style="color:#a6e22e">keyLen</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>):])
+        <span class="nx">x</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+        <span class="nx">y</span> <span class="o">:=</span> <span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">{}</span>
+        <span class="nx">keyLen</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">)</span>
+        <span class="nx">x</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">[:(</span><span class="nx">keyLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)])</span>
+        <span class="nx">y</span><span class="p">.</span><span class="nf">SetBytes</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">PubKey</span><span class="p">[(</span><span class="nx">keyLen</span> <span class="o">/</span> <span class="mi">2</span><span class="p">):])</span>
 </code></pre></div><p>서명은 한 쌍의 숫자이며 공개키는 한 쌍의 좌표이므로 <strong>TXInput.Signature</strong>와 <strong>TXInput.PubKey</strong>에 저장된 값들을 풀어내자. 우리는 값을 저장하기 위해 이전에 이 쌍의 값들을 조합했다. 이제는 <strong>crypto/ecdsa</strong> 함수에서 사용하기 위해 이 값들을 풀어내야한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">        <span style="color:#a6e22e">rawPubKey</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">PublicKey</span>{<span style="color:#a6e22e">curve</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">y</span>}
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">Verify</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">rawPubKey</span>, <span style="color:#a6e22e">txCopy</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">r</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">s</span>) <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span> {
-                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>
-        }
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">        <span class="nx">rawPubKey</span> <span class="o">:=</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nx">PublicKey</span><span class="p">{</span><span class="nx">curve</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">x</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">y</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nf">Verify</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">rawPubKey</span><span class="p">,</span> <span class="nx">txCopy</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">r</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">s</span><span class="p">)</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">false</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+<span class="k">return</span> <span class="kc">true</span>
 </code></pre></div><p>입력에서 추출한 공개키를 사용해 <strong>ecdsa.PublicKey</strong>을 생성하고 추출한 서명을 파라미터로 전달해 <strong>ecdsa.Verify</strong>를 실행한다. 모든 입력이 검증되면 true를 반환하며 하나라도 실패하면 false를 반환한다.</p>
 <p>이제 우리는 이전 트랜잭션들을 가져오는 함수가 필요하다.이 함수는 블록체인과의 인터랙션이 필요하기 때문에 <strong>Blockchain</strong>의 메서드로 만들 것이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">FindTransaction</span>(<span style="color:#a6e22e">ID</span> []<span style="color:#66d9ef">byte</span>) (<span style="color:#a6e22e">Transaction</span>, <span style="color:#66d9ef">error</span>) {
-        <span style="color:#a6e22e">bci</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">Iteractor</span>()
-        <span style="color:#66d9ef">for</span> {
-                <span style="color:#a6e22e">block</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bci</span>.<span style="color:#a6e22e">Next</span>()
-                <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Transactions</span> {
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Compare</span>(<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span>, <span style="color:#a6e22e">ID</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-                                <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">tx</span>, <span style="color:#66d9ef">nil</span>
-                        }
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">FindTransaction</span><span class="p">(</span><span class="nx">ID</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="nx">Transaction</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">bci</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">Iteractor</span><span class="p">()</span>
+        <span class="k">for</span> <span class="p">{</span>
+                <span class="nx">block</span> <span class="o">:=</span> <span class="nx">bci</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+                <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">block</span><span class="p">.</span><span class="nx">Transactions</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Compare</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span> <span class="nx">ID</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                                <span class="k">return</span> <span class="o">*</span><span class="nx">tx</span><span class="p">,</span> <span class="kc">nil</span>
+                        <span class="p">}</span>
 
-                        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">PrevBlockHash</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
-                                <span style="color:#66d9ef">break</span>
-                        }
-                }
-        }
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Transaction</span>{}, <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;Transaction is not found&#34;</span>)
-}
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">PrevBlockHash</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+                                <span class="k">break</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">Transaction</span><span class="p">{},</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="s">&#34;Transaction is not found&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">SignTransaction</span>(<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>, <span style="color:#a6e22e">privKey</span> <span style="color:#a6e22e">ecdsa</span>.<span style="color:#a6e22e">PrivateKey</span>) {
-        <span style="color:#a6e22e">prevTXs</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Transaction</span>)
+<span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">SignTransaction</span><span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">,</span> <span class="nx">privKey</span> <span class="nx">ecdsa</span><span class="p">.</span><span class="nx">PrivateKey</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">prevTXs</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Transaction</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#a6e22e">prevTX</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindTransaction</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)
-                <span style="color:#a6e22e">prevTXs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">prevTX</span>.<span style="color:#a6e22e">ID</span>)] = <span style="color:#a6e22e">prevTX</span>
-        }
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="nx">prevTX</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindTransaction</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)</span>
+                <span class="nx">prevTXs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">prevTX</span><span class="p">.</span><span class="nx">ID</span><span class="p">)]</span> <span class="p">=</span> <span class="nx">prevTX</span>
+        <span class="p">}</span>
 
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Sign</span>(<span style="color:#a6e22e">privKey</span>, <span style="color:#a6e22e">prevTXs</span>)
-}
+        <span class="nx">tx</span><span class="p">.</span><span class="nf">Sign</span><span class="p">(</span><span class="nx">privKey</span><span class="p">,</span> <span class="nx">prevTXs</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">VerifyTransaction</span>(<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) <span style="color:#66d9ef">bool</span> {
-        <span style="color:#a6e22e">prevTXs</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">Transaction</span>)
+<span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">VerifyTransaction</span><span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+        <span class="nx">prevTXs</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Transaction</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">vin</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#a6e22e">prevTX</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindTransaction</span>(<span style="color:#a6e22e">vin</span>.<span style="color:#a6e22e">Txid</span>)
-                <span style="color:#a6e22e">prevTXs</span>[<span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">prevTX</span>.<span style="color:#a6e22e">ID</span>)] = <span style="color:#a6e22e">prevTX</span>
-        }
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">vin</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="nx">prevTX</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindTransaction</span><span class="p">(</span><span class="nx">vin</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)</span>
+                <span class="nx">prevTXs</span><span class="p">[</span><span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">prevTX</span><span class="p">.</span><span class="nx">ID</span><span class="p">)]</span> <span class="p">=</span> <span class="nx">prevTX</span>
+        <span class="p">}</span>
 
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Sign</span>(<span style="color:#a6e22e">privKey</span>, <span style="color:#a6e22e">prevTXs</span>)
-}
+        <span class="nx">tx</span><span class="p">.</span><span class="nf">Sign</span><span class="p">(</span><span class="nx">privKey</span><span class="p">,</span> <span class="nx">prevTXs</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>이 함수들은 아주 간단하다. <strong>FindTransaction</strong>은 ID로 트랜잭션을 검색한다 (블록체인의 모든 블록을 순회해야함). <strong>SignTransaction</strong>은 트랜잭션을 받아 참조하고 있는 트랜잭션들을 찾아 서명한다. <strong>VerifyTransaction</strong>은 동일한 일을 하나 서명이 아닌 검증 작업을 수행한다.</p>
 <p>이제 실제로 트랜잭션에 서명을 하고 검증을 해봐야한다. 서명은 <strong>NewUTXOTransaction</strong>에서 이루어진다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewUTXOTransaction</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">to</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">amount</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span> {
-        <span style="color:#f92672">...</span>
-        <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Transaction</span>{<span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">outputs</span>}
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Hash</span>()
-        <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">SignTransaction</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">tx</span>, <span style="color:#a6e22e">wallet</span>.<span style="color:#a6e22e">PrivateKey</span>)
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">tx</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewUTXOTransaction</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">amount</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="o">*</span><span class="nx">Transaction</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span><span class="kc">nil</span><span class="p">,</span> <span class="nx">inputs</span><span class="p">,</span> <span class="nx">outputs</span><span class="p">}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+        <span class="nx">bc</span><span class="p">.</span><span class="nf">SignTransaction</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tx</span><span class="p">,</span> <span class="nx">wallet</span><span class="p">.</span><span class="nx">PrivateKey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">tx</span>
+<span class="p">}</span>
 </code></pre></div><p>검증은 트랜잭션이 블록에 추가되기 전에 수행된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">MineBlock</span>(<span style="color:#a6e22e">transactions</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">lastHash</span> []<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">MineBlock</span><span class="p">(</span><span class="nx">transactions</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">lastHash</span> <span class="p">[]</span><span class="kt">byte</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">transactions</span> {
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">VerifyTransaction</span>(<span style="color:#a6e22e">tx</span>) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">true</span> {
-                        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Panic</span>(<span style="color:#e6db74">&#34;ERROR: Invalid transaction&#34;</span>)
-                }
-        }
-}
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">transactions</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">VerifyTransaction</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">true</span> <span class="p">{</span>
+                        <span class="nx">log</span><span class="p">.</span><span class="nf">Panic</span><span class="p">(</span><span class="s">&#34;ERROR: Invalid transaction&#34;</span><span class="p">)</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>끝났다! 잘 동작하는지 한 번 더 확인해보자.</p>
 <pre><code>$ blockchain_go createwallet
 Your new address: 1AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR
@@ -516,14 +516,14 @@ $ blockchain_go getbalance -address 1NE86r4Esjf53EL7fR86CsfTZpNN42Sfab
 Balance of '1NE86r4Esjf53EL7fR86CsfTZpNN42Sfab': 6
 </code></pre><p>문제없이 잘 동작한다!</p>
 <p>서명되지 않은 트랜잭션은 채굴할 수 없음을 확인해보기 위해 <strong>NewUTXOTransaction</strong>에서 <strong>bc.SignTransaction(&amp;tx, wallet.PrivateKey)</strong> 호출을 주석 처리 해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewUTXOTransaction</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">to</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">amount</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span> {
-        <span style="color:#f92672">...</span>
-        <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Transaction</span>{<span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">outputs</span>}
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span> = <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Hash</span>()
-        <span style="color:#75715e">// bc.SignTransaction(&amp;tx, wallet.PrivateKey)
-</span><span style="color:#75715e"></span>
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">tx</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewUTXOTransaction</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">amount</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="o">*</span><span class="nx">Transaction</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span><span class="kc">nil</span><span class="p">,</span> <span class="nx">inputs</span><span class="p">,</span> <span class="nx">outputs</span><span class="p">}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span> <span class="p">=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">Hash</span><span class="p">()</span>
+        <span class="c1">// bc.SignTransaction(&amp;tx, wallet.PrivateKey)
+</span><span class="c1"></span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">tx</span>
+<span class="p">}</span>
 </code></pre></div><pre><code>$ go install
 $ blockchain_go send -from 1AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR -to 1NE86r4Esjf53EL7fR86CsfTZpNN42Sfab -amount 1
 2017/09/12 16:28:15 ERROR: Invalid transaction

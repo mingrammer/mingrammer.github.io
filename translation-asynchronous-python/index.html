@@ -135,20 +135,20 @@
 <!-- raw HTML omitted -->
 <h2 id="그린-스레드-green-threads">그린 스레드 (Green Threads)</h2>
 <p>그린 스레드 (Green Threads)는 비동기 프로그래밍의 가장 기초이다. 그린 스레드는 스케쥴링을 하드웨어가 아닌 애플리케이션 코드가 대신 한다는 점을 제외하면, 일반 스레드와 정확히 같아보인다. <em><a href="http://www.gevent.org/">Gevent</a></em> 는 그린 스레드를 사용하는 유명한 파이썬 라이브러리이다. <em>Gevent</em> 는 기본적으로 그린 스레드 + eventlet (non-blocking I/O 네트워킹 라이브러리)이다. 다음은 <em>gevent</em> 를 사용하여 한 번에 여러개의 url에 요청을 날리는 예시이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> gevent
-<span style="color:#f92672">from</span> gevent <span style="color:#f92672">import</span> monkey
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">gevent</span>
+<span class="kn">from</span> <span class="nn">gevent</span> <span class="kn">import</span> <span class="n">monkey</span>
 
-monkey<span style="color:#f92672">.</span>patch_all()
-urls <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;http://www.google.com&#39;</span>, <span style="color:#e6db74">&#39;http://www.yandex.ru&#39;</span>, <span style="color:#e6db74">&#39;http://www.python.org&#39;</span>]
+<span class="n">monkey</span><span class="o">.</span><span class="n">patch_all</span><span class="p">()</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.google.com&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.yandex.ru&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.python.org&#39;</span><span class="p">]</span>
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">print_head</span>(url):
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Starting {}&#39;</span><span style="color:#f92672">.</span>format(url))
-    data <span style="color:#f92672">=</span> urlopen(url)<span style="color:#f92672">.</span>read()
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{}: {} bytes: {}&#39;</span><span style="color:#f92672">.</span>format(url, len(data), data))
+<span class="k">def</span> <span class="nf">print_head</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: {} bytes: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
 
-jobs <span style="color:#f92672">=</span> [gevent<span style="color:#f92672">.</span>spawn(print_head, _url) <span style="color:#66d9ef">for</span> _url <span style="color:#f92672">in</span> urls]
+<span class="n">jobs</span> <span class="o">=</span> <span class="p">[</span><span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">print_head</span><span class="p">,</span> <span class="n">_url</span><span class="p">)</span> <span class="k">for</span> <span class="n">_url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">]</span>
 
-gevent<span style="color:#f92672">.</span>wait(jobs)
+<span class="n">gevent</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">jobs</span><span class="p">)</span>
 </code></pre></div><p>위에서 볼 수 있듯이, gevent API는 스레딩과 유사해보인다. 그러나, 구현을 보면 이는 실제 스레드 대신 코루틴을 사용하며, 스케쥴링을 위해 코루틴들을 <a href="http://www.gevent.org/intro.html#event-loop">이벤트 루프</a>위에서 실행한다. 이는 코루틴에 대한 이해 없이도 경량 스레딩의 이점을 얻을 수 있음을 의미하지만, 아직도 스레딩이 가져오는 다른 문제점들을 가지고있다. Gevent는 스레딩을 이미 이해하고 있고, 경량 스레딩을 원하는 사람들에겐 좋은 라이브러리이다.</p>
 <!-- raw HTML omitted -->
 <h1 id="이벤트-루프-코루틴-천천히-살펴봅시다">이벤트 루프? 코루틴? 천천히 살펴봅시다</h1>
@@ -157,21 +157,21 @@ gevent<span style="color:#f92672">.</span>wait(jobs)
 <h2 id="콜백-스타일의-비동기">콜백 스타일의 비동기</h2>
 <p>파이썬엔 많은 비동기 라이브러리들이 있지만, 그 중 가장 유명한 것들은 아마 <em>Tornado</em> 와 <em>gevent</em> 일 것이다. 우리는 이미 <em>gevent</em> 에 대한 얘기를 했으므로, Tornado가 어떻게 동작하는지에 대해 조금 더 초점을 맞춰보자. Tornado는 비동기 네트워크 I/O를 위해 콜백 스타일을 사용하는 비동기 웹 프레임워크이다. 콜백은 함수이며, 이는 &ldquo;이 작업이 완료되면, 이 함수를 실행시켜줘&quot;라는 의미이다. 이는 기본적으로 코드에 대한 &ldquo;완료&rdquo; 훅(hook)이다. 다시 말하면, 콜백은 당신이 고객 서비스 라인을 호출하는 즉시, 전화 번호를 남긴 후 전화를 끊으면, 전화가 올 때까지 무한정 대기하는게 아닌 그들이 전화를 사용할 수 있을 때 당신에게 다시 전화를 걸 수 있는 상황과 같은것이다.</p>
 <p>tornado를 이용하여 위에서 말한 것들을 어떻게 할 수 있는지 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#f92672">from</span> tornado.httpclient <span style="color:#f92672">import</span> AsyncHTTPClient
-urls <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;http://www.google.com&#39;</span>, <span style="color:#e6db74">&#39;http://www.yandex.ru&#39;</span>, <span style="color:#e6db74">&#39;http://www.python.org&#39;</span>]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python">
+<span class="kn">from</span> <span class="nn">tornado.httpclient</span> <span class="kn">import</span> <span class="n">AsyncHTTPClient</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.google.com&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.yandex.ru&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.python.org&#39;</span><span class="p">]</span>
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_response</span>(response):
-    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>error:
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Error:&#34;</span>, response<span style="color:#f92672">.</span>error)
-    <span style="color:#66d9ef">else</span>:
-        url <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>url
-        data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>body
-        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{}: {} bytes: {}&#39;</span><span style="color:#f92672">.</span>format(url, len(data), data))
+<span class="k">def</span> <span class="nf">handle_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Error:&#34;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">body</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: {} bytes: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
     
-http_client <span style="color:#f92672">=</span> AsyncHTTPClient()
-<span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> urls:
-    http_client<span style="color:#f92672">.</span>fetch(url, handle_response)
+<span class="n">http_client</span> <span class="o">=</span> <span class="n">AsyncHTTPClient</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+    <span class="n">http_client</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">handle_response</span><span class="p">)</span>
 </code></pre></div><p>코드를 조금 설명하면, 제일 마지막 라인은 non-blocking 방식으로 url를 가져오는 <em>AsyncHTTPClient.fetch</em> 라는 tornado 메서드를 호출하고있다. 이 메서드는 기본적으로 네트워크 호출을 기다리는 동안 프로그램이 다른 일을 수행할 수 있도록 실행하고 즉시 리턴이 된다. url을 가져오기전에 그 다음 라인에 도착하기 때문에, 메서드로부터 리턴 객체를 얻을 수가 없다. 이 문제에 대한 해결책은 <em>fetch</em> 메서드에서 객체를 리턴하는 대신, 결과값을 받는 함수 또는 콜백을 호출하는 것이다. 이 예제에서 콜백은 <em>handle_response</em> 이다.</p>
 <!-- raw HTML omitted -->
 <h2 id="콜백-지옥">콜백 지옥</h2>
@@ -199,23 +199,23 @@ http_client <span style="color:#f92672">=</span> AsyncHTTPClient()
 <!-- raw HTML omitted -->
 <h1 id="어떻게-개선할-수-있을까">어떻게 개선할 수 있을까?</h1>
 <p>python 3.3까지는 이것이 가장 최선의 방법이었다. 더 나은 방법을 위해선 언어 자체의 지원이 필요하다. 더 나은 비동기 프로그래밍을 위해선, 파이썬은 메서드를 부분적으로 실행시키고, 실행을 중단시키고, 그리고 스택 객체와 예외를 전역적으로 관리할 수 있는 방법이 필요할 것이다. 만약  파이썬이 익숙하다면, 제너레이터가 힌트가 될 수 있다는걸 깨달을 수 있을 것이다. 제너레이터는 함수가  리스트를 리턴하는데 한 번에 하나의 아이템만 리턴할 수 있으며, 다음 아이템이 필요할 때까지 실행이 중지된다. 제너레이터의 문제점은 함수가 이를 호출해야만 수행될 수 있다는 것이다. 즉, 제너레이터는 제너레이터를 호출할 수 없고, 서로의 실행을 중지시킬 수도 없다. 그러나 이는 <a href="https://docs.python.org/3/whatsnew/3.3.html#pep-380">PEP 380</a>이 제너레이터가 다른 제너레이터의 결과값을 yield할 수 있게 해주는 <em>yield from</em> 문법을 추가할 때 까지만이다. 비동기가 정말 제너레이터의 의도는 아니지만, 이는 비동기가 잘 돌아가는데에 필요한 모든 기능을 제공한다. 제너레이터는 스택을 유지하며 예외를 발생시킬 수 있다. 만약 당신이 제너레이터를 실행하는 이벤트 루프를 작성한다면, 훌륭한 비동기 라이브러리를 가질 수 있다. 그리고 따라서, <em>asyncio</em> 라이브러리가 탄생했다. 당신이 해야 할 모든 것들은 <em>@coroutine</em> 데코레이터를 추가하는 것이며 <em>asyncio</em>는 제너레이터를 코루틴 안으로 패치할 것이다. 여기에 우리가 전에 봤듯이 세 개의 url을 호출하는 예시가 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> asyncio
-<span style="color:#f92672">import</span> aiohttp
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
 
-urls <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;http://www.google.com&#39;</span>, <span style="color:#e6db74">&#39;http://www.yandex.ru&#39;</span>, <span style="color:#e6db74">&#39;http://www.python.org&#39;</span>]
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.google.com&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.yandex.ru&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.python.org&#39;</span><span class="p">]</span>
 
-<span style="color:#a6e22e">@asyncio.coroutine</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_url</span>(url):
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Starting {}&#39;</span><span style="color:#f92672">.</span>format(url))
-    response <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#f92672">from</span> aiohttp.get(url)
-    data <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#f92672">from</span> response.text()
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{}: {} bytes: {}&#39;</span><span style="color:#f92672">.</span>format(url, len(data), data))
-    <span style="color:#66d9ef">return</span> data
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">call_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">yield</span> <span class="kn">from</span> <span class="nn">aiohttp.get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">yield</span> <span class="kn">from</span> <span class="nn">response.text</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: {} bytes: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">data</span>
 
-futures <span style="color:#f92672">=</span> [call_url(url) <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> urls]
+<span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">call_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">]</span>
 
-loop <span style="color:#f92672">=</span> asyncio<span style="color:#f92672">.</span>get_event_loop()
-loop<span style="color:#f92672">.</span>run_until_complete(asyncio<span style="color:#f92672">.</span>wait(futures))
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">futures</span><span class="p">))</span>
 </code></pre></div><p>주목할 부분들이 있다.</p>
 <ol>
 <li>에러를 볼 수가 없다. 왜냐하면 에러는 스택으로 제대로 전달되기 때문이다</li>
@@ -228,22 +228,22 @@ loop<span style="color:#f92672">.</span>run_until_complete(asyncio<span style="c
 <!-- raw HTML omitted -->
 <h2 id="비동기async와-대기await">비동기(Async)와 대기(Await)</h2>
 <p><em>asyncio</em> 라이브러리는 많은 지지를 얻었고, 파이썬은 이를 코어 라이브러리로 만들기로 결정하였다. 코어 라이브러리의 도입과 함께, Python 3.5에는 <code>async</code>와 <code>await</code> 키워드 또한 추가되었다. 이 키워드들은 코드가 비동기임을 더욱 명확하게 알 수 있도록 디자인 되었다. 따라서 당신의 메서드가 제너레이터로 혼동되는 일이 없다. <em>async</em> 키워드는 메서드가 비동기임을 알 수 있도록 <em>def</em> 앞에 위치한다. <em>await</em> 키워드는 <em>yield from</em> 를 대신하며 코루틴이 끝날때까지 대기하고 있음을 좀 더 명확하게 알 수 있다. 여기에 async/await 키워드를 사용한 위와 똑같은 예시가 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> asyncio
-<span style="color:#f92672">import</span> aiohttp
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
 
-urls <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;http://www.google.com&#39;</span>, <span style="color:#e6db74">&#39;http://www.yandex.ru&#39;</span>, <span style="color:#e6db74">&#39;http://www.python.org&#39;</span>]
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.google.com&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.yandex.ru&#39;</span><span class="p">,</span> <span class="s1">&#39;http://www.python.org&#39;</span><span class="p">]</span>
 
-async <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_url</span>(url):
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Starting {}&#39;</span><span style="color:#f92672">.</span>format(url))
-    response <span style="color:#f92672">=</span> await aiohttp<span style="color:#f92672">.</span>get(url)
-    data <span style="color:#f92672">=</span> await response<span style="color:#f92672">.</span>text()
-    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;{}: {} bytes: {}&#39;</span><span style="color:#f92672">.</span>format(url, len(data), data))
-    <span style="color:#66d9ef">return</span> data
+<span class="n">async</span> <span class="k">def</span> <span class="nf">call_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Starting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">await</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{}: {} bytes: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">data</span>
 
-futures <span style="color:#f92672">=</span> [call_url(url) <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> urls]
+<span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">call_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">]</span>
 
-loop <span style="color:#f92672">=</span> asyncio<span style="color:#f92672">.</span>get_event_loop()
-loop<span style="color:#f92672">.</span>run_until_complete(asyncio<span style="color:#f92672">.</span>wait(futures))
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">futures</span><span class="p">))</span>
 </code></pre></div><p>기본적으로 여기서 일어나고 있는것은 async 메서드가 실행될 때, 대기 가능한 코루틴을 리턴하는 것이다.</p>
 <!-- raw HTML omitted -->
 <h1 id="마무리">마무리</h1>

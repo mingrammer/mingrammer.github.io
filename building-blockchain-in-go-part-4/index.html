@@ -119,11 +119,11 @@
 <p>블록체인은 공개된 데이터베이스이기 때문에 지갑 소유자에 대한 민감한 정보는 저장하지 않는다. 코인은 계좌에 수집되지 않으며, 트랜잭션은 한 주소에서 다른 주소로 돈을 이체하지 않는다. 또한 계좌 잔고를 저장하는 필드나 속성값 또한 없다. 오로지 트랜잭션만이 존재한다. 그렇다면 트랜잭션 안에는 어떤 정보가 저장될까?</p>
 <h1 id="비트코인-트랜잭션">비트코인 트랜잭션</h1>
 <p>트랜잭션은 입력과 출력의 조합이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Transaction</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">ID</span>   []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Vin</span>  []<span style="color:#a6e22e">TXInput</span>
-        <span style="color:#a6e22e">Vout</span> []<span style="color:#a6e22e">TXOutput</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Transaction</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">ID</span>   <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Vin</span>  <span class="p">[]</span><span class="nx">TXInput</span>
+        <span class="nx">Vout</span> <span class="p">[]</span><span class="nx">TXOutput</span>
+<span class="p">}</span>
 </code></pre></div><p>새로운 트랜잭션의 입력은 이전 트랜잭션의 출력을 참조한다 (예외도 존재하지만 이는 나중에 살펴볼 것이다). 출력은 코인이 실제로 저장되는 곳이다. 다음 다이어그램은 트랜잭션간의 상호연결을 보여준다.</p>
 <p><img src="../images/2018-05-26-transactions-diagram.png" alt="Transaction Diagram"></p>
 <p>위 다이어그램에서 다음을 볼 수 있다.</p>
@@ -135,10 +135,10 @@
 <p>이 글에서 우리는 &ldquo;돈 (money)&quot;, &ldquo;코인 (coins)&quot;, &ldquo;소비 (spend)&quot;, &ldquo;전송 (send)&rdquo; 그리고 &ldquo;계좌 (account)&ldquo;등과 같은 용어를 사용할 것이다. 그러나 비트코인에는 이러한 개념들이 없다. 트랜잭션은 스크립트를 사용해 값을 잠그기만 하며, 스크립트로 잠근 사람만 잠금을 해제할 수 있다.</p>
 <h1 id="트랜잭션-출력">트랜잭션 출력</h1>
 <p>트랜잭션 출력부터 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TXOutput</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Value</span>        <span style="color:#66d9ef">int</span>
-        <span style="color:#a6e22e">ScriptPubKey</span> <span style="color:#66d9ef">string</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">TXOutput</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Value</span>        <span class="kt">int</span>
+        <span class="nx">ScriptPubKey</span> <span class="kt">string</span>
+<span class="p">}</span>
 </code></pre></div><p>실제로 이 출력은 &ldquo;코인&quot;을 저장한다 (<strong>Value</strong> 필드를 보아라). 그리고 저장이란 <strong>ScriptPubKey</strong>에 저장되어있는 암호로 값을 잠그는 것을 의미한다. 비트코인은 내부적으로 출력 잠금과 로직 해제를 정의하는데 사용되는 <em>Script</em>라는 스크립팅 언어를 사용한다. 이 언어는 아주 원시적이지만 (해킹과 잘못된 사용을 피하기위해 의도된 설계이다), 여기서 자세히 논의하지는 않는다. 자세한 설명은 <a href="https://en.bitcoin.it/wiki/Script">여기</a>에서 볼 수 있다.</p>
 <blockquote>
 <p>비트코인에서 <em>값 (value)</em> 필드는 BTC의 개수가 아닌 *사토시 (satoshis)*의 개수를 저장한다. *사토시 (satoshis)*는 1억분의 1 비트코인 (0.00000001 BTC)이며 비트코인의 최소 화폐 단위이다 (센트와 유사하다).</p>
@@ -150,11 +150,11 @@
 <p>출력에 대한 중요한점 중 하나는 분리가 불가능하다는 것이다. 즉, 값의 일부만 참조할 수는 없다는 의미이다. 출력이 새로운 트랜잭션에서 참조되면 출력의 전체가 모두 소비된다. 그리고 이 값이 필요한 값보다 큰 경우에는, 잔액이 만들어지며 이는 보낸 사람에게 다시 전송된다. 이는 실생활에서 $1의 물건을 구매하기위해 $5를 지불하면 $4의 잔액이 남는 상황과 유사하다.</p>
 <h1 id="트랜잭션-입력">트랜잭션 입력</h1>
 <p>입력 구조체는 다음과 같다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TXInput</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Ixid</span>      []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Vout</span>      <span style="color:#66d9ef">int</span>
-        <span style="color:#a6e22e">ScriptSig</span> <span style="color:#66d9ef">string</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">TXInput</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Ixid</span>      <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Vout</span>      <span class="kt">int</span>
+        <span class="nx">ScriptSig</span> <span class="kt">string</span>
+<span class="p">}</span>
 </code></pre></div><p>이전에도 언급했듯이 입력은 이전 출력을 참조한다. <strong>Txid</strong>는 해당 트랜잭션의 ID를 저장하고 <strong>Vout</strong>은 트랜잭션의 출력 인덱스를 저장한다. <strong>ScriptSig</strong>는 출력의 <strong>ScriptPubKey</strong>에서 사용되는 데이터를 제공하는 스크립트이다. 데이터가 올바르면 출력의 잠금을 해제할 수 있으며 출력의 값 (Value)을 사용해 새로운 출력을 생성할 수 있다. 그렇지 않은 경우에 해당 출력은 입력에서 참조할 수 없다. 이 메커니즘은 사용자가 다른 사람들이 소유한 코인을 사용할 수 없음을 보장해준다.</p>
 <p>또 다시, 현재는 구현된 주소가 없기 때문에 <strong>ScriptSig</strong>는 임의의 사용자 정의 지갑 주소를 저장할 것이다. 퍼블릭 키와 시그니처 검증은 다음 파트에서 구현할 것이다.</p>
 <p>이제 내용을 요약해보자. &ldquo;코인&quot;은 출력에 저장된다. 각 출력에는 잠금 해제 로직을 결정하는 잠금 해제 스크립트가 함께 제공된다. 모든 새로운 트랜잭션은 반드시 적어도 하나의 입력과 출력을 가진다. 입력은 이전 트랜잭션의 출력을 참조하고 잠금 해제를 위해 출력의 잠금 해제에 사용되는 데이터 (<strong>ScriptSig</strong> 필드)를 제공하며 이 값을 사용해 새로운 출력을 생성한다.</p>
@@ -164,16 +164,16 @@
 <p>채굴자가 블록 채굴을 시작하면 이는 <strong>코인베이스 트랜잭션</strong>에 추가된다. 코인베이스 트랜잭션은 특수한 타입의 트랜잭션으로 이전 출력을 요구하지 않는다. 이는 아무것도 없는 상태에서 (&ldquo;코인&quot;등의) 출력을 생성한다. 닭 없는 달걀인 것이다. 이는 채굴자가 새로운 블록을 채굴할 때 받는 보상이다.</p>
 <p>여러분도 알듯이 블록체인의 시작 부분에는 제네시스 블록이 있다. 이 블록이 바로 블록체인에서 최초의 출력을 생성하는 블록이다. 그리고 이 블록에는 이전 트랜잭션이 존재하지 않으며  그에 따른 출력도 없기 때문에 이전 출력을 요구하지 않는다.</p>
 <p>코인베이스 트랜잭션을 만들어보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewCoinbaseTX</span>(<span style="color:#a6e22e">to</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span> {
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">data</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#34;</span> {
-                <span style="color:#a6e22e">data</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;Reward to &#39;%s&#39;&#34;</span>, <span style="color:#a6e22e">to</span>)
-        }
-        <span style="color:#a6e22e">txin</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">TXInput</span>([]<span style="color:#66d9ef">byte</span>{}, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">data</span>)
-        <span style="color:#a6e22e">txout</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">TXOutput</span>{<span style="color:#a6e22e">subsidy</span>, <span style="color:#a6e22e">to</span>}
-        <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Transaction</span>{<span style="color:#66d9ef">nil</span>, []<span style="color:#a6e22e">TXInput</span>{<span style="color:#a6e22e">txin</span>}, []<span style="color:#a6e22e">TXOutput</span>{<span style="color:#a6e22e">txout</span>}}
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">SetID</span>()
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">tx</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewCoinbaseTX</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">data</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Transaction</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">data</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+                <span class="nx">data</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Reward to &#39;%s&#39;&#34;</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">txin</span> <span class="o">:=</span> <span class="nf">TXInput</span><span class="p">([]</span><span class="kt">byte</span><span class="p">{},</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+        <span class="nx">txout</span> <span class="o">:=</span> <span class="nx">TXOutput</span><span class="p">{</span><span class="nx">subsidy</span><span class="p">,</span> <span class="nx">to</span><span class="p">}</span>
+        <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span><span class="kc">nil</span><span class="p">,</span> <span class="p">[]</span><span class="nx">TXInput</span><span class="p">{</span><span class="nx">txin</span><span class="p">},</span> <span class="p">[]</span><span class="nx">TXOutput</span><span class="p">{</span><span class="nx">txout</span><span class="p">}}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nf">SetID</span><span class="p">()</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">tx</span>
+<span class="p">}</span>
 </code></pre></div><p>코인베이스 트랜잭션은 단 하나의 입력만 가진다. 우리의 구현체에서 이 입력의 <strong>Txid</strong>는 비어있으며 <strong>Vout</strong>은 -1이다. 또한 코인베이스 트랜잭션은 <strong>ScriptSig</strong>에 아무 스크립트도 저장하지 않으며 대신 임의의 데이터가 저장된다.</p>
 <blockquote>
 <p>비트코인의 최초의 코인베이스 트랜잭션에는 다음과 같은 메시지가 담겨있다. &ldquo;The Times 03/Jan/2009 Chancellor on brink of second bailout for banks&rdquo;. <a href="https://blockchain.info/tx/4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b?show_adv=true">여기에서 직접 확인할 수 있다</a>
@@ -181,62 +181,62 @@
 </blockquote>
 <h1 id="블록체인에-트랜잭션-저장하기">블록체인에 트랜잭션 저장하기</h1>
 <p>지금부터 모든 블록은 적어도 하나의 트랜잭션을 가지며 더 이상 트랜잭션 없이 블록을 채굴하는건 불가능하다. 이는 <strong>Block</strong> 필드에서 <strong>Data</strong> 필드를 제거하고 대신 트랜잭션에 저장해야함을 의미한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Block</span> <span style="color:#66d9ef">struct</span> {
-        <span style="color:#a6e22e">Timestamp</span>     <span style="color:#66d9ef">int64</span>
-        <span style="color:#a6e22e">Transactions</span>  []<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>
-        <span style="color:#a6e22e">PrevBlockHash</span> []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Hash</span>          []<span style="color:#66d9ef">byte</span>
-        <span style="color:#a6e22e">Nonce</span>         <span style="color:#66d9ef">int</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Block</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">Timestamp</span>     <span class="kt">int64</span>
+        <span class="nx">Transactions</span>  <span class="p">[]</span><span class="o">*</span><span class="nx">Transaction</span>
+        <span class="nx">PrevBlockHash</span> <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Hash</span>          <span class="p">[]</span><span class="kt">byte</span>
+        <span class="nx">Nonce</span>         <span class="kt">int</span>
+<span class="p">}</span>
 </code></pre></div><p><strong>NewBlock</strong>과 <strong>NewGenesisBlock</strong>도 수정하자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewBlock</span>(<span style="color:#a6e22e">transactions</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>, <span style="color:#a6e22e">prevBlockHash</span> []<span style="color:#66d9ef">byte</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span> {
-        <span style="color:#a6e22e">block</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Block</span>{<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">Unix</span>(), <span style="color:#a6e22e">transactions</span>, <span style="color:#a6e22e">prevBlockHash</span>, []<span style="color:#66d9ef">byte</span>{}, <span style="color:#ae81ff">0</span>}
-        <span style="color:#f92672">...</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewBlock</span><span class="p">(</span><span class="nx">transactions</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Transaction</span><span class="p">,</span> <span class="nx">prevBlockHash</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="nx">Block</span> <span class="p">{</span>
+        <span class="nx">block</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Block</span><span class="p">{</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">().</span><span class="nf">Unix</span><span class="p">(),</span> <span class="nx">transactions</span><span class="p">,</span> <span class="nx">prevBlockHash</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{},</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="o">...</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewGenesisBlock</span>(<span style="color:#a6e22e">coinbase</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span> {
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NewBlock</span>([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>{<span style="color:#a6e22e">coinbase</span>}, []<span style="color:#66d9ef">byte</span>{})
-}
+<span class="kd">func</span> <span class="nf">NewGenesisBlock</span><span class="p">(</span><span class="nx">coinbase</span> <span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="o">*</span><span class="nx">Block</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">NewBlock</span><span class="p">([]</span><span class="o">*</span><span class="nx">Transaction</span><span class="p">{</span><span class="nx">coinbase</span><span class="p">},</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{})</span>
+<span class="p">}</span>
 </code></pre></div><p>다음으로 수정할 것은 새로운 블록체인을 만드는 함수이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CreateBlockchain</span>(<span style="color:#a6e22e">address</span> <span style="color:#66d9ef">string</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span> {
-        <span style="color:#f92672">...</span>
-        <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">tx</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">bolt</span>.<span style="color:#a6e22e">Tx</span>) <span style="color:#66d9ef">error</span> {
-                <span style="color:#a6e22e">cbtx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewCoinbaseTX</span>(<span style="color:#a6e22e">address</span>, <span style="color:#a6e22e">genesisCoinbaseData</span>)
-                <span style="color:#a6e22e">genesis</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewGenesisBlock</span>(<span style="color:#a6e22e">cbtx</span>)
-                <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">CreateBucket</span>([]byte(<span style="color:#a6e22e">blocksBucket</span>))
-                <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Put</span>(<span style="color:#a6e22e">genesis</span>.<span style="color:#a6e22e">Hash</span>, <span style="color:#a6e22e">genesis</span>.<span style="color:#a6e22e">Serialize</span>())
-                <span style="color:#f92672">...</span>
-        })
-        <span style="color:#f92672">...</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">CreateBlockchain</span><span class="p">(</span><span class="nx">address</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">Blockchain</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="nx">err</span> <span class="p">=</span> <span class="nx">db</span><span class="p">.</span><span class="nf">Update</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">tx</span> <span class="o">*</span><span class="nx">bolt</span><span class="p">.</span><span class="nx">Tx</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+                <span class="nx">cbtx</span> <span class="o">:=</span> <span class="nf">NewCoinbaseTX</span><span class="p">(</span><span class="nx">address</span><span class="p">,</span> <span class="nx">genesisCoinbaseData</span><span class="p">)</span>
+                <span class="nx">genesis</span> <span class="o">:=</span> <span class="nf">NewGenesisBlock</span><span class="p">(</span><span class="nx">cbtx</span><span class="p">)</span>
+                <span class="nx">b</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">CreateBucket</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">blocksBucket</span><span class="p">))</span>
+                <span class="nx">err</span> <span class="p">=</span> <span class="nx">b</span><span class="p">.</span><span class="nf">Put</span><span class="p">(</span><span class="nx">genesis</span><span class="p">.</span><span class="nx">Hash</span><span class="p">,</span> <span class="nx">genesis</span><span class="p">.</span><span class="nf">Serialize</span><span class="p">())</span>
+                <span class="o">...</span>
+        <span class="p">})</span>
+        <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>이제 함수는 제네시스 블록 채굴 보상을 받을 주소를 받는다.</p>
 <h1 id="작업-증명">작업 증명</h1>
 <p>작업 증명 알고리즘은 트랜잭션 저장소인 블록체인의 일관성과 신뢰성을 보장하기 위해 블록에 저장된 트랜잭션을 고려해야한다. 따라서 <strong>ProofOfWork.prepareData</strong> 메서드를 다음과 같이 수정해야한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">pow</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ProofOfWork</span>) <span style="color:#a6e22e">prepareData</span>(<span style="color:#a6e22e">nonce</span> <span style="color:#66d9ef">int</span>) []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#a6e22e">data</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Join</span>(
-                [][]<span style="color:#66d9ef">byte</span>{
-                        <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">PrevBlockHash</span>,
-                        <span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">HashTransactions</span>(), <span style="color:#75715e">// 수정된 부분
-</span><span style="color:#75715e"></span>                        <span style="color:#a6e22e">IntToHex</span>(<span style="color:#a6e22e">pow</span>.<span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Timestamp</span>),
-                        <span style="color:#a6e22e">IntToHex</span>(int64(<span style="color:#a6e22e">targetBits</span>)),
-                        <span style="color:#a6e22e">IntToHex</span>(int64(<span style="color:#a6e22e">nonce</span>)),
-                },
-                []<span style="color:#66d9ef">byte</span>{},
-        )
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">pow</span> <span class="o">*</span><span class="nx">ProofOfWork</span><span class="p">)</span> <span class="nf">prepareData</span><span class="p">(</span><span class="nx">nonce</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="nx">data</span> <span class="o">:=</span> <span class="nx">bytes</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span>
+                <span class="p">[][]</span><span class="kt">byte</span><span class="p">{</span>
+                        <span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">PrevBlockHash</span><span class="p">,</span>
+                        <span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nf">HashTransactions</span><span class="p">(),</span> <span class="c1">// 수정된 부분
+</span><span class="c1"></span>                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nx">pow</span><span class="p">.</span><span class="nx">block</span><span class="p">.</span><span class="nx">Timestamp</span><span class="p">),</span>
+                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">targetBits</span><span class="p">)),</span>
+                        <span class="nf">IntToHex</span><span class="p">(</span><span class="nb">int64</span><span class="p">(</span><span class="nx">nonce</span><span class="p">)),</span>
+                <span class="p">},</span>
+                <span class="p">[]</span><span class="kt">byte</span><span class="p">{},</span>
+        <span class="p">)</span>
 
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">data</span>
-}
+        <span class="k">return</span> <span class="nx">data</span>
+<span class="p">}</span>
 </code></pre></div><p>이제 <strong>pow.block.Data</strong> 대신 **pow.block.HashTransactions()**를 사용한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Block</span>) <span style="color:#a6e22e">HashTransactions</span>() []<span style="color:#66d9ef">byte</span> {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">txHashes</span> [][]<span style="color:#66d9ef">byte</span>
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">txHash</span> [<span style="color:#ae81ff">32</span>]<span style="color:#66d9ef">byte</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Block</span><span class="p">)</span> <span class="nf">HashTransactions</span><span class="p">()</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">txHashes</span> <span class="p">[][]</span><span class="kt">byte</span>
+        <span class="kd">var</span> <span class="nx">txHash</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="kt">byte</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Transactions</span> {
-                <span style="color:#a6e22e">txHashes</span> = append(<span style="color:#a6e22e">txHashes</span>, <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span>)
-        }
-        <span style="color:#a6e22e">txHash</span> = <span style="color:#a6e22e">sha256</span>.<span style="color:#a6e22e">Sum256</span>(<span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">txHashes</span>, []<span style="color:#66d9ef">byte</span>{}))
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">txHash</span>[:]
-}
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">b</span><span class="p">.</span><span class="nx">Transactions</span> <span class="p">{</span>
+                <span class="nx">txHashes</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">txHashes</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">txHash</span> <span class="p">=</span> <span class="nx">sha256</span><span class="p">.</span><span class="nf">Sum256</span><span class="p">(</span><span class="nx">bytes</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">txHashes</span><span class="p">,</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">{}))</span>
+        <span class="k">return</span> <span class="nx">txHash</span><span class="p">[:]</span>
+<span class="p">}</span>
 </code></pre></div><p>우리는 고유한 데이터의 표현을 제공하는 메커니즘으로 해싱을 사용하고 있다. 우리는 블록의 모든 트랜잭션을 고유한 단일 해시로 만들어 식별하고싶다. 이를 위해 각 트랜잭션의 해시들을 연결하고 연결된 문자열의 해시값을 가져와 사용할 것이다.</p>
 <blockquote>
 <p>비트코인은 좀 더 정교한 기술한다. 블록의 모든 트랜잭션을 <a href="https://en.wikipedia.org/wiki/Merkle_tree">머클 트리</a>로 표현하며 작업 증명 시스템에선 이 트리의 루트 해시를 사용한다. 이 방식을 사용하면 모든 트랜잭션을 다운로드 받지 않아도 루트 해시만 가지고도 블록에 특정 트랜잭션이 포함되어 있는지 빠르게 확인할 수 있다.</p>
@@ -256,99 +256,99 @@ Done!
 <li>tx4, output 0.</li>
 </ol>
 <p>물론, 잔고를 확인할 때 모든 트랜잭션 출력이 필요한건 아니며 우리가 가지고 있는 키로 잠금을 해제할 수 있는 출력만 필요하다 (현재는 키를 구현하지 않았으므로 사용자 정의 주소를 대신 사용할 것이다). 우선 입력과 출력에 잠금-해제 메서드를 정의하자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">in</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">TXInput</span>) <span style="color:#a6e22e">CanUnlockOutputWith</span>(<span style="color:#a6e22e">unlockingData</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
-	    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">ScriptSig</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">unlockingData</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">in</span> <span class="o">*</span><span class="nx">TXInput</span><span class="p">)</span> <span class="nf">CanUnlockOutputWith</span><span class="p">(</span><span class="nx">unlockingData</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	    <span class="k">return</span> <span class="nx">in</span><span class="p">.</span><span class="nx">ScriptSig</span> <span class="o">==</span> <span class="nx">unlockingData</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">out</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">TXOutput</span>) <span style="color:#a6e22e">CanBeUnlockedWith</span>(<span style="color:#a6e22e">unlockingData</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span> {
-    	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">ScriptPubKey</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">unlockingData</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">out</span> <span class="o">*</span><span class="nx">TXOutput</span><span class="p">)</span> <span class="nf">CanBeUnlockedWith</span><span class="p">(</span><span class="nx">unlockingData</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    	<span class="k">return</span> <span class="nx">out</span><span class="p">.</span><span class="nx">ScriptPubKey</span> <span class="o">==</span> <span class="nx">unlockingData</span>
+<span class="p">}</span>
 </code></pre></div><p>단순히 스크립트 필드와 <strong>unlockingData</strong>을 비교하고 있다. 이 부분은 나중에 개인키 기반의 주소를 구현한 다음 개선할 것이다.</p>
 <p>다음 단계는 미사용 출력을 포함하는 트랜잭션을 찾는 작업인데 조금 까다롭다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">FindUnspentTransactions</span>(<span style="color:#a6e22e">address</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">Transaction</span> {
-    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">unspentTXs</span> []<span style="color:#a6e22e">Transaction</span>
-    <span style="color:#a6e22e">spentTXOs</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#66d9ef">int</span>)
-    <span style="color:#a6e22e">bci</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">Iterator</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">FindUnspentTransactions</span><span class="p">(</span><span class="nx">address</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="nx">Transaction</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">unspentTXs</span> <span class="p">[]</span><span class="nx">Transaction</span>
+    <span class="nx">spentTXOs</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">int</span><span class="p">)</span>
+    <span class="nx">bci</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">Iterator</span><span class="p">()</span>
 
-    <span style="color:#66d9ef">for</span> {
-        <span style="color:#a6e22e">block</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bci</span>.<span style="color:#a6e22e">Next</span>()
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Transactions</span> {
-            <span style="color:#a6e22e">txID</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span>)
+    <span class="k">for</span> <span class="p">{</span>
+        <span class="nx">block</span> <span class="o">:=</span> <span class="nx">bci</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">block</span><span class="p">.</span><span class="nx">Transactions</span> <span class="p">{</span>
+            <span class="nx">txID</span> <span class="o">:=</span> <span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span><span class="p">)</span>
 
-        <span style="color:#a6e22e">Outputs</span>:
-            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">outIdx</span>, <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vout</span> {
-                <span style="color:#75715e">// 출력 사용 여부 검사
-</span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">txID</span>] <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-                    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">spentOut</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">txID</span>] {
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">spentOut</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">outIdx</span> {
-                            <span style="color:#66d9ef">continue</span> <span style="color:#a6e22e">Outputs</span>
-                        }
-                    }
-                }
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">CanBeUnlockedWith</span>(<span style="color:#a6e22e">address</span>) {
-                    <span style="color:#a6e22e">unspentTXs</span> = append(<span style="color:#a6e22e">unspentTXs</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">tx</span>)
-                }
-            }
+        <span class="nx">Outputs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nx">outIdx</span><span class="p">,</span> <span class="nx">out</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vout</span> <span class="p">{</span>
+                <span class="c1">// 출력 사용 여부 검사
+</span><span class="c1"></span>                <span class="k">if</span> <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">txID</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">spentOut</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">txID</span><span class="p">]</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="nx">spentOut</span> <span class="o">==</span> <span class="nx">outIdx</span> <span class="p">{</span>
+                            <span class="k">continue</span> <span class="nx">Outputs</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="nx">out</span><span class="p">.</span><span class="nf">CanBeUnlockedWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">unspentTXs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">unspentTXs</span><span class="p">,</span> <span class="o">*</span><span class="nx">tx</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
 
-            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">IsCoinbase</span>() <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span> {
-                <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">CanUnlockOutputWith</span>(<span style="color:#a6e22e">address</span>) {
-                        <span style="color:#a6e22e">inTxID</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Txid</span>)
-                        <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">inTxID</span>] = append(<span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">inTxID</span>], <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Vout</span>)
-                    }
-                }
-            }
-        }
-    }
-}
+            <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">IsCoinbase</span><span class="p">()</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">in</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="nx">in</span><span class="p">.</span><span class="nf">CanUnlockOutputWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">inTxID</span> <span class="o">:=</span> <span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">in</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)</span>
+                        <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">inTxID</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">inTxID</span><span class="p">],</span> <span class="nx">in</span><span class="p">.</span><span class="nx">Vout</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>트랜잭션은 블록에 저장되기 때문에 블록체인의 모든 블록을 검사해야한다.</p>
 <p>출력부터 시작하자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">CanBeUnlockedWith</span>(<span style="color:#a6e22e">address</span>) {
-    	<span style="color:#a6e22e">unspentTXs</span> = append(<span style="color:#a6e22e">unspentTXs</span>, <span style="color:#a6e22e">tx</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">out</span><span class="p">.</span><span class="nf">CanBeUnlockedWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+    	<span class="nx">unspentTXs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">unspentTXs</span><span class="p">,</span> <span class="nx">tx</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>어떤 출력이 우리가 찾고 있는 미사용 트랜잭션의 출력과 동일한 주소로 잠궈져있다면 이 출력이 바로 우리가 원하는 출력이다. 그러나 출력을 가져오기 전에 먼저 이 출력이 입력에서 이미 참조되었는지 확인할 필요가 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">txID</span>] <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">spentOut</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">txID</span>] {
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">spentOut</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">outIdx</span> {
-                        <span style="color:#66d9ef">continue</span> <span style="color:#a6e22e">Outputs</span>
-                }
-        }
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">txID</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">spentOut</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">txID</span><span class="p">]</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="nx">spentOut</span> <span class="o">==</span> <span class="nx">outIdx</span> <span class="p">{</span>
+                        <span class="k">continue</span> <span class="nx">Outputs</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>입력에서 이미 참조된 출력들은 무시한다 (이 출력들의 값들은 다른 출력으로 이동했기 때문에 카운트 할 수 없다). 출력 검사가 끝나면 주어진 주소로 잠긴 출력을 해제할 수 있는 모든 입력들을 가져온다 (코인베이스 트랜잭션은 출력을 해제하지 않기 때문에 제외한다).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">IsCoinbase</span>() <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span> {
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">in</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vin</span> {
-                <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">CanUnlockOutputWith</span>(<span style="color:#a6e22e">address</span>) {
-                        <span style="color:#a6e22e">inTxID</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Txid</span>)
-                        <span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">inTxID</span>] = append(<span style="color:#a6e22e">spentTXOs</span>[<span style="color:#a6e22e">inTxID</span>], <span style="color:#a6e22e">in</span>.<span style="color:#a6e22e">Vout</span>)
-                }
-        }
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nf">IsCoinbase</span><span class="p">()</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">in</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vin</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="nx">in</span><span class="p">.</span><span class="nf">CanUnlockOutputWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">inTxID</span> <span class="o">:=</span> <span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">in</span><span class="p">.</span><span class="nx">Txid</span><span class="p">)</span>
+                        <span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">inTxID</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">spentTXOs</span><span class="p">[</span><span class="nx">inTxID</span><span class="p">],</span> <span class="nx">in</span><span class="p">.</span><span class="nx">Vout</span><span class="p">)</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><p>위 함수는 미사용 출력을 포함하고 있는 트랜잭션의 리스트를 반환한다. 잔고 계산을 위해선 트랜잭션 리스트에서 출력들만 반환하는 함수가 하나 더 필요하다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">FindUTXO</span>(<span style="color:#a6e22e">address</span> <span style="color:#66d9ef">string</span>) []<span style="color:#a6e22e">TXOutput</span> {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">UTXOs</span> []<span style="color:#a6e22e">TXOutput</span>
-        <span style="color:#a6e22e">unspentTransactions</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindUnspentTransactions</span>(<span style="color:#a6e22e">address</span>)
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">unspentTransactions</span> {
-                <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vout</span> {
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">CanBeUnlockedWith</span>(<span style="color:#a6e22e">address</span>) {
-                                <span style="color:#a6e22e">UTXOs</span> = append(<span style="color:#a6e22e">UTXOs</span>, <span style="color:#a6e22e">out</span>)
-                        }
-                }
-        }
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">UTXOs</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">FindUTXO</span><span class="p">(</span><span class="nx">address</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="nx">TXOutput</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">UTXOs</span> <span class="p">[]</span><span class="nx">TXOutput</span>
+        <span class="nx">unspentTransactions</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindUnspentTransactions</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">unspentTransactions</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">out</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vout</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="nx">out</span><span class="p">.</span><span class="nf">CanBeUnlockedWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="nx">UTXOs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">UTXOs</span><span class="p">,</span> <span class="nx">out</span><span class="p">)</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">UTXOs</span>
+<span class="p">}</span>
 </code></pre></div><p>다 됐다! 이제 <strong>getbalance</strong> 커맨드를 구현할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cli</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CLI</span>) <span style="color:#a6e22e">getBalance</span>(<span style="color:#a6e22e">address</span> <span style="color:#66d9ef">string</span>) {
-        <span style="color:#a6e22e">bc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewBlockchain</span>(<span style="color:#a6e22e">address</span>)
-        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Close</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">cli</span> <span class="o">*</span><span class="nx">CLI</span><span class="p">)</span> <span class="nf">getBalance</span><span class="p">(</span><span class="nx">address</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">bc</span> <span class="o">:=</span> <span class="nf">NewBlockchain</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span>
+        <span class="k">defer</span> <span class="nx">bc</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
 
-        <span style="color:#a6e22e">balance</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
-        <span style="color:#a6e22e">UTXOs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindUTXO</span>(<span style="color:#a6e22e">address</span>)
+        <span class="nx">balance</span> <span class="o">:=</span> <span class="mi">0</span>
+        <span class="nx">UTXOs</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindUTXO</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">UTXOs</span> {
-                <span style="color:#a6e22e">balance</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Value</span>
-        }
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Balance of &#39;%s&#39;: %d\n&#34;</span>, <span style="color:#a6e22e">address</span>, <span style="color:#a6e22e">balance</span>)
-}
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">out</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">UTXOs</span> <span class="p">{</span>
+                <span class="nx">balance</span> <span class="o">+=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">Value</span>
+        <span class="p">}</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Balance of &#39;%s&#39;: %d\n&#34;</span><span class="p">,</span> <span class="nx">address</span><span class="p">,</span> <span class="nx">balance</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>계좌 잔고는 계좌 주소로 잠긴 모든 미사용 트랜잭션 출력값의 합이다.</p>
 <p>제네시스 블록 채굴후 잔고를 확인해보자.</p>
 <pre><code>$ blockchain_go getbalance -address Ivan
@@ -356,81 +356,81 @@ Balance of 'Ivan': 10
 </code></pre><p>우리의 첫 자산이다!</p>
 <h1 id="코인-전송">코인 전송</h1>
 <p>이제 다른 사람에게 코인을 전송해보자. 이를 위해선 새로운 트랜잭션을 생성하여 블록에 넣고 블록을 채굴해야한다. 지금까지 우리는 특수한 타입의 트랜잭션인 코인베이스 트랜잭션만 구현했으니 이제 일반 트랜잭션을 구현해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewUTXOTransaction</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">to</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">amount</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span> {
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">inputs</span> []<span style="color:#a6e22e">TXInput</span>
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">outputs</span> []<span style="color:#a6e22e">TXOutput</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">NewUTXOTransaction</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">amount</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="o">*</span><span class="nx">Transaction</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">inputs</span> <span class="p">[]</span><span class="nx">TXInput</span>
+        <span class="kd">var</span> <span class="nx">outputs</span> <span class="p">[]</span><span class="nx">TXOutput</span>
 
-        <span style="color:#a6e22e">acc</span>, <span style="color:#a6e22e">validOutputs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindSpendableOutputs</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">amount</span>)
+        <span class="nx">acc</span><span class="p">,</span> <span class="nx">validOutputs</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindSpendableOutputs</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">amount</span><span class="p">)</span>
 
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">acc</span> &lt; <span style="color:#a6e22e">amount</span> {
-                <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Panic</span>(<span style="color:#e6db74">&#34;ERRPR: NOt enough funds&#34;</span>)
-        }
+        <span class="k">if</span> <span class="nx">acc</span> <span class="p">&lt;</span> <span class="nx">amount</span> <span class="p">{</span>
+                <span class="nx">log</span><span class="p">.</span><span class="nf">Panic</span><span class="p">(</span><span class="s">&#34;ERRPR: NOt enough funds&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
 
-        <span style="color:#75715e">// 입력 리스트 생성
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">txid</span>, <span style="color:#a6e22e">outs</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">validOutputs</span> {
-                <span style="color:#a6e22e">txID</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">DecodeString</span>(<span style="color:#a6e22e">txid</span>)
+        <span class="c1">// 입력 리스트 생성
+</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">txid</span><span class="p">,</span> <span class="nx">outs</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">validOutputs</span> <span class="p">{</span>
+                <span class="nx">txID</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">hex</span><span class="p">.</span><span class="nf">DecodeString</span><span class="p">(</span><span class="nx">txid</span><span class="p">)</span>
 
-                <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">outs</span> {
-                        <span style="color:#a6e22e">input</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">TXInput</span>{<span style="color:#a6e22e">txID</span>, <span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">from</span>}
-                        <span style="color:#a6e22e">inputs</span> <span style="color:#f92672">:=</span> append(<span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">input</span>)
-                }
-        }
+                <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">out</span> <span class="o">:=</span> <span class="nx">outs</span> <span class="p">{</span>
+                        <span class="nx">input</span> <span class="o">:=</span> <span class="nx">TXInput</span><span class="p">{</span><span class="nx">txID</span><span class="p">,</span> <span class="nx">out</span><span class="p">,</span> <span class="nx">from</span><span class="p">}</span>
+                        <span class="nx">inputs</span> <span class="o">:=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">inputs</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
 
-        <span style="color:#75715e">// 출력 리스트 생성
-</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">outputs</span> = append(<span style="color:#a6e22e">outputs</span>, <span style="color:#a6e22e">TXOutput</span>{<span style="color:#a6e22e">amount</span>, <span style="color:#a6e22e">to</span>})
-        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">acc</span> &gt; <span style="color:#a6e22e">amount</span> {
-                <span style="color:#a6e22e">outputs</span> = append(<span style="color:#a6e22e">outputs</span>, <span style="color:#a6e22e">TXOutput</span>{<span style="color:#a6e22e">acc</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">amount</span>, <span style="color:#a6e22e">from</span>})
-        }
+        <span class="c1">// 출력 리스트 생성
+</span><span class="c1"></span>        <span class="nx">outputs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">outputs</span><span class="p">,</span> <span class="nx">TXOutput</span><span class="p">{</span><span class="nx">amount</span><span class="p">,</span> <span class="nx">to</span><span class="p">})</span>
+        <span class="k">if</span> <span class="nx">acc</span> <span class="p">&gt;</span> <span class="nx">amount</span> <span class="p">{</span>
+                <span class="nx">outputs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">outputs</span><span class="p">,</span> <span class="nx">TXOutput</span><span class="p">{</span><span class="nx">acc</span> <span class="o">-</span> <span class="nx">amount</span><span class="p">,</span> <span class="nx">from</span><span class="p">})</span>
+        <span class="p">}</span>
 
-        <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Transaction</span>{<span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">inputs</span>, <span style="color:#a6e22e">outputs</span>}
-        <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">SetID</span>()
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">tx</span>
-}
+        <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span><span class="kc">nil</span><span class="p">,</span> <span class="nx">inputs</span><span class="p">,</span> <span class="nx">outputs</span><span class="p">}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nf">SetID</span><span class="p">()</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">tx</span>
+<span class="p">}</span>
 </code></pre></div><p>새로운 출력을 생성하기 전에, 우선 모든 미사용 출력을 찾아 충분한 잔고를 가지고 있는지 확인해야한다. 이것이 <strong>FindSpendableOutputs</strong> 메서드가 하는 일이다. 확인이 끝나면 찾아낸 각각의 출력에 대해 이를 참조하는 입력들이 생성된다. 그 후엔 다음 두 개의 출력을 생성한다.</p>
 <ol>
 <li>수신자 주소로 잠근 출력. 실제로 다른 주소로 코인을 전송하는 출력이다.</li>
 <li>발신자 주소로 잠근 출력. 이는 잔액인데, 미사용 출력들의 보유량이 새로운 트랜잭션에서 필요한 값보다 큰 경우에만 만들어진다. 출력은 <strong>나눠질 수 없음</strong>을 기억하라.</li>
 </ol>
 <p><strong>FindSpendableOutputs</strong> 메서드는 이전에 정의한 <strong>FindUspentTransactions</strong>을 기반으로한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">FindSpendableOutputs</span>(<span style="color:#a6e22e">address</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">amount</span> <span style="color:#66d9ef">int</span>) (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#66d9ef">int</span>) {
-        <span style="color:#a6e22e">unspentOutputs</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#66d9ef">int</span>)
-        <span style="color:#a6e22e">unspentTXs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">FindUnspentTransactions</span>(<span style="color:#a6e22e">address</span>)
-        <span style="color:#a6e22e">accumulated</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">FindSpendableOutputs</span><span class="p">(</span><span class="nx">address</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">amount</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">unspentOutputs</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">][]</span><span class="kt">int</span><span class="p">)</span>
+        <span class="nx">unspentTXs</span> <span class="o">:=</span> <span class="nx">bc</span><span class="p">.</span><span class="nf">FindUnspentTransactions</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span>
+        <span class="nx">accumulated</span> <span class="o">:=</span> <span class="mi">0</span>
 
-<span style="color:#a6e22e">Work</span>:
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">unspentTXs</span> {
-                <span style="color:#a6e22e">txID</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">hex</span>.<span style="color:#a6e22e">EncodeToString</span>(<span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">ID</span>)
+<span class="nx">Work</span><span class="p">:</span>
+        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">unspentTXs</span> <span class="p">{</span>
+                <span class="nx">txID</span> <span class="o">:=</span> <span class="nx">hex</span><span class="p">.</span><span class="nf">EncodeToString</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">ID</span><span class="p">)</span>
 
-                <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">outIdx</span>, <span style="color:#a6e22e">out</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">tx</span>.<span style="color:#a6e22e">Vout</span> {
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">CanBeUnlockedWith</span>(<span style="color:#a6e22e">address</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">accumulated</span> &lt; <span style="color:#a6e22e">amount</span> {
-                                <span style="color:#a6e22e">accumulated</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">Value</span>
-                                <span style="color:#a6e22e">unspentOutputs</span>[<span style="color:#a6e22e">txID</span>] = append(<span style="color:#a6e22e">unspentOutputs</span>[<span style="color:#a6e22e">txID</span>], <span style="color:#a6e22e">outIdx</span>)
-                        }
+                <span class="k">for</span> <span class="nx">outIdx</span><span class="p">,</span> <span class="nx">out</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Vout</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="nx">out</span><span class="p">.</span><span class="nf">CanBeUnlockedWith</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">accumulated</span> <span class="p">&lt;</span> <span class="nx">amount</span> <span class="p">{</span>
+                                <span class="nx">accumulated</span> <span class="o">+=</span> <span class="nx">out</span><span class="p">.</span><span class="nx">Value</span>
+                                <span class="nx">unspentOutputs</span><span class="p">[</span><span class="nx">txID</span><span class="p">]</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">unspentOutputs</span><span class="p">[</span><span class="nx">txID</span><span class="p">],</span> <span class="nx">outIdx</span><span class="p">)</span>
+                        <span class="p">}</span>
 
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">accumulated</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">amount</span> {
-                                <span style="color:#66d9ef">break</span> <span style="color:#a6e22e">Work</span>
-                        }
-                }
-        }
+                        <span class="k">if</span> <span class="nx">accumulated</span> <span class="o">&gt;=</span> <span class="nx">amount</span> <span class="p">{</span>
+                                <span class="k">break</span> <span class="nx">Work</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
 
-        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">accumulated</span>, <span style="color:#a6e22e">unspentOutputs</span>
-}
+        <span class="k">return</span> <span class="nx">accumulated</span><span class="p">,</span> <span class="nx">unspentOutputs</span>
+<span class="p">}</span>
 </code></pre></div><p>이 메서드는 모든 미사용 트랜잭션을 순회하면서 값을 누적한다. 누적값이 전송하려는 양보다 크거나 같으면 순회를 끝내고 누적된 값과 트랜잭션 아이디로 그룹핑된 출력을 반환한다. 필요한 양보다 많은 양을 사용할 필요는 없다.</p>
 <p>이제 <strong>Blockchain.MineBlock</strong> 메서드를 수정할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">bc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Blockchain</span>) <span style="color:#a6e22e">MineBlock</span>(<span style="color:#a6e22e">transactions</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>) {
-        <span style="color:#f92672">...</span>
-        <span style="color:#a6e22e">newBlock</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewBlock</span>(<span style="color:#a6e22e">transactions</span>, <span style="color:#a6e22e">lastHash</span>)
-        <span style="color:#f92672">...</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">bc</span> <span class="o">*</span><span class="nx">Blockchain</span><span class="p">)</span> <span class="nf">MineBlock</span><span class="p">(</span><span class="nx">transactions</span> <span class="p">[]</span><span class="o">*</span><span class="nx">Transaction</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="nx">newBlock</span> <span class="o">:=</span> <span class="nf">NewBlock</span><span class="p">(</span><span class="nx">transactions</span><span class="p">,</span> <span class="nx">lastHash</span><span class="p">)</span>
+        <span class="o">...</span>
+<span class="p">}</span>
 </code></pre></div><p>마지막으로 <strong>send</strong> 커맨드를 구현해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cli</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CLI</span>) <span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">to</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">amount</span> <span style="color:#66d9ef">int</span>) {
-        <span style="color:#a6e22e">bc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewBlockchain</span>(<span style="color:#a6e22e">from</span>)
-        <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Close</span>()
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">cli</span> <span class="o">*</span><span class="nx">CLI</span><span class="p">)</span> <span class="nf">send</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">amount</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">bc</span> <span class="o">:=</span> <span class="nf">NewBlockchain</span><span class="p">(</span><span class="nx">from</span><span class="p">)</span>
+        <span class="k">defer</span> <span class="nx">bc</span><span class="p">.</span><span class="nx">db</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
 
-        <span style="color:#a6e22e">tx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewUTXOTransaction</span>(<span style="color:#a6e22e">from</span>, <span style="color:#a6e22e">to</span>, <span style="color:#a6e22e">amount</span>, <span style="color:#a6e22e">bc</span>)
-        <span style="color:#a6e22e">bc</span>.<span style="color:#a6e22e">MineBlock</span>([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Transaction</span>{<span style="color:#a6e22e">tx</span>})
-        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Success!&#34;</span>)
-}
+        <span class="nx">tx</span> <span class="o">:=</span> <span class="nf">NewUTXOTransaction</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">amount</span><span class="p">,</span> <span class="nx">bc</span><span class="p">)</span>
+        <span class="nx">bc</span><span class="p">.</span><span class="nf">MineBlock</span><span class="p">([]</span><span class="o">*</span><span class="nx">Transaction</span><span class="p">{</span><span class="nx">tx</span><span class="p">})</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Success!&#34;</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>코인을 전송한다는건 트랜잭션을 만들고 블록 채굴을 통해 이를 블록체인에 추가한다는 것을 의미한다. 그러나 비트코인은 우리가 구현한 것처럼 이 작업을 즉시 수행하지는 않는다. 대신 새로운 트랜잭션들을 메모리풀에 넣고 채굴자가 채굴할 준비가 되면 메모리풀에서 모든 트랜잭션을 가져와 후보 블록을 생성한다. 트랜잭션은 이를 포함하고 있는 블록이 채굴되고 블록체인에 추가될 때에만 컨펌을 받게 된다.</p>
 <p>코인 전송 기능이 잘 동작하는지 확인해보자.</p>
 <pre><code>$ blockchain_go send -from Ivan -to Pedro -amount 6

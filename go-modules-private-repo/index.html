@@ -175,25 +175,25 @@ GOSUMDB=&quot;sum.golang.org&quot;
 <blockquote>
 <p>둘 중 하나만 하면 된다.</p>
 </blockquote>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
-$ GONOSUMDB<span style="color:#f92672">=</span>github.com/orgname go get -v github.com/orgname/app
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nv">GOPRIVATE</span><span class="o">=</span>github.com/orgname go get -v github.com/orgname/app
+$ <span class="nv">GONOSUMDB</span><span class="o">=</span>github.com/orgname go get -v github.com/orgname/app
 
-<span style="color:#75715e"># 다음 명령어로 Go 환경 변수를 영구 적용할 수 있다.</span>
-$ go env -w GOPRIVATE<span style="color:#f92672">=</span>github.com/orgname
+<span class="c1"># 다음 명령어로 Go 환경 변수를 영구 적용할 수 있다.</span>
+$ go env -w <span class="nv">GOPRIVATE</span><span class="o">=</span>github.com/orgname
 </code></pre></div><p>이렇게 하면 <code>github.com/orgname</code>경로에 포함된 모든 모듈에 대해서는 프록시 접근과 체크섬 검증 또는 체크섬 검증을 무시한다. <strong>GOPRIVATE</strong> 같은 경우는 <strong>GONOPROXY</strong>와 <strong>GONOSUMDB</strong>를 함께 사용한 것과 동일한 효과를 내며, 프록시조차 접근하지 않기 때문에 좀 더 강력한 옵션이다. 프라이빗 저장소이면 퍼블릭 프록시를 접근할 이유가 없기 때문에 이 옵션을 사용하길 추천한다. (이름 그대로 프라이빗 모듈을 위한 옵션임)</p>
 <blockquote>
 <p>당연한 얘기지만, 프록시와 체크섬을 제외한 direct로 가져오는 방식은 기존과 동일하기 때문에 기본적으로 ssh 접근 가능해야한다.</p>
 </blockquote>
 <h2 id="gosumdb">GOSUMDB</h2>
 <p>특정 경로를 제외하는 대신 GOSUMDB 옵션 자체를 off하여 모든 모듈에 대해 체크섬 검증을 무시하는 방법이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ GOSUMDB<span style="color:#f92672">=</span>off go get -v github.com/orgname/app
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="nv">GOSUMDB</span><span class="o">=</span>off go get -v github.com/orgname/app
 </code></pre></div><blockquote>
 <p>off가 아닌 empty string은 안된다. GOSUMDB가 empty이면 GOSUMDB 대신 GOPROXY에 나열된 프록시 서버에서 사용할 수 있는 체크섬 디비를 검색하기 때문에 마찬가지 이유로 실패한다.</p>
 </blockquote>
 <h1 id="ci에서도-접근하기">CI에서도 접근하기</h1>
 <p>CI 얘기는 사실 git 설정에 대한 이슈지만 참고 정도로 적어둔다. 좀 전에 언급했듯이 direct 접근은 기존과 동일하기 때문에 어쨌든 git으로 프라이빗 저장소에 접근할 수 있는 환경이 우선되어야 한다. CI에서는 ssh보다 access token을 통한 접근이 일반적이므로 다음과 같이 git config로 url만 바꿔주면 된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># GitHub Actions 기준. ACCESS_TOKEN 넣는 부분만 맞춰주면 된다.</span>
-$ git config --global url.<span style="color:#e6db74">&#34;https://x-access-token:</span><span style="color:#e6db74">${</span>{ secrets.ACCESS_TOKEN <span style="color:#e6db74">}</span><span style="color:#e6db74">}@github.com/&#34;</span>.insteadOf <span style="color:#e6db74">&#34;https://github.com/&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ <span class="c1"># GitHub Actions 기준. ACCESS_TOKEN 넣는 부분만 맞춰주면 된다.</span>
+$ git config --global url.<span class="s2">&#34;https://x-access-token:</span><span class="si">${</span><span class="p">{ secrets.ACCESS_TOKEN </span><span class="si">}</span><span class="s2">}@github.com/&#34;</span>.insteadOf <span class="s2">&#34;https://github.com/&#34;</span>
 </code></pre></div><p>그 다음, 같은 방식으로 <strong>GOPRIVATE</strong>을 설정해주면 체크섬 검증을 우회하고 프라이빗 모듈에 접근할 수 있다.</p>
 
                 </section>

@@ -110,113 +110,113 @@
 <!-- raw HTML omitted -->
 <h1 id="1-다중값을-사용할-때">1. 다중값을 사용할 때</h1>
 <p>일반적인 문법으로 파이썬 개발자라면 이미 모두가 사용하고 있는 케이스이다. 동시에 다중값 할당을 하거나, 값을 여러개 반환할 때 사용된다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 동시 선언 및 초기화</span>
-a, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 동시 선언 및 초기화</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
 
-<span style="color:#75715e"># 값 교환 (Swap)</span>
-a, b <span style="color:#f92672">=</span> b, a
+<span class="c1"># 값 교환 (Swap)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
 
-<span style="color:#75715e"># 다중값 반환</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_and_mul</span>(a, b):
-    add <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> b
-    mul <span style="color:#f92672">=</span> a <span style="color:#f92672">*</span> b
-    <span style="color:#66d9ef">return</span> add, mul
+<span class="c1"># 다중값 반환</span>
+<span class="k">def</span> <span class="nf">add_and_mul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">add</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">mul</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">add</span><span class="p">,</span> <span class="n">mul</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="2-단일-튜플을-사용할-때">2. 단일 튜플을 사용할 때</h1>
 <p>파이썬엔 튜플(tuple)이라는 Immutable한 리스트형 타입이 있다. <code>list</code> 타입의 경우 <code>[1]</code>와 같이 하나의 원소를 가진 리스트를 선언하면 원소가 하나인 <code>list</code>타입의 값을 갖게 되지만, <code>tuple</code>의 경우에는 위와 동일하게 하나의 원소만 선언할 경우, 우리가 원하는 원소가 하나인 <code>tuple</code>타입의 값을 얻을 수 없다. 이 때, <strong>Comma</strong>를 사용하면 단일 튜플을 만들 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; type<span style="color:#f92672">((</span>1<span style="color:#f92672">))</span>
-&lt;class <span style="color:#e6db74">&#39;int&#39;</span>&gt;
-&gt;&gt;&gt; type<span style="color:#f92672">((</span>1,<span style="color:#f92672">))</span>
-&lt;class <span style="color:#e6db74">&#39;tuple&#39;</span>&gt;
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt;&gt;&gt; type<span class="o">((</span>1<span class="o">))</span>
+&lt;class <span class="s1">&#39;int&#39;</span>&gt;
+&gt;&gt;&gt; type<span class="o">((</span>1,<span class="o">))</span>
+&lt;class <span class="s1">&#39;tuple&#39;</span>&gt;
 </code></pre></div><p><code>(1)</code>과 같이 선언하면 튜플처럼 보이지만 이는 그냥 하나의 정수값을 나타내는 expression으로 처리되어 <code>int</code>형의 <code>1</code>의 값을 갖게된다. 따라서, 이 표현식을 <code>tuple</code> 타입의 값으로 사용하려면 <code>(1,)</code>와 같이 원소 뒤에 <strong>Comma</strong>를 붙여 실제 <code>tuple</code> 타입의 값을 갖게 해야한다.</p>
 <p>여기서 한 가지 의문이 들 수도 있다. 원소가 하나인 튜플을 언제 사용하는가? 말 그대로 원소가 하나인 리스트를 사용하는것과 같이 원소가 하나인 튜플이 필요한 경우가 분명히 있을 것이다. 특히, 어떤 특정 함수가 튜플을 인자로 받는 경우에 튜플값을 하나만 전달하고자 할 때 단순히 <code>(1)</code>을 써서 타입 에러를 겪어본 적이 한번쯤은 있을 것이다. 이 때 바로 위와 같이 실제 튜플 타입의 데이터를 인자로 전달하면 해당 문제를 해결할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># 타입 에러 발생</span>
-execute_query(<span style="color:#e6db74">&#39;...&#39;</span>, (<span style="color:#ae81ff">1</span>))
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 타입 에러 발생</span>
+<span class="n">execute_query</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
-<span style="color:#75715e"># 정상적으로 처리</span>
-execute_query(<span style="color:#e6db74">&#39;...&#39;</span>, (<span style="color:#ae81ff">1</span>,))
+<span class="c1"># 정상적으로 처리</span>
+<span class="n">execute_query</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="3-trailing-comma를-사용할-때">3. Trailing comma를 사용할 때</h1>
 <p>사실 위에서 본 팁이라고 하는것들은 일종의 파이썬 문법 자체이므로 팁이라고는 하기 어려우며, 팁이라고하면 이 부분이 팁이 될 수 있겠다. <code>Trailing comma</code>란 리스트형 데이터를 다음과 같은 형태로 선언할 때 맨 뒤에 붙이는 <code>Comma</code>를 뜻한다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scores <span style="color:#f92672">=</span> [
-    <span style="color:#ae81ff">100</span>,
-    <span style="color:#ae81ff">93</span>,
-    <span style="color:#ae81ff">82</span>,
-    <span style="color:#ae81ff">97</span>,
-]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">100</span><span class="p">,</span>
+    <span class="mi">93</span><span class="p">,</span>
+    <span class="mi">82</span><span class="p">,</span>
+    <span class="mi">97</span><span class="p">,</span>
+<span class="p">]</span>
 </code></pre></div><p>위에서 <code>Trailing comma</code>는 <code>97,</code>에서 보이는 Comma를 가리키는데, 얼핏보면 이걸 왜 쓰는지 의문이 들것이다. 결론부터 말하면, 목적은 실수 방지와 Git과 같은 VCS를 통한 소스코드 관리에서의 용이함이 있다.</p>
 <!-- raw HTML omitted -->
 <h2 id="실수-방지">실수 방지</h2>
 <p>이는 사람의 실수를 방지하기 위한 것이며, Trailing comma를 쓰는 주된 이유라기보단 부수적인 효과 및 목적이다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">scores <span style="color:#f92672">=</span> [
-    <span style="color:#ae81ff">100</span>,
-    <span style="color:#ae81ff">93</span>,
-    <span style="color:#ae81ff">82</span>,
-    <span style="color:#ae81ff">97</span>
-    <span style="color:#ae81ff">76</span>
-]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">100</span><span class="p">,</span>
+    <span class="mi">93</span><span class="p">,</span>
+    <span class="mi">82</span><span class="p">,</span>
+    <span class="mi">97</span>
+    <span class="mi">76</span>
+<span class="p">]</span>
 </code></pre></div><p><code>scores</code>에 새로운 값을 추가하는 경우, 리스트 최하단에 데이터를 추가하게 되는데 간혹 실수로 윗 라인에 Comma를 빼먹고 바로 쓰는 경우가 있다. 이 경우, Trailing comma를 사용하면 Comma를 빼먹는 실수를 방지할 수 있게된다.</p>
 <!-- raw HTML omitted -->
 <h2 id="vcs를-통한-소스코드-관리에서의-용이함">VCS를 통한 소스코드 관리에서의 용이함</h2>
 <p>Trailing comma를 쓰는 주된 목적이다. 우선 Trailing comma를 사용하지 않는 경우를 살펴보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [
-    <span style="color:#e6db74">&#39;James&#39;</span>,
-    <span style="color:#e6db74">&#39;Smith&#39;</span>,
-    <span style="color:#e6db74">&#39;Ming&#39;</span>,
-    <span style="color:#e6db74">&#39;John&#39;</span>
-]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;James&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Smith&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ming&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;John&#39;</span>
+<span class="p">]</span>
 </code></pre></div><p>이제 위 데이터에 새로운 이름을 하나 추가한다고 해보자.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [
-    <span style="color:#e6db74">&#39;James&#39;</span>,
-    <span style="color:#e6db74">&#39;Smith&#39;</span>,
-    <span style="color:#e6db74">&#39;Ming&#39;</span>,
-    <span style="color:#e6db74">&#39;John&#39;</span>,
-    <span style="color:#e6db74">&#39;Torvalds&#39;</span>
-]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;James&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Smith&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ming&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;John&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Torvalds&#39;</span>
+<span class="p">]</span>
 </code></pre></div><p>위와 같이 추가가 되었으며, 별 문제 없어보인다. 하지만, 이를 <code>git diff</code>로 살펴보면 다음과 같은 결과를 볼 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#75715e">@@ -2,5 +2,6 @@ names = [
-</span><span style="color:#75715e"></span>     &#39;James&#39;,
+<div class="highlight"><pre class="chroma"><code class="language-diff" data-lang="diff"><span class="gu">@@ -2,5 +2,6 @@ names = [
+</span><span class="gu"></span>     &#39;James&#39;,
      &#39;Smith&#39;,
      &#39;Ming&#39;,
-<span style="color:#f92672">-    &#39;John&#39;
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+    &#39;John&#39;,
-</span><span style="color:#a6e22e">+    &#39;Torvalds&#39;
-</span><span style="color:#a6e22e"></span> ]
+<span class="gd">-    &#39;John&#39;
+</span><span class="gd"></span><span class="gi">+    &#39;John&#39;,
+</span><span class="gi">+    &#39;Torvalds&#39;
+</span><span class="gi"></span> ]
 </code></pre></div><p>우리는 분명히 하나의 데이터만 추가를 했을뿐인데, 하나의 데이터가 삭제되고 두 개의 데이터가 추가된 것처럼 나온다. 코드상으로는 문제가 없지만, 이는 실제 커밋 히스토리 변경사항을 파악하는데에는 별로 좋지 않다. Trailing comma를 사용하면 위와 같은 문제를 해결할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">names <span style="color:#f92672">=</span> [
-    <span style="color:#e6db74">&#39;James&#39;</span>,
-    <span style="color:#e6db74">&#39;Smith&#39;</span>,
-    <span style="color:#e6db74">&#39;Ming&#39;</span>,
-    <span style="color:#e6db74">&#39;John&#39;</span>,
-]
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;James&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Smith&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ming&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;John&#39;</span><span class="p">,</span>
+<span class="p">]</span>
 </code></pre></div><p>처음부터 위와 같이 선언을 하고 추후에 데이터를 추가하는 경우 실제로 변경되는 코드도 한 줄로 표시되기 때문에 변경사항을 파악하기가 훨씬 수월해진다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#75715e">@@ -3,4 +3,5 @@ mes = [
-</span><span style="color:#75715e"></span>     &#39;Smith&#39;,
+<div class="highlight"><pre class="chroma"><code class="language-diff" data-lang="diff"><span class="gu">@@ -3,4 +3,5 @@ mes = [
+</span><span class="gu"></span>     &#39;Smith&#39;,
      &#39;Ming&#39;,
      &#39;John&#39;,
-<span style="color:#a6e22e">+    &#39;Torvalds&#39;,
-</span><span style="color:#a6e22e"></span> ]
+<span class="gi">+    &#39;Torvalds&#39;,
+</span><span class="gi"></span> ]
 </code></pre></div><p>우리의 의도가 <code>diff</code>에도 그대로 반영 되었으며, 훨씬 보기가 수월해졌다. 이는 데이터 추가 뿐만 아니라 삭제를 하는 경우에도 동일하다.</p>
 <!-- raw HTML omitted -->
 <h1 id="4-한-줄-출력이-필요할-때">4. 한 줄 출력이 필요할 때</h1>
 <p>이는 Python2에서만 유효한 팁으로 데이터들을 한 줄로 출력하고 싶은 경우 사용할 수 있다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#  print를 그대로 사용하는 경우</span>
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
-    <span style="color:#66d9ef">print</span> i
-<span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">0
-</span><span style="color:#e6db74">1
-</span><span style="color:#e6db74">2
-</span><span style="color:#e6db74">3
-</span><span style="color:#e6db74">4
-</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#  print를 그대로 사용하는 경우</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">i</span>
+<span class="s2">&#34;&#34;&#34;
+</span><span class="s2">0
+</span><span class="s2">1
+</span><span class="s2">2
+</span><span class="s2">3
+</span><span class="s2">4
+</span><span class="s2">&#34;&#34;&#34;</span>
 
-<span style="color:#75715e"># print에 comma를 붙여 사용하는 경우</span>
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">5</span>):
-    <span style="color:#66d9ef">print</span> i,
-<span style="color:#e6db74">&#34;&#34;&#34;
-</span><span style="color:#e6db74">0 1 2 3 4
-</span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+<span class="c1"># print에 comma를 붙여 사용하는 경우</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">i</span><span class="p">,</span>
+<span class="s2">&#34;&#34;&#34;
+</span><span class="s2">0 1 2 3 4
+</span><span class="s2">&#34;&#34;&#34;</span>
 </code></pre></div><!-- raw HTML omitted -->
 <p>이상 파이썬에서 **Comma(,)**를 사용하는 케이스와 팁을 살펴보았다. 특히, 3번의 <code>Trailing comma</code>는 자주 사용되는 팁이니 숙지해두면 도음이 많이 될 것이다.</p>
 
