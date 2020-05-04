@@ -65,7 +65,7 @@ googleAnalytics = "UA-84081627-1"
 	iconFont = "font-awesome"
 
 	# Ad
-	enableAd = false
+	enableAd = true
 	googleAdsense = "ca-pub-9436560391944255"
 
 [markup]
