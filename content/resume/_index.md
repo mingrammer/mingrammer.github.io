@@ -28,7 +28,7 @@ hidden = true
 
 ##### [Daangn Market](https://www.daangn.com/), Dec 2019 -
 
-* Working on Platform Team
+- Working on Platform Team
 
 ###### Server Engineer
 ##### [SundayToz](http://corp.sundaytoz.com/), Jul 2017 - Dec 2019
@@ -37,6 +37,8 @@ hidden = true
 - Migrated the game server infrastructure from IDC to AWS with 8 hours downtime.
 - Migrated 3.4 billion user data from the MySQL and Redis on IDC to the RDS and DynamoDB on AWS using Golang.
 - Built a reproducible local development environment with Vagrant.
+- Built an HTTP sniffer to inspect encrypted data flowing between client and game servers with Golang.
+- Built a tool for syncing static game data from spreadsheet to backed database with Python.
 
 ###### Server Engineer
 ##### [Townus](https://www.townus.co.kr/), Nov 2016 - Feb 2017
@@ -55,14 +57,14 @@ Go, Python
 
 ###### Backend Development
 
-Linux, AWS, Vagrant, Docker, MySQL, Redis
+Linux, AWS, Docker, MySQL, PostgreSQL, Redis, Memcached, Kafka, gRPC
 
 ---
 
 ### Interests
 
-- Designing the system architecture
-- Make something for developers
+- Designing system architectures
+- Build something for developers
 - Automating the boring tasks
 - Open source software
 
@@ -84,11 +86,6 @@ flog provides a log generator for 6 often used log formats (for now). It was cre
 ##### A report card web service for Python applications
 
 pyreportcard analyzes the source code quality of the Python projects which are hosted on GitHub, checks for license and readme files, and provides some statistics.
-
-###### [fitter](https://github.com/mingrammer/fitter)
-##### An on-demand image server for generating dynamic images
-
-fitter is a configurable on-demand image server for generating dynamic images with desired parameters.
 
 ###### [casec](https://github.com/mingrammer/casec)
 ##### Text case converter for programmers
