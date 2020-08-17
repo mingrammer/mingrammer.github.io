@@ -18,7 +18,7 @@
 
 		
 
-		<meta name="generator" content="Hugo 0.69.0" />
+		<meta name="generator" content="Hugo 0.74.3" />
 		<title>[번역] 파이썬 내부 동작 원리: 임의 정밀도의 정수 구현 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Oct 10, 2017 00:00
-                    · 2175 words
+                    · 2181 words
                     · 5 minute read
                       <span class="tags">
                       
@@ -209,7 +209,7 @@
     <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 </code></pre></div><!-- raw HTML omitted -->
 <h1 id="산술-연산">산술 연산</h1>
-<p>기본 산술 연산은 우리가 이미 알고 있는 기초적인 수학을 사용하여 구현되어 있으나 딱 한 가지 차이점은 배열의 모든 원소를 하나의 &lsquo;자릿수'로 다룬다는 점이다.</p>
+<p>기본 산술 연산은 우리가 이미 알고 있는 기초적인 수학을 사용하여 구현되어 있으나 딱 한 가지 차이점은 배열의 모든 원소를 하나의 &lsquo;자릿수&rsquo;로 다룬다는 점이다.</p>
 <p>모든 연산은 최소 하나의 객체을 생성해낸다. 가령, <code>c += 10</code>을 실행하면 다음과 같은 단계들이 수행된다:</p>
 <ul>
 <li><code>10</code>을 나타내는 미리 할당된 객체의 주소를 가져온다. (10은 작은 정수이므로 새로운 객체를 생성할 필요가 없다.)</li>
