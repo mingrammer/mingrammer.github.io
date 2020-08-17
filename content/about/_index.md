@@ -34,13 +34,14 @@ Go, Python
 
 ###### Backend Development
 
-Linux, AWS, Docker, MySQL, Redis
+Linux, AWS, Docker, MySQL, PostgreSQL, Redis, Memcached, Kafka, gRPC
 
 ---
 
 ### Interests
 
-- Designing the system architecture
+- Designing system architectures
+- Build something for developers
 - Automating the boring tasks
 - Open source software
 
