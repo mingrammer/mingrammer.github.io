@@ -18,7 +18,7 @@
 
 		
 
-		<meta name="generator" content="Hugo 0.74.3" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[리뷰] DEVIEW : 쿠키런 AI 구현하기 &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -64,7 +64,7 @@
                     </h1>
                     <h2 class="headline">
                     Oct 26, 2016 00:00
-                    · 5385 words
+                    · 5343 words
                     · 11 minute read
                       <span class="tags">
                       
@@ -137,11 +137,11 @@
 <p>AlphaRun에서는 상태 $$ s_t $$와 행동 $$ a_t $$를 다음과 같은 행렬과 값으로 나타낸다.</p>
 <p><img src="/images/2016-10-26-deviewalpharun-61.jpg" alt="state matrix">
 <img src="/images/2016-10-26-deviewalpharun-62.jpg" alt="action values"></p>
-<p>그리고 $$ Q $$라는 함수를 $$ s $$에서 $$ a $$를 했을 때의 &lsquo;기대 미래가치&rsquo;라고 정의한다. 즉, AlphaRun에서는 다음과 같은 그림으로 표현할 수 있다. 이 경우 &lsquo;슬라이드&rsquo;에 대한 &lsquo;기대 미래가치&rsquo;가 5로서 가장 크기 때문에 다음 행동은 &lsquo;슬라이드&rsquo;로 행하는게 좋다는걸 알 수 있다. 참고로 쿠키런에서의 &lsquo;가치&rsquo;란 바로 &lsquo;점수&rsquo;를 뜻한다. 즉 $$ Q $$는 미래에 얻을 점수의 합을 의미한다.</p>
+<p>그리고 $$ Q $$라는 함수를 $$ s $$에서 $$ a $$를 했을 때의 &lsquo;기대 미래가치'라고 정의한다. 즉, AlphaRun에서는 다음과 같은 그림으로 표현할 수 있다. 이 경우 &lsquo;슬라이드'에 대한 &lsquo;기대 미래가치'가 5로서 가장 크기 때문에 다음 행동은 &lsquo;슬라이드'로 행하는게 좋다는걸 알 수 있다. 참고로 쿠키런에서의 &lsquo;가치'란 바로 &lsquo;점수'를 뜻한다. 즉 $$ Q $$는 미래에 얻을 점수의 합을 의미한다.</p>
 <p><img src="/images/2016-10-26-deviewalpharun-68.jpg" alt="q value"></p>
 <p>실제 게임에서의 예를 들면 다음과 같다.</p>
 <p><img src="/images/2016-10-26-deviewalpharun-74.jpg" alt="q value in game"></p>
-<p>직관적으로도 당연히 슬라이드를 해야하는 상황이다. 이걸 $$ Q $$의 관점에서 보면 슬라이드를 할 경우의 점수가 점프와 가만히 있을때의 그것보다 &lsquo;가치&rsquo;값이 높기때문에 AlphaRun은 슬라이드를 택할 것이다.</p>
+<p>직관적으로도 당연히 슬라이드를 해야하는 상황이다. 이걸 $$ Q $$의 관점에서 보면 슬라이드를 할 경우의 점수가 점프와 가만히 있을때의 그것보다 &lsquo;가치'값이 높기때문에 AlphaRun은 슬라이드를 택할 것이다.</p>
 <p>이 Q-Learning의 squared error loss는 다음과 같다. $$ a&rsquo; $$는 가능한 모든 행동들이다.</p>
 <p>$$ loss = (Q(s,a) - (r + {\gamma}max_{a&rsquo;}\hat{Q}(s,a&rsquo;)))^2 $$</p>
 <p>이 $$ loss $$를 가지고 loss function $$ L $$을 정의하고 이를 최소화 함으로써 학습시킬 수 있다.</p>

@@ -18,7 +18,7 @@
 
 		
 
-		<meta name="generator" content="Hugo 0.74.3" />
+		<meta name="generator" content="Hugo 0.69.0" />
 		<title>[Go로 구현하는 블록체인] Part 3: 영속성 및 CLI &middot; mingrammer&#39;s note</title>
 		<link rel="shortcut icon" href="https://mingrammer.com/images/favicon.ico">
 		<link rel="stylesheet" href="https://mingrammer.com/css/style.css">
@@ -138,7 +138,7 @@
 <li><strong>&lsquo;l&rsquo; -&gt; 4바이트 파일 번호: 마지막으로 사용된 블록의 파일 번호</strong></li>
 <li><strong>&lsquo;R&rsquo; -&gt; 1바이트 부울: 재색인 작업 진행 여부</strong></li>
 <li><strong>&lsquo;F&rsquo; + 1바이트 플래그명 길이 + 플래그명 -&gt; 1바이트 부울: 끄고 켤 수 있는 여러 플래그들</strong></li>
-<li><strong>&rsquo;t&rsquo; + 32바이트 트랙잭션 해시 -&gt; 트랜잭션 인덱스 레코드</strong></li>
+<li><strong>&lsquo;t&rsquo; + 32바이트 트랙잭션 해시 -&gt; 트랜잭션 인덱스 레코드</strong></li>
 </ol>
 <p><strong>chainstate</strong>에는 다음과 같은 <strong>키-&gt;값</strong> 쌍들이 있다.</p>
 <ol>
