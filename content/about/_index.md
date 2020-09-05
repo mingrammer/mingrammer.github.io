@@ -62,7 +62,7 @@ Linux, AWS, Docker, MySQL, PostgreSQL, Redis, Memcached, Kafka, gRPC
 
 ###### Contributions
 
-[go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [realize#103](https://github.com/oxequa/realize/pull/103), [lazygit#284](https://github.com/jesseduffield/lazygit/pull/284), [sup#117](https://github.com/pressly/sup/pull/117), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
+[go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [airflow#5749](https://github.com/apache/airflow/pull/6418), [airflow#5758](https://github.com/apache/airflow/pull/6432), [airflow#5769](https://github.com/apache/airflow/pull/6443), [dd-trace-go#647](https://github.com/DataDog/dd-trace-go/pull/647), [cli/cli#532](https://github.com/cli/cli/pull/532), [mvdan/sh#388](https://github.com/mvdan/sh/pull/388), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
 
 ---
 
