@@ -49,20 +49,36 @@ Linux, AWS, Docker, MySQL, PostgreSQL, Redis, Memcached, Kafka, gRPC
 
 ### Open Source Experience
 
-###### Projects
+###### [diagrams](https://github.com/mingrammer/diagrams)
+##### Diagram as Code for prototyping cloud system architectures
 
-- **[diagrams](https://github.com/mingrammer/diagrams)** - Diagram as Code for prototyping cloud system architectures
-- **[flog](https://github.com/mingrammer/flog)** - A fake log generator for common log formats
-- **[commonregex](https://github.com/mingrammer/commonregex)** - A collection of common regular expressions for Go
-- **[pyreportcard](https://github.com/mingrammer/pyreportcard)** - A report card web service for Python applications
-- **[fitter](https://github.com/mingrammer/fitter)** - An on-demand image server for generating dynamic images
-- **[casec](https://github.com/mingrammer/casec)** - Text case converter for programmers
-- **[redis-migrate](https://github.com/mingrammer/redis-migrate)** - Simple command line tool for redis data migration
-- **[awesome-finder](https://github.com/mingrammer/awesome-finder)** - Find the awesome curated list without browser
+Diagrams lets you draw the cloud system architecture in Python code. It was born for prototyping a new system architecture design without any design tools. You can also describe or visualize the existing system architecture as well.
 
-###### Contributions
+###### [flog](https://github.com/mingrammer/flog)
+##### A fake log generator for common log formats
+
+Flog provides a log generator for 6 often used log formats (for now). It was created for testing some tasks which require log data like amazon kinesis log stream test. Its docker image was pulled 212k times from docker hub by other developers.
+
+###### [pyreportcard](https://github.com/mingrammer/pyreportcard)
+##### A report card web service for Python applications
+
+Pyreportcard analyzes the source code quality of the Python projects which are hosted on GitHub, checks for license and readme files, and provides some statistics.
+
+###### [casec](https://github.com/mingrammer/casec)
+##### Text case converter for programmers
+
+Casec is a text case converter for programmers. casec now supports upper, lower, title, camel, pascal, snake, kebab (or lisp) cases, providing also case conversion library.
+
+
+##### Contributions
 
 [go#24074](https://github.com/golang/go/pull/24074), [go-redis#952](https://github.com/go-redis/redis/pull/952), [airflow#5749](https://github.com/apache/airflow/pull/6418), [airflow#5758](https://github.com/apache/airflow/pull/6432), [airflow#5769](https://github.com/apache/airflow/pull/6443), [dd-trace-go#647](https://github.com/DataDog/dd-trace-go/pull/647), [cli/cli#532](https://github.com/cli/cli/pull/532), [mvdan/sh#388](https://github.com/mvdan/sh/pull/388), [tqdm#615 (wip)](https://github.com/tqdm/tqdm/pull/615) and etc.
+
+---
+
+### Translations
+
+- Korean translator of [Head First Go](https://www.hanbit.co.kr/store/books/look.php?p_code=B1938330682), 2019 
 
 ---
 
