@@ -174,8 +174,8 @@ def get_double_price(self):
     <span class="k">def</span> <span class="nf">__double_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 맹글링을 위한 메서드</span>
         <span class="k">pass</span>
 
-<span class="k">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">A</span><span class="p">()))</span> <span class="c1"># [&#39;_A_double_method&#39;, ..., &#39;_single_method&#39;]</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">B</span><span class="p">()))</span> <span class="c1"># [&#39;_A_double_method&#39;, &#39;_B_double_method&#39;, ..., &#39;_single_method&#39;]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">A</span><span class="p">()))</span> <span class="c1"># [&#39;_A__double_method&#39;, ..., &#39;_single_method&#39;]</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">B</span><span class="p">()))</span> <span class="c1"># [&#39;_A__double_method&#39;, &#39;_B__double_method&#39;, ..., &#39;_single_method&#39;]</span>
 
 <span class="c1"># 서로 같은 이름의 메서드를 가지지만 오버라이드가 되지 않는다.</span>
 </code></pre></div><p>더블 언더스코어로 지정된 속성명은 위와 같이 맹글링이 되기 때문에 일반적인 속성 접근인 <code>ClassName.__method</code>으로 접근이 불가능하다. 간혹, 이러한 특징으로 더블 언더스코어를 사용해 진짜 private처럼 보이게 하는 경우가 있는데 이는 private을 위한 것이 아니며 private으로의 사용도 권장되지 않는다. 이에 대한 자세한 내용은 <a href="http://python.net/~goodger/projects/pycon/2007/idiomatic/handout.html#naming">Python Naming</a>을 참고하면 좋을 것 같다.</p>
