@@ -113,8 +113,8 @@ for _, val in list_of_tuple:
       def __double_method(self): # 맹글링을 위한 메서드
           pass
 
-  print(dir(A())) # ['_A_double_method', ..., '_single_method']
-  print(dir(B())) # ['_A_double_method', '_B_double_method', ..., '_single_method']
+  print(dir(A())) # ['_A__double_method', ..., '_single_method']
+  print(dir(B())) # ['_A__double_method', '_B__double_method', ..., '_single_method']
 
   # 서로 같은 이름의 메서드를 가지지만 오버라이드가 되지 않는다.
   ```
